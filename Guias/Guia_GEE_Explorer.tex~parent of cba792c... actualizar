@@ -1,0 +1,163 @@
+%#############################PREAMBLE#############################################
+\documentclass[a4paper,oneside,11pt,]{article}
+
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlepic}
+\usepackage{hyperref} 
+\usepackage{textcomp}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Análisis Geoespacial}
+\rhead{\thepage}
+\cfoot{Guía GEE Explorer}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title {\includegraphics[width=10.0cm]{G:/My Drive/ADMINISTRATIVA/logos/unal2.png}\\[5ex]
+Guía\\ Google Earth Engine (GEE)\\Explorer}
+\author{
+Prof.: Edier Aristizábal
+\date{}
+}
+%################################BODY############################################
+\begin{document}
+\maketitle
+
+\emph {versión}: \today
+
+\section{GEE}
+En esta parte se utilizará Google Earth Engine (GEE), la cual corresponde a una plataforma de procesamiento geoespacial en la nube a escala pentabytes en un solo lugar, que permite trabajar a escala local y escala global. Utilizando los servidores de Google de forma gratuita. Esta plataforma, a diferencia de los procedimientos tradicionales, tiene una gran cantidad de datos disponibles por lo cual no es necesario descargar y almacenar los datos. Adicionalmente el poder de procesamiento es sin precedentes, ay que utiliza los servidores de Google. En este etapa, se trabajará con el API en la web de GEE, denominado Explorer, y con imágenes LANDSAT o SENTINEL. pero también existe en el catálogo de GEE información de una gran cantidad de programas espaciales como el MODIS, y productos como modelos digitales de elevación del SRTM, y lluvias satelitales del TRMM y el CHIRPS., entre mucho otros.
+
+
+\subsection{REGISTRO}
+
+Nos dirigimos a la página de GEE (\url{https://earthengine.google.com/}), y desde allí en la pestaña en la parte superior derecha Sign up nos inscribimos. Es importante realizar este paso, ya que aunque sin estar registrados la plataforma GEE permite al usuario ingresar y consultar información, en caso de no estar inscrito no permite utilizar la función Add computation, la cual trabajaremos en el grupo. Para el registro solicita una cuenta en Google, información de afiliación, y el uso que le dará a la herramienta.
+
+\subsection{Plataforma GEE}
+
+EL GEE presenta dos plataformas vía web (i) la interfaz gráfica de usuario – API-, denominada Explorer (\url{https://explorer.earthengine.google.com/#workspace}), y (ii) la interfaz de programación (IDE), denominada Code editor (\url{https://code.earthengine.google.com/}). 
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee2}
+\end{figure}
+
+\section{EXPLORER}
+Nos dirigimos entonces a Plataform Explorer, y se abrirá una nueva ventana con GEE Explorer. Si estamos registrados debe aparecer en la parte izquierda dos pestañas Add data y Add computation, y en la parte superior derecha debe aparecer la cuenta con la cual estamos inscritos. En caso que no sea de esta forma debemos proceder a registrarnos.\\
+Para consultar información en la interface Explorer podemos utilizar tres herramientas que son similares: (i) la pestaña Add data, (ii) la barra de búsqueda en la parte superior izquierda, y (iii) la pestaña Data Catalog, en la parte superior derecha. Las dos primeras despliegan una lista de productos que se pueden consultar y permite buscar por palabra clave, si seleccionamos algunos de los productos inmediatamente se carga en el visor. En el caso del Data Catalog se abre una nueva interface de búsqueda donde permite buscar el producto que requerimos y sus características, si seleccionamos la opción de Open in Workspace se despliega dicho producto seleccionado en el visor.\\
+Para este ejercicio seleccionemos el producto inicial que aparece denominado Landsat TOA Percentile Composite, el cual corresponde a una imagen compuesta en la superficie de la troposfera con las mejores imágenes Landsat de cada año. Como pueden observar en la ventana que despliega el producto se puede seleccionar diferentes años para toda la superficie terrestre del planeta tierra donde existen imágenes Landsat.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee3}
+\end{figure}
+
+\subsection{Descargar imagen}
+Para descargar la imagen se dirige en el visor al área de interés y seleccionado el producto Landsat TOA y el año de preferencia se da click en la pestaña descargar. Se despliegan diferentes opciones en la parte izquierda para descargar la imagen:
+
+\begin{figure}
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee4}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Region}: permite definir el área de la imagen que quiere descargar. La opción Viewport permite descargar una imagen con el área de forma del rectángulo que tiene visualizado. También permite seleccionar un área con un polígono o un rectángulo el cual el usuario debe dibujar en el visor.
+\item \textbf{Format}: Permite bajar en diferentes formatos, en este caso se recomienda GeoTIFF
+\item \textbf{Bands}: permite seleccionar las bandas que se quieren descargar.
+\item \textbf{Projection}: Permite definir el sistema de proyección en el cual prefiere descargar la imagen.
+\item \textbf{Resolution}: Finalmente permite definir la resolución espacial para la descarga. Se recomienda utilizar la resolución de acuerdo al programa y la banda. En este caso para las bandas del Landsat del óptico se recomienda 30m.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee5}
+\end{figure}
+
+Con esta información se procede a la descarga de la imagen.\\
+Para el manejo de imágenes en GEE no se requiere descargar la imagen, ya que dicho procedimiento se realiza directamente en la interface y con datos en la nube. Para este ejercicio utilizaremos la imagen Landsat TOA.\\
+Se procede entonces a seleccionar la imagen Landsat TOA y el año que se quiera utilizar. Se da click en la pestaña Visualization para desplegar la combinación de bandas. Por defecto aparece la combinación B3, B2 y B1, es decir el color verdadero, ya que el orden corresponde a R (red), G (green), B (blue).\\
+Para visualizar una combinación diferente simplemente se selecciona en cada pestaña del RGB la banda que se desee, y se da click en la pestaña Apply.
+Para mejorar la visualización se puede dar un strech que modifique el histograma. Se da click en la pestaña Custom, allí aparece varias opciones en términos de la deviación estándar y del porcentaje de frecuencia del histograma. Este ajusta la imagen en términos del recuadro de visualización, si cambia dicho recuadro cambiar el stretch.
+Es posible también ajustar la opacidad de la imagen y el gamma. Explore estas herramientas y establezca que acciones realiza sobre la imagen.
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee6}
+\end{figure}
+\section{CALCULO DEL NDVI CON GOOGLE EARTH ENGINE}
+Para calcular un índice en GEE nos dirigimos en la plataforma de Explorer y debemos inicialmente seleccionar la imagen con la cual vamos a trabajar. En este ejercicio trabajaremos con la imagen Landsat TOA, y nos dirigimos en el visor y sobre dicha imagen a nuestra área de interés. Posteriormente vamos a la pestaña Add computation y seleccionamos la opción Expression.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee7}
+\end{figure}
+
+Nos debe aparecer una ventana en la cual seleccionamos la imagen Landsat TOA para este caso y en la pestaña denominada Expression escribimos la ecuación correspondiente al índice que vamos a calcular, en este caso el NDVI. Esta herramienta funciona exactamente como una calculadora de archivos tipo raster. Tenga en cuenta que la imagen con la cual vamos a trabajar en la pestaña Images recibe el nombre de img1, por lo tanto para escribir la expresión del índice debemos utilizar este nombre. De esta forma la expresión para calcular el NDVI es de la siguiente forma:
+
+(img1["B4"]-img1["B3"])\/(img1["B4"]+img1["B3"])
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee8}
+\end{figure}
+
+Luego aplican Apply and Save y aparece en la parte izquierda una nueva capa denominada Computed layer: Expression, la cual corresponde al NDVI. Si quiere mejorar la visualización puede ir a la pestaña Visualization y aplicar un Strecth y cambiar la paleta de colores con la función Palette. Como vimos en los anteriores talleres esta imagen puede ser descargada en diferentes formatos y resoluciones.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee9}
+\end{figure}
+
+\section{Tratamiento de imágenes satelitales}
+
+La plataforma Explorer de GEE permite realizar clasificaciones supervisadas de imágenes de satélite. Seguiremos trabajando con Landsat TOA, por lo tanto, seleccionaos dicha imagen y seleccionamos una combinación que mejor nos permita diferenciar los diferentes usos o coberturas del suelo que vamos a clasificar.
+Para no trabajar sobre todo el planeta es mejor trabajar con una máscara, la cual nos permite trabajar solo en el área de interés. Para esto nos dirigimos Add computation, Mask Manipulation, Apply mask. 
+Seleccionamos la imagen Landsat TOA y en la pestaña derecha seleccionamos solo 1 banda. No nos interesa hacer una mascara sobre toda la imagen TOA, sino utilizar la banda 1 para crear dicha mascara. En la ventana Mask seleccionamos la opción Draw Rectangle y creamos en el visor un rectángulo con el área de interés.
+Luego damos clic en Add step, Mask manipulation, Extract mask. En la ventana de Image seleccionamos Apply mask y le damos Apply y Save.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee10}
+\end{figure}
+
+Nos debe aparecer una nueva capa con las mascara que acabos de definir. El paso a seguir es aplicar la máscara a nuestra imagen de trabajo, es decir Landsat TOA. Para eso vamos Add computation, Mask Manipulation, Apply Mask. En la pestaña Image seleccionamos la imagen Landsat TOA, y en la parte derecha solo dejamos seleccionadas las bandas con las cuales queremos trabajar. Tenga en cuenta que hay algunas bandas que son termales y otras que son de la calidad de la imagen, se recomienda utilizar de la 1 a la 7. En la pestaña Mask seleccionamos la opción Raster, y en la pestaña Raster seleccionamos nuestra mascara. Dando clic en Apply obtenemos nuestra image Landsat TOA solo para nuestra área de interés.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee11}
+\end{figure}
+
+El paso siguiente es generar las celdas de entrenamiento para nuestra clasificación supervisada. Para eso nos dirigimos a la barra de búsqueda en la parte superior izquierda y en las opciones que aparecen al final encontramos hand-drawn points and polygons, seleccionamos esta opción y nos parece una nueva capa en Data y las opciones de hand y punto en el visor. 
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee12}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee13}
+\end{figure}
+
+Para dar inicio a nuestras celdas de entrenamiento debemos crear las clases. En la parte inferior izquierda aparece la pestaña Add class, seleccionamos esta función y creamos las clases que vamos a entrenar. Se le puede asignar un nombre a clada clase y color.
+Para crear los puntos o poligonos de entrenameinto de cada clase, simplemente seleccionamos la clase y en el visor ubicamos los puntos o poligonos.
+
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee14}
+\end{figure}
+
+Para clasificar nos dirigimos a la pestaña de Analysis en la parte inferior izquierda y seleccionamos Train a classifier. Inmediatamente las imágenes que tenemos cargadas quedan sombreadas. En color naranja nuestras celdas de entrenamiento y en color morado las capas que va a utilizar en el análisis. Como solo vamos a utilizar la capa de la mascara con la zona de estudio, debemos seleccionar las otras capas y en la pestaña Use in classification as debemos seleccionar la opción Don´t use, y aplicamos. Al realizar este ejercicio debe quitarse la selección en color morado, la única imagen con dicha selección debe ser la máscara con la zona de interés.
+En la parte inferior izquierda nos aparecen los diferentes métodos de clasificación. Seleccione uno de ellos y clic en Train classsifier and display results. Inmediatamente obtiene una nueva capa con el resultado de la zona de estudio clasificada. Al seleccionar dicha capa se despliega la matriz de contingencia de dicha clasificación.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/My Drive/CATEDRA/ANALISIS GEOESPACIAL/fig/gee15}
+\end{figure}
+
+
+
+\end{document}
