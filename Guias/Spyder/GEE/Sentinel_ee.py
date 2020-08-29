@@ -10,6 +10,7 @@ import numpy as np
 import gdal
 from osgeo import osr
 import time
+import ee.mapclient
 
 # init the ee object
 ee.Initialize()
@@ -22,6 +23,7 @@ img = ee.Image("COPERNICUS/S2/20190827T152649_20190827T152643_T18NVM")
  
 # do any ee operation here
 ndvi = ee.Image(img.normalizedDifference(['B8', 'B4']))
+
 timedate = img.get('GENERATION_TIME').getInfo()
 
 # get the lat lon and add the ndvi

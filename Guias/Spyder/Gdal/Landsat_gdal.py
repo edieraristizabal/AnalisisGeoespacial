@@ -4,135 +4,124 @@ Created on Wed Apr  8 16:30:28 2020
 
 @author: Edier Aristizabal
 """
+#importar la librería de gdal
+import gdal
 
-# Import the Python 3 print function
-from __future__ import print_function
+#importar una imagen (banda)
+data = gdal.Open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\LE70090532003066EDC00_B1.tif')
 
-#Import the "gdal" submodule from within the "osgeo" module
-from osgeo import gdal
+#para saber el número de bandas
+print(data.RasterCount)
 
-print("GDAL's version is: " + gdal.__version__)
-print(gdal)
+#Para saber número de filas y columnas
+print(data.RasterYSize)
+print(data.RasterXSize)
+print('Image size is: {r} rows x {c} columns\n'.format(r=data.RasterYSize, c=data.RasterXSize))
 
-print(gdal.GDT_Byte)
+#para saber sistema de proyección
+print(data.GetProjection())
 
-
-# Open a GDAL dataset
-ruta='G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/Composite_LE70090532003066EDC00.tif'
-
-dataset = gdal.Open(ruta, gdal.GA_ReadOnly)
-
-print(dataset)
-
-# How many bands does this image have?
-num_bands = dataset.RasterCount
-print('Number of bands in image: {n}\n'.format(n=num_bands))
-
-# How many rows and columns?
-rows = dataset.RasterYSize
-cols = dataset.RasterXSize
-print('Image size is: {r} rows x {c} columns\n'.format(r=rows, c=cols))
-
-# Does the raster have a description or metadata?
-desc = dataset.GetDescription()
-metadata = dataset.GetMetadata()
-
-print('Raster description: {desc}'.format(desc=desc))
-print('Raster metadata:')
-print(metadata)
-print('\n')
-
-# What driver was used to open the raster?
-driver = dataset.GetDriver()
-print('Raster driver: {d}\n'.format(d=driver.ShortName))
-
-# What is the raster's projection?
-proj = dataset.GetProjection()
-print('Image projection:')
-print(proj + '\n')
-
-# What is the raster's "geo-transform"
-gt = dataset.GetGeoTransform()
-print('Image geo-transform: {gt}\n'.format(gt=gt))
-
-
-# Open the blue band in our image
-blue = dataset.GetRasterBand(1)
-
-print(blue)
-
-# What is the band's datatype?
-datatype = blue.DataType
-print('Band datatype: {dt}'.format(dt=blue.DataType))
-
-# If you recall from our discussion of enumerated types, this "3" we printed has a more useful definition for us to use
-datatype_name = gdal.GetDataTypeName(blue.DataType)
-print('Band datatype: {dt}'.format(dt=datatype_name))
-
-# We can also ask how much space does this datatype take up
-bytes = gdal.GetDataTypeSize(blue.DataType)
-print('Band datatype size: {b} bytes\n'.format(b=bytes))
-
+#para obtener el gdal.band
+banda = data.GetRasterBand(1)
 # How about some band statistics?
-band_max, band_min, band_mean, band_stddev = blue.GetStatistics(0, 1)
+band_max, band_min, band_mean, band_stddev = banda.GetStatistics(0, 1)
 print('Band range: {minimum} - {maximum}'.format(maximum=band_max,
                                                  minimum=band_min))
 print('Band mean, stddev: {m}, {s}\n'.format(m=band_mean, s=band_stddev))
 
+#para convertirlo en array
+b1 = banda.ReadAsArray()
 
-# No alias
-import numpy
-print(numpy.__version__)
+#para saber las dimensiones de un array
+print(b1.shape)
 
-# Alias or rename to "np" -- a very common practice
-import numpy as np
-print(np.__version__)
-
-
-help(blue.ReadAsArray)
+#para graficar uan matriz se utiliza la funcion imshow
+import matplotlib.pyplot as plt
+plt.imshow(b1)
+plt.colorbar()
 
 
-blue_data = blue.ReadAsArray()
+#importar uan imagen compuesta
+composite = gdal.Open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\barranquilla\Composite_LE70090532003066EDC00.tif')
 
-print(blue_data)
-print()
-print('Blue band mean is: {m}'.format(m=blue_data.mean()))
-print('Size is: {sz}'.format(sz=blue_data.shape))
-
-# Initialize a 3d array -- use the size properties of our image for portability!
-image = np.zeros((dataset.RasterYSize, dataset.RasterXSize, dataset.RasterCount))
-
-# Loop over all bands in dataset
-for b in range(dataset.RasterCount):
-    # Remember, GDAL index is on 1, but Python is on 0 -- so we add 1 for our GDAL calls
-    band = dataset.GetRasterBand(b + 1)
-    
-    # Read in the band's data into the third dimension of our array
-    image[:, :, b] = band.ReadAsArray()
-
-print(image)
-print(image.dtype)
-
-dataset.GetRasterBand(1).DataType
-
+#para saber el número de bandas
+print(composite.RasterCount)
 
 from osgeo import gdal_array
+import numpy as np
 
-# DataType is a property of the individual raster bands
-image_datatype = dataset.GetRasterBand(1).DataType
+# Allocate our array using the first band's datatype
+image_datatype = composite.GetRasterBand(1).DataType
 
 # Allocate our array, but in a more efficient way
-image_correct = np.zeros((dataset.RasterYSize, dataset.RasterXSize, dataset.RasterCount),
+image = np.zeros((composite.RasterYSize, composite.RasterXSize, composite.RasterCount),
                  dtype=gdal_array.GDALTypeCodeToNumericTypeCode(image_datatype))
+         
 
-# Loop over all bands in dataset
-for b in range(dataset.RasterCount):
+# Ajustar el indice y pasar a capa image
+for b in range(composite.RasterCount):
     # Remember, GDAL index is on 1, but Python is on 0 -- so we add 1 for our GDAL calls
-    band = dataset.GetRasterBand(b + 1)
+    bandas = composite.GetRasterBand(b + 1)
     
     # Read in the band's data into the third dimension of our array
-    image_correct[:, :, b] = band.ReadAsArray()
+    image[:, :, b] = bandas.ReadAsArray()
 
-print("Compare datatypes: ")
-print("    when unspecified: {dt}".format(dt=image.dtype))
-print("    when specified: {dt}".format(dt=image_correct.dtype))
+print(image)
+print(image.shape)
+
+#calcular el NDVI utilizando bandas
+b2 = np.ndarray.flatten(image[:, :, 2])
+b3 = np.ndarray.flatten(image[:, :, 3])
+
+#plotear scatter
+plt.scatter(b2, b3)
+
+#con formato
+plt.scatter(b2, b3, color='r', marker='o')
+plt.xlabel('Red Reflectance')
+plt.ylabel('NIR label')
+plt.title('Red vs NIR')
+
+# use "imshow" for an image -- nir in first subplot, red in second
+plt.subplot(121)
+plt.imshow(image[:, :, 3], cmap=plt.cm.Greys)
+plt.colorbar()
+
+
+######
+# Now red band in the second subplot (indicated by last of the 3 numbers)
+plt.subplot(122)
+plt.imshow(image[:, :, 2], cmap=plt.cm.Greys)
+plt.colorbar()
+
+
+#calcular el NDVI utilizando la imagen compuesta
+ndvi1 = ((image[:, :, 3] - image[:, :, 2]) / (image[:, :, 3] + image[:, :, 2])).astype(np.float64)
+plt.imshow(ndvi1)
+plt.colorbar()
+
+#calcular el NDVI utilizando la imagen compuesta
+b3= image[:, :, 3]
+b2= image[:, :, 2]
+suma= b3+b2
+resta=b3-b2
+ndvi2= (resta/suma).astype(np.float64)
+plt.imshow(ndvi2)
+plt.colorbar()
+
+ndvi3= np.where(ndvi2>5,np.nan,ndvi2)
+plt.imshow(ndvi3)
+plt.colorbar()
+
+# create new file
+driver = gdal.GetDriverByName('GTiff')
+file = driver.Create( 'G:/My Drive/ndvi.tif', composite.RasterXSize , composite.RasterYSize , 1)
+file.GetRasterBand(1).WriteArray(ndvi3)
+
+# spatial ref system
+proj = composite.GetProjection()
+georef = composite.GetGeoTransform()
+file.SetProjection(proj)
+file.SetGeoTransform(georef)
+file.GetRasterBand(1).SetNoDataValue(-9999)
+file.FlushCache()

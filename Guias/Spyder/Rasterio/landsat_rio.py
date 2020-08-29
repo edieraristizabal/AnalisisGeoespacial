@@ -13,18 +13,21 @@ from rasterio.merge import merge
 
 ##############################################################################
 #Para importar una banda
-ruta='G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/LE70090532003066EDC00_B1.TIF'
-raster = rio.open(ruta)
-show(raster);
+raster = rio.open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\LE70090532003066EDC00_B1.tif')
+show(raster)
+
 type(raster)
 raster.dtypes
+print(raster)
+print(raster.name)
 print(raster.width, raster.height)    #para saber numero de filas y columnas
-print(raster.shape)            #para saber numero de filas y columnas
-print(raster.crs)              #para saber el sistema de coordenadas
+print(raster.shape)                   #para saber numero de filas y columnas
+print(raster.crs)                     #para saber el sistema de coordenadas
 print(raster.transform)
-print(raster.count)            #para saber cuantas bandas hay
+print(raster.count)                   #para saber cuantas bandas hay
 print(raster.indexes)
 print(raster.bounds) 
+
 
 B1=raster.read(1)
 type(B1)
@@ -48,7 +51,7 @@ show(B1_rango)
 
 ###############################################################################
 #Para importar un mosaico
-composite = rio.open('G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/Composite_LE70090532003066EDC00.tif')
+composite = rio.open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\barranquilla\Composite_LE70090532003066EDC00.tif')
 
 print(composite.count)            #para saber cuantas bandas hay
 
@@ -63,13 +66,13 @@ show_hist((composite,3), bins=100, lw=0.0, stacked=False, alpha=0.3,histtype='st
 ##############################################################################
 #Para hacer un mosaico
 mosaic = []
-B2 = rio.open('G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/LE70090532003066EDC00_B2.TIF')
+B2 = rio.open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\barranquilla/LE70090532003066EDC00_B2.TIF')
 B2.dtypes
 mosaic.append(B2)
-B3 = rio.open('G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/LE70090532003066EDC00_B3.TIF')
+B3 = rio.open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\barranquilla/LE70090532003066EDC00_B3.TIF')
 B3.dtypes
 mosaic.append(B3)
-B4 = rio.open('G:\My Drive\CATEDRA\SENSORES REMOTOS\TALLERES\Taller 2_LANDSAT\Imagen/barranquilla/LE70090532003066EDC00_B4.TIF')
+B4 = rio.open(r'G:\My Drive\CATEDRA\SENSORES REMOTOS\Imagen\barranquilla/LE70090532003066EDC00_B4.TIF')
 B4.dtypes
 mosaic.append(B4)
 
