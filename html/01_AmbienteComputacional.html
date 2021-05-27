@@ -1,0 +1,333 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Ambiente computacional</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/Serif.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+		<link rel="stylesheet" href="dist/style.css">
+
+
+
+		<style>
+				  
+			.primera #marca-agua{
+				display:none;
+				}
+
+			.primera #lecture{
+				display:none;
+				}
+
+			#clock {
+				font-size: 20px;
+				color: #51483D;
+				width: 120px;
+				margin: 0px;
+				text-align: center;
+				border: 2px solid black;
+				border-radius: 20px;
+				}
+
+
+			.reveal section p {
+				font-size: 0.7em;
+				  }
+
+			.reveal section li {
+				font-size: 0.6em;
+				  }
+
+			.reveal .slide-number {
+				right: 150px;
+				 bottom: 3px}
+
+			.reveal h3 {
+				text-align: left;
+				  }
+
+		</style>
+
+	</head>
+	<body>
+
+		<script>
+			setInterval(showTime, 1000);
+			function showTime() {
+				let time = new Date();
+				let hour = time.getHours();
+				let min = time.getMinutes();
+				let sec = time.getSeconds();
+				am_pm = "am";
+	
+				if (hour > 12) {
+					hour -= 12;
+					am_pm = "pm";
+				}
+				if (hour == 0) {
+					hr = 12;
+					am_pm = "am";
+				}
+	
+				hour = hour < 10 ? "0" + hour : hour;
+				min = min < 10 ? "0" + min : min;
+				sec = sec < 10 ? "0" + sec : sec;
+	
+				let currentTime = hour + ":"
+					+ min + ":" + sec + am_pm;
+	
+				document.getElementById("clock")
+					.innerHTML = currentTime;
+			}
+	
+			showTime();
+		</script>
+
+		<div class="reveal">
+			<div class="slides">
+			
+				<div id="marca-agua"><img style="border:none;box-shadow:none;width:60px;position:absolute;top:0%;right:0%;"src="images/un.png"/><p id="date"></p></div>
+				<!--<div id="lecture" style="font-size:20px;position:absolute;top:100%;right:32%;">Machine Learning (Introducción)</div>-->
+				<div id="clock" style="font-size:20px;position:absolute;top:98%;right:0%;">0:00:00</div>
+				<section data-background-color= "#ffffff"; data-state="primera">
+				  <h1>ANÁLISIS GEOESPACIAL</h1>
+				  <h2>Ambiente computacional</h2>
+				  <p>
+				  <h4><a href="https://edieraristizabal.github.io/">Prof. Edier Aristizábal</a></h4>
+				  </p>
+					<img src="images/unal2.png" alt="unal.jpg" width="500"/>
+					<p id="demo" style="position:absolute;top:100%;right:40%;"></p>
+					<script>
+					var d = new Date();
+					var months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."];
+					document.getElementById("demo").innerHTML = months[d.getMonth()] + " " +d.getDate()+" / "+d.getFullYear();
+					</script>
+				</section>
+
+				<section>
+					<h2>TIOBE index - Programming languaje popularity</h2>
+					<img src="images/tiobe.png" width="1000">
+				</section>
+
+				<section>
+					<h1>Python</h1>
+
+					<section>
+						<h2>Python</h2>
+						<p><strong style="color: red;">Python code is fast to develop</strong>: As the code is not required to be compiled and built, Python
+							code can be much readily changed and executed. This makes for a fast development cycle.</p>
+						<p><strong style="color: red;">Python code is not as fast in execution</strong>: Since the code is not directly compiled and executed
+						and an additional layer of the Python virtual machine is responsible for execution, Python code
+						runs a little slow as compared to conventional languages like C, C++, etc.</p>
+						<p><strong style="color: red;">Python is interpreted</strong>:  Many programming languages require that a program be converted from the
+						source language, into binary code that the computer can
+						understand. Python does not need compilation to binary code, which makes Python easier to work with and much
+						more portable than other programming languages.</p>
+						<p><strong style="color: red;">Python is object oriented</strong>:  Python is an object-oriented programming language. Many modern programming languages support object-oriented programming. ArcGIS and QGIS
+						is designed to work with object-oriented languages, and Python qualifies in this respect.</p>
+					</section>
+
+					<section>
+						<img src="images/paquetes.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/repl.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/ipython.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/spyder.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/jupyterlab.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/jupyterlab1.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/jupyterlab2.png" width="1000">
+					</section>
+
+				</section>
+
+				<section>
+					<h1>Anaconda</h1>
+
+					<section>
+						<img src="images/conda.png" width="1000">						
+					</section>
+
+					<section>
+						<img src="images/anaconda.png" width="1000">						
+					</section>
+
+					<section>
+						<img src="images/anacondanav.png" width="1000">						
+					</section>
+
+					<section>
+						<img src="images/anaconda1.png" width="1000">						
+					</section>
+
+				</section>
+
+				<section>
+					<h1>Miniconda</h1>
+
+					<section>
+						<img src="images/miniconda.png" width="700">						
+					</section>
+
+					<section>
+						<img src="images/cmd.jpg" width="1200">						
+					</section>
+
+					<section>
+						<img src="images/pip.png" width="1000">						
+					</section>
+
+					<section>
+						<img src="images/pipinstall.png" width="700">						
+					</section>
+
+				</section>
+
+				<section>
+					<h1>Docker</h1>
+
+					<section>
+						<img src="images/docker.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/docker1.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/docker2.png" width="1000">
+					</section>
+				</section>
+
+				<section>
+					<h1>Javascript</h1>
+
+					<section>
+						<img src="images/js1.jpg" width="1000">
+					</section>
+
+					<section>
+						<img src="images/js.png" width="1000">
+					</section>
+				</section>
+
+				<section>
+					<h1>Google Earth Engine</h1>
+
+					<section>
+						<img src="images/gee.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/gee0.png" width="700">
+					</section>
+
+					<section>
+						<img src="images/gee16.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/gee17.png" width="1000">
+					</section>
+				</section>
+
+				<section>
+					<h1>Sentinel Hub</h1>
+
+					<section>
+						<img src="images/sentinel4.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/sentine5.png" width="900">
+					</section>
+
+					<section>
+						<img src="images/sentinel6.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/sentinel7.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/sentinel8.png" width="1000">
+					</section>
+				</section>
+			
+			
+				
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/menu/menu.js"></script>
+
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				slideNumber: 'c/t',
+				hash: true,
+				menu: {
+					side: 'left', // 'left' or 'right'.
+					width: 'normal', // 'normal', 'wide', 'third', 'half', 'full', or
+					numbers: false,
+					titleSelector: 'h1, h2, h3',
+					useTextContentForMissingTitles: false,
+					hideMissingTitles: false,
+					markers: true,
+					custom: false,
+					themes: true,
+					themesPath: 'dist/theme/',			
+					transitions: false,  // ['None', 'Fade', 'Slide']
+					openButton: true,
+					openSlideNumber: true,
+					keyboard: true,
+					sticky: false,
+					autoOpen: true,
+					delayInit: false,
+					openOnInit: false,
+					loadIcons: true
+						},
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ],
+				dependencies: [
+				
+								]
+			});
+		</script>
+	</body>
+</html>

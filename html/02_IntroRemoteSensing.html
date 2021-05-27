@@ -1,0 +1,494 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Intro Sensores Remotos</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/Serif.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+		<link rel="stylesheet" href="dist/style.css">
+
+
+
+		<style>
+				  
+			.primera #marca-agua{
+				display:none;
+				}
+
+			.primera #lecture{
+				display:none;
+				}
+
+			#clock {
+				font-size: 20px;
+				color: #51483D;
+				width: 120px;
+				margin: 0px;
+				text-align: center;
+				border: 2px solid black;
+				border-radius: 20px;
+				}
+
+
+			.reveal section p {
+				font-size: 0.7em;
+				  }
+
+			.reveal section li {
+				font-size: 0.6em;
+				  }
+
+			.reveal .slide-number {
+				right: 150px;
+				 bottom: 3px}
+
+			.reveal h3 {
+				text-align: left;
+				  }
+
+		</style>
+
+	</head>
+	<body>
+
+		<script>
+			setInterval(showTime, 1000);
+			function showTime() {
+				let time = new Date();
+				let hour = time.getHours();
+				let min = time.getMinutes();
+				let sec = time.getSeconds();
+				am_pm = "am";
+	
+				if (hour > 12) {
+					hour -= 12;
+					am_pm = "pm";
+				}
+				if (hour == 0) {
+					hr = 12;
+					am_pm = "am";
+				}
+	
+				hour = hour < 10 ? "0" + hour : hour;
+				min = min < 10 ? "0" + min : min;
+				sec = sec < 10 ? "0" + sec : sec;
+	
+				let currentTime = hour + ":"
+					+ min + ":" + sec + am_pm;
+	
+				document.getElementById("clock")
+					.innerHTML = currentTime;
+			}
+	
+			showTime();
+		</script>
+
+		<div class="reveal">
+			<div class="slides">
+			
+				<div id="marca-agua"><img style="border:none;box-shadow:none;width:60px;position:absolute;top:0%;right:0%;"src="images/un.png"/><p id="date"></p></div>
+				<!--<div id="lecture" style="font-size:20px;position:absolute;top:100%;right:32%;">Machine Learning (Introducción)</div>-->
+				<div id="clock" style="font-size:20px;position:absolute;top:98%;right:0%;">0:00:00</div>
+				<section data-background-color= "#ffffff"; data-state="primera">
+				  <h1>ANÁLISIS GEOESPACIAL</h1>
+				  <h2>Intro a Sensores Remotos & SIG</h2>
+				  <p>
+				  <h4><a href="https://edieraristizabal.github.io/">Prof. Edier Aristizábal</a></h4>
+				  </p>
+					<img src="images/unal2.png" alt="unal.jpg" width="500"/>
+					<p id="demo" style="position:absolute;top:100%;right:40%;"></p>
+					<script>
+					var d = new Date();
+					var months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."];
+					document.getElementById("demo").innerHTML = months[d.getMonth()] + " " +d.getDate()+" / "+d.getFullYear();
+					</script>
+				</section>
+
+				<section>
+					<h1>Definición</h1>
+					<p>Los Sensores Remotos (teledetección) es el arte, ciencia y tecnología 
+						de observar un objeto, escena o fenómeno por técnicas basadas en instrumentos. 
+						El término remoto se refiere a la observación realizada a una distancia 
+						sin contacto físico con el objeto de interés. La energía puede 
+						ser radiaciones electromagnética, campos de fuerza o energía acústica.</p>
+						<img src="images/bigpicture.png" width="500">
+				</section>
+
+				<section>
+					<h1>Radiación electromagnética</h1>
+
+					<section>
+						<img src="images/wave.png" width="1000">
+					</section>
+	
+					<section>
+						<img src="images/wave-particle.png" width="1000">
+						<img src="images/planck.png" width="700">
+					</section>
+	
+					<section>
+						<img src="images/wave2.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/stefan.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/espectro2.jpg" width="1000">
+					</section>
+				</section>
+
+				<section>
+					<h1>Interacción con la atmósfera & Objeto</h1>
+
+					<section>
+						<img src="images/atmosfera.png" width="800">
+					</section>
+	
+					<section>
+						<img src="images/atenuacion.png" width="800">
+					</section>
+	
+					<section>
+						<img src="images/ventanas.jpg" width="600">
+					</section>
+
+					<section>
+						<img src="images/objeto.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/firma2.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/firma3.png" width="800">
+					</section>
+				</section>
+
+				<section>
+					<h1>Plataformas & Sensores</h1>
+
+					<section>
+						<img src="images/activospasivos.png" width="1000">
+					</section>
+	
+					<section>
+						<h3>Polares & Heliosincrónicas</h3>
+						<img src="images/polar.png" width="1000">
+					</section>
+	
+					<section>
+						<h3>Geosincrónica & Geoestacionaria</h3>
+						<img src="images/ecuador.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/variedad.png" width="500">
+					</section>
+
+					<section>
+						<a href="https://earthnow.usgs.gov/observer/">Earthnow</a>
+						<img src="images/earthnow.png" width="1000">
+					</section>
+				</section>
+
+				<section>
+					<h1>Fotogrametría</h1>
+
+					<section>
+						<img src="images/fotogra.png" width="450">
+					</section>
+	
+					<section>
+						<img src="images/central.png" width="1000">
+					</section>
+	
+					<section>
+						<img src="images/radial.png" width="700">
+					</section>
+
+					<section>
+						<img src="images/radial2.png" width="500">
+					</section>
+
+					<section>
+						<img src="images/ecuacion2.png" width="1000">
+					</section>
+
+					<section>
+						<h3>Paralaje</h3>
+						<img src="images/paralaje.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/agudeza.jpg" width="700">
+					</section>
+
+					<section>
+						<img src="images/estereo.png" width="700">
+					</section>
+
+					<section>
+						<img src="images/estereoscopio.jpg" width="800">
+					</section>
+					
+				</section>
+
+				<section>
+					<h1>Resolución</h1>
+
+					<section>
+						<h3>Escala</h3>
+						<img src="images/escala.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/escala3.jpg" width="800">
+					</section>
+
+					<section>
+						<img src="images/escala2.png" width="1000">
+					</section>
+
+					<section>
+						<h3>Resolución espacial</h3>
+						<img src="images/resolucion.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/ifvo.png" width="600">
+					</section>
+
+					<section>
+						<img src="images/pixel3.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/hd.png" width="1000">
+					</section>
+
+					<section>
+						<p>El procesamiento de imágenes está interesado no solamente en la <strong>Detección</strong>: 
+							discernir discretamente los objetos, sino también en <strong> Reconocer: </strong>
+							determinar que tipo de objeto es, y en la <strong>Identificación: </strong> identificar el 
+							objeto específicamente.</p>
+						<img src="images/pixel4.png" width="1000">
+					</section>
+
+					<section>
+						<h3>Área Mínima Cartografiable</h3>
+						<img src="images/amc.jpg" width="1000">
+					</section>
+
+					<section>
+						<img src="images/salitechv.png" width="700">
+					</section>
+
+					<section>
+						<p>Regla de Waldo Tobler (1967) --> The rule is:  divide the denominator of the map scale by 1,000 toget 
+							the detectable size in meters.  The resolution is one half of this amount.</p>
+							<p style="text-align: center;">Map Scale = Raster resolution (in meters) * 2 * 1000</p>
+						<img src="images/detectablesize.png" width="500">
+					</section>
+					
+					<section>
+						<img src="images/ejemplo2.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/radiometrica1.png" width="500">
+						<img src="images/radiometrica2.png" width="500">
+					</section>
+
+					<section>
+						<img src="images/radiometrica6.jpg" width="700">
+					</section>
+					
+					<section>
+						<img src="images/radiometrica3.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/radiometrica5.png" width="600">
+					</section>
+
+					<section>
+						<h3>Resolución espectral</h3>
+						<img src="images/espectral.png" width="500">
+					</section>
+
+					<section>
+						<img src="images/espectral1.jpg" width="800">
+					</section>
+
+					<section>
+						<img src="images/espectral2.png" width="800">
+					</section>
+
+				</section>
+
+				<section>
+					<h1>Sensores de Antena</h1>
+
+					<section>
+						<img src="images/radaroptico.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/radar3.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/radarswath.png" width="600">
+					</section>
+
+					<section>
+						<img src="images/radar2.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/radar4.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/distorcion.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/radarerror.png" width="600">
+					</section>
+					
+					<section>
+						<h3>LIDAR</h3>
+						<img src="images/lidar3.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/lidar4.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/lidar5.png" width="800">
+					</section>
+
+					<section>
+						<img src="images/lidar6.png" width="700">
+					</section>
+				</section>
+
+				<section>
+					<h1>CRS</h1>
+
+					<section>
+						<h3>The Earth</h3>
+						<img src="images/earth.jpg" width="1000">
+					</section>
+
+					<section>
+						<h3>Geoide</h3>
+						<img src="images/geoide.png" width="800">
+					</section>
+
+					<section>
+						<h3>Elipsoide</h3>
+						<img src="images/elipsoide.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/geoide2.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/coordenadas.png" width="700">
+					</section>
+
+					<section>
+						<h3>Proyección a Coordenadas Planas</h3>
+						<img src="images/projec.png" width="500">
+					</section>
+
+					<section>
+						<img src="images/proy.png" width="500">
+					</section>
+
+					<section>
+						<img src="images/proye.png" width="1000">
+					</section>
+
+					<section>
+						<h3>Universal Transversal Mercator (UTM)</h3>
+						<img src="images/utm.png" width="1000">
+					</section>
+
+					<section>
+						<h3>Spatial Reference System Identifie</h3>
+						<img src="images/epsg.png" width="800">
+					</section>
+
+					<section>
+						<h3><a href="https://thetruesize.com">The True Size of...</a></h3>
+						<img src="images/truesize.png" width="1000">
+					</section>
+				</section>
+			
+				
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/menu/menu.js"></script>
+
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				slideNumber: 'c/t',
+				hash: true,
+				menu: {
+					side: 'left', // 'left' or 'right'.
+					width: 'normal', // 'normal', 'wide', 'third', 'half', 'full', or
+					numbers: false,
+					titleSelector: 'h1, h2, h3',
+					useTextContentForMissingTitles: false,
+					hideMissingTitles: false,
+					markers: true,
+					custom: false,
+					themes: true,
+					themesPath: 'dist/theme/',			
+					transitions: false,  // ['None', 'Fade', 'Slide']
+					openButton: true,
+					openSlideNumber: true,
+					keyboard: true,
+					sticky: false,
+					autoOpen: true,
+					delayInit: false,
+					openOnInit: false,
+					loadIcons: true
+						},
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ],
+				dependencies: [
+				
+								]
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,484 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Datos Geoespaciales</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/Serif.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+		<link rel="stylesheet" href="dist/style.css">
+
+
+
+		<style>
+				  
+			.primera #marca-agua{
+				display:none;
+				}
+
+			.primera #lecture{
+				display:none;
+				}
+
+			#clock {
+				font-size: 20px;
+				color: #51483D;
+				width: 120px;
+				margin: 0px;
+				text-align: center;
+				border: 2px solid black;
+				border-radius: 20px;
+				}
+
+
+			.reveal section p {
+				font-size: 0.7em;
+				  }
+
+			.reveal section li {
+				font-size: 0.6em;
+				  }
+
+			.reveal .slide-number {
+				right: 150px;
+				 bottom: 3px}
+
+			.reveal h3 {
+				text-align: left;
+				  }
+
+		</style>
+
+	</head>
+	<body>
+
+		<script>
+			setInterval(showTime, 1000);
+			function showTime() {
+				let time = new Date();
+				let hour = time.getHours();
+				let min = time.getMinutes();
+				let sec = time.getSeconds();
+				am_pm = "am";
+	
+				if (hour > 12) {
+					hour -= 12;
+					am_pm = "pm";
+				}
+				if (hour == 0) {
+					hr = 12;
+					am_pm = "am";
+				}
+	
+				hour = hour < 10 ? "0" + hour : hour;
+				min = min < 10 ? "0" + min : min;
+				sec = sec < 10 ? "0" + sec : sec;
+	
+				let currentTime = hour + ":"
+					+ min + ":" + sec + am_pm;
+	
+				document.getElementById("clock")
+					.innerHTML = currentTime;
+			}
+	
+			showTime();
+		</script>
+
+		<div class="reveal">
+			<div class="slides">
+			
+				<div id="marca-agua"><img style="border:none;box-shadow:none;width:60px;position:absolute;top:0%;right:0%;"src="images/un.png"/><p id="date"></p></div>
+				<!--<div id="lecture" style="font-size:20px;position:absolute;top:100%;right:32%;">Machine Learning (Introducción)</div>-->
+				<div id="clock" style="font-size:20px;position:absolute;top:98%;right:0%;">0:00:00</div>
+				<section data-background-color= "#ffffff"; data-state="primera">
+				  <h1>ANÁLISIS GEOESPACIAL</h1>
+				  <h2>Geospatial Data</h2>
+				  <p>
+				  <h4><a href="https://edieraristizabal.github.io/">Prof. Edier Aristizábal</a></h4>
+				  </p>
+					<img src="images/unal2.png" alt="unal.jpg" width="500"/>
+					<p id="demo" style="position:absolute;top:100%;right:40%;"></p>
+					<script>
+					var d = new Date();
+					var months = ["Jan.","Feb.","Mar.","Apr.","May.","Jun.","Jul.","Aug.","Sept.","Oct.","Nov.","Dec."];
+					document.getElementById("demo").innerHTML = months[d.getMonth()] + " " +d.getDate()+" / "+d.getFullYear();
+					</script>
+				</section>
+
+				<section>
+					<h1>Spatial data analysis</h1>
+
+					<section>
+						<h3>Spatial statistics vs Classical statistics</h3>
+						<p>There is a fundamental difference
+							between classical and spatial statistics. In classical statistics, we make a basic
+							assumption regarding the sample: it is a collection of independent observations that follow a specific, usually normal, distribution. Contrariwise, in spatial
+							statistics, because of the inherent <strong>spatial dependence</strong> and the fact that <strong>spatial
+								autocorrelation</strong> exists (usually), the focus is on adopting techniques for
+							detecting and describing these correlations. In other words, in classical statistics, observation independence should exist while, in spatial statistics, spatial
+							dependence usually exists. Classical statistics should be modified accordingly
+							to adapt to this condition.</p>
+					</section>
+	
+					<section>
+						<h3>Types</h3>
+						<ul>
+							<li><strong>Point Pattern Analysis</strong>: spatial distribution of <strong>events.</strong></li>
+							<br>
+							<li><strong>Geostatistical Analysis</strong>: continuous <strong>surface</strong> modeling.</li>
+							<br>
+							<li><strong>Lattice Data Analysis</strong>: Lattice data are observations associated with spatial regions, where the
+								regions can be regularly or irregularly spaced. Spatial patterns of attributes observed for <strong>discrete</strong> spatial objetcs.</li>
+						</ul>
+	
+					</section>
+	
+						<section>
+							<h3>Spatial data analysis</h3>
+							<ul>
+								<li><strong>Spatial operations</strong>: such as map union, intersection, subtraction, buffer calculation, selection, etc.</li>
+								<li><strong style="color: red;">Spatial mapping/geovisualization:</strong> focusing on the expression of spatial information. <em style="font-size: larger; color:orange">Showing interesting patterns.</em></li>
+								<li><strong style="color: red;">Spatial statistical analysis:</strong>is used to describe and analyze the relationship between spatial data, such as spatial autocorrelation analysis. <em style="font-size: larger; color:orange">Discovering interesting patterns.</em></li>
+								<li><strong style="color: red;">Spatial model:</strong> focusing on spatial phenomena, spatial structure, spatial relations and spatial location analysis, such as network analysis and water system generation, etc. <em style="font-size: larger; color:orange">Explaining interesting patterns.</em></li>
+								<li><strong>Spatial database management: </strong>including spatial database design, spatial data structure, spatial data management and spatial query</li>
+								<li><strong>Spatial model base management</strong> including model management for spatial decision support system, etc.</li>
+							</ul>
+						</section>
+
+				</section>
+
+				<section>
+					<h1>Spatial data</h1>
+
+					<section>
+						<h3>Spatial is special?</h3>
+						<ul>
+							<li>Location...where matters</li>
+							<li>Spatial dependence is the rule, not the exception</li>
+							<li>Spatial scale...of the process and...of the measurement</li>
+						</ul>
+						<img src="https://www.e-education.psu.edu/maps/sites/www.e-education.psu.edu.maps/files/Images/L2_Figure1b.jpg" width="400">
+					</section>
+
+					<section>
+						<p>Spatial data is geographically referenced data, given at known locations and
+							often represented visually through maps. That geographic reference, or the
+							location component of the data, may be represented using any number of
+							coordinate reference systems, for example, longitude and latitude.</p>
+	
+						<p>In other words, spatial data is spatially dependent or correlated,
+							and independence between the observations, which is a common assumption
+							for many statistical techniques, is not satisfied</p>
+	
+						<p>An observed spatial pattern may be observed in
+							variables strictly depending on the location, or because of direct interactions
+							between the points.</p>
+					</section>
+	
+					<section>
+						<p>Geospatial data is data about objects, events, or phenomena that have a location on the surface of the earth, 
+							including location information, attribute information (the characteristics
+							 of the object, event, or phenomena concerned), and often also temporal information (the time or life span at 
+							 which the location and attributes exist)</p>
+							 <img src="images/vector.jpg" width="350">
+					</section>
+
+				</section>
+
+				<section>
+					<h1>Problems in spatial data</h1>
+
+					<section>
+						<h3>Spatial hetereogenety</h3>
+						<p>The results of any analysis over a limited area can be expected to change as 
+							that limited area is relocated, and to be different from the results that 
+							would be obtained for the surface of the Earth as a whole</p>
+							<img src="images/.png" width="400">
+					</section>
+
+					<section>
+						<h3>MAUP</h3>
+						<p>The Modifiable Area Unit Problem (MAUP) problem refers to the influence the zone design has on the outcomes of the
+							analysis. A different designation would probably lead to different results.</p>
+							<img src="images/maup.png" width="400">
+					</section>
+
+					<section>
+						<h3>MAUP</h3>
+						<img src="images/maup1.png" width="600">
+					</section>
+
+					<section>
+						<h3>The Edge Effects Problem</h3>
+						<p>In the edge effects problem, spatial units
+							that lie in the center of the study area tend to have neighbors in all
+							directions, whereas spatial units at the edges of the study area have
+							neighbors only in some specific directions.</p>
+					</section>
+
+					<section>
+						<h3>Ecological Fallacy</h3>
+						<p>This problem occurs when a relationship that is
+							statistically significant at one level of analysis is assumed to hold true at a
+							more detailed level as well. This is a typical mistake that occurs when we
+							use aggregated data to describe the behavior of individuals. </p>
+								<img src="images/fallacy.jpg" width="600">
+					</section>
+
+					<section>
+						<h3>Spatial autocorrelation</h3>
+						<p>Spatial autocorrelation is a complicated name for the obvious fact that data
+							from locations near one another in space are more likely to be similar than
+							data from locations remote from one another.</p>
+
+						<p>The existence of spatial autocorrelation is therefore a given in geography.
+								Unfortunately, it is also an impediment to the application of conventional
+								statistics</p>
+
+						<p> Spatial autocorrelation introduces redundancy into data</p>
+					</section>
+				</section>
+
+				<section>
+					<h1>Measurement</h1>
+
+					<section>
+						<img src="images/data-type.png" width="1000">
+					</section>
+
+					<section>
+						<img src="images/scalemeasurement.PNG" width="1000">
+					</section>
+
+					<section>
+						<img src="images/levels_measurement.jpg" width="1000">
+					</section>
+
+				</section>			
+
+			<section>
+			<h1>GIS Data Models</h1>
+
+				<section>
+					<p>Spatial data may be of various broad types: points, lines, areas, and
+						fields. Each type typically requires different techniques and approaches.</p>
+					<img src="images/data.png" width="500">
+				</section>
+
+				<section>
+					<p>The relationship between real geographic entities and spatial data is
+						complex and scale-dependent.</p>
+					<img src="images/gis_data_models.png" width="700">
+				</section>
+
+				<section>
+					<h3>Spatial Geometric Operations</h3>
+					<img src="images/transformations.png" width="700">
+				</section>
+
+				<section>
+					<h3>Types of spatial models</h3>
+					<ul>
+						<li><strong>Object-based (feature) model: </strong>In the object view, we consider the world as a series of entities located in
+							space. Entities are (usually) real. An object is a digital representation of all or part of an entity, which can be described in 
+							detail according to their boundary lines and other objects that constitute them or are related to them.</li></br>
+						<li><strong>Field model: </strong> In the field view, the world consists of properties continuously varying across
+							space. It represents data that are considered to be continuously changing in two-dimensional or three-dimensional space.
+							In a field, every location has a value (including ‘‘not here’’
+							or zero) and sets of values taken together define the field.</li>
+					</ul>
+				</section>	
+
+			</section>
+
+			<section>
+				<h1>Object-based model</h1>
+			
+				<section>
+					<h3>Vector</h3>
+					<p>objects are frequently not as simple as this geometric view leads
+						one to assume. They may exist in three spatial dimensions, move and
+						change over time, have a representation that is strongly scale-dependent, relate to entities that are themselves fuzzy and/or have indeterminate boundaries, or even be fractal.</p>
+					<img src="images/vector_data.png" width="400">
+				</section>
+
+				<section>
+					<h3>Vector</h3>
+					<img src="images/data2.png" width="800">
+					<img src="images/data3.jpg" width="800">
+				</section>
+
+				<section>
+					<h3>Shapefile</h3>
+					<p>A shapefile is a file-based data format native to ArcView software . 
+						Conceptually, a shapefile is a feature class–it stores a collection of features that have the same geometry 
+						type (point, line, or polygon), the same attributes, and a common spatial extent.
+
+						Despite what its name may imply, a “single” shapefile is actually composed of at least three files, 
+						and as many as eight. Each file that makes up a “shapefile” has a common filename but different extension 
+						type.</p>
+					<h3>Arc-Info Interchange (e00) </h3>
+					<p>An ArcInfo interchange file, is also known as an export file type, this file format is used to enable a coverage, grid or TIN, and an associated INFO table to be transferred between different machines. This file has the .e00 extension.</p>
+
+					
+				</section>
+
+				<section>
+					<h3>File Geodatabase</h3>
+					<p>A file geodatabase is a relational database storage format. It’s a far more complex data structure than the 
+						shapefile and consists of a .gdb folder housing dozens of files. Its complexity renders it more versatile 
+						allowing it to store multiple feature classes and enabling topological definitions. An example of the 
+						contents of a geodatabase is shown in the following figure.</p>
+						<img src="images/geodatabase.jpg" width="1000">
+				</section>
+				<section>
+					<h3>GeoPackage</h3>
+					<p>This is a relatively new data format that follows open format standards (i.e. it is non-proprietary). 
+						It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many other 
+						vector formats is its compactness–coordinate value, metadata, attribute table, projection information, 
+						etc…, are all stored in a single file which facilitates portability. Its filename usually ends in .gpkg. 
+						Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version 10.2.2 
+						and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
+				</section>
+
+				<section>
+					<h3><a href="http://geojson.io/">Geojson</a></h3>
+					<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with their non-spatial attribute</p>
+					<img src="images/geojson.png" width="900">
+				</section>
+
+				<section>
+					<h3>Keyhole Markup Language (KML)</h3>
+					<p>XML based file format, used to visualize spatial data and modelling information like lines, shapes, 3D images and points in an Google Earth.</p>
+					<h3>Geography Markup Language (GML)</h3>
+					<p>It is used in the Open GIS Consortium for storing geographical data in a standard interchangeable format, It is based on XML.</p>
+					<h3>SVG (Scalable Vector Graphics) </h3>
+					<p>It is an XML-based vector image format for two-dimensional graphics Any program that recognizes XML can display the SVG image.</p>
+					<h3>DWG</h3>
+					<p>DWG is an intern format for AutoCAD. A DWG file is a database of 2D or 3D drawings.</p>
+				</section>
+
+				<section>
+					<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
+					<img src="images/mapshaper.png" width="1000">
+				</section>
+
+			</section>
+
+			<section>
+				<h1>Fiel-based model</h1>
+
+				<section>
+					<p>In the field view, the world consists of properties continuously varying across
+						space</p>
+					<img src="https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/zion_DEM2.jpg" width="750">
+				</section>
+
+				<section>
+					<h3>Raster</h3>
+					<img src="images/celda.png" width="310">
+					<img src="images/rast2.png" width="310">
+					<img src="images/rast3.png" width="310">
+				</section>
+
+				<section>
+					<h3>Raster continuo</h3>
+					<p>Continuous rasters (non-discrete) are grid cells with gradual changing data such as elevation, temperature or 
+						an aerial photograph. A continuous raster surface can be derived from a fixed registration point. For example, 
+						digital elevation models use sea level as a registration point. Each cell represents a value above or below sea 
+						level.</p>
+					<img src="images/conraster.png" width="1000">
+				</section>
+
+				<section>
+					<h3>Raster discreto</h3>
+					<p>Discrete rasters have distinct themes or categories. For example, one grid cell represents a land cover class 
+						or a soil type.In a discrete raster land cover/use map, you can distinguish each thematic class. Each class 
+						can be discretely defined where it begins and ends. In other words, each land cover cell is definable and it 
+						fills the entire area of the cell. Discrete data usually consists of integers to represent classes.</p>
+					<img src="images/disraster.png" width="1000">
+				</section>
+
+				<section>
+					<h3>Raster GIS File Format</h3>
+					<h3>Imagine</h3>
+					<p>The Imagine file format was originally created by an image processing software company called ERDAS. 
+						This file format consists of a single .img file. This is a simpler file format than the shapefile. 
+						It is sometimes accompanied by an .xml file which usually stores metadata information about the raster layer.</p>
+						<h3>GeoTiff</h3>
+						<p>A popular public domain raster data format is the GeoTIFF format. If maximum portability and platform 
+							independence is important, this file format may be a good choice.</p>
+					<h3>Binary file </h3>
+							<p>An unformatted file consisting of raster data written in one of several data types, where multiple bands are stored in BSQ (band sequential), BIP (band interleaved by pixel) or BIL (band interleaved by line).</p>
+				</section>
+
+				<section>
+					<h3>USGS DEM</h3>
+					<p>USGS DEM — The USGS’ Digital Elevation Model. DEM is a raster format created by the USGS (US Geological Survey) for saving elevation data. Cell values in DEM represent the elevation for that position on the Earth’s surface.</p>
+					<h3>GTOPO3O</h3>
+					<p>Large complete Earth elevation model at 30 arc seconds, delivered in the USGS DEM format</p>
+					<h3>ECW</h3>
+					<p>Enhanced Compressed Wavelet (from ERDAS). A compressed wavelet format, often lossy</p>
+					<h3>netCDF</h3>
+					<p>netCDF file format with The Climate and Forecast (CF) metadata conventions for earth science data. It allows for direct web-access of subsets/aggregations of maps through OPeNDAP protocol.</p>
+				</section>
+			</section>
+			
+				
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/menu/menu.js"></script>
+
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				slideNumber: 'c/t',
+				hash: true,
+				menu: {
+					side: 'left', // 'left' or 'right'.
+					width: 'normal', // 'normal', 'wide', 'third', 'half', 'full', or
+					numbers: false,
+					titleSelector: 'h1, h2, h3',
+					useTextContentForMissingTitles: false,
+					hideMissingTitles: false,
+					markers: true,
+					custom: false,
+					themes: true,
+					themesPath: 'dist/theme/',			
+					transitions: false,  // ['None', 'Fade', 'Slide']
+					openButton: true,
+					openSlideNumber: true,
+					keyboard: true,
+					sticky: false,
+					autoOpen: true,
+					delayInit: false,
+					openOnInit: false,
+					loadIcons: true
+						},
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu ],
+				dependencies: [
+				
+								]
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,17 @@
+.reveal h1 {
+    font-size: 40px;
+    color: blue;
+    font-weight: bold;
+}
+
+.reveal h2 {
+    font-size: 35px;
+    color: blue;
+    font-weight: bold;
+}
+
+.reveal h3 {
+    font-size: 30px;
+    color: blue;
+    font-weight: bold;
+}

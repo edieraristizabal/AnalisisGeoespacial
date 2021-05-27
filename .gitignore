@@ -1,0 +1,17 @@
+*.log
+*.aux
+*.gz
+*.nav
+*.out
+*.tiff
+*.tif
+*.shp
+*.shx
+*.prj
+*.dbf
+*.cpg
+*.jp2
+Guias/
+
+.git
+.ipynb_checkpoints
