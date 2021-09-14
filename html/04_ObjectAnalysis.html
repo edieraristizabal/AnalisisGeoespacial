@@ -15,47 +15,6 @@
 
 		<link rel="stylesheet" href="dist/style.css">
 
-
-
-		<style>
-				  
-			.primera #marca-agua{
-				display:none;
-				}
-
-			.primera #lecture{
-				display:none;
-				}
-
-			#clock {
-				font-size: 20px;
-				color: #51483D;
-				width: 120px;
-				margin: 0px;
-				text-align: center;
-				border: 2px solid black;
-				border-radius: 20px;
-				}
-
-
-			.reveal section p {
-				font-size: 0.7em;
-				  }
-
-			.reveal section li {
-				font-size: 0.6em;
-				  }
-
-			.reveal .slide-number {
-				right: 150px;
-				 bottom: 3px}
-
-			.reveal h3 {
-				text-align: left;
-				  }
-
-		</style>
-
 	</head>
 	<body>
 
@@ -113,7 +72,7 @@
 				</section>
 
 				<section>
-					<h1>Frequency Distribution and Histograms</h1>
+					<section><h1>Frequency Distribution & Histograms</h1></section>
 
 					<section>
 						<p><strong>Frequency distribution table</strong> is a table that stores the categories (also called
@@ -137,7 +96,7 @@
 					</section>
 
 					<section>
-						<img src="images/frequency1.png" width="600">
+						<img src="https://www.researchgate.net/profile/Fernando-Lopes-10/publication/304006316/figure/fig1/AS:374811365789696@1466373401877/Histogram-of-relative-frequency-and-cumulative-percentage-for-meat-tenderness-WBSF.png" width="1000">
 					</section>
 				
 					<section>
@@ -148,7 +107,7 @@
 				</section>
 
 				<section>
-					<h1>Box plot</h1>
+					<section><h1>Box plot</h1></section>
 
 					<section>
 						<p>A boxplot is a graphical representation of the key descriptive statistics of a
@@ -184,12 +143,14 @@
 
 					<section>
 						<img src="images/boxplot2.png" width="800">
+						<p>Notches are used in box plots to help visually assess whether the medians of distributions differ. 
+							If the notches do not overlap, this is evidence that the medians are different.</p>
 					</section>
 
 				</section>
 
 				<section>
-					<h1>QQ plot</h1>
+					<section><h1>QQ plot</h1></section>
 
 					<section>
 						<p>The normal QQ plot is a graphical technique that plots data against a theoretical normal distribution that forms a straight line</p>
@@ -205,7 +166,7 @@
 				</section>
 
 				<section>
-					<h1>Scatter plot</h1>
+					<section><h1>Scatter plot</h1></section>
 
 					<section>
 						<p>A scatter plot displays the values of two variables as a set of point coordinates</p>
@@ -236,7 +197,7 @@
 				</section>
 
 				<section>
-					<h1>Covariance matrix</h1>
+					<section><h1>Covariance matrix</h1></section>
 
 					<section>
 						<p>Covariance is a measure of the extent to which two variables vary together
@@ -260,7 +221,7 @@
 				</section>
 
 				<section>
-					<h1>Correlation coefficient</h1>
+					<section><h1>Correlation coefficient</h1></section>
 
 					<section>
 						<p>Correlation coefficient $r_{(x, y)}$ analyzes how two variables (X, Y) are
@@ -279,7 +240,7 @@
 				</section>
 
 				<section>
-					<h1>Multivariate data analysis</h1>
+					<section><h1>Multivariate data analysis</h1></section>
 
 					<section>
 						<h3>Dissmilarity matrix</h3>
@@ -292,28 +253,35 @@
 
 				
 				<section>
-					<h1>Point pattern analysis</h1>
+					<section><h1>Point Pattern Analysis</h1></section>
 
 					<section>
-						<h3>Process vs Pattern</h3>
-						<p><strong>Spatial process</strong> is a description of how a <strong>spatial pattern</strong> can be generated.</p>
-						<p> There are three main types of spatial porcess:</p>
+						<p></p>
 						<ul>
-							<li>Complete spatial randomness process --> <strong>Random spatial pattern</strong>
-								<ul>
-									<li>There is an equal probability of event occurrence at any location in
-										the study region (also called first-order stationary).</li>
-									<li>The location of an event is independent of the locations of other
-										events (also called second-order stationary).</li>
-								</ul>
-							</li>	</br>
-							<li>Competitive process --> <strong>Dispersed</strong>: is a process that leads events to be arranged as far
-								away from each other as possible, events tend to be
-								uniformly distributed</li>	</br>
-							<li>Aggregating process --> <strong>Clustered</strong>: is a process where events tend to cluster as a
-								result of some pulling action. The events create clusters in some parts of the study area, and
-								the pattern has a large variation</li>
+							<li>Points --> fixed objects in space: location is not important. Ej Rainfall data. </li>
+							<li style="color: blue;">Points --> a site of measurement from an underlying geographically-continuous process: the location and the measurement are important.
+								Ej. Landslide occurrence.</li>
+								<img src="https://rspatial.org/terra/_images/pp1-1.png" width="1000">
 						</ul>
+						<ul>
+							<li>Event points --> locations where somethign of interest has occurred --> selection bias</li>
+							<li>Arbitrary points --> where the phenomena of interest has not been observed "empty space" </li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>Definition</h3>
+						<p>Point pattern analysis is thus concerned with the visualization, description, statistical characerization, and modeling of point patterns, trying to understand the 
+							generating process that gives rise and explains the observed data.</p>
+							<ul>
+								<li>What does the pattern look like?</li>
+								<li>What is the nature of the distribution of points?</li>
+								<li>Is there any structure in the way locations are arranged over space? That is, are events clustered? or are they dispersed?</li>
+								<li>Why do events occur in those places and not in others?</li>
+							</ul>
+						<p>Process --> How?</p>
+						<p>Pattern --> result of that process</p>
+	
 					</section>
 
 					<section>
@@ -322,7 +290,7 @@
 
 					<section>
 						<h3>Centrograhy</h3>
-						<p>A very basic form of point pattern analysis involves summary statistics such as the mean center, 
+						<p>A very basic form of point pattern (pp) analysis involves summary statistics such as the mean center, 
 							standard distance and standard deviational ellipse.</p>
 							<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="800">
 					</section>
@@ -337,21 +305,22 @@
 
 					<section>
 						<h3>Convex Hull </h3>
-						<p>The convex hull of a point pattern pp is the smallest convex set that contains pp</p>
+						<p>The convex hull of a pp is the smallest convex set that contains pp</p>
 						<img src="http://pysal.org/notebooks/images/explore/pointpats/centrography_53_0.png" width="700">
 					</section>
 
 					<section>
-						<p> A point pattern consists of a set of events at a set of
+						<p> A pp consists of a set of events at a set of
 							locations, where each event represents a single instance of the phenomenon of
-							interest </p>
-						<p>Most point pattern analysis techniques deal only with the location of the
+							interest. </p>
+						<p>Most pp analysis techniques deal only with the location of the
 							events and not with other attributes they might carry.</p>
-						<p>There are two main (interrelated) methods of analyzing point patterns, namely
+						<p>There are two main (interrelated) methods of analyzing pp, namely
 							the distance-based methods and the density-based methods.</p>
 						<ul>
-							<li><strong>Density-based methods--> Absolute location</strong> use the intensity of events occurrence across
-								space. For this reason, they describe <strong>first-order effects</strong> better. Kernel estimation methods are common density ased methods. In quadrat count methods, space is divided into a regular
+							<li><strong>Density-based methods--> absolute location</strong> use the intensity of events occurrence across
+								space. For this reason, they describe <strong>first-order effects</strong> better. Kernel estimation methods are 
+								common density ased methods. In quadrat count methods, space is divided into a regular
 								grid (such as a grid of squares or hexagons) of a unitary area. Each unitary
 								region includes a different number of points due to a spatial process. The
 								distribution analysis and its correspondence to a spatial pattern are based
@@ -373,8 +342,13 @@
 					</section>
 
 					<section>
+							<img src="http://www.personal.psu.edu/users/c/l/clw300/586_quadrathom1010.png" width="750">
+					</section>
+
+					<section>
 						<h3>Kernel Density Function</h3>
-						<p>The kernel density approach is an extension of the quadrat method. Kernel density estimation is a nonparametric method that uses kernel functions to create smooth maps of density values, in which the density at each
+						<p>The kernel density approach is an extension of the quadrat method. Kernel density estimation is a nonparametric method that uses kernel functions 
+							to create smooth maps of density values, in which the density at each
 							location indicates the concentration of points within the neighboring area
 							(high concentrations as peaks, low concentrations as valleys)</p>
 						<img src="images/kdf.png" width="700">
@@ -388,6 +362,11 @@
 					<section>
 						<h3>Kernel Density Function</h3>
 						<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-kernel01-1.png" width="900">
+					</section>
+
+					<section>
+						<h3>Kernel Density Function</h3>
+						<img src="http://www.personal.psu.edu/users/c/l/clw300/586_Lesson_4-4robbery2.png" width="600">
 					</section>
 
 					<section>
@@ -407,8 +386,7 @@
 
 					<section>
 						<h3>NN analysis</h3>
-						<p>The
-							method compares the observed spatial distribution to a random theoretical
+						<p>The method compares the observed spatial distribution to a random theoretical
 							one. The <strong>Average Nearest Neighbor (NN)</strong> tool measures the distance between each feature centroid and its nearest
 							neighbor's centroid location. It then averages all these nearest neighbor distances. 
 							If the average distance is less than the average for a hypothetical random distribution, 
@@ -423,6 +401,10 @@
 					</section>
 
 					<section>
+						<img src="http://www.personal.psu.edu/users/c/l/clw300/586_Project_4-2robbery.png" width="600">
+					</section>
+
+					<section>
 						<h3>NN analysis</h3>
 						<p>An extension of this idea is to plot the ANN values for different order neighbors, that is for the first closest point, then the second closest point, and so forth.</p>
 						<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-patterns-1.png" width="500">
@@ -431,7 +413,7 @@
 
 					<section>
 						<h3>Ripley's K function</h3>
-						<p>It is a spatial analysis method of analyzing point patterns
+						<p>It is a spatial analysis method of analyzing pp
 							based on a distance function. The outcome of the function is the
 							expected number of events inside a radius of d.
 							It is calculated as a series of incremental distances d centered on each of the
@@ -450,22 +432,19 @@
 					</section>
 				</section>
 
-				
-
 				<section>
-					<h1>Regionalization</h1>
+					<section><h1>Regionalization</h1></section>
 
 					<section>
 						<p>Regionalization consists of a set of methods that cluster multivariate spatial
 							data based on spatial constraints. It is a procedure of grouping a large number
 							of spatial objects into a desirable smaller number of homogeneous clusters that
-							also occupy contiguous regions in space. The spatial
-							clusters are also named regions.</p>
+							also occupy contiguous regions in space. The spatial clusters are also named regions.</p>
 					</section>
 				</section>
 
 				<section>			
-					<h1>Choropleth maps</h1>
+					<section><h1>Choropleth maps</h1></section>
 	
 					<section>
 						<p>Choropleth maps are thematic maps in which areas are rendered according to the
@@ -477,7 +456,7 @@
 							choropleth maps:</p>
 						<ul>
 							<li><strong>Spatially extensive variables:</strong> each polygon is rendered based on a
-								measured value that holds for the entire polygon. <strong>Ej.</strong>total population</li></br>
+								measured value that holds for the entire polygon. <strong>Ej.</strong> total population</li></br>
 							<li><strong>Spatially intensive variables: </strong>the values of the variable are adjusted for the area or some other
 								variable. <strong>Ej.</strong> population density</li>
 						</ul>		
@@ -496,38 +475,86 @@
 				</section>
 
 			<section>
-				<h1>Spatial dependence</h1>
+				<section><h1>Spatial dependence</h1></section>
 
 				<section>
+					<h3>Spatial dependence</h3> 	
 					<p>Characteristics of spatial data in terms of spatial
 						autocorrelation and spatial heterogeneity. Many statistical
 						tests used for nonspatial data are based on the hypothesis that samples
-						are randomly selected and observations are independent. When we collect spatial data, however, this hypothesis is usually violated. This phenomenon is described as “spatial dependence.”</p>
+						are randomly selected and observations are independent. When we collect spatial data, 
+						however, this hypothesis is usually violated. This phenomenon is described as <strong>spatial dependence</strong>.</p>
 						<img src="https://www.researchgate.net/profile/Jane-Foster-4/publication/282219849/figure/fig7/AS:669670436773889@1536673282062/Figure-S3-Example-of-spatial-dependence-in-residual-errors-for-logistic-models_W640.jpg" width="500">
-				</section>
-
-				<section>
-				<h3>Spatial autocorrelation</h3> 	
-				<p>Formal property that measures the degree to which near and distant things are related</p>
-				<p>Refers to systematic spatial changes that are observed as clusters of similar values or a systematic spatial 
-					pattern.</p>
-					<img src="http://emilkirkegaard.dk/en/wp-content/uploads/SAC_illu.png" width="1000">
 				</section>
 
 				<section>
 					<h3>Spatial heterogeneity</h3>
 					<p>Spatial heterogeneity refers to structural relationships that change with the location of the object. 
-						These changes can be abrupt (e.g. countryside–town) or continuous.</p>
-					<p>Spatial heterogeneity refers to the uneven distribution of a trait, event, or
-						relationship across a region</p>
+						These changes can be abrupt (e.g. countryside–town) or continuous. Spatial heterogeneity refers to the 
+						uneven distribution of a trait, event, or relationship across a region</p>
+						<img src="https://www.researchgate.net/profile/Steven-Deller/publication/241766950/figure/fig2/AS:298641689464846@1448213135934/Spatial-Heterogeneity-of-Retail-within-the-Population-Model.png" width="700">
+				</section>
+
+				<section>
+				<h3>Spatial autocorrelation</h3> 	
+				<p>Formal property that measures the degree to which near and distant things are related. Refers to systematic spatial changes that are 
+					observed as clusters of similar values or a systematic spatial pattern.</p>
+					<img src="http://emilkirkegaard.dk/en/wp-content/uploads/SAC_illu.png" width="1000">
+				</section>
+
+				<section>
+					<h3>Process vs Pattern</h3>
+					<p><strong>Spatial process</strong> is a description of how a <strong>spatial pattern</strong> can be generated.</p>
+					<p> There are three main types of spatial process:</p>
+					<ul>
+						<li>Complete spatial randomness process --> <strong>Random spatial pattern</strong>: There is an equal probability of event occurrence at any location in
+									the study region (also called first-order stationary). The location of an event is independent of the locations of other</li><br>
+						<li>Competitive process --> <strong>Dispersed</strong>: is a process that leads events to be arranged as far
+							away from each other as possible, events tend to be
+							uniformly distributed</li>	</br>
+						<li>Aggregating process --> <strong>Clustered</strong>: is a process where events tend to cluster as a
+							result of some pulling action. The events create clusters in some parts of the study area, and
+							the pattern has a large variation</li>
+					</ul>
+				</section>
+
+				<section>
+					<p>Neighbourhood can 
+					be first order, second order or higher. A first-order neighbourhood means that only neighbours 
+					of the examined object are considered (according to the contiguity criterion), while in the 
+					case of the second-order neighbourhood matrix, neighbours’ neighbours are also included 
+					(also according to the contiguity criterion).</p>
+					<img src="images/order.png" width="700">
+				</section>						
+					
+	
+				<section>
+							<h3>First order process</h3>
+							<p>It is one that produces a variation in point density in response to some causal variable</p>
+							<p><strong>Ej.</strong> The density of cases of malaria echoes the density of particular species of mosquito</p>
+	
+							<h3>Second-order process</h3>
+							<p>It results from interactions, when the presence of one point makes others more likely in the immediate vicinity</p>
+							<p><strong>Ej.</strong> Patterns of contagious disease reflect second-order processes, when the disease is passed from an initial carrier 
+								to family members, co-workers, sexual partners, and others who come into contact with infectious carriers</p>
+							<p>Competition for space provides a familiar example of a form of second-order process that results in an exception 
+								to Tobler’s First Law</p>
+							<p><strong>Ej.</strong> The presence of a shopping center in an area generally discourages other shopping centers from locating nearby</p>
+				</section>
+	
+				<section>
+							<img src="https://mgimond.github.io/Spatial/img/1st_2nd_order_property.png" width="800">
+				</section>
+
+				<section>
+					<img src="https://maczokni.github.io/crime_mapping_textbook/img/neighbours_large.png" width="800">
 				</section>
 
 			</section>
 
-			</section>
 
 				<section>
-					<h1>Spatial weight matrix (W)</h1>
+					<section><h1>Spatial weight matrix (W)</h1></section>
 
 					<section>
 						<p>Spatial weights are numbers that reflect some sort of distance, time or cost
@@ -545,52 +572,13 @@
 							outside it.</p>
 						<ul>
 							<li><strong>Neighbours by contiguity:</strong> areas that share common boundaries</li>
-							<li><strong>neighbours by distance:</strong> areas will be defined as neighbours if they are within a specified radius</li>
+							<li><strong>Neighbours by distance:</strong> areas will be defined as neighbours if they are within a specified radius</li>
 						</ul>
 					</section>
 				</section>
-
 						<section>
-						<h1>First & Second order processes</h1>
-
-						<section>
-							<p>Neighbourhood can 
-							be first order, second order or higher. A first-order neighbourhood means that only neighbours 
-							of the examined object are considered (according to the contiguity criterion), while in the 
-							case of the second-order neighbourhood matrix, neighbours’ neighbours are also included 
-							(also according to the contiguity criterion).</p>
-							<img src="images/order.png" width="700">
-						</section>						
-							
-			
-						<section>
-									<h3>First order process</h3>
-									<p>It is one that produces a variation in point density in response to some causal variable</p>
-									<p><strong>Ej.</strong> The density of cases of malaria echoes the density of particular species of mosquito</p>
-			
-									<h3>Second-order process</h3>
-									<p>It results from interactions, when the presence of one point makes others more likely in the immediate vicinity</p>
-									<p><strong>Ej.</strong> Patterns of contagious disease reflect second-order processes, when the disease is passed from an initial carrier 
-										to family members, co-workers, sexual partners, and others who come into contact with infectious carriers</p>
-									<p>Competition for space provides a familiar example of a form of second-order process that results in an exception 
-										to Tobler’s First Law</p>
-									<p><strong>Ej.</strong> The presence of a shopping center in an area generally discourages other shopping centers from locating nearby</p>
-						</section>
-			
-						<section>
-									<img src="https://mgimond.github.io/Spatial/img/1st_2nd_order_property.png" width="800">
-						</section>
-
-					</section>
-
-						<section>
-							<h1>Spatial Relationships</h1>
 		
-							<section>
-								<h3>Adjacency (Contiguity)</h3>
-								<p>Adjacency can be thought of as the nominal, or binary, equivalent of distance.
-									Two spatial entities are either adjacent or they are not.</p>
-							</section>
+							<section><h1>Adjacency (Contiguity)</h1></section>
 							
 							<section>
 								<p>Contiguity among features means the features have common borders. We have three types of contiguity:</p>
@@ -634,6 +622,11 @@
 							<section>
 								<img src="https://4.bp.blogspot.com/-rmxa4R9STxc/XEvrNWNTUtI/AAAAAAAACJE/s6Lbmn2OlgcDqf1GjH7FYjxnLuUsTLSnQCLcBGAs/s640/W_matrix_spatial_units2.jpg" width="1000">
 							</section>
+						</section>
+
+							<section>
+
+							<section><h1>Distance</h1></section>
 
 							<section>
 								<h3>Distance</h3>
@@ -697,7 +690,7 @@
 						</section>
 				
 					<section>
-						<h1>Standarized Spatial Weights</h1>
+						<section><h1>Standarized Spatial Weights</h1></section>
 
 						<section>
 						<p>Row standardization is recommended when there is a potential bias in the
@@ -716,7 +709,7 @@
 					</section>
 
 					<section>
-						<h1>Spatial lag</h1>
+						<section><h1>Spatial lag</h1></section>
 
 						<section>
 							<p><strong>Spatial lag</strong>is when the dependent variable y in place i is affected by the independent variables in both place i and j.</p>
@@ -734,18 +727,12 @@
 					<section>
 
 				<section>
-					<h3>Global indicator of Spatial Association (GISA)</h3>
-					<p>The measures (test statistics) related to the existence of spatial autocorrelation in data, that is, focusing on whether there is any spatial autocorrelation
-						in the data</p>
+					<h1>Global indicator of Spatial Association (GISA)</h1>
 				</section>
 
-				<section>
-					<h1>Spatial joins</h1>
-
-				</section>
 
 				<section>
-					<h3><strong>Ej.</strong></h3>
+					<h3><strong>Binary</strong></h3>
 					<img src="images/join.png" width="500">
 				</section>
 
@@ -771,6 +758,21 @@
 						Moran implies the existence of a positive autocorrelation, and conversely,
 						the negative value implies the existence of a negative autocorrelation</p>
 					<img src="images/moran1.jpg" width="600">
+				</section>
+
+				<section>
+					<h3>Indice de Moran</h3>
+					<img src="https://static.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20200421144010724-0711:9781108614528:49898fig4_1.png?pub-status=live" width="1000">
+				</section>
+
+				<section>
+					<h3>Indice de Moran</h3>
+					<img src="https://static.cambridge.org/binary/version/id/urn:cambridge.org:id:binary:20170509071025108-0782:9781107707412:fig6_2.png?pub-status=live" width="1000">
+				</section>
+
+				<section>
+					<h3>Indice de Moran</h3>
+					<img src="https://www.researchgate.net/profile/Andreas-Tsatsaris/publication/305954162/figure/fig2/AS:667672215830530@1536196869371/Report-of-the-Morans-I-Spatial-autocorrelation-statistic-showing-that-the-pattern-was.jpg" width="600">
 				</section>
 
 				<section>
@@ -819,10 +821,7 @@
 			<section>
 
 				<section>
-					<h3>Local indicators of Spatial Association (LISA)</h3>
-					<p>A local statistic is any descriptive
-						statistic associated with a spatial data set whose value varies from place to
-						place.</p>
+					<h1>Local indicators of Spatial Association (LISA)</h1>
 				</section>
 
 				<section>
@@ -849,9 +848,17 @@
 					<img src="https://mgimond.github.io/Spatial/img/HH_LL_P_map.png" width="300">
 				</section>
 
-			</section>
-			
-			
+				<section>
+					<h3>Hotspots & Coldspots</h3>
+					<img src="https://aledemogr.files.wordpress.com/2015/04/ggplot2-moranplot1.png?w=640" width="800">
+				</section>
+
+				<section>
+					<h3>Hotspots & Coldspots</h3>
+					<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4DOW3x35o95bPIJbKy13qHBL7499Gwc4DjA&usqp=CAU" width="800">
+				</section>
+
+			</section>			
 				
 			</div>
 		</div>
