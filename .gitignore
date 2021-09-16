@@ -10,8 +10,9 @@
 *.prj
 *.dbf
 *.cpg
+*.tex
+*.fls
 *.jp2
-Guias/
-
+.gitignore
 .git
 .ipynb_checkpoints

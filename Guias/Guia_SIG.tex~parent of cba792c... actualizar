@@ -1,0 +1,736 @@
+%#############################PREAMBLE#############################################
+\documentclass[a4paper,oneside,11pt,]{article}
+
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage[skins]{tcolorbox}
+\usepackage{titlepic}
+\usepackage{hyperref} 
+\usepackage{textcomp}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{Análisis Geoespacial}
+\rhead{\thepage}
+\cfoot{Guía SIG}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\title {\includegraphics[width=10.0cm]{G:/Mi Unidad/ADMINISTRATIVA/logos/unal2.png}\\[5ex]
+Guía\\ SISTEMAS DE INFORMACIÓN GEOGRÁFICA\\SIG}
+\author{
+Prof.: Edier Aristizábal
+\date{}
+}
+%################################BODY############################################
+\begin{document}
+\maketitle
+
+\emph {versión}: \today
+
+\section* {QGIS}
+El programa QGIS es un programa muy robusto de SIG libre y que tiene un gran equipo de colaboradores en el mundo que están generando funciones y actualizaciones constantemente. QGIS se descarga desde la página \url{https://www.qgis.org/es/site/forusers/download.html}. Solo es necesario seleccionar el tipo de equipo y ambiente de trabajo. Se puede instalar lo que se denomina instalador autónomo o la versión tipo OSGeo4W, el cual corresponde a un programa de software libre que apoya QGIS, y que permite descargar diferentes versiones e ir actualizando el QGIS a medida que se van generando nuevas versiones, lo cual es muy rápido. Proceda con la instalación y familiarícese con las funciones e interface. Existe una gran cantidad de documentación en la página oficial y en general en la Web sobre QGIS.
+
+
+\section{MODELOS DE ELEVACIÓN DIGITAL}
+
+\subsection{Descargar modelos digitales de elevación}
+
+Existe una gran variedad de formas para descargar modelos digitales de elevación de cualquier parte del mundo. El modelo más utilizado y conocido es el del programa de la NASA denominado SRTM con resolución espacial de 30m y de 90m para todo el mundo, el cual se puede descargar del visor de la USGS EarthExplorer (\url{https://earthexplorer.usgs.gov/}). Desde la pestaña Data sets, luego en Digital Elevation y SRTM, donde seleccionamos SRTM 1 Arc-Second Global.
+Existe otros modelos disponibles para todo el mundo con resolución de 12,5 m del programa entre los USA y Japón denominado ALOS PALSAR, el cual se puede descargar de la página (\url{www.earch.asf.alaska.edu}). Herramientas como Google Earth Engine permiten descargar estas imágenes a través de plataforma, e incluso QGIS tiene un plugins para la descarga directa. En ambos casos requiere registrarse en la página.
+
+\subsection{Asignar CRS planas}
+
+Antes de iniciar su trabajo debe asignarle a su proyecto un sistema de coordenadas planas. QGIS utiliza por defecto el sistema de coordenadas internacional EPSG 32617 (WGS84) que corresponde a coordenadas geográficas. Para el procesamiento es recomendable utilizar coordenadas planas, por lo tanto se requiere modificar desde la esquina inferior derecha el CRS del proyecto, y los mapas que se van a utilizar deberán estar en este mismo sistema o reproyectarlo a dicho sistema. Por defecto los mapas que se van agregando se van proyectando automáticamente a dicho sistema establecido desde el inicio.
+
+\subsection{Llenar espacios en blanco en los modelos DEM}
+
+En los DEM es común encontrar espacios vacíos, los cuales se deben generalmente a la omisión o captura de información de esto puntos por la presencia de nubes o daños en los equipos. Generalmente estos espacios son denominados voids o gaps y la acción de llenarlos se les denomina \emph{fill, close o patch}. Son importantes esto nombres para identificar las funciones que nos pueden ayudar en estos casos, sin embargo siempre es necesario leer con detalle cual es la acción que realiza la función, ya que al existir diferentes SIG que utilizan nombres similares esto no significa necesariamente, y lo cual es muy común, que realicen la misma acción, en muchos casos es similar pero no arroja resultados iguales y existen casos donde nombres de funciones similares generan acciones diferentes y por lo tanto resultados completamente diferentes.
+\par Pueden existir espacios por llenar pequeños o grandes, y la acción es diferente para cada caso de la siguiente manera:
+\par Para espacio pequeños se pueden utilizar funciones de interpolación, las cuales funcionan adecuadamente. Para eso existen en SAGA diferentes funciones denominadas Close Gaps. También se puede utilizar la función de GRASS \emph{r.fill.nulls} o en GDAL \emph{fill nodata}. Todas estas funciones están dentro de QGIS. También está la función r.neighbors de GRASS, la cual le asigna un valor a la celda faltante considerando las celdas vecinas, de acuerdo con la selección que se realice en la herramienta (\url{https://grass.osgeo.org/grass78/manuals/r.neighbors.html}). Tener en cuenta que esta función aplica dicha regla para todo el DEM, no sólo para los huecos, por lo tanto suaviza el DEM. En muchos casos esto no es deseado.
+\par Para espacios grandes, en este caso no se puede utilizar funciones de interpolación, ya que al ser el área de relleno extensa no son precisos. Para eso lo recomendado es llenar dichos espacios como DEM de otras fuentes, y los cuales generalmente son de resoluciones menores (más gruesas). En este caso en QGIS se utiliza la función de GRASS denominada \emph{r.patch}, la cual tiene como entrada los raster que se van a utilizar y la resolución del DEM de salida. Ambos mapas deben estar en la misma resolución espacial, por lo cual se debe realizar un remuestreo del DEM con resolución más gruesa. Es muy importante en esta función ubicar en la lista de selección de la función como primer mapa el cual se va a rellenar y como segundo mapa aquel el cual se va a utilizar para rellenar el primero. Se recomienda también seleccionar la casilla para que las celdas con valor de cero sean rellenadas también.
+
+
+\subsection{\emph{Clip}}
+
+Para cortar un DEM se pueden utilizar diferentes funciones, unas de ellas en la pestaña de raster\textrightarrow Extracción. También se puede realizar por la caja de herramientas (Processing toolbox) con la función de SAGA denominada \emph{Clip raster with polygon}.
+
+\subsection{\emph{Fill}}
+
+Esta problemática común en todos los DEM es diferente al caso anterior sobre espacios sin datos. En este caso se refiere a áreas de menor relieve o concavidades que generan errores en análisis hidrológicos, los cuales se le denomina \emph{sinks} o sumideros. Estos corresponden a celdas que están rodeadas de celdas mas altas, por lo tanto, el agua al llegar a estas celdas no tiene por donde drenar generando errores. Es por esto que se debe correr inicialmente las funciones denominadas \emph{fill sinks}, las cuales existen varias en QGIS. Esta función simplemente a dichas celdas más bajas le aumenta la altura hasta la altura menor de sus vecinas, o por el contrario reduce alguna de sus vecinas al valor de la celda es cuestión. Por ejemplo, la función \emph{fill sinks (Wang \& Lu)} genera tres mapas por defecto el mapa de celdas libres de \emph{sinks} (fills DEM), un mapa de dirección del flujo (Flow direction) y un mapa donde establece alguna cuenca de mayor jerarquía. También existe la función \emph{r.fill.dir} de GRASS, la cual arroja como resultado muy útil un mapa con las zonas que presentan problemas. Generalmente se requiere correr la herramienta varias veces hasta obtener un archivo sin problemas.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/fill}
+\end{figure}
+
+\subsection{\emph{Strahler order}}
+La función Strahler de SAGA es muy útil para definir la red de drenajes y las cuencas. Esta función solo exige el mapa de elevación corregido con \emph{fill sinks} (filled DEM). El resultado se denomina strahler order y debe ser ajustado en simbology. En reder type seleccione singleband pseudocolor, seleccione una rampa de color a su gusto, en mode seleccione equal Interval y en clases defina el número de clases igual al número de orden de strahler de su mapa.
+Como puede observar le da una muy densa red de drenaje. Por lo tanto, es necesario definir hasta que orden de drenaje desea establecer su red. Esa decisión depende del detalle o escala de su mapa. Una opción es evaluar para diferentes valores la red de drenaje comparada con cartografía básica de su zona, de tal forma que seleccione el orden que mejor se ajuste a la red de drenaje del mapa o del detalle que usted requiere.
+\par Para esto se utiliza raster\textrightarrow raster calculator, allí introduce la expresión mapa de strahler  orden del drenaje menor que desea en su mapa. Debe definir el nombre y ubicación del mapa de salida. Como resultado de esta expresión booleana se obtiene un mapa de 1 y 0. Donde las celdas que cumplen la expresión que ingresó toman valor de 1 y las celdas que no cumplen la expresión toman valor de 0. Por lo tanto, desde simbología puede ajustar los colores y presentación.
+
+\subsection{\emph{Upslope area}}
+
+Para definir el área de la cuenca se puede utilizar la función de SAGA denominada \emph{Upslope area}. Para aplicar esta función se debe ingresar con exactitud las coordenadas del punto de cierre de la cuenca. Para determinar estas coordenadas se puede utilizar en QGIS el plugins conocido como Coordinate Capture, y se debe localizar el punto sobre la red de drenaje de strahler definida y sobre el drenaje en el punto que se desea. Las coordenadas deben ser planas por lo tanto el mapa debe estar en dicho tipo de proyecciones.
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/basin}
+\end{figure}
+
+La función \emph{Upslope area} como variable de entrada solo requiere el mapa de elevación corregido. Como salida se obtiene un mapa ráster con valores de 100 para las celdas dentro de la cuenca y 0 para celdas por fuera. De esa forma se puede vectorizar este mapa a polígonos con la función raster \textrightarrow conversión\textrightarrow polygonize (Raster to polygon). Generalmente se crean unos polígonos más pequeños los cuales se deben identificar en la tabla de atributos y eliminarlos. Finalmente, con este polígono de la cuenca se corta el DEM para obtener un DEM de solo el área de la cuenca.
+
+\subsection{Drainage network and drainage basin}
+
+Esta función a partir del DEM corregido genera una serie de mapas tipo vector y tipo raster, entre ellos strahler, la red de drenaje y las cuencas. Por lo tanto, es útil para generar la red de drenajes y obtenerla como polígonos tipo línea. El cual después se puede cortar con el polígono de la cuenca y la función clip.
+
+\subsection{Generación de DTM´s}
+
+Existe una gran cantidad de DTM’s que se pueden generar solo a partir del DEM, entre ellos la pendiente, aspecto, curvatura, rugosidad, entre otros. Todos ellos calculan características especiales del terreno que ayudan a establecer cambios o cartografiar unidades geomorfológicas en detalle. 
+Uno de los DTM que ayudan a tener una primera aproximación al terreno y sus geoformas es hillshade o mapa de sombras, el cual genera un mapa con aspecto tridimensional.\\
+
+\begin{minipage}{27em}
+\textbf{NOTA}: QGIS ofrece una gran cantidad de herramientas de GRASS, SAGA y \emph{Plugins} que desarrollan acciones similares. Por lo tanto, el procedimiento a realizar no debe ser exactamente el mismo, muchas veces las herramientas no corren adecuadamente con el DEM ingresado, y se deben utilizar herramientas alternas. Lo importante es tener claridad con respecto a la acción que realiza la herramienta utilizada, y por ende las modificaciones que ejecuta sobre los archivos, y ser completamente conscientes de los cambios introducidos y las implicaciones en el modelo.
+\end{minipage}
+
+\section{TRATAMIENTO DE IMÁGENES DE SATELITALES}
+
+\subsection{Descarga}
+
+El Servicio Geológico de los Estados Unidos (USGS) tiene dos visores para descargar imágenes de la misma base de datos. El Earth Explorer y el GloVis. Ambas herramientas son muy similares y se ingresan con el mismo usuario y clave. Por lo tanto, registrándose en cualquiera de ellas tiene acceso a ambas. El presente taller es para la herramienta Earth Explorer.
+
+\subsection{Seleccionar área de interés}
+
+\begin{itemize}
+\item Ingrese al Earth Explorer de la USGS (\url{https://earthexplorer.usgs.gov/}) y registrarse
+\item Una vez registrado, vuelva a la interface del Earth Explorer y de click en \emph{login}. Aparecerá una página para ingresar su usuario y clave que le permitirá entrar a la interface con su usuario. 
+\item En el visor de mapa de la derecha navegue con la herramienta interactiva hasta la zona de su interés. La imagen de referencia la podrá desplegar como imagen de satélite o como mapa con o sin relieve.
+\item Navegar sobre dicho mapa se realiza de forma similar a GoogleMaps, o la mayoría de interfaces cartográficas disponibles. 
+\item Seleccione en la parte izquierda superior la pestaña denominada “Search Criteria” y con el mouse marque con el botón izquierdo el punto de su interés (dando click sobre el área). Sobre el punto seleccionado le debe parecer  un signo con forma de globo y color rojo y un número consecutivo, y en el formulario de la parte izquierda debe aparecer la coordenada del punto.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=14.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/usgs}
+\end{figure}
+
+\begin{itemize}
+\item A continuación, observe en la parte inferior izquierda el panel que dice \emph{Data Range} e inserte los valores de búsqueda entre dos fechas de su interés. 
+\item Proceda a dar click en la pestaña \emph{Data Sets} ubicada en la parte inferior o superior izquierda y vea como se despliega una lista en árbol del tipo de datos que se pueden consultar.
+\item Seleccione la opción Landsat, y luego Landsat Collection 1 Level-1, y una vez seleccionada la opción de preferencia, se procede a ir al menú de la parte superior que dice \emph{Results} y el software iniciará a buscar los datos que cumplan el criterio de búsqueda configurado por usted. 
+\item A continuación, de click sobre cada pequeña imagen de la parte izquierda de la pantalla para ver si cumple para descargar de acuerdo a su objetivo, en ella además de una pequeña escena, se puede observar un metadato de las características generales de la imagen.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/usgs2}
+\end{figure}
+
+\begin{itemize}
+\item Una vez tenga seleccionada la imagen que le interesa procesar, cierre la ventana de pre-visualización y en las opciones de visualización de la escena en el visor geográfico de click en el primer icono (\emph{Show Footprint}) o segundo (\emph{Show browse overlay}) para que le permita ver el cubrimiento de la escena sobre el área y podrá cargar un Quick look sobre el área de interés para que observe como se ve la imagen en contexto.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/usgs3}
+\end{figure}
+
+\begin{itemize}
+\item Una vez se han realizado estas pruebas para ver cuál es la imagen (o imágenes) que mejor satisface la necesidad de trabajo, se procede de la siguiente manera:
+\item Sobre la información de la imagen que le interesa descargar de click en el botón \emph{Download Options}. Y saldrá una ventana con diferentes opciones. Seleccione la imagen al final en formato TIFF e iniciará la descarga.
+\item Se descargará un archivo en formato comprimido, que puede ser .rar, .zip, .gz, .tar entre otros.
+\item Hecho esto ya puede observar la información de la imagen de satélite. Cada banda está separada y en formato *.tif, igualmente se observan los archivos planos de apoyo, como el metadato (.MTL.TXT).
+\end{itemize}
+
+\subsection{Descarga Sentinel}
+
+Los satélites Sentinel forman parte del Programa Copérnico de la Agencia Espacial Europea. Sus imágenes, se componen de múltiples bandas espectrales cuya diferente combinación genera diferentes usos.
+La web oficial (\url{https://scihub.copernicus.eu}) para descarga de imágenes Sentinel nos ofrece dos posibilidades de acceso a los datos:\emph{Scientific Hub} es la principal, que requiere registro pero que a cambio nos ofrece las imágenes Sentinel 1 y Sentinel 2, así como un filtro de búsqueda más avanzado. La opción 2 (\url{https://apps.sentinel-hub.com/eo-browser/}) ofrece imágenes Sentinel, Landsat, MODIS, entre otros, además de productos tipo NDVI, Falso Color, Humedad, entre otros.
+
+\begin{itemize}
+\item Opción 1: \url{https://scihub.copernicus.eu/dhus/home}.
+Al ingresar a la opción Open Hub se ingresa al visor de Copernicus donde se debe seleccionar en la parte superior izquierda la selección de zona de interés dibujando un cuadro naranja. Luego pulsamos el botón lupa de búsqueda en la parte superior izquierda y las imágenes disponibles nos aparecen en la columna izquierda y representada en el mapa (rojo para Sentinel 1, verde para Sentinel 2). Seleccionando una imagen tenemos las opciones de hacer zoom sobre ella, añadirla al carro, ver detalles importantes para conocer el tamaño del archivo o la cobertura de nubes de la imagen o descargarla directamente (destacadas en amarillo).\\
+Sobre la margen superior izquierda están las opciones avanzadas de búsqueda (que también pueden serlo de filtrado sobre los resultados anteriores). Esta opción nos permiten acotar el número de imágenes que arroja el buscador de manera significativa por fecha, satélite y varios parámetros más.
+
+\begin{figure}
+\centering
+\includegraphics[width=8.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/sentinel}
+\end{figure}
+
+En la ventana de cada imagen aparece una opción para bajar la imagen. Lo cual debido a su peso toma un tiempo considerable, por lo tanto se debe estar seguro de proceder a descargar, explorando la imagen antes.\\
+Una vez descargado el archivo de nuestro interés se obtiene una serie de carpetas y archivos accesorios. Las imágenes se encuentran dentro de la carpeta GRANULE. En este caso consta de cuatro carpetas (una por cada cuadrícula de unos 100x100 km, según la nomenclatura destacada en amarillo). Abriendo cada cuadrícula, y dentro de la carpeta IMG\_DATA, encontramos las imágenes de las 13 bandas.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/sentinel2}
+\end{figure}
+
+\item La segunda opción es un visor web simple y eficaz, con filtro para fecha y cobertura de nubes. Sobre la margen superior derecha se encuentra todas las opciones para definir el área de interés, como punto o polígono, al igual que un buscador por nombre.
+\item Al seleccionar el área, se va a la parte superior izquierda en la pestaña Search para definir los satélites que se quiere buscar al igual que el porcentaje de cobertura de nubes y la fecha de toma. Luego se da buscar, y aparecen las imágenes disponibles. 
+\item En este caso se accede a otros tipos de productos como NDVI y se puede seleccionar el tipo de archivo de descarga al igual que las bandas que se deseen.
+\end{itemize}
+
+\subsection{Opción 3: QGIS}
+En este sentido, lo primero que debemos hacer en QGIS es la instalación de un plugin utilizado para el tratamiento de imágenes de satélite denominado \emph{Semi-automatic Classification Plugin (SCP)}. Para esto nos dirigimos a la pestaña Plugins Manage and install plugins. Y nos aparece una ventana donde se encuentran los plugins que ya están instalados, los no instalados y para instalarlos desde un archivo ZIP. Este último caso corresponde a plugins que no se encuentran en el sitio oficial y que generalmente se encuentran como \emph{.zip}, por lo tanto se deben descargar a cualquier carpeta del pc y desde esta pestaña se abre y se instala.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/plugin}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/plugin2}
+\end{figure}
+
+Pero en este caso el SCP se encuentra en el sitio oficial, por lo tanto simplemente con el nombre lo buscamos en la primera pestaña que corresponde al buscador, y nos parece el plugins, lo señalamos y le damos en la parte inferior derecha instalar.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/plugin3}
+\end{figure}
+
+Al instalarse se crea una nueva pestaña en el programa denominada SCP y donde están todas las tareas que puede realizar con este plugins. Diríjase a \emph{Download products} y se abre una ventana. Lo primero que debe hacer es ingresar su usuario y clave de ingreso en la primera pestaña denominada Login data. Estos datos corresponden a los utilizados en el ejercicio anterior. Después diríjase a la última pestaña Download options y seleccione las bandas que desea descargar de acuerdo con el programa. En este caso descargaremos todas las bandas.
+Finalmente, en la pestaña Search, de click en el signo positivo sobre la parte superior derecha, esto le permitirá definir el Área de Interés (AOI) de búsqueda desde QGIS. Para tener un mapa de referencia puede descargar el plugins denominado \emph{QuickMapServices}, el cual le da diferentes opciones de mapas en el mundo. 
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis2}
+\end{figure}
+
+Con la función (+) activada de SCP diríjale a QGIS y seleccione un rectángulo del AOI, para eso de click izquierdo en la esquina superior izquierda de AOI y luego click derecho en la esquina inferior derecha. Se genera un rectángulo en color rojo transparente, y en la ventana de SCP se encuentran ya las coordenada de dicho rectángulo. Seleccione el tipo de producto a buscar, en este caso Landsat8 y Sentinel 2, luego defina la fecha de búsqueda, para este ejercicio el semestre actual, y finalmente defina un rango máximo de nubosidad con el cual desea las imágenes, con porcentajes de nubosidad muy bajos se restringe la búsqueda. Finalmente, de click en Find.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis3}
+\end{figure}
+
+Le deben aparecer todas las imágenes que cumplen con los criterios de búsqueda, al seleccionarla se genera un preview, el cual con la primera ventana de la de la franja derecha puede cargar al QGIS. Luego de seleccionar la imagen deseada, quite la selección por defecto que está en la parte inferior Preprocess images, ya que este preprocesamiento lo realizaremos en el curso. Para descargar la imagen debe antes eliminar todas las otras imágenes, para eso debe seleccionarlas y dar click en el signo menos en la franja derecha. Ya con solo la imagen o imágenes a descargar oprima Run, y le preguntará donde desea descargar la imagen y debe iniciar la descarga.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis4}
+\end{figure}
+
+\subsection{Análisis exploratorio:}
+\begin{itemize}
+\item Cargue las bandas multiespectrales de la imagen de satélite que descargó previamente: 
+\item Layer Add layer  Add Raster Layer y seleccione las bandas multiespectrales requeridas para visualizar en QGIS.
+\item Seleccione una de las bandas y click derecho en Zoom to layer.
+\item Explore las propiedades de las bandas multiespectrales que cargó. 
+\item Seleccione la capa que desee y oprima click derecho Properties. Se despliega una ventana con una serie de pestañas en la franja izquierda a través de las cuales puede explorar y conocer sobre la imagen seleccionada. 
+\item La pestaña Information tiene información del número de filas y columnas de la imagen, número de bandas, tamaño del pixel, referencia espacial, y estadísticas de cada banda. La pestaña Simbology le permite modificar las bandas en cada canal y mejorar la resolución radiométrica de cada banda. Más adelante se explicarán algunos usos.
+\end{itemize}
+
+\subsection{Crear una imagen compuesta (\emph{stack layer})}
+\begin{itemize}
+\item Para esto nos dirigimos al plugins descargado en el taller pasado SCP. Lo primero que debemos hacer es definir un \emph{Banda se}t sobre el cual SCP trabajará, dicho \emph{Banda set} hay que estar actualizándolo cada vez que hacemos modificaciones a las imágenes. Vamos entonces a  \emph{SCP Banda set}.  Se abre la ventana de SCP en \emph{Banda Set}. En la pestaña \emph{Single band list} damos click en la parte derecha en el símbolo de la flecha en círculo, se deberán cargar todas las imágenes que tenemos en QGIS. Seleccionamos las imágenes que deseamos y damos click en el botón más. Se deberán cargar las imágenes seleccionadas en la pestaña inferior denominada \emph{Band set definition} bajo la pestaña \emph{Band set 1}. Con las funciones en la franja derecha podemos moverlas hacia arriba o había debajo de tal forma que estén ordenadas de acuerdo con el número de la banda. Podemos definir varias \emph{Bandas set}, y luego para trabajar con ellas, es solo llamarlas desde la función deseada. 
+\item Explore las diferentes opciones de Band set tools.
+\item Finalmente, oprima RUN. Deberá cargar en QGIS una imagen con todas las capas que usted seleccionó, esto es lo que se denomina un stack layer, es decir un archivo raster con múltiples bandas.  
+\item Vaya a la pestaña \emph{Basic tools, SCP Basic tools}, y seleccione la pestaña \emph{RGB list}, allí puede crear todas las combinaciones que desea utilizar en su trabajo, o simplemente en la parte inferior oprima \emph{Band combinations} para que se generen todas las combinaciones posibles con las imágenes de trabajo.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis5}
+\vfill{1cm}
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis7}
+\end{figure}
+
+\subsection{Convertir DN a valores de reflectancia}
+\begin{itemize}
+\item Los productos disponibles del Landsat L1T están radiométrica y geométricamente corregidos. Las imágenes son entonces presentadas en unidades de DN, las cuales pueden ser reescaladas a radiancia espectral o reflectividad TOA. La conversión a  reflectividad se puede realizar automáticamente de la siguiente manera en QGIS.
+\item En SCP Preprocessing seleccione la pestaña con el nombre del satélite al cual corregirá las bandas. En este caso Landsat. Solo debe seleccionar la carpeta donde están sus imágenes y el archivo del metadato (MLT.txt) e inmediatamente se cargarán en la tabla con los datos de correcciones correspondientes. 
+\item Se recomienda aplicar también la corrección atmosférica denominada DOS1.
+\item Explore las diferentes opciones y para ejecutar oprima RUN.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis6}
+\end{figure}
+
+\subsection{Recorte del área de interés}
+\begin{itemize}
+\item Una de las primeras tareas en realizar es cortar las imágenes de satélite de acuerdo con el área de estudio. Para eso se puede utilizar un polígono o un recuadro.
+\item Desde SCP diríjase a la pestaña Preprocessing, CSP  Preprocessing. Allí seleccione la pestaña \emph{Clip multiple raster}. Inicialmente seleccione el Banda Set que va a cortar, y en el símbolo + le permite trazar un recuadro en QGIS que determinará el área de corte. Con el botón RUN se realiza la acción, y se cargan las bandas cortadas en QGIS.
+\item Debe definir nuevamente el Band set con las bandas cortadas.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/qgis8}
+\end{figure}
+
+\subsection{Combinación de bandas}
+Luego de redefinir el Banda set y las combinaciones, desde la franja de SCP en la parte superior de QGIS existe una pestaña denominada RGB, allí deben aparecer todas las combinaciones creadas, solamente es seleccionar la combinación deseada y se desplegara en la pantalla de QGIS. También existen dos opciones en forma de histograma con el símbolo de porcentaje y de desviación estándar. Estos corresponden a opciones de mejoramiento de la imagen que a continuación se explica.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/tool}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/tool2}
+\end{figure}
+
+\begin{itemize}
+\item Las combinaciones también se pueden realizar dando click derecho a la imagen Properties\textrightarrow \emph{Simbology}, y vaya a la pestaña \emph{Render type} y seleccione \emph{Multiband color}. Cada canal (Red band, Green band, y Blue band) puede sacar una banda para obtener una combinación.
+\item En las flechas de la parte derecha puede modificar dichas bandas para cada canal.
+\item Para la combinación denominada Color verdadero utilice la siguiente combinación: 
+\subitem	Red-Band 4
+\subitem	Green-Band 3
+\subitem	Blue-Band 2.
+\item Para una de las combinaciones conocida como Falso Color del infrarojo utilice: 
+\subitem	Red-Band 5
+\subitem	Green-Band 4
+\subitem	Blue-Band 3.\\
+En la pestaña \emph{Contrast enhance} se refiere a diferentes técnicas manipulando el histograma de cada banda y que se pueden utilizar para mejorar la visualización; sin embargo, no modifican los datos de la imagen. En la pestaña \emph{Min / Max Value Setting} se pueden ajustar diferentes opciones. Explórelas.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/layer}
+\end{figure}
+
+\subsection{TRATAMIENTO DE IMÁGENES DE SATÉLITE}
+
+\subsection{Clasificación digital no supervisada}
+El resultado de la clasificación no-supervisada es categorización de la imagen en clases espectrales y el usuario debe asignar el significado temático a estas, donde precisamente reside su mayor limitación. Así que, en general, este método no es recomendable para producción de los mapas temáticos sino como paso previo a la clasificación supervisada.
+
+\subsubsection{Procedimiento en QGIS}
+\begin{itemize}
+\item Siguiendo los pasos en talleres anteriores cargue una imagen de satélite compuesta por diferentes bandas. Es importante que evalúe las características de dicha imagen y trate de identificar y reconocer algunos aspectos de la imagen. Dicho conocimiento le permitirá realizar y evaluar la clasificación que realice a continuación.
+\item Se debe realizar previamente el preprocesamiento de las imágenes, es decir la transformación y corrección de valores DN a Reflectancia, y el recorte del área de estudio, de tal forma que el procesamiento sea más ágil y no sobre toda la imagen.
+\end{itemize}
+
+En QGIS existen varias librerías para realizar clasificaciones no supervisadas, con SCP, SAGA y Orfeo Toolbox (OTB).
+
+\begin{itemize}
+\item Desde SCP se dirige a Band Processing, y allí a \emph{Clustering (SCP Band Processing Clustering)}. Define el êmph{Band set} a clasificar, el número de clases, y existen dos métodos \emph{ISODATA y KMeans}. Seleccione uno de los métodos y proceda con la clasificación.
+\item Como resultado obtiene una imagen a color con las clases clasificadas, y las celas que no pudo clasificar. 
+\item Desde la ventana \emph{Postprocessing} puede obtener un reporte de la clasificación, la firma espectral de cada clase, reclasificar y hasta vectorizar el resultado.
+\end{itemize}
+
+\subsubsection{Procedimiento en SAGA}
+
+\begin{itemize}
+\item Desde SAGA en la caja de herramientas (\emph{Processing toolbox}) diríjase a \emph{Image Analysis}, y allí seleccione la herramienta \emph{K-means clustering for grids}; 
+\item Se abre una ventana para ingresar los parámetros. En la pestaña \emph{Grids} se debe ingresar la imagen (stack layer) o imágenes por bandas que se desean utilizar. Existen tres métodos diferentes para el análisis de cluster, puede explorar la diferencia entre resultados por cada método. En la pestaña denominada Clusters debe especificar el número de clusters que desea clasificar, es decir el número de clases que desea el algoritmo diferencie. No existe un número por defecto, se puede buscar dicho número con ensayo y error o con el conocimiento de la zona de estudio. Como Máximum Iterations deje por defecto el valor de 0 y defina las carpetas y nombres del archivo de salida.
+\item Oprima OK y espere a que se termine el proceso de clasificación.
+\item Como resultado obtendrá un mapa en colores de grises con el número de clases que definió, diríjase a \emph{Simbology} y ajuste a una escala de color más apropiado.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/kmeans2}
+\end{figure}
+
+\subsection{Clasificación supervisada}
+
+La clasificación supervisada requiere de cierto conocimiento previo del terreno y de los tipos de coberturas, a través de una combinación de trabajo de campo, análisis de fotografías aéreas, mapas e informes técnicos y referencias profesionales y locales. Con base de este conocimiento se definen y se delimitan sobre la imagen las áreas de entrenamiento o pilotos. Las características espectrales de estas áreas son utilizadas para entrenar un algoritmo de clasificación, el cual calcula los parámetros estadísticos de cada banda para cada sitio piloto, para luego evaluar cada ND de la imagen, compararlo y asignarlo a una respectiva clase.
+
+\subsubsection{Procedimiento 2 en QGIS}
+\begin{itemize}
+\item Despliegue la imagen que se va a clasificar en una composición a color apropiada y aplique los mejoramientos necesarios para disponer de una vista óptima para la identificación y delimitación de los patrones o áreas de entrenamiento.
+\item Analice el paisaje presente en la escena, identifique los principales tipos de coberturas presentes en la escena y elabore una leyenda que contenga las clases temáticas deseadas.
+\item Realice el preprocesamiento que consiste en corrección y transformación de los datos DN, recorte de la zona de estudio y generación de un \emph{stack layer}. Asegure que dicho band set solo contenga las bandas reflejada, es decir no incluya banda del infrarrojo térmico.
+\item Desde QGIS y la pestaña RGB seleccione una combinación de bandas que le permita diferenciar las diferentes coberturas, por ejemplo, la combinación de color verdadero. 
+
+\subsection*{Entrenamiento}
+\item El procedimiento seguir es crear las áreas de entrenamiento o semillas para la clasificación. Etas son las celdas que se le asigna una clase conocida, de tal forma que el algoritmo las utilice para entrenarse y aprender a diferenciar en otras celdas desconocidas por el usuario y de forma automática.
+\item Para esto se debe abrir el SCP Dock desde la pestaña del plugin SCP, al final se encuentra una opción denominada \emph{Show plugin}. Debe aparecer una ventana en la parte inferior izquierda. Desde la pestaña ROI signature list, de clic en Create a new training input, debe definir la carpeta de almacenamiento y el nombre.
+
+\begin{figure}
+\centering
+\includegraphics[width=6.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/training2}
+\end{figure}
+
+\item Después desde las herramientas del SCP en el panel de la parte superior de clic en Create a ROI polygon. Y en la imagen elabora un polígono con un uso o cobertura del suelo que identifica plenamente. Con el clic derecho se cierra el polígono. Con la tecla Ctrl presionada puede elaborar varios ROI. Luego se dirige a \emph{SCP Dock} y en la parte inferior derecha en MC Info defina la macro clase de su cobertura, y también la clase en C Info, y luego le da clic al lado de \emph{Signature save temporary ROI to training input}, inmediatamente se crea en la tabla una nueva fila, con el nombre de la macro clase y clase asignado. Se asigna un color por defecto, el cual con doble clic puede ser ajustado.
+
+\begin{figure}
+\centering
+\includegraphics[width=6.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/roi}
+\end{figure}
+
+\item Para definir los ROI también es posible utilizar el cuadro naranja con un sigo más, denominado Actívate ROI pointer, y el cual puede ajustarse su área de influencia desde la celda vecina denominada Dist. Esta función define un área común a la celda seleccionada, definiendo un ROI más extenso. 
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/roi2}
+\end{figure}
+
+\item Este procedimiento se debe realizar para todas las macro clases y clase que usted desea clasificar o que el algoritmo pueda diferenciar. Se pueden eliminar o agregar diferentes ROI creados con las funciones en el lado izquierdo de la tabla. Cuando se tenga una buena representación de todas las macro clases y clases, puede crear y generar la gráfica de las firmas espectrales de los ROI que creó.
+
+\begin{figure}
+\centering
+\includegraphics[width=8.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/roi3}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=8.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/roi4}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=8.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/roi5}
+\end{figure}
+
+\item Dando clic en Espectral signature plot obtiene una tabla con las macro clases y clases con los datos de valores mínimos y máximos y el gráfico de cada una de ellas. Desde la tabla estos valores pueden modificarse. Desde la parte derecha y puede utilizar la función from ROI y from Pixel para mejorar los rangos de las firmas espectrales y por lo tanto la clasificación, y reducir el número de celdas no clasificadas. Para esto seleccione en la tabla uno de las macro clases y diríjase a la imagen en QGIS, de clic en la función del panel superior denominada \emph{Activate classsificaction preview pointer} y en cualquier parte de la imagen, esta se puede ajustar en transparencia y radio de influencia desde las celdas vecina. 
+\item Como resultado obtiene un preview de la clasificación obtenida para la macro clase seleccionada. En esto puede observar las celdas que deberían ser clasificadas como la macro clase seleccionada y no lo ha sido, para eso utilice la función \emph{From pixel}, seleccionado dichas celdas, y la firma espectral y ajusta. Puede reestablecer el preview y podrá observar que la celda seleccionada y otras celdas similares ya han sido incluidas en su clase. 
+\item Este mismo procedimiento lo puede realizar con la función \emph{from ROI}, pero para eso previo a seleccionar la celda debe dar clic en crear un nuevo ROI y generar un polígono que involucre la celda que quiere incluir en su macro clase. Con estas funciones puede ajustar todas las macro clases para una mejor clasificación.
+
+\subsection*{Clasificación}
+\item Diríjase a la pestaña Clasificación del SCP Dock, defina si quiere utilizar las macro clases o clases para la clasificación, se recomienda las clases. Y con la función del preview activada ensaye diferentes algoritmos de clasificación como \emph{Espectral Angle Mapping, Minimum Distance y Maximum likehood}. Seleccionado el tipo de algoritmo y recargando el preview.
+\item Luego en Classification output seleccione Classification report y corra la clasificación. Examine el reporte generado en CSV en la ruta definida.
+\end{itemize}
+
+\subsubsection{Procedimiento 3 en QGI}
+\begin{itemize}
+\item Utilizando solo las capas de las bandas reflejadas que se encuentran en la misma resolución espacial diríjase a la pestaña de SCP Band processing PCA y aplique la función de componentes principales a dichas bandas. 
+\item En la ventana emergente debe seleccionar las bandas a utilizar en el análisis y el número de componentes principales que desea calcular. Para este caso solo 3 componentes. Finalmente defina donde quedará ubicado el archivo de salida y OK.
+\item Como resultado obtendrá 3 nuevas “bandas” que corresponde a los tres componentes principales que mayor varianza presentan. Realice el ejercicio de clasificación supervisada del procedimiento 1 y 2 pero solo con estos tres componentes principales como bandas. Para el caso de la clasificación supervisada utilice las mismas firmas espectrales elaboradas.
+\end{itemize}
+
+\subsection{IMÁGENES DE SATELITE CON ARCGIS}
+ArcGIS es el nombre de un conjunto de productos de software en Sistemas de Información Geográfica, Producido y comercializado por ESRI. bajo el nombre genérico ArcGIS se agrupan varias aplicaciones para la captura, edición, análisis, tratamiento, diseño, publicación e impresión de información geográfica. Estas aplicaciones se engloban en familias temáticas como ArcGIS Server, para la publicación y gestión web, o ArcGIS Móvil para la captura y gestión de información en campo.\\
+\emph{ArcGIS Desktop}, la familia de aplicaciones SIG de escritorio, es una de las más ampliamente utilizadas, incluyendo en sus últimas ediciones las herramientas \emph{ArcReader, ArcMap, ArcCatalog, ArcToolbox, ArcScene y ArcGlobe}, además de diversas extensiones. ArcGIS for Desktop se distribuye comercialmente bajo tres niveles de licencias que son, en orden creciente de funcionalidades: \emph{ArcView, ArcEditor y ArcInfo}.\\ 
+Además de ArcMap, se pueden contar con las extensiones \emph{3D Analyst, Geostatistical Analyst, Maplex, Network Analyst, Schematics, Spatial Analyst, Tracking Analyst y ArcScan. Spatial Analyst} Proporciona una amplia posibilidad de recursos relacionados con el análisis espacial de datos. Con esta herramienta se pueden crear, consultar y analizar datos ráster; combinar varias capas ráster; aplicar funciones matemáticas, construir y obtener nueva información a partir de datos ya existentes, etc. \\
+\emph{Spatial Analyst} nos permite: obtener información nueva de los datos existentes; hallar ubicaciones adecuadas; realizar análisis de distancia y coste del trayecto; identificar la mejor ruta existente entre dos puntos; realizar análisis estadísticos e Interpolar valores de datos para un área de estudio determinada. la extensión \emph{3D Analyst} de ArcGIS proporciona herramientas para la creación, visualización y análisis de datos SIG en un contexto tridimensional; la función \emph{ArcScene} por ejemplo permite crear y animar ambientes 3D. \emph{Geostatistical Analyst} permite la realización de análisis geoestadístico, partiendo del análisis exploratorio de los datos hasta su representación espacial. \emph{Network Analyst} permite aplicar ArcGIS al trabajo con rutas de transporte. Tiene aplicaciones como cálculo de rutas óptimas entre varios puntos, calcular tiempos de acceso, optimización de ubicación de centros logísticos/oficinas de reparto, etc.
+
+\subsubsection{Análisis exploratorio:}
+\begin{itemize}
+\item Cargue las bandas multiespectrales de la imagen de satélite que descargó previamente: 
+\item Add Data y seleccione las bandas multiespectrales requeridas para visualizar en ArcGIS.
+\item En la pantalla se visualizará el cuadro de diálogo: Create pyramids, las pirámides ráster se emplean para mejorar el rendimiento con el fin de acelerar el proceso de visualización de la respectiva imagen, en este cuadro de diálogo elija la opción Yes.
+\item Explore las propiedades de las bandas multiespectrales que cargó. 
+\item Seleccione la capa que desee y oprima click derecho Properties. Se despliega una ventana con una serie de pestañas a través de las cuales puede explorar y conocer sobre  la imagen seleccionada. 
+\item La pestaña emph{Source} tiene información del número de filas y columnas de la imagen, número de bandas, tamaño del pixel, peso de la imagen, resolución radiométrica, referencia espacial, y estadísticas de cada banda. La pestaña Simbology le permite modificar las bandas en cada canal y mejorar la resolución radiométrica  de cada banda.
+\end{itemize}
+
+\subsubsection{Crear una imagen compuesta con Image Analysis}
+\begin{itemize}
+\item \emph{Windows Image Analysis}. Se abre la ventana de \emph{Image Analysis} que le permite el manejo imágenes de satélite. Para crear una composición a partir de imágenes por bandas, seleccione en Imagen Analysis  todas las capas que quiere incluir dentro de la composición. Si alguna de las capas no quiere que sea incluida, modifique su posición desde el espacio trabajo de ArcGIS. Simplemente muévalas para la parte inferior o superior según sea el caso.
+\item Ir a \emph{Processing  Composite bands} y se genera una nueva imagen compuesta de todas las imágenes por bandas que seleccionó. 
+\item Seleccione la imagen generada y oprima \emph{Save} desde el \emph{Image Analysis}. A las ventanas emergentes responda todo por default. 
+\item Cuando pregunte sobre el output raster responda que no cambie la profundidad del pixel y finalmente responda si quiere que adicione a su espacio de trabajo la imagen compuesta generada.
+\item Seleccione la imagen compuesta generada, click derecho  \emph{Properties}  y explore dicha imagen.
+\end{itemize}
+
+\subsubsection{Transformación de la Imagen}
+\begin{itemize}
+\item Seleccione  la imagen, oprima click derecho  \emph{Properties Simbology  Strectch}\textrightarrow Histogram.
+\item En Type seleccione Estandar Desviation, y oprima Apply
+\item Vaya a \emph{Histograms} y podrá observar el histograma anterior de color gris y el nuevo histograma ajustado de la imagen en color rojo.
+\item Vaya a \emph{Imagen Analysis} y seleccione \emph{Percent Clip}, y seleccione la figura de histograma que se encuentra en la parte baja Interactive Stretch Tool. Desde esta ventana modifique los límites del histograma para reducir valores bajos o altos y mejorar por lo tanto el contraste de la imagen.
+\end{itemize}
+
+\subsubsection{Uso de filtros}
+Los filtros se pueden utilizar en el \emph{Arctoolbox (Spatial Analyst Tools   Neighborhood   Filter} ) o en la ventana de \emph{Image Analysis}. Esta última tiene mucho mas tipos de filtros.
+\begin{itemize}
+\item Para aplicar filtros en \emph{ArcToolbox} debe utilizar la herramienta de análisis espacial: \emph{Spatial Analyst Tools   Neighborhood   Filter}.
+\item Para las herramientas de filtros en Image Analysis debe seleccionar la capa y en la sección de Processing desplegar la ventana de \emph{Filter}. En esta ventana existen filtros de paso alto (\emph{Sharpen}) y filtros de paso bajo (\emph{Smooth}). Existen diferentes variaciones en cada uno de estos tipos de filtros. Adicionalmente existen filtros para resaltar contornos o limites en diferentes direcciones (\emph{Gradient}).
+\end{itemize}
+
+\subsubsection{Combinación de  bandas}
+\begin{itemize}
+\item Click derecho a la imagen \emph{Properties} \textrightarrow  \emph{Simbology}, y vaya a la tabla de canales y bandas. Cada canal tiene señalado la banda que está usando.
+\item En las flechas de la parte derecha puede modificar dichas bandas para cada canal.
+\item Para la combinación denominada Color verdadero utilice la siguiente combinación: 
+\subitem	Red-Band 4
+\subitem	Green-Band 3
+\subitem	Blue-Band 2.
+\item Para una de las combinaciones conocida como Falso Color del infrarojo utilice: 
+\subitem	Red-Band 5
+\subitem	Green-Band 4
+\subitem	Blue-Band 3.
+\end{itemize}
+
+\subsubsection{Calcular NDVI}
+Para calcular el NDVI simplemente se requiere aplicar su respectiva ecuación, cabe mencionar que dicho proceso, al igual que la conversión de ND a valores de reflectividad, se puede realizar en diferentes aplicaciones que cuenten con una calculadora de imágenes ráster (ArcGIS, Erdas, QGIS, gvSIG, Surfer, Idrisi, ENVI, etc).
+\par El primer paso luego de abrir la aplicación ArcMap es cargar las bandas 4 y 5 ajustadas con la herramienta Add Data desde el directorio donde se encuentren almacenadas, seguidamente se muestra una ventana solicitando la creación de pirámides, en este caso dejar los valores por defecto y aceptar, cabe señalar que se requiere una licencia activa de la extensión Spatial Analyst, para ejecutar el \emph{Raster Calculator}.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/bands2}
+\end{figure}
+
+ArcToolbox\textrightarrow Spatial Analyst Tools\textrightarrow Map Algebra\textrightarrow Raster Calculator
+
+Una vez cargadas las bandas, desde la caja \emph{ArcToolbox}, abrir la siguiente herramienta:
+
+Para obtener los valores NDVI en imágenes Landsat 8 usando ArcGIS se aplica la siguiente ecuación:
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/ndvi}
+\end{figure}
+
+El resultado es una imagen ráster que contiene valores que van desde -1 a 1 (siendo los valores más cercanos a 1 la vegetación más vigorosa). Generalmente la imagen del NDVI se muestra en una escala de grises, para dar un aspecto más agradable y de fácil interpretación, dirigirse a las propiedades del ráster y seleccionar una paleta de colores en la pestaña de simbología (clic derecho\textrightarrow Properties\textrightarrow Symbology).
+\par En índice NDVI también puede ser calculado directamente desde la herramienta Image Analysis de ArcGIS. En el bloque de Processing se encuentra una pestaña en forma de hoja, denominada NDVI. Dando click en esta función se calcula directamente el NDVI de la imagen seleccionada.
+\par Para esto se debe tener en cuenta y verificar en la pestaña de la parte superior denominada Image Analysis Options que la banda del rojo y del infrarrojo corresponda realmente con los números de las bandas de la imagen con la cual estamos trabajando. Es decir que el número de la banda que aparece en la opción de Red Band corresponda realmente a la banda del rojo de nuestra imagen, y de forma similar con Infrared Band. Por defecto aparece la banda 4 y 5 respectivamente, pero en muchos casos en nuestra imagen la banda roja y el infrarojo pueden corresponder a otro número de banda.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/ndvi2}
+\end{figure}
+
+\subsubsection{Clasificación Digital no Supervisada}
+El resultado de la clasificación no-supervisada es categorización de la imagen en clases espectrales y el usuario debe asignar el significado temático a estas, donde precisamente reside su mayor limitación. Así que, en general, este método nos es recomendable para producción de los mapas temáticos sino como paso previo a la clasificación supervisada.
+
+\subsubsection{Procedimiento 1 en ArcGis}
+\begin{itemize}
+\item Siguiendo los pasos en talleres anteriores cargue una imagen de satélite compuesta por diferentes bandas. Es importante que evalúe las características de dicha imagen y trate de identificar y reconocer algunos aspectos de la imagen. Dicho conocimiento le permitirá realizar y evaluar la clasificación que realice a continuación.
+\item Desde la pestaña ArcToolbox\textrightarrow \emph{Spatial Analyst Tools}, ir al grupo Multivariate, y seleccionar la opción \emph{Iso Cluster}. Se abrirá la ventana de Iso Cluster; 
+\item bajo Input Raster bands seleccione las bandas que va a utilizar y bajo Output signature file, entre el nombre de la imagen de salida; al igual que el número de celdas mínimas para cada clase en \emph{Mínimum class size}, el número de iteraciones en \emph{Number of iterations}, y el intervalo que va a usar para muestrear en Sample interval. Estas funciones son opcionales
+\item Oprima OK y espere a que se termine el proceso de clasificación.
+\end{itemize}
+
+\subsubsection{Clasificación Supervisada}
+La clasificación supervisada requiere de cierto conocimiento previo del terreno y de los tipos de coberturas, a través de una combinación de trabajo de campo, análisis de fotografías aéreas, mapas e informes técnicos y referencias profesionales y locales. Con base de este conocimiento se definen y se delimitan sobre la imagen las áreas de entrenamiento o pilotos. Las características espectrales de estas áreas son utilizadas para "entrenar" un algoritmo de clasificación, el cual calcula los parámetros estadísticos de cada banda para cada sitio piloto, para luego evaluar cada ND de la imagen, compararlo y asignarlo a una respectiva clase.
+\begin{itemize}
+\item Despliegue la imagen que se va a clasificar en una composición a color apropiada y aplique los mejoramientos necesarios para disponer de una vista óptima para la identificación y delimitación de los patrones o áreas de entrenamiento.
+\item Analice el paisaje presente en la escena, identifique los principales tipos de coberturas presentes en la escena y elabore una leyenda que contenga las clases temáticas deseadas.
+\item Active desde la pestaña \emph{Customize} el Toolbars de \emph{Image classificaction}.
+\item Para iniciar, diríjase a la primera pestaña del Toolbars denominada \emph{Training simple manager} 
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/training3}
+\end{figure}
+
+Analice la escena de la imagen y utilizando la opción de Zoom del Viewer haga un acercamiento a la parte de la imagen donde va a colectar la primera área de entrenamiento, p.e, agua. Active en el Toolbar de Image classification el icono de Draw Polygon   y delimite el área de interés (AOI). En la ventana que tiene abierta de \emph{Training simple manager} se genera un archivo con las AOI que va generando. Con el doble clic  finalice la delimitación del polígono. Bajo la columna de \emph{Color}, puede asignar el color apropiado para esta clase temática. Proceda con la generación de áreas de entrenamiento y sus signaturas espectrales. 
+\par Recuerde, que áreas de entrenamiento deben representar la variabilidad espectral de la cobertura estudiada: sin ser muy homogéneos, ni muy heterogéneos; el tamaño de muestra debe ser como mínimo 10 veces más grande que el número de las bandas; si la cobertura presenta variación espectral, se generan varias áreas de entrenamiento y para cada una se calcula la signatura espectral,  posteriormente los unen en una solo clase, p.e agua1, agua2, agua3 se unirá en clase de agua.
+\par No olvide salvar las áreas de entrenamiento desde el Viewer con opción de \emph{Save training samples}.
+\par Para esta tarea de entrenamiento donde se seleccionan las “semillas” con las cuales el programa clasificará automáticamente el resto de la imagen se pueden realizar diferentes acciones, a continuación se explicarán algunas de ellas:
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/training4}
+\end{figure}
+
+\subsubsection{Ajustes} 
+Corresponden a acciones de borrar completamente una signatura, unir con otra signatura o recalcular la signatura a partir de redefinición de área de entrenamiento.
+\begin{itemize}
+\item Para borrar: seleccione la signatura en column Class, esta se iluminará con el color azul y con el botón derecho oprimido oprime la opción \emph{Delete Selected}.
+\item Para unir: con el uso de mouse y oprimiendo Shift de teclado, seleccione dos o mas signaturas que se piensa a unir, p.e agua 1 y agua2; y luego, oprime el botón (Merge). Al final de filas aparecerá nueva signatura, resultado de la unión, y a la asignatura de unión asigne el color de nuevo y un nombre, p.e.: agua.
+\item Trate de explorar todas las herramientas.
+\item Finalmente, salve las áreas de entrenamiento desde la última opción denominada Create asignature File. 
+\end{itemize}
+
+\subsubsection{Evaluación de las signaturas creadas}
+Una vez creadas las signaturas, se pueden borrar, renombrarlas o fusionarlas; pero antes se debe realizar su evaluación mediante Estadísticas e histogramas que encuentra en la ventana de \emph{Training Sample Manager}.
+
+\subsubsection{Agrupación Espectral} 
+La etapa final de la clasificación corresponde a la agrupación de los ND de toda la imagen alrededor de las clases temáticas definidas en el proceso de patronamiento, mediante unos algoritmos específicos de agrupación.
+Para realizar la clasificación, vaya al ArcToolbox textrightarrow Spatial Analysis tools\textrightarrow Multivariate y seleccione \emph{Maximum Likelihood Classification}. Elija las bandas que presentaron mayor separabilidad, durante el proceso de evaluación de signaturas espectrales. E ingrese el archivo de las firmas que acaba de crear desde \emph{Input signature file} y clic en OK. Explore las demás funciones utilizando la ayuda de ArcGIS.
+
+\subsection{ERDAS IMAGINE}
+
+ERDAS (\emph{Earth Resources Data Analysis System}) Imagine es un SIG y software de procesamiento de detección remota propiedad de Hexagon Geospatial. ERDAS Imagine es un paquete de software líder de detección remota con una gama de herramientas de clasificación, NDVI y procesamiento de imágenes para datos satelitales, hiperespectrales, de radar, LiDAR y otros datos de teledetección.
+
+\subsection{Análisis de una imagen SPOT por bandas}
+
+Para desarrollar este ejercicio es necesario que descargue una imagen SPOT que contiene 4 bandas espectrales de  una escena de una imagen SPOT-5. Las aplicaciones de cada banda se resumen en la siguiente tabla.
+
+\subsubsection{Procedimiento:}
+
+Desde las pestañas superiores seleccione: File\textrightarrow Open\textrightarrow Raster layer. En la ventana Select Layer To Add, seleccione la imagen a estudiar, y oprima OK. De esta manera, se desplegará la imagen en una composición a color. 
+Es posible que la imagen que se desea observar no aparezca de inmediato o se vislumbre apenas una parte de esta. Para apreciar esta imagen en todo el espacio de la pantallas, localice el cursor a la izquierda de la pantalla en el cuadro de Contents, haga click derecho en el nombre de la imagen cargada y seleccione \emph{Fit layer to Windows}, en este momento aparecerá toda la imagen en la pantalla.
+\par Desde el menú superior, ingrese a la pestaña \emph{Multiespectral}, en la sección de  \emph{Bands},  asigne la combinación RGB 4-3-2, allí se encuentran los cañones de color representados con cuadros de colores, la combinación a utilizar es la correspondiente a una  en falso color.
+\par Desde el menú principal superior de  ERDAS, vaya a la pestaña File\textrightarrow Open\textrightarrow Raster layer y proceda a desplegar de nuevo la misma imagen, pero con opción de bandas individuales. Para tal fin, en la pestaña File seleccione la imagen importada completa y en la ventana Select layer To Add, seleccione la pestaña \emph{Raster Options} ubicada en la parte superior. Luego de esto, se desplegara otra ventana auxiliar. Desde la caja \emph{Display As}, elija \emph{Gray Scale}. De otro lado, en la caja \emph{Display Layer} seleccione con los botones de flecha el número 1, lo que significa selección de capas individuales y oprima OK.
+\par De manera alterna, se pueden observar y comparar las dos imágenes activando o desactivando las mismas con la parte izquierda de la pantalla o dejando encima la que se desea visualizar, realice las funciones de acercamiento y de alejamiento (emph{zooming}) de la escena  en la pestaña \emph{Home}, la sección Extend.
+\par Haga \emph{zoom} (+) hasta llegar a observar los elementos al nivel de píxel.  Identifique los diversos accidentes geográficos y/ o coberturas; por ejemplo, áreas urbanas, vías de acceso, cuerpos de agua, invernaderos, áreas de cultivos, bosques, etc. Esta imagen le servirá de apoyo, para identificar los objetos o coberturas en las bandas individuales.
+\par Observe ahora la imagen desplegada, que contiene la banda 1, correspondiente al rango Verde del espectro electromagnético. Desde la barra superior seleccione la pestaña Home, Metadata, y finalmente view/edit image metadata. Analice la información contenida en esta ventana. Desde el menú de la misma ventana, active View\textrightarrow Histogram\textrightarrow View\textrightarrow Píxel. Con esto se puede estudiar de otra manera la imagen en cuanto a: modo de distribución de frecuencias y modo de matriz digital, la otra manera para acceder a esta información de metadatos es ubicándose a la izquierda de la pantalla dando click derecho a la capa la cual quiero analizar y escogiendo la opción Metadata.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/erdas}
+\end{figure}
+
+Ahora, estando en la vista de la banda 1 intente identificar (Con base en tono, textura, patrón, asociación) los siguientes tipos de coberturas: Urbana, cultivos, bosques, pastizales, invernaderos, agua, suelo descubierto.\\
+
+Siendo esta una imagen digital, también es factible examinar las respuestas espectrales de cada cobertura, representadas  por un Nivel Digital (ND) para cada píxel. Ingrese a la pestaña superior Home, la sección information y de click en Inquire; con lo que se desplegará un cursor en forma de cruz sobre la escena y una ventana adicional que muestra los valores digitales por píxel de acuerdo con cada banda. 
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/erdas2}
+\end{figure}
+
+En esta ventana aparecen 5 columnas así: (1) Layer, (2) Band, (3) File pixel, (4) Lut value e (5) Histogram. Su significado es el siguiente: 1: indica el número de capas o bandas que posee el archivo seleccionado;  2 : bandas desplegadas en el momento (cuando se despliega una composición, aparecerán coloreadas tres bandas en orden así: AZUL, VERDE Y ROJO; pero si es solo una banda, esta se ubica en el 1 sin color); 3: Es el nivel digital ND del píxel discriminado para cada banda en la escena; 4: Es el nivel visual NV que el programa ajusta de manera automática del valor digital original de cada píxel para facilitar al usuario la apreciación de una imagen; 5: Es una información estadística que posibilita ver el total de píxeles que contienen ese mismo valor digital.
+\par Ubique el cursor en algún tipo de cobertura que haya sido reconocido plenamente, ej. Bosque. Observe y analicé la tendencia de los valores digitales en la columna File Pixel, de acuerdo con la banda registrada.
+\par Ahora, proceda a desplegar y analizar las bandas restantes (2-3-4). Para tal fin, vaya a la pestaña File\textrightarrow Open\textrightarrow Raster layer y proceda a desplegar de nuevo la misma imagen, pero con opción de bandas individuales. Para tal fin, en la pestaña \emph{File} seleccione la imagen y en la pestaña \emph{Raster Options} ubicada en la parte superior. desde la caja \emph{Display As}, elija \emph{Gray Scale}. De otro lado, en la caja Display Layer seleccione con los botones de flecha el número 2. desactive la viñeta en la opción \emph{Clear display}  para que no se remueva las imágenes cargadas anteriormente. De esta manera, se desplegará la banda 2 de SPOT, correspondiente al rango del rojo. Siga con este proceso hasta analizar todas las bandas.\\
+Para comparar dos capas puede prender y apagar las capas desde la parte izquierda o puede utilizar la función \emph{Swipe} de la siguiente manera. Para ver las dos bandas desplegadas, utilicé desde el menú superior Home, la sección View, seleccione Swipe. De esta manera, mediante el botón de corredera que aparece en la ventana \emph{Viewer Swipe}, se podrán visualizar en el Viewer con un barrido, las dos imágenes sobrepuestas, para identificar así las diferencias en reflexión y contraste que exhiben estas dos bandas de acuerdo con su rango espectral. Explore la herramienta \emph{Blend y Flicker}.
+
+\subsection{Análisis de la imagen Landsat}
+
+La imagen LANDSAT generalmente se descarga por bandas. Para realizar una imagen compuesta, es decir un archivo con varias bandas debe ir a la pestaña Raster, en el grupo Resolution, y dar click en \emph{Spectral}. Allí se despliega una serie de opciones, de las cuales debe seleccionar \emph{Layer Stack}. En esta venta puede crear la imagen compuesta por bandas, para lo cual debe seleccionar en \emph{Input File} cada banda y dar click en Add. Luego en el recuadro emph{Output File} indique donde y con qué nombre deberá quedar guardado el nuevo archivo. Para ambos casos tenga en cuenta el formato del archivo de lectura y para guardarlo. Generalmente el formato de lectura de cada banda es TIFF y se guarda en formato img de ERDAS.
+\par Luego de generar la imagen compuesta por bandas vamos a explorarla. En la pestaña File\textrightarrow Open \textrightarrow Raster Layer, se despliega la ventana \emph{Select Layer to add}, en la pestaña \emph{File} seleccione la imagen importada completa y en la pestaña Raster Option deje por defecto en la caja \emph{Display As} la opción \emph{True Color} para el despliegue y en \emph{Layers To Color} asigne para el cañón de color Rojo la banda 3; para el color Verde la banda 2; y para el color Azul la  banda 1. 
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/erdas3}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/erdas4}
+\end{figure}
+
+Ahora vuelva y cargue la imagen importada completa pero en otra combinación, para ello se siguen los mismos pasos del numeral anterior, pero en la ventana \emph{Select Layer to add} seleccione la pestaña Raster Option y deje por defecto en la caja Display As la opción True Color para el despliegue y en  Layers To Color asigne para el cañón de color Rojo la banda 4; para el color Verde la banda 5; y para el color Azul la  banda 3. Desactive la opción  \emph{Clear Display}  y oprima OK.
+\par Con la opción del \emph{swipe}, utilizada anteriormente, compare las dos combinaciones a color de las imágenes que se encuentran en el mismo Viewer, respecto a la facilidad de identificar objetos, fenómenos o coberturas. Cierre la ventana \emph{Swipe}.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/erdas5}
+\end{figure}
+
+Para cambiar el orden de despliegue, diríjase a la izquierda de la pantalla en la zona de \emph{Contents}, allí se encuentran las dos imágenes desplegadas en la pantalla, para cambiar el orden de las mismas seleccione la que desee ubicar primero dele click sostenido con el cursor arrastre el nombre de la imagen hacia arriba o hacia abajo y verá cómo se modifica el orden de estas capas.\\
+
+Practique ahora el despliegue de la imagen con otras composiciones de color y observe el cambio de color que se presenta para las diferentes coberturas. Para cambiar la composición a color de la imagen desplegada, seleccione la pestaña \emph{Multiespectral}, en la sección de Bands, allí se presentan los tres cañones de color rojo, verde y azul, con los cuadros que contienen la información de la banda (1, 2, 3, 4, etc), allí se seleccionan las bandas que se deseen utilizar.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/color}
+\end{figure}
+
+Ahora ingrese a la pestaña superior \emph{Home}, la sección information y de click en \emph{Inquire}; con lo que se desplegará un cursor en forma de cruz sobre la escena y una ventana adicional que muestra los valores digitales por píxel de acuerdo con cada banda.
+\par Estando en el modo de despliegue en color, observe que en la columna Band estarán activados los layers que están desplegados en este momento, lo que se puede constatar por que aparecen sus casillas con los colores: rojo, verde y azul.
+\par Para una mejor compresión de la formación de color en las composiciones RGB, despliegue la tabla de colores desde la pestaña \emph{Home}, en la sección \emph{view}, buscar \emph{Display Style\textrightarrow Symbology} con el siguiente icono . Y de click en el recuadro de \emph{Fill Color} y seleccione Other…, para desplegar una ventana llamada \emph{Color Chooser}. Explore esta ventana para poder comprender las composiciones de color que le servirán para el siguiente ejercicio.
+
+\subsubsection{Clasificación Digital no Supervisada}
+
+El resultado de la clasificación no-supervisada es categorización de la imagen en clases espectrales y el usuario debe asignar el significado temático a estas, donde precisamente reside su mayor limitación. Así que, en general, este método nos es recomendable para producción de los mapas temáticos sino como paso previo a la clasificación supervisada.
+
+\subsubsection{Procedimiento:}
+\begin{itemize}
+\item Siguiendo los pasos en talleres anteriores cargue una imagen de satélite compuesta por diferentes bandas. Es importante que evalúe las características de dicha imagen y trate de identificar y reconocer algunos aspectos de la imagen. Dicho conocimiento le permitirá realizar y evaluar la clasificación que realice a continuación.
+\item Desde la pestaña Raster, ir al grupo \emph{Classification}, desplegar la opción \emph{Unsupervised} y seleccionar \emph{Unsupervised classification}. Se abrirá la ventana de \emph{Unsupervised Classification}; bajo \emph{Input Raster File} seleccione la imagen que va a clasificar y bajo \emph{Output Cluster Layer},   entre el  nombre de la imagen de salida.
+\item Desactive la opción de \emph{Output Signature Set} y confirme \emph{Initialize From Stadistics} bajo \emph{Clustering Options}. Esto permitirá generar los clusters al azar. Entre el dato de 20 en el of Classes.
+\item Entre 10 como \emph{Maximum Iterations} bajo \emph{Processing Options}. Este es el número máximo que utilizará para reagrupar los píxeles de la imagen. Confirme 0.95 como \emph{Convergence Threshold}. Esto significa que al llegar al 95\% de la agrupación de los datos sin presentar cambios durante las interacciones, el proceso finalizará.
+item Oprima OK y espere a que se termine el proceso de clasificación.
+\item Explore dicha ventana de \emph{Unsupervised Classification}. Investigue que significa la opción \emph{Input Signature file, Output Signature Set, Use Signature Means}, la opción \emph{Color Scheme Options e Initializing Options}, y finalmente el \emph{Skip Factors}. Cuál es la diferencia entre el método seleccionado \emph{K Means} y el método Isodata
+\end{itemize}
+
+\subsubsection{Evaluación de la clasificación}
+En este parte del proceso se identifican y se asignan  los nombres de clases y los colores comparando la imagen original con la imagen clasificada.
+\begin{itemize}
+\item Abra las dos imágenes (original y clasificada) en el mismo VIEWER, utilice la opción \emph{Swipe (Home, View, Swipe)}. Acceda a la pestaña \emph{Table, View, Show Attributes}, allí se despliega la tabla de atributos en la parte inferior de la pantalla y se activan las opciones de la pestaña Table. ahora vaya en esa misma pestaña a la opción \emph{Query} y escoja \emph{Column Properties}.
+\item Desde \emph{Column Properties},  bajo \emph{Column},  seleccione \emph{Opacity} y oprima Up para mover \emph{Opacity} debajo de \emph{Histogram}.  Seleccione Class\_Name y con Up mueva por debajo de Color. Asigne el número 
+\item en \emph{Display Widht}. Oprima OK. Describa con sus palabras que acciones o cambios acaba de realizar.
+\item Antes de iniciar el análisis de clases individualmente, se debe asignar el valor = 0 para todas las clases. En la Tabla de Atributos oprima la palabra \emph{Opacity}, para seleccionar todas las clases y oprima el botón izquierdo del mouse, seleccionando Formula.
+\item En la ventana de \emph{Formula}, oprima 0 de la sección de números y \emph{Apply} para cambiar todos los valores en \emph{Opacity} a 0 y cierre la ventana con Close. 
+\item En la misma tabla, bajo columna \emph{Color} oprima el botón derecho del mouse para cambiar el color de la CLASE 1,  por el color amarillo, después en la columna Opacity se le cambia el valor de 0 por 1. En el \emph{Viewer} se desplegarán todas las áreas correspondientes a clase 1 con el color amarillo.  Desde la pestaña Home, ir al grupo View, allí desplegar la opción \emph{Swipe}, seleccionar \emph{Flicker}, en esa ventana oprima Automatic o directamente en la opción \emph{Start/Stop}.   Sobre la imagen,  la clase seleccionada comienza a aparecer y desaparecer. Analice a que clase temática corresponde esta área y asigne el nombre debajo de la columna Class\_Name en la Tabla de Atributos y cambie el color según el contenido temático de esta clase.
+\item Cierre el \emph{Flicker} desde la opción \emph{Close Transition} y asigne 0 en la columna de \emph{Opacity} para esta clase. Repita el mismo procedimiento para el resto de las clases. Al finalizar seleccione \emph{File / Save} para salvar los cambios realizados.
+\item Presente el mapa de su clasificación no supervisada y discuta brevemente los resultados obtenidos.
+\end{itemize}
+
+\subsubsection{Parte II: Clasificación Supervisada}
+La clasificación supervisada requiere de cierto conocimiento previo del terreno y de los tipos de coberturas, a través de una combinación de trabajo de campo, análisis de fotografías aéreas, mapas e informes técnicos y referencias profesionales y locales. Con base de este conocimiento se definen y se delimitan sobre la imagen las áreas de entrenamiento o pilotos. Las características espectrales de estas áreas son utilizadas para "entrenar" un algoritmo de clasificación, el cual calcula los parámetros estadísticos de cada banda para cada sitio piloto, para luego evaluar cada ND de la imagen, compararlo y asignarlo a una respectiva clase.
+
+\subsubsection{Procedimiento:}
+\begin{itemize}
+\item Despliegue la imagen que se va a clasificar en una composición a color apropiada y aplique los mejoramientos necesarios para disponer de una vista óptima para  la identificación y delimitación de los patrones o áreas de entrenamiento.
+\item Analice el paisaje presente en la escena, identifique los principales tipos de coberturas presentes en la escena y elabore una leyenda que contenga las clases temáticas deseadas.
+\item Desde el menú principal de ERDAS vaya a la pestaña:\\ Raster\textrightarrow Classification\textrightarrow Supervised\textrightarrow Signature Editor
+\item Para iniciar, diríjase a Drawing, insert geometry (allí se encuentran las herramientas necesarias para la elaboración de las áreas de entrenamiento) 
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/grow}
+\end{figure}
+
+\begin{itemize}
+\item Analice la escena de la imagen y utilizando la opción de Zoom del Viewer haga un acercamiento a la parte de la imagen donde va a colectar la primera área de entrenamiento, p.e, agua. Active el icono de Polygon    y delimite el área de interés (AOI). En el Viewer se genera un archivo con las AOI que va genernado. Con el doble clic  finalice la delimitación del polígono, el cual debe ser bordeado por una caja, indicando que este está seleccionado.
+\item En la ventana de \emph{SIGNATURE EDITOR} oprima el icono   de adición de signaturas. Bajo la columna \emph{SIGNATURE NAME} aparecerá consignado esta primera signatura con el nombre de CLASS 1. Oprima el botón izquierdo del mouse y cambie el nombre por uno que represente la clase de cobertura seleccionada.  Bajo la columna de Color, oprima el botón izquierdo y asigne el color apropiado para esta clase temática. Proceda con la generación de áreas de entrenamiento y sus signaturas  espectrales para otras clases de la leyenda.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/signature}
+\end{figure}
+
+Recuerde, que áreas de entrenamiento deben representar la variabilidad espectral de la cobertura estudiada: sin ser muy homogéneos, ni muy heterogéneos; el tamaño de muestra debe ser como mínimo 10 veces más grande que el número de las bandas; si la cobertura presenta variación espectral, se generan varias áreas de entrenamiento y para cada una se calcula la signatura espectral,  posteriormente los unen en una solo clase, p.e agua1, agua2, agua3 se unirá en clase de agua.
+\par No olvide salvar las áreas de entrenamiento desde el Viewer con opción de File \textrightarrow Save as\textrightarrow AOI layer as;  y las signaturas desde la ventana\emph{Signature Editor}.
+\par Para esta tarea de entrenamiento donde se seleccionan las “semillas” con las cuales el programa clasificará automáticamente el resto de la imagen se pueden realizar diferentes acciones, a continuación se explicarán algunas de ellas:
+
+\subsubsection{Ajustes} 
+Corresponden a acciones de borrar completamente una signatura, unir con otra signatura o recalcular la signatura a partir de redefinición de área de entrenamiento.\\
+\textbf{Para borrar}: seleccione la signatura en columna \emph{Class}, esta se iluminara con el color azul y con el botón derecho oprimido oprime la opción Delete Selection.\\
+\textbf{Para unir}: con el uso de mouse y oprimiendo Shift de teclado, seleccione dos signaturas que se piensa a unir, p.e agua 1 y agua2; y luego, oprime el botón   (Merge Selected Signature). Al final de filas aparecerá nueva signatura, resultado de la unión. Las dos seleccionados siguen realzadas; con el botón izquierdo del mouse borra estas signaturas y a la asignatura de unión asigne el color de nuevo y un nombre, p.e.: agua.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/signature2}
+\end{figure}
+
+Para reemplazar una signatura o modificar: primero, en el Viewer ubica y seleccione su área delimitada, oprima el botón    Reshape, ubicado en la pestaña \emph{Drawing, Modify}, despliegue line. Luego en la ventana de Signature Editor  seleccione la signatura iluminando con el color azul y oprime el botón \emph{Replace Current Signature}. 
+\par Al terminar ajustes, organice la signaturas en la tabla, ya que al unir las diferentes signaturas se alteró su orden; observe las columnas Value y Order. Para esto utilice la opción Edit\textrightarrow Values\textrightarrow Reset y luego Edit\textrightarrow Order\textrightarrow Reset.
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/signature3}
+\end{figure}
+
+Finalmente, salve las áreas de entrenamiento desde el File y signaturas desde Signature Editor, con nuevos nombres, para no dañar los primeros archivos. Evaluar de nuevo estas signaturas y si está satisfecho, proceda con el siguiente paso: agrupación. 
+
+\subsubsection{Evaluación de las signaturas creadas}
+
+Una vez creadas las signaturas, se pueden borrar, renombrarlas o fusionarlas;  pero antes se debe realizar  su  evaluación  mediante  análisis Matriz de contingencia, separabilidad de signaturas, Estadísticas e histogramas y curvas espectrales.
+Para iniciar la evaluación estadística, dentro Signature  Editor   seleccione  la   opción   File-Report, (Calcula estadísticas básicas: mínimos, máximos,  media  y  desviación   estándar  de  las áreas de entrenamiento para cada banda). Señale Statistics y All Signatures. Analice  si  algunas signaturas se superponen estadísticamente, observe  los  valores  de  las  desviaciones  estándar  y rango  mínimo y máximo para cada clase.
+
+\begin{figure}
+\centering
+\includegraphics[width=4.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/signature4}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/signature5}
+\end{figure}
+
+\textbf{Análisis de histogramas}: Dentro de la ventana \emph{Signature Editor} utilice la opción  , para calcular y analizar los histogramas para cada área de entrenamiento en cada banda espectral. Los histogramas deben tener forma próxima a campana, ser unimodal y tener los rangos de mínimo y máximo razonables para no traslaparse con las signaturas de otras clases.
+\textbf{Curvas espectrales}: Seleccione la opción \emph{View -  Mean Plots- Multiple Signature} u oprima el botón  . Se abrirá la ventana de \emph{Signature Mean Plot}, en la cual se observan las curvas espectrales de las áreas de entrenamiento de aquellas seleccionadas. Analice en que bandas y que clases presentan traslapes y confusión espectral y deben ser cambiadas o reajustadas o unidas en una sola clase.
+\textbf{Separabilidad espectral}: Seleccione la opción \emph{Evaluate – Separabilility}, Aparecerá la ventana de \emph{Signature Separability}. Seleccione las opciones de \emph{Distance Measure  - Trasformed Divergence y Complete report}. Las clases deben estar seleccionadas. Practique diferentes opciones frente a \emph{Layers Per Combination}, para ver con que combinación de bandas se presenta mayor separabilidad entre signaturas espectrales.  Mediante este procedimiento concluya con que combinación de bandas se presenta mayor separabilidad espectral y que clases presentan baja separabilidad. (El valor mayor a 1950 – corresponde a excelente separabilidad, separabilidad media- entre 1950 y 1900; y baja separabilidad corresponde a valores menores a 1900.)
+
+\begin{figure}
+\centering
+\includegraphics[width=6.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/separa}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/separa2}
+\end{figure}
+
+\textbf{Uso de la matriz de contingencia}: Calcule la matriz de porcentaje de píxeles que se incluyen dentro el área de entrenamiento. Para este fin, seleccione desde la barra del menú de Signature Editor la opción \emph{Evaluate}\textrightarrow \emph{Contingency}, se abrirá  la ventana de Contingency Matrix. Defina los parámetros de las reglas de las decisiones según la ventana de dialogo  presentada abajo. Oprima OK  y espere que termine el proceso y  analice los resultados.   
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/matrix}
+\end{figure}
+
+\subsubsection{Agrupación Espectral}
+La etapa final de la clasificación corresponde a la agrupación de los ND de toda la imagen alrededor de las clases temáticas definidas en el proceso de patronamiento, mediante unos algoritmos específicos de agrupación, que pueden ser: Mínima Distancia, Mahalonobis Distancia y Máxima Verosimilitud. El mejor resultado de la agrupación ha demostrado ser el algoritmo de Máxima Verosimilitud.
+\begin{itemize}
+\item Para realizar la clasificación, desde la ventana Signature Editor seleccione Edit – Layer Selection. Elija las bandas que presentaron mayor separabilidad, durante el proceso de evaluación de signaturas espectrales.  Cierre la ventana de dialogo de Layer Selection.
+\item En la ventana Signature Editor oprima Classify – Supervised.   Aparecerá la ventana de \emph{Supervised Clasification};  Asigne los parámetros de clasificación según se indica en la figura de abajo; escriba el nombre de salida del archivo  para la imagen clasificada y clic en OK. 
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=12.0cm]{G:/Mi Unidad/CATEDRA/ANALISIS GEOESPACIAL/fig/supervised}
+\end{figure}
+
+\begin{itemize}
+\item La clasificación también se puede realizar desde la pestaña Classification \textrightarrow Supervised \textrightarrow Supervised Classification. Allí sale una ventana donde se deben señalar los mismos parámetros, pero adicionalmente se debe ingresar el archivo de signaturas desde la carpeta denominada Input Signature File.
+\item Abra la imagen original con una combinación de bandas apropiada y sobre esta superponga la imagen clasificada. Utilizando la opción del Swipe realice el análisis de correspondencia temática. También se puede proceder con el análisis utilizando los procedimientos realizados durante la clasificación no supervisada.
+\item A partir de una imagen de satélite Landsat TM de su elección lleve a cabo una clasificación supervisada con al menos 5 clases.  Cada clase debe ser construida con al menos 5 polígonos de entrenamiento en distribuidos en toda la imagen.
+\end{itemize}
+
+\end{document}
