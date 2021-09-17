@@ -13,6 +13,6 @@
 *.jp2
 *.fls
 *.tex
-/Guias/
+/Guias
 .git
 .ipynb_checkpoints
