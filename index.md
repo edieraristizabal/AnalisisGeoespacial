@@ -9,7 +9,7 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 [Ir al programa...](/Programa_AnalisisGeoespacial.pdf)
 
 ## Contenido del curso
-[Ir a presentación...](AnalisisGeoespacial/html/AnalisisGeoespacial.html)
+[Ir a presentación...](/html/AnalisisGeoespacial.html)
 
 ## Notebooks
 * [Ambiente de trabajo](/Notebooks/00_ComputationalEnvironment.ipynb)
