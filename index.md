@@ -20,16 +20,17 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 
 
 ### Intro to Remote Sensing - GIS
+[Taller Remote sensing](/Notebooks/Guias/Guia_SIG.pdf) 
 
 ### Web mapping
 [Taller Web mapping](/Notebooks/WebMapping.ipynb) 
 
 ### Geospatial Data
-[Taller Importar datos raster](/Notebooks/DownloadData_Raster)
-[Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)
-[Taller Datos espaciales](/Notebooks/GeospatialData.ipynb) 
-[Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb) 
-[Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb) 
+[Taller Importar datos raster](/Notebooks/DownloadData_Raster)  
+[Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)  
+[Taller Datos espaciales](/Notebooks/GeospatialData.ipynb)   
+[Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb)  
+[Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb)  
 
 ### Point pattern analysis
 [Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
@@ -41,16 +42,16 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 [Taller Exploración espacial de datos](/Notebooks/ESDA.ipynb)
 
 ### Lattice data analysis (Field model)
-[Taller Análisis con datos raster](/Notebooks/Raster.ipynb) 
-[Taller Geoestadística](/Notebooks/Geostatistic.ipynb) 
-[Taller Google Earth Engine](/Notebooks/GEE.ipynb)
+[Taller Análisis con datos raster](/Notebooks/Raster.ipynb)   
+[Taller Geoestadística](/Notebooks/Geostatistic.ipynb)   
+[Taller Google Earth Engine](/Notebooks/GEE.ipynb)  
 
 ### Network analysis
 [Redes](/Notebooks/Network.ipynb) 
 
 ### Spatial model
-[Taller Análisis de clustering](/Notebooks/Clustering.ipynb) 
-[Regresión espacial](/Notebooks/SpatialRegression.ipynb) 
+[Taller Análisis de clustering](/Notebooks/Clustering.ipynb)   
+[Regresión espacial](/Notebooks/SpatialRegression.ipynb)   
 
 ### Bases de datos espaciales
 [Taller Bases de datos espaciales](/Notebooks/SGDB.ipynb) 
