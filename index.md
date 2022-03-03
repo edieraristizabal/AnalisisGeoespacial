@@ -8,7 +8,7 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 [Ir al programa...](/Programa_AnalisisGeoespacial.pdf)
 
 ## Diapositivas del curso
-[Ir a presentación...](AnalisisGeoespacial/html/AnalisisGeoespacial.html)
+[Ir a presentación...](/html/AnalisisGeoespacial.html)
 
 ## Programa
 
