@@ -20,7 +20,7 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 
 
 ### Intro to Remote Sensing - GIS
-[Taller Remote sensing](/Notebooks/Guias/Guia_SIG.pdf) 
+[Taller Remote sensing](/Guias/Guia_SIG.pdf) 
 
 ### Web mapping
 [Taller Web mapping](/Notebooks/WebMapping.ipynb) 
