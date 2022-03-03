@@ -16,6 +16,11 @@
     font-weight: bold;
 }
 
+.reveal figcaption {
+    font-size: 15px;
+    color: gray;
+}
+
 .primera #marca-agua{
     display:none;
     }

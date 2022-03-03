@@ -16,3 +16,5 @@
 /Guias
 .git
 .ipynb_checkpoints
+.gitignore
+Untitled*.ipynb

@@ -4,29 +4,79 @@ El curso Análisis Geoespacial está orientado para estudiantes de posgrados que
 
 Todos los scripts disponibles en esta guía han sido reciclados por el profesor Edier Aristizábal, y ajustados la mayoría de ellos de acuerdo con las necesidades del curso. Por lo que se hace un esfuerzo en brindar los créditos a los desarrolladores, pero con toda seguridad no es suficiente dicho esfuerzo y muchos de los créditos seguramente no están. Sin embargo no es por omisión voluntaria, sino por el gran número de desarrolladores consultados, combinaciones y ajustes, que en muchos casos se pierde la trayectoria. Pido disculpas a los programadores que sienten que sus créditos debieron ser otorgados en esta guía.
 
-
 ## Programa del curso
 [Ir al programa...](/Programa_AnalisisGeoespacial.pdf)
 
-## Contenido del curso
+## Diapositivas del curso
 [Ir a presentación...](AnalisisGeoespacial/html/AnalisisGeoespacial.html)
 
-## Notebooks
-* [Ambiente de trabajo](/Notebooks/00_ComputationalEnvironment.ipynb)
-* [Importar datos](/Notebooks/01_DownloadData_Raster)
-* [Importar datos](/Notebooks/02_DownloadData_Vector.ipynb) 
-* [Datos espaciales](/Notebooks/03_GeospatialData.ipynb) 
-* [Ingeniería de datos](/Notebooks/04_DataEngineering.ipynb) 
-* [Operaciones espaciales](/Notebooks/05_SpatialOperation.ipynb) 
-* [Geovisualización](/Notebooks/06_Geovisualization.ipynb) 
-* [Exploración espacial de datos](/Notebooks/07_ESDA.ipynb) 
-* [Análisis de patrones de puntos](/Notebooks/08_PointPatternAnalysis.ipynb) 
-* [Análisis de clustering](/Notebooks/09_Clustering.ipynb) 
-* [Análisis con datos raster](/Notebooks/10_Raster.ipynb) 
-* [Geoestadística](/Notebooks/11_Geostatistic.ipynb) 
-* [Google Earth Engine](/Notebooks/12_GEE.ipynb) 
-* [Redes](/Notebooks/13_Network.ipynb) 
-* [Regresión espacial](/Notebooks/14_SpatialRegression.ipynb) 
-* [Bases de datos espaciales](/Notebooks/15_SGDB.ipynb) 
-* [Web mapping](/Notebooks/16_WebMapping.ipynb) 
+## Programa
 
+### Introducción al curso
+
+### Geospatial Computational Environment
+[Taller Ambiente de trabajo](/Notebooks/ComputationalEnvironment.ipynb)
+[Taller Python](/Notebooks/Python.ipynb)
+
+
+### Intro to Remote Sensing - GIS
+
+### Web mapping
+[Taller Web mapping](/Notebooks/WebMapping.ipynb) 
+
+### Geospatial Data
+[Taller Importar datos raster](/Notebooks/DownloadData_Raster)
+[Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)
+[Taller Datos espaciales](/Notebooks/GeospatialData.ipynb) 
+[Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb) 
+[Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb) 
+
+### Point pattern analysis
+[Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
+
+### Geovisualization
+[Taller Geovisualización](/Notebooks/Geovisualization.ipynb)
+
+### Lattice data analysis (Object-based model)
+[Taller Exploración espacial de datos](/Notebooks/ESDA.ipynb)
+
+### Lattice data analysis (Field model)
+[Taller Análisis con datos raster](/Notebooks/Raster.ipynb) 
+[Taller Geoestadística](/Notebooks/Geostatistic.ipynb) 
+[Taller Google Earth Engine](/Notebooks/GEE.ipynb)
+
+### Network analysis
+[Redes](/Notebooks/Network.ipynb) 
+
+### Spatial model
+[Taller Análisis de clustering](/Notebooks/Clustering.ipynb) 
+[Regresión espacial](/Notebooks/SpatialRegression.ipynb) 
+
+### Bases de datos espaciales
+[Taller Bases de datos espaciales](/Notebooks/SGDB.ipynb) 
+
+## Evaluación
+El curso se evaluará a través de un trabajo individual durante todo el curso, donde el estudiante implementará en una área de 
+su elección las herramientas de análisis presentadas en el curso. Para el seguimiento se realizarán por cada estudiante tres 
+presentaciones con el avance de su trabajo de la siguiente forma:
+
+#### Presentación del problema
+* Porcentaje de evaluación: 20%
+* Tiempo: 5 min.
+* Alcance: Presentacion del problema de investigación y fuente de información.
+* Fecha: luego de terminar el modulo. Geospatial data
+
+#### Presentaciòn de avances
+* Porcentaje de evaluación: 20%
+* Tiempo: 10 min.
+* Alcance: Avances.
+* Fecha: luego de terminar el modulo. Raster analysis
+
+#### Presentación final
+* Porcentaje de evaluación: 30%
+* Tiempo: 15 min.
+* Alcance: Presentación trabajo final.
+* Fecha: Al final del curso
+
+El 30% final corresponde al trabajo escrito en formato artículo (Introducción, Datos \& metodología, Resultados, Discusión, 
+y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
