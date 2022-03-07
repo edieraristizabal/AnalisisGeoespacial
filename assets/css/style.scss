@@ -1,4 +1,8 @@
-body {
-    background-color: royalblue;
-    color: royalblue;
-  }
+---
+---
+
+@import "{{ site.theme }}";
+
+header h1 { color: red; }
+
+.inner { width: 1000px; }
