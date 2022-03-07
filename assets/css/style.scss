@@ -7,3 +7,10 @@
 .inner {
     max-width: 100%;
   }
+
+  @media #{$large} {
+    @include grid(12,10); // increased to 10
+    }
+    @media #{$x-large} {
+        @include grid(12,9); // increase to 9
+    }
