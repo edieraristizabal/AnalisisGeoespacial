@@ -1,16 +1,4 @@
----
----
-
-@import "minima/skins/{{ site.minima.skin | default: 'classic' }}";
-@import "minima/initialize";
-
-.inner {
-    max-width: 100%;
+body {
+    background-color: royalblue;
+    color: royalblue;
   }
-
-  @media #{$large} {
-    @include grid(12,10); // increased to 10
-    }
-    @media #{$x-large} {
-        @include grid(12,9); // increase to 9
-    }
