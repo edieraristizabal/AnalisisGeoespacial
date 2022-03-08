@@ -21,7 +21,7 @@ M2-222
 ### Introducción al curso
 
 ### Geospatial Computational Environment
-[Taller Ambiente de trabajo](/Notebooks/ComputationalEnvironment.ipynb)
+[Taller Ambiente de trabajo](/Notebooks/ComputationalEnvironment.ipynb)  
 [Taller Python](/Notebooks/Python.ipynb)
 
 
