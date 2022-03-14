@@ -1,5 +1,5 @@
 *.log
-*.aux
+*.aux*
 *.gz
 *.nav
 *.out
@@ -12,8 +12,9 @@
 *.cpg
 *.jp2
 *.fls
-*.tex
-/Guias
+*.tex*
+*.docx
+*.fdb*
 .git
 .ipynb_checkpoints
 .gitignore
