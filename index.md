@@ -41,7 +41,7 @@ M2-222
 [Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
 
 ### Choroplet maps
-[Taller Mapas Coropletas](/Notebooks/Choropleth.ipynb) 
+[Taller Mapas Coropletas](/Notebooks/Choropleth.ipynb)   
 [Taller Mapas interactivos](/Notebooks/InteractiveMaps.ipynb) 
 
 
