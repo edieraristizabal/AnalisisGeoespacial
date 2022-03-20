@@ -22,8 +22,6 @@ M2-222
 
 ### Geospatial Computational Environment
 [Taller Ambiente de trabajo](/Notebooks/ComputationalEnvironment.ipynb)  
-[Taller Python](/Notebooks/Python.ipynb)
-
 
 ### Intro to Remote Sensing - GIS
 [Taller Remote sensing](/Guias/Guia_SIG.pdf) 
@@ -37,12 +35,15 @@ M2-222
 [Taller Datos espaciales](/Notebooks/GeospatialData.ipynb)   
 [Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb)  
 [Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb)  
+[Taller Geovisualización](/Notebooks/Geovisualization.ipynb)  
 
 ### Point pattern analysis
 [Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
 
-### Geovisualization
-[Taller Geovisualización](/Notebooks/Geovisualization.ipynb)
+### Choroplet maps
+[Taller Mapas Coropletas](/Notebooks/Choropleth.ipynb) 
+[Taller Mapas interactivos](/Notebooks/InteractiveMaps.ipynb) 
+
 
 ### Lattice data analysis (Object-based model)
 [Taller Exploración espacial de datos](/Notebooks/ESDA.ipynb)
@@ -57,7 +58,8 @@ M2-222
 
 ### Spatial model
 [Taller Análisis de clustering](/Notebooks/Clustering.ipynb)   
-[Regresión espacial](/Notebooks/SpatialRegression.ipynb)   
+[Regresión espacial](/Notebooks/SpatialRegression.ipynb)
+[Taller Python](/Notebooks/Clasificacion.ipynb)   
 
 ### Bases de datos espaciales
 [Taller Bases de datos espaciales](/Notebooks/SGDB.ipynb) 
