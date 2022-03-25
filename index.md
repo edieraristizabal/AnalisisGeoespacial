@@ -57,7 +57,7 @@ M2-222
 [Redes](/Notebooks/Network.ipynb) 
 
 ### Spatial model
-[Taller Análisis de clustering](/Notebooks/Clustering.ipynb)   
+[Taller Regionalización](/Notebooks/Regionalization.ipynb)   
 [Regresión espacial](/Notebooks/SpatialRegression.ipynb)
 [Taller Python](/Notebooks/Clasificacion.ipynb)   
 
@@ -89,3 +89,6 @@ presentaciones con el avance de su trabajo de la siguiente forma:
 
 El 30% final corresponde al trabajo escrito en formato artículo (Introducción, Datos \& metodología, Resultados, Discusión, 
 y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
+
+## Link de interés
+* [Remote sensing & GIS application](http://ecoursesonline.iasri.res.in/course/view.php?id=53)

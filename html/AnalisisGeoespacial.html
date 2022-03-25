@@ -937,10 +937,9 @@
 					<br>
 					<li><strong>Geostatistical Analysis</strong>: continuous <strong>surface</strong> modeling.</li>
 					<br>
-					<li><strong>Lattice Data Analysis</strong>: Lattice data are observations associated with spatial
-						regions, where the
-						regions can be regularly or irregularly spaced. Spatial patterns of attributes observed for
-						<strong>discrete</strong> spatial objetcs.
+					<li><strong>Lattice Data Analysis (Area)</strong>: Spatial patterns of attributes observed for
+						<strong>discrete</strong> spatial objetcs, where the spatial regions can be regular shapes (grid or pixels) 
+						or irregular shapes (polygons). 
 					</li>
 				</ul>
 			</section>
@@ -971,14 +970,6 @@
 				</ul>
 				<img src="https://www.e-education.psu.edu/maps/sites/www.e-education.psu.edu.maps/files/Images/L2_Figure1b.jpg"
 					width="400">
-			</section>
-
-			<section>
-				<h3>Spatial dependence</h3>
-				<p style="text-align: center; font-size: 40px;">“Everything is
-					related to everything else, but near things are
-					more related than distant things"</p>
-				<p style="text-align: right;"><small>(Tobler, 1970)</small></p>
 			</section>
 
 			<section>
@@ -1040,6 +1031,16 @@
 			</section>
 
 			<section>
+				<h3>First and second order effects</h3>
+				<p>Tree density distribution can be influenced by 1st order effects such as elevation gradient or spatial distribution of soil 
+					characteristics; and by 2nd order effects such as seed dispersal processes where the process is independent 
+					of location and, instead, dependent on the presence of other trees.</p>
+					<img src="https://mgimond.github.io/Spatial/img/1st_2nd_order_property.png" width="500">
+					<figcaption>Source: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
+
+			</section>
+
+			<section>
 				<h3>MAUP</h3>
 				<p>The Modifiable Area Unit Problem (MAUP) problem refers to the influence the zone design has on the
 					outcomes of the
@@ -1062,13 +1063,8 @@
 			<section>
 				<h3>MAUP</h3>
 				<p>There are two types of biases for the MAUP:</p>
-				<ul>
-					<li>Scale effect</li>
-					<li>Zonal effect</li>
-				</ul>
-				<br>
-				<img src="https://miro.medium.com/max/848/1*GiNm-MLafOUbRbMKQA490A.jpeg" width="400">
-				<figcaption>https://miro.medium.com/max/848/1*GiNm-MLafOUbRbMKQA490A.jpeg</figcaption>
+				<img src="https://gdsl-ul.github.io/san/figs/ch1/maup.png" width="700">
+				<figcaption>Source: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a> by Francisco Rowe and Dani Arribas-Bel (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1085,6 +1081,15 @@
 					the pattern.</p>
 				<img src="https://gisgeography.com/wp-content/uploads/2020/11/MAUP-Scale-Effect-678x339.png" width="750">
 				<figcaption><a href="https://gisgeography.com/maup-modifiable-areal-unit-problem/">https://gisgeography.com/maup-modifiable-areal-unit-problem/</a></figcaption>
+			</section>
+
+			<section>
+				<img src="https://mgimond.github.io/Spatial/img/v1_and_v2_raw.png" width="400">
+				<br>
+				<img src="https://mgimond.github.io/Spatial/img/unif_aggr.svg" width="400">
+				<br>
+				<img src="https://mgimond.github.io/Spatial/img/irr_aggr.svg" width="400">
+				<figcaption>Source: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial Analysis</a> by Manuel Gimond (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1126,7 +1131,7 @@
 			</section>
 
 			<section>
-				<h1>Measurement</h1>
+				<h1>Spatial models</h1>
 				<img src="https://studyonline.unsw.edu.au/sites/default/files/UNSW2.png" width="1000">
 			</section>
 
@@ -1884,16 +1889,25 @@
 			</section>
 
 			<section>
+				<h3>Point pattern analysis</h3>
+				<p> A point pattern consists of a set of events at a set of
+					locations, where each event represents a single instance of the phenomenon of
+					interest </p>
+				<p>Most point pattern analysis techniques deal only with the location of the
+					events and not with other attributes they might carry.</p>
+			</section>
+
+			<section>
 				<h3>Process vs Pattern</h3>
 				<p><strong>Spatial process</strong> is a description of how a <strong>spatial pattern</strong> can be
 					generated.</p>
-				<p> There are three main types of spatial porcess:</p>
+				<p> There are three main types of spatial process:</p>
 				<ul>
 					<li>Complete spatial randomness process --> <strong>Random spatial pattern</strong>
 						<ul>
-							<li>There is an equal probability of event occurrence at any location in
+							<li style="font-size:20px">There is an equal probability of event occurrence at any location in
 								the study region (also called first-order stationary).</li>
-							<li>The location of an event is independent of the locations of other
+							<li style="font-size:20px">The location of an event is independent of the locations of other
 								events (also called second-order stationary).</li>
 						</ul>
 					</li> </br>
@@ -1909,15 +1923,35 @@
 			</section>
 
 			<section>
-				<img src="https://www.researchgate.net/profile/Mohammad-Alinejad-5/publication/325036647/figure/fig2/AS:624322544689162@1525861502636/Three-basic-spatial-patterns-of-collapsed-pipes-It-has-been-designed-by-authors.png"
-					width="1000">
+				<h3>Point pattern analysis</h3>
+				<p>There are two main (interrelated) methods of analyzing point patterns, namely
+					the distance-based methods and the density-based methods.</p>
+				<ul>
+					<li><strong>Density-based methods--> Absolute location</strong> use the intensity of events
+						occurrence across
+						space. For this reason, they describe <strong>first-order effects</strong> better. Kernel
+						estimation methods are common density ased methods. In quadrat count methods, space is divided
+						into a regular
+						grid (such as a grid of squares or hexagons) of a unitary area. Each unitary
+						region includes a different number of points due to a spatial process. The
+						distribution analysis and its correspondence to a spatial pattern are based
+						on probabilistic and statistical methods. Another, more widely used
+						method is the kernel density estimation (KDE).</li>
+					<li><strong>Distance-based methods --> Relative location</strong> employ the distances among events
+						and describe
+						<strong>second-order effects</strong>. Such methods include the nearest neighbor method the G
+						and F distance functions,
+						the Ripley’s K distance function and its transformation,
+					</li>
+				</ul>
 			</section>
 
 			<section>
 				<h3>Centrograhy</h3>
 				<p>A very basic form of point pattern analysis involves summary statistics such as the mean center,
 					standard distance and standard deviational ellipse.</p>
-				<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="800">
+				<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="700">
+				<figcaption>Source: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
 			</section>
 
 			<section>
@@ -1933,34 +1967,6 @@
 				<h3>Convex Hull </h3>
 				<p>The convex hull of a point pattern pp is the smallest convex set that contains pp</p>
 				<img src="http://pysal.org/notebooks/images/explore/pointpats/centrography_53_0.png" width="700">
-			</section>
-
-			<section>
-				<p> A point pattern consists of a set of events at a set of
-					locations, where each event represents a single instance of the phenomenon of
-					interest </p>
-				<p>Most point pattern analysis techniques deal only with the location of the
-					events and not with other attributes they might carry.</p>
-				<p>There are two main (interrelated) methods of analyzing point patterns, namely
-					the distance-based methods and the density-based methods.</p>
-				<ul>
-					<li><strong>Density-based methods--> Absolute location</strong> use the intensity of events
-						occurrence across
-						space. For this reason, they describe <strong>first-order effects</strong> better. Kernel
-						estimation methods are common density ased methods. In quadrat count methods, space is divided
-						into a regular
-						grid (such as a grid of squares or hexagons) of a unitary area. Each unitary
-						region includes a different number of points due to a spatial process. The
-						distribution analysis and its correspondence to a spatial pattern are based
-						on probabilistic and statistical methods. Another, more widely used
-						method is the kernel density estimation (KDE).</li>
-					<li><strong>Distance-based methods --> Relative location</strong> employ the distances among events
-						and describe
-						<strong>second-order effects</strong>. Such methods include the nearest neighbor method the G
-						and F distance functions,
-						the Ripley’s K distance function and its transformation,
-					</li>
-				</ul>
 			</section>
 
 			<section>
@@ -2073,7 +2079,7 @@
 					choropleth maps:</p>
 				<ul>
 					<li><strong>Spatially extensive variables:</strong> each polygon is rendered based on a
-						measured value that holds for the entire polygon. <strong>Ej.</strong>total population</li></br>
+						measured value that holds for the entire polygon. <strong>Ej. </strong>total population</li></br>
 					<li><strong>Spatially intensive variables: </strong>the values of the variable are adjusted for the
 						area or some other
 						variable. <strong>Ej.</strong> population density</li>
@@ -2181,6 +2187,10 @@
 
 				</script>
 
+			</section>
+
+			<section>
+				<iframe title="Unemployment in the US" aria-label="Map" id="datawrapper-chart-a0Jqr" src="https://datawrapper.dwcdn.net/a0Jqr/1/" scrolling="no" frameborder="0" style="border: none;" width="739" height="561"></iframe>
 			</section>
 
 			<section>
