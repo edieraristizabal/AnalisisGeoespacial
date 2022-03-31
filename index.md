@@ -26,16 +26,19 @@ M2-222
 ### Intro to Remote Sensing - GIS
 [Taller Remote sensing](/Guias/Guia_SIG.pdf) 
 
-### Web mapping
-[Taller Web mapping](/Notebooks/WebMapping.ipynb) 
+### Web spatial tools
+[Taller Web Spatial tools](/Notebooks/WebMapping.ipynb) 
 
 ### Geospatial Data
-[Taller Importar datos raster](/Notebooks/DownloadData_Raster)  
+[Taller Importar datos raster](/Notebooks/DownloadData_Raster.ipynb)  
 [Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)  
 [Taller Datos espaciales](/Notebooks/GeospatialData.ipynb)   
 [Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb)  
 [Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb)  
 [Taller Geovisualización](/Notebooks/Geovisualization.ipynb)  
+
+### Web mapping
+[Taller Leaflet](/Notebooks/Leaflet.ipynb)
 
 ### Point pattern analysis
 [Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
@@ -91,4 +94,5 @@ El 30% final corresponde al trabajo escrito en formato artículo (Introducción,
 y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
 
 ## Link de interés
-* [Remote sensing & GIS application](http://ecoursesonline.iasri.res.in/course/view.php?id=53)
+* [Remote sensing & GIS application](http://ecoursesonline.iasri.res.in/course/view.php?id=53)  
+* [Geospatial big data handling theory and methods: A review and research challenges](https://www.sciencedirect.com/science/article/pii/S0924271615002439?via%3Dihub)

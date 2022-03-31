@@ -82,7 +82,7 @@
 			<p style="text-align: center; font-size: 40px;">“Everything is related to everything else, but near things are more related than distant things."</p>
 			<p style="text-align: right;"><small>Waldo R. Tobler (1970)</small></p>
 		</section>
-
+		<!--Intro-->
 		<section>
 			<section>
 				<h1>Introducción</h1>
@@ -207,7 +207,7 @@
 				<img src="https://i.pinimg.com/564x/ba/b7/7e/bab77e9b0ecf003610ca4e12b4d4ad27.jpg" width="900">
 			</section>
 		</section>
-
+		<!--Ambiente de trabajo-->
 		<section>
 			<section>
 				<h1>Ambiente de trabajo</h1>
@@ -293,10 +293,8 @@
 					width="1000">
 			</section>
 
-			
-
 		</section>
-
+		<!--Intro Sensores Remotos-->
 		<section>
 			<section>
 				<h1>Intro <br>Sensores Remotos</h1>
@@ -906,11 +904,10 @@
 			</section>
 
 		</section>
-
-
+		<!--Spatial is special-->
 		<section>
 			<section>
-				<h1>Geospatial data</h1>
+				<h1>Spatial is special</h1>
 			</section>
 
 			<section>
@@ -1130,6 +1127,10 @@
 				<p>“if a block group A is next-to a shopping mall, then block group A will experience high crime”</p>
 			</section>
 
+		</section>
+		<!--Spatial models-->
+		<section>
+			<section><h1>Spatial data</h1></section>
 			<section>
 				<h1>Spatial models</h1>
 				<img src="https://studyonline.unsw.edu.au/sites/default/files/UNSW2.png" width="1000">
@@ -1173,7 +1174,7 @@
 			</section>
 
 			<section>
-				<h1>Spatial Data Models</h1>
+				<h3>Spatial Data Models</h3>
 				<p>Spatial data may be of various broad types: points, lines, areas, and
 					fields. Each type typically requires different techniques and approaches.</p>
 				<img src="https://cdn.uconnectlabs.com/wp-content/uploads/sites/28/2019/08/GIS_technology.jpg"
@@ -1273,19 +1274,55 @@
 				<h3>Geojson</h3>
 				<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with
 					their non-spatial attribute</p>
-				<img src="https://miro.medium.com/max/700/1*mGBJnGvBuWAeEbzKZFhp2g.png" width="700">
+				<img src="https://miro.medium.com/max/700/1*mGBJnGvBuWAeEbzKZFhp2g.png" width="500">
+				<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h3>Geojson</h3>
-				<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with
-					their non-spatial attribute</p>
-				<img src="https://miro.medium.com/max/700/1*iMIv18OMAXbVEySIC-SiJw.png" width="600">
+				<h3>Geojson -- Multi-part geometry</h3>
+				<p>Multi-part geometry types are similar to their single-part counterparts. The only difference is that one more hierarchical level is added into the coordinates array, 
+					for specifying multiple shapes.</p>
+					<img src="https://i.pinimg.com/originals/9f/97/81/9f97811c05cd2422743f19d28df964b6.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Geometry collections </h3>
+				<p>A geometry collection is a set of several geometries, where each geometry is one of the previously listed six types, i.e., 
+					any geometry type excluding "GeometryCollection". For example, a "GeometryCollection" consisting of two geometries, 
+					a "Point" and a "MultiLineString", can be defined as follows:</p>
+					<img src="https://i.pinimg.com/564x/4e/5d/c4/4e5dc4636252a69969984dc5f7110828.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Feature </h3>
+				<p>A "Feature" is formed when a geometry is combined with non-spatial attributes, to form a single object. The non-spatial 
+					attributes are encompassed in a property named "properties", containing one or more name-value pairs—one for 
+					each attribute. For example, the following "Feature" represents a geometry with two attributes, named "color" 
+					and "area":</p>
+					<img src="https://i.pinimg.com/564x/0e/af/61/0eaf614fc53087c6e2066a622e0be5ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Feature  Collections</h3>
+				<p>A "FeatureCollection" is, like the name suggests, a collection of "Feature" objects. The separate features are contained 
+					in an array, comprising the "features" property. For example, a "FeatureCollection" composed of four features can be 
+					specified as follows:</p>
+					<img src="https://i.pinimg.com/564x/71/95/81/719581743041ece51f82a40e30a611ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
 				<h3><a href="http://geojson.io/">http://geojson.io/</a></h3>
 				<img src="https://geobgu.xyz/web-mapping/images/geojson_io.png" width="900">
+			</section>
+
+			<section>
+				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
+				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
+					width="1000">
 			</section>
 
 			<section>
@@ -1300,12 +1337,6 @@
 					can display the SVG image.</p>
 				<h3>DWG</h3>
 				<p>DWG is an intern format for AutoCAD. A DWG file is a database of 2D or 3D drawings.</p>
-			</section>
-
-			<section>
-				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
-				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
-					width="1000">
 			</section>
 
 			<section>
@@ -1356,8 +1387,79 @@
 				<p>netCDF file format with The Climate and Forecast (CF) metadata conventions for earth science data. It
 					allows for direct web-access of subsets/aggregations of maps through OPeNDAP protocol.</p>
 			</section>
-		</section>
+		</section>	
+		<!--Web mapping-->
+		<section>
+			<section><h1>Web mapping</h1></section>
+			<section>
+				<h3>Web mapping</h3>
+				<p>A web map is an interactive display of geographic information, in the form of a web page, that you can use to tell stories 
+					and answer questions. Web maps are interactive. The term interactive implies that the viewer can interact with the map. 
+					This can mean selecting different map data layers or features to view, zooming into a particular part of the map that 
+					you are interested in, inspecting feature properties, editing existing content, or submitting new content, and so on.</p>
 
+				<p>Web maps are useful for various purposes, such as data visualization in journalism (and elsewhere), displaying real-time 
+					spatial data, powering spatial queries in online catalogs and search tools, providing computational tools, reporting, 
+					and collaborative mapping. </p>
+			</section>
+			<section>
+				<img src="https://web-mapping.surge.sh/images/earth_nullschool.png" width="900">
+				<figcaption><a href="https://earth.nullschool.net/">Earth weather</a></figcaption>
+			</section>
+			<section>
+				<img src="https://i0.wp.com/hyperallergic-newspack.s3.amazonaws.com/uploads/2015/07/stuffinspace-small.gif?fit=291%2C180&quality=100&ssl=1" width="600">
+				<figcaption><a href="http://stuffin.space/">Stuff in space</a></figcaption>
+			</section>
+			<section>
+				<img src="https://www.flightradar24.com/blog/wp-content/uploads/2016/04/AirportPins.gif" width="600">
+				<figcaption><a href="http://stuffin.space/">Real-time flight locations</a></figcaption>
+			</section>
+			<section>
+				<h3>Herramientas</h3>
+				<img src="https://web-mapping.surge.sh/web_mapping_files/figure-html/timeline-1.png" width="600">
+				<figcaption>Source: <a href="https://web-mapping.surge.sh">Introduce to Web Mapping</a></figcaption>
+			</section>
+			<section>
+				<h3>Arquitectura</h3>
+				<img src="https://i.pinimg.com/564x/4b/b2/3b/4bb23bf24e8dfa602a2772d16c5ceae4.jpg" width="800">
+				<figcaption>Source: <a href="http://maptimeboston.github.io/web-maps-101/#39">Maptimeboston</a></figcaption>
+			</section>
+			<section>
+				<h3>Tile layers</h3>
+				<p>Tile layers are a fundamental technology behind web maps. They comprise the background layer in most web maps, 
+					thus helping the viewer to locate the foreground layers in geographical space. The word tile in tile layers 
+					comes from the fact that the layer is split into individual rectangular tiles. Tile layers come in two forms, 
+					which we are going to cover next: raster tiles and vector tiles.</p>
+				<p><strong>Raster tiles:</strong> tile layers are usually composed of PNG images. Traditionally, each PNG image is  
+					256 × 256 pixels in size.</p>
+				<p><strong>Vector tiles</strong> Vector tiles are distinguished by the ability to rotate the map while the labels keep 
+					their horizontal orientation, and by the ability to zoom in or out smoothly—without the strict division to discrete 
+					zoom levels that raster tile layers have.</p>
+			</section>
+			<section>
+				<h3>Tile layers</h3>
+				<img src="https://web-mapping.surge.sh/images/tile_zoom_levels.png" width="600">
+				<p>https://a.tile.openstreetmap.org/2/1/3.png</p>
+				<lu>
+					<li>zoom level 2</li>
+					<li>column 1</li>
+					<li>row 3</p></li>
+				</lu>
+			</section>
+			<section>
+				<h3>Zoom level</h3>
+				<img src="https://i.pinimg.com/originals/27/12/9c/27129c73d990af8267c492cda02bbd7b.jpg" width="800">
+				<figcaption>Source: <a href="http://maptimeboston.github.io/web-maps-101/#39">Maptimeboston</a></figcaption>
+			</section>
+			<section>
+				<h3>Vector tiles</h3>
+				<img src="https://www.researchgate.net/profile/Julien-Gaffuri/publication/264244246/figure/fig3/AS:295838975840264@1447544916644/Principle-of-vector-tiling.png" width="600">
+				<figcaption>Source: <a href="https://www.researchgate.net/publication/264244246_Toward_Web_Mapping_with_Vector_Data">Gaffuri (2012)</a></figcaption>
+				<br>
+				<a href="https://web-mapping.surge.sh/examples/example-06-01.html">Ejemplo</a>
+			</section>
+		</section>
+		<!--Basic statistics-->
 		<section>
 
 			<section>
@@ -1881,8 +1983,7 @@
 				<img src="https://marketoonist.com/wp-content/uploads/2014/04/140414b.correlation.jpg" width="850">
 			</section>
 		</section>
-
-
+		<!--Point pattern analysis-->
 		<section>
 			<section>
 				<h1>Point pattern analysis</h1>
@@ -2061,8 +2162,118 @@
 				<h3>Ripley's K function</h3>
 				<img src="https://gistbok.ucgis.org/sites/default/files/AM07_Fig5.png" width="600">
 			</section>
-		</section>
 
+			<section>
+				<h3>Clustering</h3>
+				<p>El objetivo es identificar subgrupos en los datos, de tal forma que los datos en cada subgrupo
+					(clusters) sean
+					muy similares, mientras que los datos en diferentes subgrupos sean muy diferentes.</p>
+				<img src="https://i.pinimg.com/564x/d3/21/df/d321df3f3abfbfdc400af1ec454f6e5f.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Distance</h3>
+				<img src="https://i.pinimg.com/originals/96/31/74/963174f44981900fdcb1dc5a4632f36e.png" width="400">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/3a/4c/ca/3a4cca6d7b60d2b198578e4cafa63435.jpg" width="800">
+			</section>
+
+			<section>
+				<ul>
+					<li style="color:rgb(15, 15, 15);"><strong>Hierarchical Clustering:</strong> descomposición
+						jerárquica utilizando algún criterio, pueden ser aglomerativos (bottom-up)
+						o de separación (top-down). No necesitan K al inicio.</li>
+					<li style="color:rgb(15, 15, 15);"><strong>Partitioning Methods (</strong> (k-means, PAM, CLARA): se
+						construye a partir de particiones, las cuales son evaluadas
+						por algún criterio. Necesitan K al inicio.</li>
+					<li style="color:rgb(150, 150, 150);">Density-Based Clustering: basados en funciones de conectividad
+						y funciones de densidad.</li>
+					<li style="color:rgb(150, 150, 150);">Model-based Clustering: se utiliza un modelo para agrupar los
+						modelos.</li>
+					<li style="color:rgb(150, 150, 150);">Fuzzy Clustering: A partir de lógica difusa se separan o
+						agrupan los clusters.</li>
+				</ul>
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/originals/11/3f/24/113f2409c3e9afcf77bcd645b3c8f8c6.gif" width="1000">
+			</section>
+
+			<section>
+				<h3>Clustering</h3>
+				<img src="https://i.pinimg.com/564x/a9/95/55/a9955553655ce4912fec48f95c4b6065.jpg" width="600">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/55/86/61/558661c78fe7461fe8bccc4b3b87d91d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/1a/9e/0f/1a9e0f27f121f98a99934576a0b7c3f1.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/28/88/9e/28889e974bea367efaae6c3776d88c19.jpg" width="1000">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/f0/0d/50/f00d50d6b438178c91f0633e663fff1d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>K-means</h3>
+				<img src="https://i.pinimg.com/originals/37/1e/88/371e88c867d1015d65cbab831a7542c5.gif" width="600">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/7f/d8/03/7fd8038ad7b82396ec51b37f573ac02f.jpg" width="800">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/07/d9/ca/07d9ca6c0dbab189b0f8437cabbec092.jpg" width="900">
+			</section>
+
+			<section>
+				<h3>Elbow method</h3>
+				<img src="https://www.oreilly.com/library/view/statistics-for-machine/9781788295758/assets/995b8b58-06f1-4884-a2a1-f3648428e947.png"
+					width="500">
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/publication/340705597/figure/fig2/AS:881376379285504@1587147912170/a-Elbow-Curve-for-K-means-Clustering-b-K-Means-clustering-of-the-developers-on-the.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Método Silhouette</h3>
+				<img src="https://i.pinimg.com/564x/62/df/4c/62df4c59ad9708c0847529b443812817.jpg" width="1200">
+			</section>
+
+			<section>
+				<h3>DBScan</h3>
+				<p>DBSCAN is a density-based clustering method, which means that points that are closely packed together are assigned into the 
+					same cluster and given the same ID. The DBSCAN algorithm has two parameters, which the user needs to specify:</p>
+					<lu>
+						<li>ε —The maximal distance between points to be considered within the same cluster</li>
+						<li>minPts —The minimal number of points required to form a cluster</li>
+					</lu>
+				<p>In short, all groups of at least minPts points, where each point is within ε or less from at least one other point in the 
+					group, are considered to be separate clusters and assigned with unique IDs. All other points are considered “noise” 
+					and are not assigned with an ID.</p>
+			</section>
+			
+			<section>
+				<h3>DBScan</h3>
+				<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
+			</section>
+
+		</section>
+		<!--Geovisualization-->
 		<section>
 			<section>
 				<h1>Geovisualization</h1>
@@ -2211,7 +2422,7 @@
 			</section>
 
 		</section>
-
+		<!--Lattice data analysis Object-based model-->
 		<section>
 			<section>
 				<h1>Lattice data analysis<br><br>Object-based model</h1>
@@ -2505,7 +2716,7 @@
 				<img src="https://mgimond.github.io/Spatial/img/HH_LL_P_map.png" width="300">
 			</section>
 		</section>
-
+		<!--Lattice data analysis field model-->
 		<section>
 			<section>
 				<h1>Lattice data analysis<br><br>Field model</h1>
@@ -2627,7 +2838,7 @@
 					width="1000">
 			</section>
 		</section>
-
+		<!--Networks-->
 		<section>
 			<section>
 				<h1>Networks</h1>
@@ -2639,153 +2850,10 @@
 
 			</section>
 		</section>
-
+		<!--Spatial model-->
 		<section>
 			<section>
 				<h1>Spatial model</h1>
-			</section>
-
-			<section>
-				<h1>Principal Component Analysis (PCA)</h1>
-				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0098135418304551-gr2.jpg" width="800">
-			</section>
-
-			<section>
-				<h1>Principal Component Analysis (PCA)</h1>
-				<img src="http://www.nlpca.org/fig-pca-principal-component-analysis-m.png" width="800">
-			</section>
-
-			<section>
-				<img src="https://miro.medium.com/max/2625/1*ba0XpZtJrgh7UpzWcIgZ1Q.jpeg" width="800">
-			</section>
-
-			<section>
-				<img src="https://www.researchgate.net/profile/Elisabeth-Berger-2/publication/313544780/figure/fig2/AS:614117438148634@1523428415902/Biplot-of-the-principal-component-analysis-Circle-size-increases-with-increasing.png"
-					width="800">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/20/e4/5a/20e45a752cd5900c4cf7f9af8c2db7e1.jpg" width="700">
-				<p style="font-size: 16px;text-align: center;">As the dimensions increase the volume of
-					the space increases so fast that the available data becomes sparse</p>
-			</section>
-
-			<section>
-				<img src="https://media.geeksforgeeks.org/wp-content/uploads/Dimensionality_Reduction_1.jpg"
-					width="900">
-			</section>
-
-			<section>
-				<img src="https://i.stack.imgur.com/KIveI.png" width="600">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/d2/7a/21/d27a21eb9f2791786ef2c7d06ba4eba7.jpg" width="600">
-			</section>
-
-			<section>
-				<h1>Regionalization</h1>
-				<p>Regionalization consists of a set of methods that cluster multivariate spatial
-					data based on spatial constraints. It is a procedure of grouping a large number
-					of spatial objects into a desirable smaller number of homogeneous clusters that
-					also occupy contiguous regions in space. The spatial
-					clusters are also named regions.</p>
-			</section>
-
-			<section>
-				<h3>Clustering</h3>
-				<p>El objetivo es identificar subgrupos en los datos, de tal forma que los datos en cada subgrupo
-					(clusters) sean
-					muy similares, mientras que los datos en diferentes subgrupos sean muy diferentes.</p>
-				<img src="https://i.pinimg.com/564x/d3/21/df/d321df3f3abfbfdc400af1ec454f6e5f.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Distance</h3>
-				<img src="https://i.pinimg.com/originals/96/31/74/963174f44981900fdcb1dc5a4632f36e.png" width="400">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/3a/4c/ca/3a4cca6d7b60d2b198578e4cafa63435.jpg" width="800">
-			</section>
-
-			<section>
-				<ul>
-					<li style="color:rgb(15, 15, 15);"><strong>Hierarchical Clustering:</strong> descomposición
-						jerárquica utilizando algún criterio, pueden ser aglomerativos (bottom-up)
-						o de separación (top-down). No necesitan K al inicio.</li>
-					<li style="color:rgb(15, 15, 15);"><strong>Partitioning Methods (</strong> (k-means, PAM, CLARA): se
-						construye a partir de particiones, las cuales son evaluadas
-						por algún criterio. Necesitan K al inicio.</li>
-					<li style="color:rgb(150, 150, 150);">Density-Based Clustering: basados en funciones de conectividad
-						y funciones de densidad.</li>
-					<li style="color:rgb(150, 150, 150);">Model-based Clustering: se utiliza un modelo para agrupar los
-						modelos.</li>
-					<li style="color:rgb(150, 150, 150);">Fuzzy Clustering: A partir de lógica difusa se separan o
-						agrupan los clusters.</li>
-				</ul>
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/originals/11/3f/24/113f2409c3e9afcf77bcd645b3c8f8c6.gif" width="1000">
-			</section>
-
-			<section>
-				<h3>Clustering</h3>
-				<img src="https://i.pinimg.com/564x/a9/95/55/a9955553655ce4912fec48f95c4b6065.jpg" width="600">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/55/86/61/558661c78fe7461fe8bccc4b3b87d91d.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/1a/9e/0f/1a9e0f27f121f98a99934576a0b7c3f1.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/28/88/9e/28889e974bea367efaae6c3776d88c19.jpg" width="1000">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/f0/0d/50/f00d50d6b438178c91f0633e663fff1d.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>K-means</h3>
-				<img src="https://i.pinimg.com/originals/37/1e/88/371e88c867d1015d65cbab831a7542c5.gif" width="600">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/7f/d8/03/7fd8038ad7b82396ec51b37f573ac02f.jpg" width="800">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/07/d9/ca/07d9ca6c0dbab189b0f8437cabbec092.jpg" width="900">
-			</section>
-
-			<section>
-				<h3>Elbow method</h3>
-				<img src="https://www.oreilly.com/library/view/statistics-for-machine/9781788295758/assets/995b8b58-06f1-4884-a2a1-f3648428e947.png"
-					width="500">
-			</section>
-
-			<section>
-				<img src="https://www.researchgate.net/publication/340705597/figure/fig2/AS:881376379285504@1587147912170/a-Elbow-Curve-for-K-means-Clustering-b-K-Means-clustering-of-the-developers-on-the.png"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Método Silhouette</h3>
-				<img src="https://i.pinimg.com/564x/62/df/4c/62df4c59ad9708c0847529b443812817.jpg" width="1200">
-			</section>
-			
-			<section>
-				<h3>DBScan</h3>
-				<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
 			</section>
 
 			<section>
@@ -2799,6 +2867,18 @@
 			</section>
 
 			<section>
+				<h3>Ordinary least squares regression (OLS)</h3>
+				<p><strong>Assumptions</strong></p>
+				<ul>
+					<li><strong>Linear relationship</strong> between the dependent and independent variables</li>
+					<li><strong>Multivariate normality</strong>: the residual of the linear model should be normally distributed</li>
+					<li><strong>No multicolinearity</strong> between independent variables, i.e. they should not correlate between each other</li>
+					<li><strong>Homoscedasticity</strong>: the errors/residuals should have constant variance (no trends)</li>
+					<li><strong>No autocorrelation</strong>: residuals (errors) in the model shoul not be correlqated in any way</li>
+				</ul>
+			</section>
+
+			<section>
 				<h3>Simple Linear Regression model</h3>
 				<img src="https://miro.medium.com/proxy/1*664wMZo-Y1UViLERmVcmzA.png" width="400">
 			</section>
@@ -2807,17 +2887,36 @@
 				<h3>Multivariate regression model </h3>
 				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i + \hat{\beta}_2 X_2 +
 					\hat{\beta}_n X_n +\hat{\epsilon}_i$</div>
-				<img src="https://miro.medium.com/proxy/1*3DwxOlVPr4EtGhU8qFwjXw.png" width="450">
-			</section>
-
-			<section>
-				<h3>Multivariate regression model </h3>
 				<img src="https://miro.medium.com/proxy/1*ug_G5ZUYTzUj5qFxtbGPPw.png" width="900">
 			</section>
 
 			<section>
 				<h3>Multivariate regression model </h3>
+				<img src="https://miro.medium.com/proxy/1*3DwxOlVPr4EtGhU8qFwjXw.png" width="450">
+			</section>
+
+			<section>
+				<h3>Multivariate regression model </h3>
 				<img src="https://miro.medium.com/max/2400/1*uU8OrmvDMY4hduEJLdod-w.png" width="700">
+			</section>
+
+			<section>
+				<h3>Spatial regression</h3>
+				<p>Spatial regression is about explicitly introducing space or geographical context into the statistical framework of a regression</p>
+				<p>Introducing <strong>spatial dependence</strong> in a regression can be done by considering:</p>
+				<lu>
+					<li>Exogenous effects (Wx): take into account the spatial lag of the <strong>explanatory variable</strong></li>
+					<li>Spatial error model: include the spatial lag in the <strong>error term</strong> of the equation</li>
+					<li>Spatial lag model (Wy): introduce a spatial lag to the <strong>dependent variable</strong></li>
+				</lu>
+				<p>Introducing <strong>spatial heterogeneity</strong> in a regression can be done by considering:</p>
+				<lu>
+					<li>Proximity variables: Consider closeness to factors / environmental characteristics that might influence the modelled phenomena as an explanatory</li>
+					<li>Spatial fixed effects (FE) / Spatial regimes (SR): Consider the uniqueness of a place and (i) allow the constant term to vary geographically (Fes) or 
+						(ii) allow also the explanatory variables (in adition to constant) to vary geographically</li>
+				</lu>
+				<br>
+				<figcaption>Source: <a href="https://sustainability-gis.readthedocs.io/en/latest/index.html">Spatial data science for sustainable development</a></figcaption>
 			</section>
 
 			<section>
