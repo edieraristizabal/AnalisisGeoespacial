@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar contenido</title>
+    <meta name="viewport" content="width=device-width,  initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+  <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.6.0/dist/leaflet.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #map {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+<script>
+
+// Bounds
+var bounds = [-74.26801, 0.49708, -75.90094, 7.36403];
+
+// Initialize map
+var map = L.map("map").fitBounds([[bounds[1], bounds[0]], [bounds[3], bounds[2]]]);
+L.tileLayer(
+    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", 
+    {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
+).addTo(map);
+
+// Define layers
+var pnt_layer = L.layerGroup().addTo(map);
+var tin_layer = L.layerGroup().addTo(map);
+
+// Calculate random points
+var points = turf.randomPoint(20, {bbox: bounds});
+L.geoJSON(points, {
+    onEachFeature: function(feature, layer) {
+        layer.on("drag", drawTIN);
+    },
+    pointToLayer: function(geoJsonPoint, latlng) {
+        return L.marker(latlng, {draggable: true});
+    }
+}).addTo(pnt_layer);
+
+// Function to draw TIN
+function drawTIN() {
+    tin_layer.clearLayers();
+    points = pnt_layer.toGeoJSON();
+    tin = turf.tin(points);
+    tin = L.geoJSON(tin);
+    tin.addTo(tin_layer);
+}
+drawTIN();
+
+    </script>
+
+</body>
+</html>

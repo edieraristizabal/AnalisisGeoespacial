@@ -30,6 +30,8 @@ M2-222
 [Taller Web Spatial tools](/Notebooks/WebMapping.ipynb) 
 
 ### Geospatial Data
+Lecture: [A conceptual framework and comparison of spatial models](https://www.researchgate.net/publication/244954245_A_Conceptual_Framework_and_Comparison_of_Spatial_Data_Models)
+
 [Taller Importar datos raster](/Notebooks/DownloadData_Raster.ipynb)  
 [Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)  
 [Taller Datos espaciales](/Notebooks/GeospatialData.ipynb)   
@@ -94,5 +96,6 @@ El 30% final corresponde al trabajo escrito en formato artículo (Introducción,
 y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
 
 ## Link de interés
+* [The Core of GIS Science](https://ltb.itc.utwente.nl/page/498/dashboard)
 * [Remote sensing & GIS application](http://ecoursesonline.iasri.res.in/course/view.php?id=53)  
 * [Geospatial big data handling theory and methods: A review and research challenges](https://www.sciencedirect.com/science/article/pii/S0924271615002439?via%3Dihub)
