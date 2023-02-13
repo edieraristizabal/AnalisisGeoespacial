@@ -62,7 +62,6 @@
 		<div id="clock" style="font-size:20px;position:absolute;top:98%;right:98%;">0:00:00</div>
 		<section data-background-color="#ffffff" ; data-state="primera">
 			<h1 style="font-size: 60px;">ANÁLISIS GEOESPACIAL</h1>
-			<h2>Introducción</h2>
 			<p>
 			<h4><a href="https://edieraristizabal.github.io/">Prof. Edier Aristizábal</a></h4>
 			</p>
@@ -81,7 +80,8 @@
 			<p style="text-align: center; font-size: 40px;">“Everything is related to everything else, but near things are more related than distant things."</p>
 			<p style="text-align: right;"><small>Waldo R. Tobler (1970)</small></p>
 		</section>
-		<!--Intro-->
+
+<!--Intro-->
 		<section>
 			<section>
 				<h1>Introducción</h1>
@@ -113,9 +113,9 @@
 				<p>Los kilobytes eran almacenados en discos, megabytes fueron almacenados en discos duros, terabytes
 					fueron
 					almacenados en arreglos de discos, y petabytes son almacenados en la nube. </p>
-				<img src="https://s3.eu-west-3.amazonaws.com/dealna/images/data-center%20(1).jpg" alt="store1"
+				<img src="https://images.theconversation.com/files/398619/original/file-20210504-23-1t02hm4.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=600&h=338&fit=crop&dpr=1" alt="store1"
 					width="650" />
-				<figcaption>(Anderson, 2008)</figcaption>
+				<figcaption><a href="https://theconversation.com/the-worlds-data-explained-how-much-were-producing-and-where-its-all-stored-159964">Mevin M. Vopson (2021)</a></figcaption>
 			</section>
 
 			<section>
@@ -230,7 +230,8 @@
 			</section>
 
 		</section>
-		<!--Ambiente de trabajo-->
+
+<!--Ambiente de trabajo-->
 		<section>
 			<section>
 				<h1>Ambiente de trabajo</h1>
@@ -313,624 +314,317 @@
 			<section>
 				<h1>Sentinel EO Browser</h1>
 				<img src="https://i.pinimg.com/564x/0f/e5/73/0fe573503ca18dd6674a0a88987d15db.jpg"
+				width="1000">
+			</section>
+			
+		</section>
+		
+<!--Spatial data I-->
+		<section>
+			<section><h1>Spatial data I</h1></section>
+			
+			<section>
+				<p style="text-align: center; font-size: 40px;">Models are simplifications of reality</p>
+				<img src="https://storage.googleapis.com/xebia-blog/1/2019/10/mentalmodel.png">
+			</section>
+			
+			<section>
+				<h1>Measurement scales</h1>
+				<img src="https://studyonline.unsw.edu.au/sites/default/files/UNSW2.png" width="1000">
+			</section>
+			
+			<section>
+				<img src="https://quizzma.com/wp-content/uploads/2020/04/44b2990d644ecb2de5f07ddf4314c39c.jpg"
+					width="850">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/originals/f8/78/21/f8782128cba493baf325051cf52d90f9.jpg" width="850">
+			</section>
+
+			<section>
+				<h3>Spatial data models</h3>
+				<ul>
+					<li><strong>Data</strong> can be defined as verifiable facts about the real world.</li>
+					<li><strong>Information</strong> is data organized to reveal patterns, and to facilitate search.</li>
+					<li><strong>Data model:</strong> an abstraction of the real world which incoprorates onlu those properties thought to be relevant to the application</li>
+					<li><strong>Data structure: </strong>a representation of the data model</li>
+					<li><strong>File format: </strong>the representation of the data in storage hardware</li>
+				</ul>
+				<p> </p>
+				<p></li></p>
+				<p>Real world data must be described in terms of a <strong>data model</strong>, then a <strong>data structure</strong> must be chosen to represent the data 
+					model, and finally a <strong>file format</strong> must be selected that is suitable for that data structure.</p>
+			</section>
+
+			<section>
+				<h3>Spatial data</h3>
+				<p>Spatial data is geographically referenced data, given at known locations and
+					often represented visually through maps. That geographic reference, or the
+					location component of the data, may be represented using any number of
+					coordinate reference systems, for example, longitude and latitude.</p>
+
+				<p>In other words, spatial data is spatially dependent or correlated,
+					and independence between the observations, which is a common assumption
+					for many statistical techniques, is not satisfied</p>
+
+				<p>An observed spatial pattern may be observed in
+					variables strictly depending on the location, or because of direct interactions
+					between the points.</p>
+			</section>
+			<section>
+				<h3>Geospatial data</h3>
+				<p>Geospatial data is data about objects, events, or phenomena that have a location on the surface of
+					the earth,
+					including location information, attribute information (the characteristics
+					of the object, event, or phenomena concerned), and often also temporal information (the time or life
+					span at
+					which the location and attributes exist)</p>
+				<img src="https://www.marklogic.com/wp-content/uploads/2018/02/Diagram-Geospatial-Who-What-Where.svg"
 					width="1000">
 			</section>
 
-		</section>
-		<!--Intro Sensores Remotos-->
-		<section>
 			<section>
-				<h1>Intro <br>Sensores Remotos</h1>
-			</section>
-
-			<section>
-				<h1>Sensores Remotos</h1>
-				<img src="https://www.researchgate.net/profile/Deborah-Balk-2/publication/253129924/figure/fig1/AS:298024912867328@1448066084166/Diagram-of-Elements-of-a-Remote-Sensing-System.png"
-					width="800">
-			</section>
-
-			<section>
-				<img src="https://ars.els-cdn.com/content/image/3-s2.0-B9780128092545000026-f02-01-9780128092545.jpg"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Ley de Stefan-Boltzmann & Ley de Wien</h3>
-				<img src="http://3.bp.blogspot.com/--LNjn2jEHcg/UTsc-31r9GI/AAAAAAAADrs/3ZMIwpZ0FO8/s1600/spectral_emissive_power_of_a_288k_balckbody.jpg"
-					width="900">
-			</section>
-
-			<section>
-				<img src="https://www.cientec.or.cr/sites/default/files/espectro.jpg" width="1000">
-			</section>
-
-			<section>
-				<h1>Unidades</h1>
-				<ul>
-					<li><b>Energía radiante: </b> total de energía radiada en todas las direcciones (J).</li>
-					<li><b>Flujo radiante: </b>energía radiada en todas las direcciones por unidad de tiempo (W).</li>
-					<li><b>Irradiancia: </b>flujo radiante incidente sobre unidad de área (w/m2).</li>
-					<li style="color: blue;"><b>Radiancia: </b>flujo radiante emitido o reflejado por unidad de área y
-						por ángulo solido de medida (W Sr/m2).</li>
-					<li><b>Emisividad: </b>relación entre la emitancia y la de un emisor perfecto.</li>
-					<li style="color: blue;"><b>Reflectancia: </b> relación entre el flujo incidente y el flujo
-						reflejado por una superficie.</li>
-					<li><b>Absortancia: </b>relación entre el flujo incidente y el flujo que absorbe una superficie.
-					</li>
-					<li><b>Transmitancia: </b>relación entre el flujo incidente y el transmitido por una superficie.
-					</li>
-				</ul>
-				<img src="https://www.researchgate.net/publication/335182992/figure/fig2/AS:792150774120449@1565874870037/General-concept-of-a-satellite-or-ground-based-remote-sensing-measurement-of-reflected_W640.jpg"
+				<h3>Spatial Data Models</h3>
+				<p>Spatial data may be of various broad types: points, lines, areas, and
+					fields. Each type typically requires different techniques and approaches.</p>
+				<img src="https://cdn.uconnectlabs.com/wp-content/uploads/sites/28/2019/08/GIS_technology.jpg"
 					width="500">
 			</section>
 
 			<section>
-				<h3>Radiación solar & Radiación terrestre</h3>
-				<img src="https://media.cheggcdn.com/media%2Fc21%2Fc2109982-6c81-47a9-884e-cba8a9c3d57c%2FphpEF50FM.png"
-					width="900">
-			</section>
-
-			<section>
-				<h3>Tipos de sensores</h3>
-				<img src="https://pltfrmrsrcs.sagepub.com/images/geography/9781412956970-p2422-1.jpg" width="850">
-			</section>
-
-			<section>
-				<h3>Tipos de sensores</h3>
-				<img src="https://www.researchgate.net/profile/Aurelie-Shapiro/publication/324537528/figure/fig3/AS:631598739365924@1527596282701/The-difference-between-four-major-types-of-remote-sensors-passive-sensors.png"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Tipos de sensores</h3>
-				<img src="https://www.researchgate.net/profile/Tullio-Tanzi-2/publication/271846153/figure/fig2/AS:295102191816705@1447369253180/The-frequency-bands-of-the-passive-and-active-sensors-for-optical-imaging-and-for-radio.png"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Interacción de la atmósfera</h3>
-				<img src="https://ltb.itc.utwente.nl/uploads/studyarea/498/Pics_2015_jpg/Fig2_6.jpg" width="650">
-			</section>
-
-			<section>
-				<img src="https://www.researchgate.net/publication/334970647/figure/fig3/AS:788525624610824@1565010567844/Solar-spectra-outside-of-the-atmosphere-at-ground-level-and-the-theoretical-blackbody.jpg"
+				<p>The relationship between real geographic entities and spatial data is
+					complex and scale-dependent.</p>
+				<img src="https://i1.wp.com/transportgeography.org/wp-content/uploads/gis_data_models.png?w=1000&ssl=1"
 					width="700">
 			</section>
 
 			<section>
-				<h3>Firma espectral</h3>
-				<p>La firma espectral se define como el comportamiento diferencial que presenta la radiación reflejada
-					(reflectancia) o emitida (emitancia) desde algún tipo de superficie u objeto terrestre en los
-					distintos
-					rangos del espectro electromagnético. Una forma gráfica de estudiar este comportamiento es
-					disponer los datos de reflectancia (%) en el eje Y y la longitud de onda λ en el eje X. Al unir los
-					puntos con una línea continua se origina una representación bidimensional de la firma espectral.</p>
-				<img src="https://crisp.nus.edu.sg/~research/tutorial/hcube.gif" width="500">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/originals/2d/41/70/2d4170e9e2a960afa5ad3123b8604fcb.jpg" width="1000">
-			</section>
-
-			<section>
-				<h1>Raster</h1>
-				<p>Raster data (also known as grid data) represents surfaces. A raster, in its most basic form, is a
-					matrix of cells (or pixels)
-					grouped into rows and columns (or a grid), each cell containing a value reflecting information such
-					as temperature.
-					Each pixel corresponds to a particular geographic location. </p>
-				<p>The extent and cell size of the raster, the number of rows and columns, and the spatial reference
-					system are all factors to consider
-					(or CRS)</p>
-
-			</section>
-
-			<section>
-				<h1>Raster</h1>
-				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_concept.png"
-					width="600">
-				<figcaption>Representation of raster data. Source: National Ecological Observatory Network (NEON) via
-					datacarpentry</figcaption>
-			</section>
-
-
-			<section>
-				<h1>Resolución de imágenes</h1>
-				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_resolution.png"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Resolución espacial</h3>
-				<p><b>Para films (análogas) → resolving power of the film:</b> La resolución es función de la
-					distribución del tamaño de los granos de silver halide en la
-					emulsión. Los films con granos gruesos tienen una resolución menor sin embargo son mas
-					sensibles o rápidos a la luz, por el contrario con granos mas finos tienen mas resolución, pero
-					son menos sensible o lentos a la luz.</p>
-				<img src="https://www.cloudynights.com/uploads/monthly_12_2011/post-17464-14073829930923_thumb.gif"
+				<img src="https://pediaa.com/wp-content/uploads/2019/02/Difference-Between-Raster-and-Vector-Data-Comparison-Summary.jpg"
 					width="550">
 			</section>
 
 			<section>
-				<h3>Escala</h3>
-				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/GSD.jpg" width="1000">
-				<a href="https://datacarpentry.org/organization-geospatial/aio/index.html"
-					style="font-size: 20px;">Source: National Ecological Observatory Network (NEON)</a>
-			</section>
-
-			<section>
-				<h3>IFOV --> GSD --> Pixel --> Resolución </h3>
-				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1350449509001017-gr1.jpg" width="450">
-			</section>
-
-			<section>
-				<h3>IFOV</h3>
-				<img src="https://www.novuslight.com/uploads//n/Defense_Fig.-1_IFOV_diagram.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>IFOV</h3>
-				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_3.gif"
-					width="450">
-				<img src="data:image/png;base64,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"
-					width="450">
-			</section>
-
-			<section>
-				<h3>Pixel size</h3>
-				<img src="https://seos-project.eu/remotesensing/images/spatial-resolution_400.png" width="700">
-			</section>
-
-			<section>
-				<img src="https://images.slideplayer.com/24/7344475/slides/slide_7.jpg" width="850">
-			</section>
-
-			<section>
-				<h3>Relación entre escala y resolución</h3>
-				<ul>El procesamiento de imágenes está interesado:
-					<li><b>Detección:</b> discernir discretamente los objetos</li>
-					<li><b>Reconocer: </b>determinar que tipo de objeto es</li>
-					<li><b>Identificar: </b>identificar el objeto específicamente</li>
-				</ul>
-				<img src="https://i.ytimg.com/vi/AdXBewR-u2A/hqdefault.jpg" width="650">
-			</section>
-
-			<section>
-				<h3>Escala VS Resolución</h3>
-				<img src="https://miro.medium.com/max/385/0*BL2opZhfAmH32Ne3.gif" width="800">
-			</section>
-
-			<section>
-				<h3>Escala VS Resolución</h3>
-				<img src="https://miro.medium.com/max/599/1*9py1AUZxr-zQ1ZkFH9jBXQ.png" width="800">
-			</section>
-
-			<section>
-				<h3>Área Mínima Cartografiable (AMC)</h3>
-				<p>La relación entre la resolución espacial y la escala está mediada por el AMC (mínima área de un
-					elemento que debe ser representado en un mapa)</p>
-				<img src="https://4.bp.blogspot.com/-877gV5vYyW0/V5bxRasaSVI/AAAAAAAAFxQ/UDFfEhYSykMPJoTeJ6v92IW3CjmBPdsjgCLcB/s1600/AREAMINIMA.png"
-					width="650">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/89/c9/68/89c968579b6138ad6211a352a85abefe.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Tamaño del pixel recomendado</h3>
-				<p>Regla de Waldo Tobler --> Map scale = raster resolution (in meters) x 2 x 1000</p>
-				<img src="https://i1.wp.com/acolita.com/wp-content/uploads/2019/06/scale-and-cell-size.png?resize=398%2C240&ssl=1"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="https://www.e-education.psu.edu/geog260/sites/www.e-education.psu.edu.geog260/files/7-15-.gif"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="https://www.e-education.psu.edu/geog480/sites/www.e-education.psu.edu.geog480/files/remotesensing/geog480/lesson2/figure2_10.jpg"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-1-4614-6423-5_101-1/MediaObjects/212922_0_En_101-1_Fig1_HTML.gif"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="https://image.slidesharecdn.com/mss-150429113159-conversion-gate02/95/multispectral-and-hyperspectral-scanning-9-638.jpg?cb=1430307381"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="https://www.nireos.com/wp-content/uploads/2019/09/What-is-Hyperspectral-Imaging.png"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Resolución espectral</h3>
-				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/spectral-curves-sensor.JPG"
-					width="700">
-			</section>
-
-			<section>
-				<h3>Resolución radiométrica</h3>
-				<img src="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/res_radiometric.gif"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Resolución radiométrica</h3>
-				<img src="https://www.researchgate.net/profile/Anik-Chowdhury-3/publication/341164804/figure/fig5/AS:887926384779267@1588709555512/Effect-of-Radiometric-Resolution-18.jpg"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Escala temporal --> Revisit time</h3>
-				<img src="https://www.researchgate.net/profile/Sam-Murphy-9/publication/295296781/figure/fig8/AS:668374623346719@1536364336579/Temporal-resolution-as-a-function-of-latitude-for-a-Landsat-8-b-Sentinel-2a-c_Q640.jpg"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Resolución temporal vs Resolución espacial</h3>
-				<img src="https://www.researchgate.net/profile/C-Mark-Eakin/publication/293486756/figure/fig1/AS:613932758728717@1523384384326/Spatial-and-temporal-scales-of-coral-reef-mapping-and-monitoring-application-in-relation.png"
-					width="650">
-			</section>
-
-			<section>
-				<h3>Resolución trade-off</h3>
-				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_5.gif"
-					width="500">
-			</section>
-
-			<section>
-				<h1>Tratamiento de imágenes de satelite</h1>
-				<p>Existen una gran cantidad de procedimientos para el análisis de imágenes de satélite. En este
-					curso nos concentraremos en 4 de ellas:</p>
+				<h3>Types of spatial models</h3>
 				<ul>
-					<li>Pro-procesamiento de imágenes</li>
-					<li>Mejoramiento de imágenes</li>
-					<li>Transformaciones de imágenes</li>
-					<li>Clasificación de imágenes</li>
+					<li><strong>Object-based (feature) model: </strong>In the object view, we consider the world as a
+						series of entities located in
+						space. Entities are (usually) real. An object is a digital representation of all or part of an
+						entity, which can be described in
+						detail according to their boundary lines and other objects that constitute them or are related
+						to them.</li></br>
+					<li><strong>Field model: </strong> In the field view, the world consists of properties continuously
+						varying across
+						space. It represents data that are considered to be continuously changing in two-dimensional or
+						three-dimensional space.
+						In a field, every location has a value (including ‘‘not here’’
+						or zero) and sets of values taken together define the field.</li>
 				</ul>
 			</section>
 
 			<section>
-				<h3>QA bands & Bitmasks</h3>
-				<p>Most optical satellite imagery products come with one or more QA-bands that allows the user
-					to assess quality of each pixel and extract pixels that meet their requirements.</p>
-				<img src="https://i1.wp.com/spatialthoughts.com/wp-content/uploads/2021/08/qa_flags.png?resize=768%2C805&ssl=1"
-					width="450">
-			</section>
-
-			<section>
-				<h3>Pre-procesamiento de imágenes</h3>
-				<p>Cualquier imagen adquirida por un sensor remoto presenta una serie
-					de alteraciones radiométricas y geométricas.</p>
-				<img src="https://i.pinimg.com/564x/4e/3d/6f/4e3d6ffc5e3aef2c2afdc9a55b611281.jpg" width="800">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/1d/8a/ab/1d8aabd7459dbc07cb7b0dd8766c0d21.jpg" width="850">
-			</section>
-
-			<section>
-				<h3>Striping</h3>
-				<img src="https://d3i71xaburhd42.cloudfront.net/52ecdf3f8086959f68bebe4fe6f494cb67e0962e/2-Figure1-1.png"
-					width="850">
-			</section>
-
-			<section>
-				<h3>Line drop</h3>
-				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/nois.jpg"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Bit or noisy error - "salt-and-pepper" effect</h3>
-				<img src="https://www.researchgate.net/profile/Pascal-Monasse/publication/226428136/figure/fig4/AS:302317518770177@1449089521322/The-noisy-satellite-image-impulse-noise-with-denoised-image.png"
-					width="950">
-			</section>
-
-			<section>
-				<h3>Correción geométrica</h3>
-				<p>The processes of georeferencing (alignment of imagery
-					to its correct geographic location) and orthorectifying
-					(correction for the effects of relief and view direction on
-					pixel location) are components of geometric correction
-					necessary to ensure the exact positioning of an image</p>
-
-				<p>Landsat Level-1 products are precision registered and orthorectified through a systematic process
-					that
-					involves ground control points and a digital elevation model (DEM).</p>
-				<img src="https://www.pcigeomatics.com/geomatica-help/COMMON/concepts/images/GeometricCorrection.gif"
-					width="500">
-			</section>
-
-			<section>
-				<h3>Orthographic projection</h3>
-				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/displacement2.png" width="600">
-			</section>
-
-			<section>
-				<h3>Image Orthorectification</h3>
-				<img src="https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/orthophoto_vs_airphoto.jpg"
-					width="800">
-			</section>
-
-			<section>
-				<h3>IKONOS Satellite Image Orthorectification</h3>
-				<img src="https://legacy.satimagingcorp.com/media/images/Ikonos_Distortion.gif" width="500">
-			</section>
-
-			<section>
-				<h3>Resampling</h3>
-				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZUTuAnliDw-_vmJ0Pf8HEkWxtnEOH1M2VURqjZ5wqxsrhlHM2f4Sn4IBo8W-lTOpCS2E&usqp=CAU"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Solar correction</h3>
-				<p> Solar correction accounts for solar influences on pixel values. Solar correction converts at-sensor
-					radiance to top-of-atmosphere (TOA)
-					reflectance by incorporating exoatmospheric solar irradiance (power of the sun), Earth-Sun distance,
-					and solar elevation angle</p>
-				<img src="https://grass.osgeo.org/grass76/manuals/i_topo_corr_angles.png" width="500">
-			</section>
-
-			<section>
-				<h3>Atmospheric correction</h3>
-				<p> The energy that is captured by Landsat sensors is influenced by the Earth’s atmosphere. These
-					effects include
-					scattering and absorption due to interactions of the electromagnetic radiation with atmospheric
-					particles (gases, water vapor, and aerosols)</p>
-				<img src="https://8430352m.files.wordpress.com/2013/11/sensor_radiance.png" width="500">
-			</section>
-
-			<section>
-				<h3>Topographic correction</h3>
-				<p> Topographic correction account for illumination
-					effects from slope, aspect, and elevation that can cause
-					variations in reflectance values for similar features with
-					different terrain positions (Riaño etal. 2003). </p>
-				<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs41324-019-00274-0/MediaObjects/41324_2019_274_Fig1_HTML.png"
-					width="700">
-			</section>
-
-			<section>
-				<h3>TOA (Level 1) vs BOA (Level 2)</h3>
-				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig2/AS:474184846450688@1490065885221/The-common-units-of-Landsat-imagery-used-in-ecological-analysis-The-units-change-as-each.png"
-					width="1000">
-			</section>
-
-			<section>
-				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/calibration.PNG" width="800">
-			</section>
-
-			<section>
-				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig5/AS:474186733887488@1490066335548/Dichotomous-decision-tree-for-determining-the-level-of-preprocessing-necessary-for-most.png"
-					width="900">
-			</section>
-
-			<section>
-				<h3>Radiación termal</h3>
-				<p>La Temperatura cinética es la manifestación interna de la energía traslacional promedio de la
-					moléculas que componen un cuerpo (temperatura cinética). Como consecuencia los objetos
-					irradian energía en función de su temperatura (Temperatura radiante), adicionalmente esta
-					temperatura sensada es de los primeros 50 cm, puede no ser representativa de todo el objeto.
-					Sin embargo debido a la diferencia de emisividad que tienen los objetos, un cuerpo puede tener
-					la misma temperatura y aun así tener diferente radiancia. Solo los cuerpo negros presentan que
-					la Trad = Tcin, para los demas cuerpos la temperatura radiante siempre es menor, ya que la
-					emisividad es menor que 1</p>
-				<img src="http://gsp.humboldt.edu/OLM_2017/courses/GSP_216_Online/images/DN-temp.jpg" width="800">
-			</section>
-
-			<section>
-				<h1>Image Enhancement</h1>
-				<img src="https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/GUID-E383F01A-627E-45CA-9262-A3987C68AF94-web.gif"
-					width="700">
-			</section>
-
-			<section>
-				<h3>Ajuste del histograma</h3>
-				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-light.jpg"
-					width="700">
-			</section>
-
-			<section>
-				<h3>Ajuste del histograma</h3>
-				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-dark.jpg"
-					width="700">
-			</section>
-
-			<section>
-				<h3>Filters</h3>
-				<img src="https://image.slidesharecdn.com/imageenhancementtechniquepkmani-140117025656-phpapp02/95/image-enhancement-technique-digital-image-analysis-in-remote-sensing-p-k-mani-11-638.jpg?cb=1440825408"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Filters</h3>
-				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-3-319-58039-5_3/MediaObjects/442937_1_En_3_Fig15_HTML.png"
-					width="700">
-			</section>
-
-			<section>
-				<h3>Filters</h3>
-				<img src="https://www.mdpi.com/jimaging/jimaging-06-00121/article_deploy/html/images/jimaging-06-00121-g001.png"
-					width="600">
-				<img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Convolution_arithmetic_-_Same_padding_no_strides.gif"
-					width="300">
-			</section>
-
-			<section>
-				<h3>Filters</h3>
-				<img src="https://www.onestopgis.com/Aerial-Photography/Introduction-to-Aerial-Photogrammetry/Filters/posts/High-Pass-Laplacian-Edge-Enhancement-Compass-and-Gradient-Operators/The-measurement-units-of-the-variable.webp"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Ratios</h3>
-				<img src="https://image.slidesharecdn.com/lectureforlandsat-100627045135-phpapp01/95/lecture-for-landsat-25-728.jpg?cb=1277614644"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Pan-sharpening</h3>
-				<img src="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/GUID-6E0028FA-DCF0-4AF6-BF23-311F6CF6AD84-web.png"
-					width="520">
-			</section>
-
-			<section>
-				<h3>Pan-sharpening</h3>
-				<img src="https://i.ytimg.com/vi/UM8WhUEHvzo/hqdefault.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Index</h3>
-				<img src="https://www.researchgate.net/publication/336975237/figure/tbl2/AS:820629183922180@1572664652843/Equations-of-tested-nine-remote-sensing-indices.png"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>NDVI Index</h3>
-				<img src="https://ece.montana.edu/seniordesign/archive/SP15/OpticalWeedMapping/uploads/4/9/2/7/49273335/1429843234.png"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Soil Vegetation Wetness Index (SVWI)</h3>
-				<img src="https://www.researchgate.net/profile/J-C-Krapez/publication/239796493/figure/fig7/AS:667831611965460@1536234872451/Soil-Vegetation-Wetness-Index-SVWI-map-computed-from-remote-sensing-data-by-exploiting.jpg"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Composite bands</h3>
-				<img src="https://eo.belspo.be/sites/default/files/images/teledetection/graph_colour_mixing_en_0.png"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Combinación de bandas ---> True color</h3>
-				<img src="https://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/3-bands.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Combinación de bandas ---> False color</h3>
-				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/bands.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Combinación de "bandas" ---> radios</h3>
-				<img src="https://blog.arabnubia.com/wp-content/uploads/2019/10/1-1-1.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Image transformations</h3>
-				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/pca.gif"
-					width="600">
-			</section>
-
-			<section>
-				<img src="https://media-exp1.licdn.com/dms/image/C5612AQFCtn794jGtfw/article-inline_image-shrink_1500_2232/0/1544148478074?e=1622678400&v=beta&t=2tJzGddTNZHEOXtOgjwtjtZEtwJBdA8cg1UmB58bXjw"
-					width="850">
-			</section>
-
-			<section>
-				<h3>Principal components</h3>
-				<img src="https://d3i71xaburhd42.cloudfront.net/90e6bfaf598797b0770f68a74294edc96c015ba0/8-Figure5-1.png"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Principal components</h3>
-				<img src="https://geol260.academic.wlu.edu/files/lecture_notes/PCs_VA_landsat8.png" width="400">
-			</section>
-
-			<section>
-				<h3>Tasselled cap</h3>
-				<img src="https://images.squarespace-cdn.com/content/v1/551e8d99e4b0751e1a311984/1431094487685-7N905UJJGJZQCX05T6EY/ke17ZwdGBToddI8pDm48kNkXWAY4c19ZL2Q6aDTJ9edZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVGOUWlvG4s0Yb7ZvY0GELybJMhZBqcGjIFsQEQp_eFUg91lH3P2bFZvTItROhWrBJ0/Tasseled_cap_figure.png"
-					width="600">
-			</section>
-
-			<section>
-				<h3>Tasselled cap</h3>
-				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUbEx4PvqXQew2kqliDeZs0uGtR_JkWwILTa3ckZPaEd2LSoxVfbyYtORQA3GIlgvQsyM&usqp=CAU"
+				<h1>Object-based model</h1>
+				<h3>Vector</h3>
+				<p>objects are frequently not as simple as this geometric view leads
+					one to assume. They may exist in three spatial dimensions, move and
+					change over time, have a representation that is strongly scale-dependent, relate to entities that
+					are themselves fuzzy and/or have indeterminate boundaries, or even be fractal.</p>
+				<img src="https://pvsmt99345.i.lithium.com/t5/image/serverpage/image-id/49570i26EF3FAEACD21BD4/image-size/medium?v=1.0&px=400"
 					width="400">
 			</section>
 
 			<section>
-				<h3>RGB --> IHS</h3>
-				<img src="https://www.researchgate.net/profile/Thiago-Araujo-9/publication/313346771/figure/fig3/AS:458224785727491@1486260710648/FIGURA-3-A-mostra-o-espaco-de-cores-RGB-e-B-mostra-o-espaco-IHS-Araujo-2008.png"
-					width="800">
-				<img src="https://lh3.googleusercontent.com/proxy/jXnTkz0nGW5lkEO4vY6koSJE1Z90P0yiwLGB2OLth6Lp8aqDUkL9IWCbGZsvD-jSNEk7XhiBaXGes9EYwItiZtmKbJdw07BOhQ"
-					width="400">
+				<h3>Vector</h3>
+				<img src="https://sustainability-gis.readthedocs.io/en/latest/_images/geodataframe.png" width="1000">
 			</section>
 
 			<section>
-				<img src="https://acsess.onlinelibrary.wiley.com/cms/asset/6619d2a0-5bc2-4df0-9d36-87b440d30c8a/ppj220007-fig-0005-m.jpg"
-					width="800">
+				<h3>Vector</h3>
+				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1874273409700063-gr2.gif" width="600">
 			</section>
 
 			<section>
-				<h3>Image classification</h3>
-				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/class.gif"
-					width="600">
+				<h3>Shapefile</h3>
+				<p>A shapefile is a file-based data format native to ArcView software .
+					Conceptually, a shapefile is a feature class–it stores a collection of features that have the same
+					geometry
+					type (point, line, or polygon), the same attributes, and a common spatial extent.
+
+					Despite what its name may imply, a “single” shapefile is actually composed of at least three files,
+					and as many as eight. Each file that makes up a “shapefile” has a common filename but different
+					extension
+					type.</p>
+				<h3>Arc-Info Interchange (e00) </h3>
+				<p>An ArcInfo interchange file, is also known as an export file type, this file format is used to enable
+					a
+					coverage, grid or TIN, and an associated INFO table to be transferred between different machines.
+					This file has the .e00 extension.</p>
 			</section>
 
 			<section>
-				<h3>Método no supervisado</h3>
-				<img src="https://www.mdpi.com/applsci/applsci-07-00888/article_deploy/html/images/applsci-07-00888-g001.png"
-					width="600">
+				<h3>File Geodatabase</h3>
+				<p>A file geodatabase is a relational database storage format. It’s a far more complex data structure
+					than the
+					shapefile and consists of a .gdb folder housing dozens of files. Its complexity renders it more
+					versatile
+					allowing it to store multiple feature classes and enabling topological definitions. An example of
+					the
+					contents of a geodatabase is shown in the following figure.</p>
+				<img src="https://mgimond.github.io/Spatial/img/geodatabase.jpg" width="1000">
+			</section>
+			<section>
+				<h3>GeoPackage</h3>
+				<p>This is a relatively new data format that follows open format standards (i.e. it is non-proprietary).
+					It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many
+					other
+					vector formats is its compactness–coordinate value, metadata, attribute table, projection
+					information,
+					etc…, are all stored in a single file which facilitates portability. Its filename usually ends in
+					.gpkg.
+					Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version
+					10.2.2
+					and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
 			</section>
 
 			<section>
-				<h3>Image classification</h3>
-				<img src="https://www.mdpi.com/remotesensing/remotesensing-08-00705/article_deploy/html/images/remotesensing-08-00705-g003.png"
-					width="600">
+				<h3>Geojson</h3>
+				<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with
+					their non-spatial attribute</p>
+				<img src="https://miro.medium.com/max/700/1*mGBJnGvBuWAeEbzKZFhp2g.png" width="500">
+				<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h3>Image classification</h3>
-				<img src="https://www.researchgate.net/profile/Taskin-Kavzoglu/publication/294596525/figure/fig3/AS:669405537120266@1536610125766/Schematic-diagram-illustrating-the-classification-of-pixel-4-using-minimum-distance.png"
-					width="600">
+				<h3>Geojson -- Multi-part geometry</h3>
+				<p>Multi-part geometry types are similar to their single-part counterparts. The only difference is that one more hierarchical level is added into the coordinates array, 
+					for specifying multiple shapes.</p>
+					<img src="https://i.pinimg.com/originals/9f/97/81/9f97811c05cd2422743f19d28df964b6.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h3>Image classification</h3>
-				<img src="https://www.researchgate.net/profile/Asid-Ur-Rehman/publication/312919189/figure/fig2/AS:454738085978114@1485429416387/Parallelepiped-classifier-Lillesand-2001.png"
-					width="600">
+				<h3>Geojson -- Geometry collections </h3>
+				<p>A geometry collection is a set of several geometries, where each geometry is one of the previously listed six types, i.e., 
+					any geometry type excluding "GeometryCollection". For example, a "GeometryCollection" consisting of two geometries, 
+					a "Point" and a "MultiLineString", can be defined as follows:</p>
+					<img src="https://i.pinimg.com/564x/4e/5d/c4/4e5dc4636252a69969984dc5f7110828.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h3>Image classification</h3>
-				<img src="https://plato.fea.ugent.be/masterproef/figuren/shhuang/33333.png" width="1000">
+				<h3>Geojson -- Feature </h3>
+				<p>A "Feature" is formed when a geometry is combined with non-spatial attributes, to form a single object. The non-spatial 
+					attributes are encompassed in a property named "properties", containing one or more name-value pairs—one for 
+					each attribute. For example, the following "Feature" represents a geometry with two attributes, named "color" 
+					and "area":</p>
+					<img src="https://i.pinimg.com/564x/0e/af/61/0eaf614fc53087c6e2066a622e0be5ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h1>Evaluación</h1>
-				<img src="https://i.pinimg.com/564x/31/29/85/312985109feaa25587ab52fb064be62c.jpg" width="800">
+				<h3>Geojson -- Feature  Collections</h3>
+				<p>A "FeatureCollection" is, like the name suggests, a collection of "Feature" objects. The separate features are contained 
+					in an array, comprising the "features" property. For example, a "FeatureCollection" composed of four features can be 
+					specified as follows:</p>
+					<img src="https://i.pinimg.com/564x/71/95/81/719581743041ece51f82a40e30a611ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
 			</section>
 
 			<section>
-				<h3>Cohen´s kappa</h3>
-				<img src="http://1.bp.blogspot.com/-F6bcDBs0EmM/Uvs_BMCWn1I/AAAAAAAAAQA/gV4bx-rVKNA/s1600/representaci%C3%B3n+gr%C3%A1fica+de+kappa.jpg"
-					width="600">
-				<img src="https://study.com/cimages/multimages/16/kappa-formula.jpg" width="400">
+				<h3><a href="http://geojson.io/">http://geojson.io/</a></h3>
+				<img src="https://geobgu.xyz/web-mapping/images/geojson_io.png" width="900">
 			</section>
+
+			<section>
+				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
+				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Keyhole Markup Language (KML)</h3>
+				<p>XML based file format, used to visualize spatial data and modelling information like lines, shapes,
+					3D images and points in an Google Earth.</p>
+				<h3>Geography Markup Language (GML)</h3>
+				<p>It is used in the Open GIS Consortium for storing geographical data in a standard interchangeable
+					format, It is based on XML.</p>
+				<h3>SVG (Scalable Vector Graphics) </h3>
+				<p>It is an XML-based vector image format for two-dimensional graphics Any program that recognizes XML
+					can display the SVG image.</p>
+				<h3>DWG</h3>
+				<p>DWG is an intern format for AutoCAD. A DWG file is a database of 2D or 3D drawings.</p>
+			</section>
+
+			<section>
+				<h3>Tidy data</h3>
+				<img src="https://images.squarespace-cdn.com/content/v1/5b872f96aa49a1a1da364999/1572008171822-KJ0300DR4KCHW8NUUN1N/ke17ZwdGBToddI8pDm48kP0H4u0KUkchoILChBGMIUUUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2dskF1CFdD1ghxEpYxbqRasKlXJQr8mv4xxZBDj9ez2c1CjLISwBs8eEdxAxTptZAUg/image.png?format=1500w" width="1000">
+			</section>
+
+			<section>
+				<h3>Dataframe</h3>
+				<img src="https://www.datasciencemadesimple.com/wp-content/uploads/2020/05/create-series-in-python-pandas-0.png" width="1000">
+			</section>
+
+			<section>
+				<h3>Dataframe</h3>
+				<img src="https://www.w3resource.com/w3r_images/pandas-data-structure.svg" width="1000">
+			</section>
+
+			<section>
+				<h3>GeoDataframe</h3>
+				<img src="http://www.geomapik.com/wp-content/uploads/2021/09/geopandas_geodataframe_schema.webp" width="1000">
+			</section>
+
+			<section>
+				<h1>Fiel-based model</h1>
+				<p>In the field view, the world consists of properties continuously varying across
+					space</p>
+				<img src="https://surveyinggroup.com/wp-content/uploads/2019/05/zion_DEM2.jpg"
+					width="750">
+			</section>
+
+			<section>
+				<h3>Raster</h3>
+				<img src="https://www.esri.com/about/newsroom/wp-content/uploads/2018/07/aufall18_Georefer_1.gif"
+					width="780">
+			</section>
+
+			<section>
+				<h3>Raster</h3>
+				<img src="http://www.fire.org/downloads/farsite/WebHelp/layers.gif" width="600">
+			</section>
+
+			<section>
+				<h3>Raster GIS File Format</h3>
+				<h3>txt / ASCII (American Standard Code for Information Interchange)</h3>
+				<p>Standard text document that contains plain text. It can be opened and edited in any text-editing or word-processing program</p>
+				<h3>Imagine</h3>
+				<p>Imagine file format by ERDAS. It consists of a single .img file. 
+					It is sometimes accompanied by an .xml file which usually stores metadata information about the
+					raster layer.</p>
+				<h3>GeoTiff</h3>
+				<p>A GeoTIFF is a TIF file that ends in a three letter. tif extension just like other TIF files, but a GeoTIFF contains additional tags that provide projection information for that image as specified by the GeoTIFF standard</p>
+			</section>
+
+			<section>
+				<h3>Raster GIS File Format</h3>
+				<h3>Enhanced Compression Wavelet (ECW)</h3>
+				<p>Enhanced Compressed Wavelet (from ERDAS). A compressed wavelet format, often lossy</p>
+				<h3>Network Common Data Form (NetCDF)</h3>
+				<p>netCDF file format with The Climate and Forecast (CF) metadata conventions for earth science data. It
+					allows for direct web-access of subsets/aggregations of maps through OPeNDAP protocol.</p>
+				<h3>HDF5</h3>
+				<p>is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize 
+					data within the file in many different structured ways, as you might do with files on your computer</p>
+			</section>
+
 
 		</section>
-		<!--Spatial is special-->
+
+<!--Spatial data II-->
 		<section>
 			<section>
-				<h1>Spatial is special</h1>
+				<h1>Spatial data II</h1>
 			</section>
 
 			<section>
@@ -1159,307 +853,8 @@
 			</section>
 
 		</section>
-		<!--Spatial data models-->
-		<section>
-			<section><h1>Spatial data models</h1></section>
 
-			<section>
-				<p style="text-align: center; font-size: 40px;">Models are simplifications of reality</p>
-				<img src="https://storage.googleapis.com/xebia-blog/1/2019/10/mentalmodel.png">
-			</section>
-
-			<section>
-				<h3>Spatial data models</h3>
-				<ul>
-					<li><strong>Data</strong> can be defined as verifiable facts about the real world.</li>
-					<li><strong>Information</strong> is data organized to reveal patterns, and to facilitate search.</li>
-					<li><strong>Data model:</strong> an abstraction of the real world which incoprorates onlu those properties thought to be relevant to the application</li>
-					<li><strong>Data structure: </strong>a representation of the data model</li>
-					<li><strong>File format: </strong>the representation of the data in storage hardware</li>
-				</ul>
-				<p> </p>
-				<p></li></p>
-				<p>Real world data must be described in terms of a <strong>data model</strong>, then a <strong>data structure</strong> must be chosen to represent the data 
-					model, and finally a <strong>file format</strong> must be selected that is suitable for that data structure.</p>
-			</section>
-
-			<section>
-				<h3>Spatial data</h3>
-				<p>Spatial data is geographically referenced data, given at known locations and
-					often represented visually through maps. That geographic reference, or the
-					location component of the data, may be represented using any number of
-					coordinate reference systems, for example, longitude and latitude.</p>
-
-				<p>In other words, spatial data is spatially dependent or correlated,
-					and independence between the observations, which is a common assumption
-					for many statistical techniques, is not satisfied</p>
-
-				<p>An observed spatial pattern may be observed in
-					variables strictly depending on the location, or because of direct interactions
-					between the points.</p>
-			</section>
-			<section>
-				<h3>Geospatial data</h3>
-				<p>Geospatial data is data about objects, events, or phenomena that have a location on the surface of
-					the earth,
-					including location information, attribute information (the characteristics
-					of the object, event, or phenomena concerned), and often also temporal information (the time or life
-					span at
-					which the location and attributes exist)</p>
-				<img src="https://cdn1.marklogic.com/wp-content/uploads/2018/02/Diagram-Geospatial-Who-What-Where.svg"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Spatial Data Models</h3>
-				<p>Spatial data may be of various broad types: points, lines, areas, and
-					fields. Each type typically requires different techniques and approaches.</p>
-				<img src="https://cdn.uconnectlabs.com/wp-content/uploads/sites/28/2019/08/GIS_technology.jpg"
-					width="500">
-			</section>
-
-			<section>
-				<p>The relationship between real geographic entities and spatial data is
-					complex and scale-dependent.</p>
-				<img src="https://i1.wp.com/transportgeography.org/wp-content/uploads/gis_data_models.png?w=1000&ssl=1"
-					width="700">
-			</section>
-
-			<section>
-				<img src="https://pediaa.com/wp-content/uploads/2019/02/Difference-Between-Raster-and-Vector-Data-Comparison-Summary.jpg"
-					width="550">
-			</section>
-
-			<section>
-				<h3>Types of spatial models</h3>
-				<ul>
-					<li><strong>Object-based (feature) model: </strong>In the object view, we consider the world as a
-						series of entities located in
-						space. Entities are (usually) real. An object is a digital representation of all or part of an
-						entity, which can be described in
-						detail according to their boundary lines and other objects that constitute them or are related
-						to them.</li></br>
-					<li><strong>Field model: </strong> In the field view, the world consists of properties continuously
-						varying across
-						space. It represents data that are considered to be continuously changing in two-dimensional or
-						three-dimensional space.
-						In a field, every location has a value (including ‘‘not here’’
-						or zero) and sets of values taken together define the field.</li>
-				</ul>
-			</section>
-
-			<section>
-				<h1>Object-based model</h1>
-				<h3>Vector</h3>
-				<p>objects are frequently not as simple as this geometric view leads
-					one to assume. They may exist in three spatial dimensions, move and
-					change over time, have a representation that is strongly scale-dependent, relate to entities that
-					are themselves fuzzy and/or have indeterminate boundaries, or even be fractal.</p>
-				<img src="https://pvsmt99345.i.lithium.com/t5/image/serverpage/image-id/49570i26EF3FAEACD21BD4/image-size/medium?v=1.0&px=400"
-					width="400">
-			</section>
-
-			<section>
-				<h3>Vector</h3>
-				<img src="https://sustainability-gis.readthedocs.io/en/latest/_images/geodataframe.png" width="1000">
-			</section>
-
-			<section>
-				<h3>Vector</h3>
-				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1874273409700063-gr2.gif" width="600">
-			</section>
-
-			<section>
-				<h3>Shapefile</h3>
-				<p>A shapefile is a file-based data format native to ArcView software .
-					Conceptually, a shapefile is a feature class–it stores a collection of features that have the same
-					geometry
-					type (point, line, or polygon), the same attributes, and a common spatial extent.
-
-					Despite what its name may imply, a “single” shapefile is actually composed of at least three files,
-					and as many as eight. Each file that makes up a “shapefile” has a common filename but different
-					extension
-					type.</p>
-				<h3>Arc-Info Interchange (e00) </h3>
-				<p>An ArcInfo interchange file, is also known as an export file type, this file format is used to enable
-					a
-					coverage, grid or TIN, and an associated INFO table to be transferred between different machines.
-					This file has the .e00 extension.</p>
-			</section>
-
-			<section>
-				<h3>File Geodatabase</h3>
-				<p>A file geodatabase is a relational database storage format. It’s a far more complex data structure
-					than the
-					shapefile and consists of a .gdb folder housing dozens of files. Its complexity renders it more
-					versatile
-					allowing it to store multiple feature classes and enabling topological definitions. An example of
-					the
-					contents of a geodatabase is shown in the following figure.</p>
-				<img src="https://mgimond.github.io/Spatial/img/geodatabase.jpg" width="1000">
-			</section>
-			<section>
-				<h3>GeoPackage</h3>
-				<p>This is a relatively new data format that follows open format standards (i.e. it is non-proprietary).
-					It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many
-					other
-					vector formats is its compactness–coordinate value, metadata, attribute table, projection
-					information,
-					etc…, are all stored in a single file which facilitates portability. Its filename usually ends in
-					.gpkg.
-					Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version
-					10.2.2
-					and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
-			</section>
-
-			<section>
-				<h3>Geojson</h3>
-				<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with
-					their non-spatial attribute</p>
-				<img src="https://miro.medium.com/max/700/1*mGBJnGvBuWAeEbzKZFhp2g.png" width="500">
-				<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
-			</section>
-
-			<section>
-				<h3>Geojson -- Multi-part geometry</h3>
-				<p>Multi-part geometry types are similar to their single-part counterparts. The only difference is that one more hierarchical level is added into the coordinates array, 
-					for specifying multiple shapes.</p>
-					<img src="https://i.pinimg.com/originals/9f/97/81/9f97811c05cd2422743f19d28df964b6.jpg" width="500">
-					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
-			</section>
-
-			<section>
-				<h3>Geojson -- Geometry collections </h3>
-				<p>A geometry collection is a set of several geometries, where each geometry is one of the previously listed six types, i.e., 
-					any geometry type excluding "GeometryCollection". For example, a "GeometryCollection" consisting of two geometries, 
-					a "Point" and a "MultiLineString", can be defined as follows:</p>
-					<img src="https://i.pinimg.com/564x/4e/5d/c4/4e5dc4636252a69969984dc5f7110828.jpg" width="500">
-					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
-			</section>
-
-			<section>
-				<h3>Geojson -- Feature </h3>
-				<p>A "Feature" is formed when a geometry is combined with non-spatial attributes, to form a single object. The non-spatial 
-					attributes are encompassed in a property named "properties", containing one or more name-value pairs—one for 
-					each attribute. For example, the following "Feature" represents a geometry with two attributes, named "color" 
-					and "area":</p>
-					<img src="https://i.pinimg.com/564x/0e/af/61/0eaf614fc53087c6e2066a622e0be5ac.jpg" width="500">
-					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
-			</section>
-
-			<section>
-				<h3>Geojson -- Feature  Collections</h3>
-				<p>A "FeatureCollection" is, like the name suggests, a collection of "Feature" objects. The separate features are contained 
-					in an array, comprising the "features" property. For example, a "FeatureCollection" composed of four features can be 
-					specified as follows:</p>
-					<img src="https://i.pinimg.com/564x/71/95/81/719581743041ece51f82a40e30a611ac.jpg" width="500">
-					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
-			</section>
-
-			<section>
-				<h3><a href="http://geojson.io/">http://geojson.io/</a></h3>
-				<img src="https://geobgu.xyz/web-mapping/images/geojson_io.png" width="900">
-			</section>
-
-			<section>
-				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
-				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
-					width="1000">
-			</section>
-
-			<section>
-				<h3>Keyhole Markup Language (KML)</h3>
-				<p>XML based file format, used to visualize spatial data and modelling information like lines, shapes,
-					3D images and points in an Google Earth.</p>
-				<h3>Geography Markup Language (GML)</h3>
-				<p>It is used in the Open GIS Consortium for storing geographical data in a standard interchangeable
-					format, It is based on XML.</p>
-				<h3>SVG (Scalable Vector Graphics) </h3>
-				<p>It is an XML-based vector image format for two-dimensional graphics Any program that recognizes XML
-					can display the SVG image.</p>
-				<h3>DWG</h3>
-				<p>DWG is an intern format for AutoCAD. A DWG file is a database of 2D or 3D drawings.</p>
-			</section>
-
-			<section>
-				<h3>Tidy data</h3>
-				<img src="https://images.squarespace-cdn.com/content/v1/5b872f96aa49a1a1da364999/1572008171822-KJ0300DR4KCHW8NUUN1N/ke17ZwdGBToddI8pDm48kP0H4u0KUkchoILChBGMIUUUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2dskF1CFdD1ghxEpYxbqRasKlXJQr8mv4xxZBDj9ez2c1CjLISwBs8eEdxAxTptZAUg/image.png?format=1500w" width="1000">
-			</section>
-
-			<section>
-				<h3>Dataframe</h3>
-				<img src="https://www.datasciencemadesimple.com/wp-content/uploads/2020/05/create-series-in-python-pandas-0.png" width="1000">
-			</section>
-
-			<section>
-				<h3>Dataframe</h3>
-				<img src="https://www.w3resource.com/w3r_images/pandas-data-structure.svg" width="1000">
-			</section>
-
-			<section>
-				<h3>GeoDataframe</h3>
-				<img src="http://www.geomapik.com/wp-content/uploads/2021/09/geopandas_geodataframe_schema.webp" width="1000">
-			</section>
-
-			<section>
-				<h1>Fiel-based model</h1>
-				<p>In the field view, the world consists of properties continuously varying across
-					space</p>
-				<img src="https://surveyinggroup.com/wp-content/uploads/2019/05/zion_DEM2.jpg"
-					width="750">
-			</section>
-
-			<section>
-				<h3>Raster</h3>
-				<img src="https://www.esri.com/about/newsroom/wp-content/uploads/2018/07/aufall18_Georefer_1.gif"
-					width="780">
-			</section>
-
-			<section>
-				<h3>Raster</h3>
-				<img src="http://www.fire.org/downloads/farsite/WebHelp/layers.gif" width="600">
-			</section>
-
-			<section>
-				<h3>Raster GIS File Format</h3>
-				<h3>txt / ASCII (American Standard Code for Information Interchange)</h3>
-				<p>Standard text document that contains plain text. It can be opened and edited in any text-editing or word-processing program</p>
-				<h3>Imagine</h3>
-				<p>Imagine file format by ERDAS. It consists of a single .img file. 
-					It is sometimes accompanied by an .xml file which usually stores metadata information about the
-					raster layer.</p>
-				<h3>GeoTiff</h3>
-				<p>A GeoTIFF is a TIF file that ends in a three letter. tif extension just like other TIF files, but a GeoTIFF contains additional tags that provide projection information for that image as specified by the GeoTIFF standard</p>
-			</section>
-
-			<section>
-				<h3>Raster GIS File Format</h3>
-				<h3>Enhanced Compression Wavelet (ECW)</h3>
-				<p>Enhanced Compressed Wavelet (from ERDAS). A compressed wavelet format, often lossy</p>
-				<h3>Network Common Data Form (NetCDF)</h3>
-				<p>netCDF file format with The Climate and Forecast (CF) metadata conventions for earth science data. It
-					allows for direct web-access of subsets/aggregations of maps through OPeNDAP protocol.</p>
-				<h3>HDF5</h3>
-				<p>is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize 
-					data within the file in many different structured ways, as you might do with files on your computer</p>
-			</section>
-
-			<section>
-				<h1>Measurement scales</h1>
-				<img src="https://studyonline.unsw.edu.au/sites/default/files/UNSW2.png" width="1000">
-			</section>
-
-			<section>
-				<img src="https://quizzma.com/wp-content/uploads/2020/04/44b2990d644ecb2de5f07ddf4314c39c.jpg"
-					width="850">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/originals/f8/78/21/f8782128cba493baf325051cf52d90f9.jpg" width="850">
-			</section>
-
-		</section>	
-		<!--Web mapping-->
+<!--Web mapping-->
 		<section>
 			<section><h1>Web mapping</h1></section>
 			<section>
@@ -1530,11 +925,21 @@
 				<a href="https://web-mapping.surge.sh/examples/example-06-01.html">Ejemplo</a>
 			</section>
 		</section>
-		<!--Basic statistics-->
+
+<!--Data distribution-->
 		<section>
+			<section>
+				<h1>Data distribution</h1>
+			</section>
 
 			<section>
-				<h1>Basic statistic</h1>
+				<h3>Underlying data distribution</h3>
+
+				<p>Before making modeling decisions, you need to know the underlying data distribution.</p>
+
+				<img src="https://miro.medium.com/max/720/1*DqaWFp-ylr9BIY_bJtJcDw.webp" width="500">
+				<figcaption><a href="https://towardsdatascience.com/how-to-find-the-best-theoretical-distribution-for-your-data-a26e5673b4bd">E. Taskesen</a></figcaption>
+
 			</section>
 
 			<section>
@@ -1749,7 +1154,8 @@
 			</section>
 
 			<section>
-				<img src="https://blog.learningtree.com/wp-content/uploads/2019/02/qqnorm-001.png" width="600">
+				<img src="https://www.learnbyexample.org/wp-content/uploads/r/typical-quantile-quantile-qq-plot.png" width="600">
+				<figcaption><a href="https://www.learnbyexample.org/r-quantile-quantile-qq-plot-base-graph/">Learn by example</a></figcaption>
 			</section>
 
 			<section>
@@ -2054,7 +1460,12 @@
 				<img src="https://marketoonist.com/wp-content/uploads/2014/04/140414b.correlation.jpg" width="850">
 			</section>
 		</section>
-		<!--Point pattern analysis-->
+
+<section>
+	<h1>Lattice data analysis in Python<br><br>Object-based model</h1>
+</section>
+
+<!--Point pattern analysis-->
 		<section>
 			<section>
 				<h1>Point pattern analysis</h1>
@@ -2333,29 +1744,31 @@
 						<li>ε —The maximal distance between points to be considered within the same cluster</li>
 						<li>minPts —The minimal number of points required to form a cluster</li>
 					</lu>
-				<p>In short, all groups of at least minPts points, where each point is within ε or less from at least one other point in the 
-					group, are considered to be separate clusters and assigned with unique IDs. All other points are considered “noise” 
-					and are not assigned with an ID.</p>
-			</section>
-			
-			<section>
-				<h3>DBScan</h3>
-				<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
-			</section>
-
+					<p>In short, all groups of at least minPts points, where each point is within ε or less from at least one other point in the 
+						group, are considered to be separate clusters and assigned with unique IDs. All other points are considered “noise” 
+						and are not assigned with an ID.</p>
+					</section>
+					
+					<section>
+						<h3>DBScan</h3>
+						<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
+					</section>
+					
 		</section>
-		<!--Geovisualization-->
+				
+<!--Geovisualization-->
 		<section>
+
 			<section>
 				<h1>Geovisualization</h1>
 			</section>
-
+					
 			<section>
 				<h1>Choropleth maps</h1>
 				<p>Choropleth maps are thematic maps in which areas are rendered according to the
-					values of the variable displayed</p>
-
-				<p>Cloropleth maps are used to obtain a graphical perspective of the spatial
+							values of the variable displayed</p>
+							
+							<p>Cloropleth maps are used to obtain a graphical perspective of the spatial
 					distribution of the values of a specific variable across the study area.</p>
 				<p>There are two main categories of variables displayed in
 					choropleth maps:</p>
@@ -2492,11 +1905,13 @@
 				<img src="https://kaitlyncoleman22.files.wordpress.com/2015/11/lab66.jpg?w=712" width="770">
 			</section>
 
-		</section>
-		<!--Lattice data analysis Object-based model-->
+		</section>																			
+
+<!--Spatial association-->
 		<section>
+
 			<section>
-				<h1>Lattice data analysis<br><br>Object-based model</h1>
+				<h1>Spatial association</h1>
 			</section>
 
 			<section>
@@ -2787,129 +2202,773 @@
 				<img src="https://mgimond.github.io/Spatial/img/HH_LL_P_map.png" width="300">
 			</section>
 		</section>
-		<!--Lattice data analysis field model-->
+
+<section>
+	<h1>Lattice data analysis in Python<br><br>Field model</h1>
+</section>
+
+<!--Geostatistics-->
 		<section>
+			
 			<section>
-				<h1>Lattice data analysis<br><br>Field model</h1>
+				<h1>Geostatistics</h1>
 			</section>
 
 			<section>
 				<h2>Geostatistics</h2>
 				<p>The type of spatial statistical analysis dealing with
 					continuous field variables is named “geostatistics”</p>
+					
+					<p> Geostatistics focus on the description of the spatial variation in a set of observed values and on
+						their prediction at unsampled
+						locations</p>
+					</section>
+					
+					<section>
+						<h1>Spatial interpolation</h1>
+						<p>techniques used with points that represent samples of a continuous field are interpolation methods
+						</p>
+						<p>Here, our point data represents sampled observations of an entity that can be measured anywhere
+							within our study area</p>
+							<p>There are many interpolation tools available, but these tools can usually be grouped into two
+								categories: <strong>deterministic</strong> and interpolation methods</p>
+							</section>
+							
+							<section>
+								<h3>Proximity interpolation</h3>
+								<p> It was introduced by Alfred H. Thiessen more than a century ago. The goal is simple: Assign to all
+									unsampled locations the value of the closest sampled location. This generates a tessellated surface
+									whereby lines that split the midpoint between each sampled location are connected thus enclosing an
+									area.
+									Each area ends up enclosing a sample point whose value it inherits.</p>
+									<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
+									width="800">
+								</section>
+								
+								<section>
+									<h3>Voronoi diagram</h3>
+									<img src="https://miro.medium.com/max/1000/1*QjyawBrtDOfIuC2WOI2ZKQ.gif" width="500">
+									<figcaption>Source: <a href="https://en.wikipedia.org/wiki/Voronoi_diagram#/media/File:Voronoi_growth_euclidean.gif">Wikipedia</a></figcaption>
+								</section>
+								
+								<section>
+						<h3>Voronoi & Delanauy triangulation</h3>
+						<img src="https://miro.medium.com/max/1400/1*83fR2bOCP7fVbAuY0YSplA.png" width="1000">
+						<figcaption>Source: <a href="https://towardsdatascience.com/the-fascinating-world-of-voronoi-diagrams-da8fc700fa1b">Francesco Bellelli in towardsdatascience</a></figcaption>
+					</section>
 
-				<p> Geostatistics focus on the description of the spatial variation in a set of observed values and on
-					their prediction at unsampled
-					locations</p>
-			</section>
+					<section>
+						<h3>Inverse Distance Weighted (IDW)</h3>
+						<p> The IDW technique computes an average value for unsampled locations using values from nearby
+							weighted
+							locations. The weights are proportional to the proximity of the sampled points to the unsampled
+							location
+							and can be specified by the IDW power coefficient. </p>
+							$\hat{Z_j} = \frac{\sum_i{Z_i / d ^ n_{ij}}}{\sum_i{1 / d ^ n_{ij}}}$
+						<p>So a large
+							n
+							results in nearby points wielding a much greater influence on the unsampled location than a point
+							further away resulting in an interpolated output looking like a Thiessen interpolation. On the other
+							hand, a very small value of
+							n
+							will give all points within the search radius equal weight such that all unsampled locations will
+							represent nothing more than the mean values of all sampled points within the search radius.</p>
+					</section>
 
+					<section>
+						<h3>Kriging</h3>
+						<p>Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few. This
+							section will focus on ordinary kriging (OK) interpolation. This form of kriging usually involves
+							four steps:</p>
+						<ul>
+							<li>Removing any spatial trend in the data</li>
+							<li>Computing the experimental variogram, $γ$ , which is a measure of spatial autocorrelation.</li>
+							<li>Defining an experimental variogram model that best characterizes the spatial autocorrelation in
+								the data.</li>
+								<li>Interpolating the surface using the experimental variogram.</li>
+							<li>Adding the kriged interpolated surface to the trend interpolated surface to produce the final
+								output.</li>
+						</ul>
+					</section>
+
+					<section>
+						<p> We are interested in how these attribute values vary as the distance
+							between location point pairs increases. We can compute the difference, $γ$, in values by squaring
+							their
+							differences then dividing by 2.</p>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
+							width="1000">
+						$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
+					</section>
+
+					<section>
+						<h3>Experimental variogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+							width="1000">
+						</section>
+
+						<section>
+						<h3>Experimental variogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
+							width="1000">
+					</section>
+
+					<section>
+						<h3>Experimental semivariogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+							width="620">
+					</section>
+
+					<section>
+						<h3>Variogram models</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
+						width="800">
+					</section>
+					
+					<section>
+						<h3>Variogram models</h3>
+						<img src="https://gisgeography.com/wp-content/uploads/2016/11/kriging-models-1.png" width="800">
+					</section>
+					
+					<section>
+						<h3>Parameters in a variogram model</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
+						width="1000">
+					</section>
+					
+					<section>
+						<h3>Spherical model fit</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
+						width="1000">
+					</section>
+		</section>
+		
+<!--Earth observation-->
+		<section>
 			<section>
-				<h1>Spatial interpolation</h1>
-				<p>techniques used with points that represent samples of a continuous field are interpolation methods
-				</p>
-				<p>Here, our point data represents sampled observations of an entity that can be measured anywhere
-					within our study area</p>
-				<p>There are many interpolation tools available, but these tools can usually be grouped into two
-					categories: <strong>deterministic</strong> and interpolation methods</p>
+				<h1>Earth observation</h1>
 			</section>
-
+			
 			<section>
-				<h3>Proximity interpolation</h3>
-				<p> It was introduced by Alfred H. Thiessen more than a century ago. The goal is simple: Assign to all
-					unsampled locations the value of the closest sampled location. This generates a tessellated surface
-					whereby lines that split the midpoint between each sampled location are connected thus enclosing an
-					area.
-					Each area ends up enclosing a sample point whose value it inherits.</p>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
+				<h1>Sensores Remotos</h1>
+				<img src="https://www.researchgate.net/profile/Deborah-Balk-2/publication/253129924/figure/fig1/AS:298024912867328@1448066084166/Diagram-of-Elements-of-a-Remote-Sensing-System.png"
 					width="800">
 			</section>
-
+			
 			<section>
-				<h3>Inverse Distance Weighted (IDW)</h3>
-				<p> The IDW technique computes an average value for unsampled locations using values from nearby
-					weighted
-					locations. The weights are proportional to the proximity of the sampled points to the unsampled
-					location
-					and can be specified by the IDW power coefficient. </p>
-				$\hat{Z_j} = \frac{\sum_i{Z_i / d ^ n_{ij}}}{\sum_i{1 / d ^ n_{ij}}}$
-				<p>So a large
-					n
-					results in nearby points wielding a much greater influence on the unsampled location than a point
-					further away resulting in an interpolated output looking like a Thiessen interpolation. On the other
-					hand, a very small value of
-					n
-					will give all points within the search radius equal weight such that all unsampled locations will
-					represent nothing more than the mean values of all sampled points within the search radius.</p>
+				<img src="https://ars.els-cdn.com/content/image/3-s2.0-B9780128092545000026-f02-01-9780128092545.jpg"
+					width="800">
 			</section>
-
+			
 			<section>
-				<h3>Kriging</h3>
-				<p>Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few. This
-					section will focus on ordinary kriging (OK) interpolation. This form of kriging usually involves
-					four steps:</p>
+				<h3>Ley de Stefan-Boltzmann & Ley de Wien</h3>
+				<img src="http://3.bp.blogspot.com/--LNjn2jEHcg/UTsc-31r9GI/AAAAAAAADrs/3ZMIwpZ0FO8/s1600/spectral_emissive_power_of_a_288k_balckbody.jpg"
+					width="900">
+			</section>
+			
+			<section>
+				<img src="https://www.cientec.or.cr/sites/default/files/espectro.jpg" width="1000">
+			</section>
+			
+			<section>
+				<h1>Unidades</h1>
 				<ul>
-					<li>Removing any spatial trend in the data</li>
-					<li>Computing the experimental variogram, $γ$ , which is a measure of spatial autocorrelation.</li>
-					<li>Defining an experimental variogram model that best characterizes the spatial autocorrelation in
-						the data.</li>
-					<li>Interpolating the surface using the experimental variogram.</li>
-					<li>Adding the kriged interpolated surface to the trend interpolated surface to produce the final
-						output.</li>
+					<li><b>Energía radiante: </b> total de energía radiada en todas las direcciones (J).</li>
+					<li><b>Flujo radiante: </b>energía radiada en todas las direcciones por unidad de tiempo (W).</li>
+					<li><b>Irradiancia: </b>flujo radiante incidente sobre unidad de área (w/m2).</li>
+					<li style="color: blue;"><b>Radiancia: </b>flujo radiante emitido o reflejado por unidad de área y
+						por ángulo solido de medida (W Sr/m2).</li>
+					<li><b>Emisividad: </b>relación entre la emitancia y la de un emisor perfecto.</li>
+					<li style="color: blue;"><b>Reflectancia: </b> relación entre el flujo incidente y el flujo
+						reflejado por una superficie.</li>
+					<li><b>Absortancia: </b>relación entre el flujo incidente y el flujo que absorbe una superficie.
+					</li>
+					<li><b>Transmitancia: </b>relación entre el flujo incidente y el transmitido por una superficie.
+					</li>
+				</ul>
+				<img src="https://www.researchgate.net/publication/335182992/figure/fig2/AS:792150774120449@1565874870037/General-concept-of-a-satellite-or-ground-based-remote-sensing-measurement-of-reflected_W640.jpg"
+					width="500">
+			</section>
+			
+			<section>
+				<h3>Radiación solar & Radiación terrestre</h3>
+				<img src="https://media.cheggcdn.com/media%2Fc21%2Fc2109982-6c81-47a9-884e-cba8a9c3d57c%2FphpEF50FM.png"
+					width="900">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://pltfrmrsrcs.sagepub.com/images/geography/9781412956970-p2422-1.jpg" width="850">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://www.researchgate.net/profile/Aurelie-Shapiro/publication/324537528/figure/fig3/AS:631598739365924@1527596282701/The-difference-between-four-major-types-of-remote-sensors-passive-sensors.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://www.researchgate.net/profile/Tullio-Tanzi-2/publication/271846153/figure/fig2/AS:295102191816705@1447369253180/The-frequency-bands-of-the-passive-and-active-sensors-for-optical-imaging-and-for-radio.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Interacción de la atmósfera</h3>
+				<img src="https://ltb.itc.utwente.nl/uploads/studyarea/498/Pics_2015_jpg/Fig2_6.jpg" width="650">
+			</section>
+			
+			<section>
+				<img src="https://www.researchgate.net/publication/334970647/figure/fig3/AS:788525624610824@1565010567844/Solar-spectra-outside-of-the-atmosphere-at-ground-level-and-the-theoretical-blackbody.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Firma espectral</h3>
+				<p>La firma espectral se define como el comportamiento diferencial que presenta la radiación reflejada
+					(reflectancia) o emitida (emitancia) desde algún tipo de superficie u objeto terrestre en los
+					distintos
+					rangos del espectro electromagnético. Una forma gráfica de estudiar este comportamiento es
+					disponer los datos de reflectancia (%) en el eje Y y la longitud de onda λ en el eje X. Al unir los
+					puntos con una línea continua se origina una representación bidimensional de la firma espectral.</p>
+				<img src="https://crisp.nus.edu.sg/~research/tutorial/hcube.gif" width="500">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/originals/2d/41/70/2d4170e9e2a960afa5ad3123b8604fcb.jpg" width="1000">
+			</section>
+			
+			<section>
+				<h1>Raster</h1>
+				<p>Raster data (also known as grid data) represents surfaces. A raster, in its most basic form, is a
+					matrix of cells (or pixels)
+					grouped into rows and columns (or a grid), each cell containing a value reflecting information such
+					as temperature.
+					Each pixel corresponds to a particular geographic location. </p>
+				<p>The extent and cell size of the raster, the number of rows and columns, and the spatial reference
+					system are all factors to consider
+					(or CRS)</p>
+			
+			</section>
+			
+			<section>
+				<h1>Raster</h1>
+				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_concept.png"
+					width="600">
+				<figcaption>Representation of raster data. Source: National Ecological Observatory Network (NEON) via
+					datacarpentry</figcaption>
+			</section>
+			
+			
+			<section>
+				<h1>Resolución de imágenes</h1>
+				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_resolution.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Resolución espacial</h3>
+				<p><b>Para films (análogas) → resolving power of the film:</b> La resolución es función de la
+					distribución del tamaño de los granos de silver halide en la
+					emulsión. Los films con granos gruesos tienen una resolución menor sin embargo son mas
+					sensibles o rápidos a la luz, por el contrario con granos mas finos tienen mas resolución, pero
+					son menos sensible o lentos a la luz.</p>
+				<img src="https://www.cloudynights.com/uploads/monthly_12_2011/post-17464-14073829930923_thumb.gif"
+					width="550">
+			</section>
+			
+			<section>
+				<h3>Escala</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/GSD.jpg" width="1000">
+				<a href="https://datacarpentry.org/organization-geospatial/aio/index.html"
+					style="font-size: 20px;">Source: National Ecological Observatory Network (NEON)</a>
+			</section>
+			
+			<section>
+				<h3>IFOV --> GSD --> Pixel --> Resolución </h3>
+				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1350449509001017-gr1.jpg" width="450">
+			</section>
+			
+			<section>
+				<h3>IFOV</h3>
+				<img src="https://www.novuslight.com/uploads//n/Defense_Fig.-1_IFOV_diagram.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>IFOV</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_3.gif"
+					width="450">
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPQAAADPCAMAAAD1TAyiAAAAkFBMVEX////+/v77+/sAAACysrL4+PiSkpLPz8+JiYmzs7PV1dW4uLjb29v19fXy8vK2trarq6t8fHzk5OTt7e2Dg4OmpqZ7e3uYmJienp7n5+fKysovLy/ExMReXl7Ly8va2tppaWlERERycnJLS0tVVVU3NzcgICBZWVlOTk5iYmIVFRU8PDwlJSUNDQ1tbW0aGhqadRH8AAAP9klEQVR4nO1dC2OqOgxOG8AHDxV8oLJNfM75OP//390mBY/b9E4Q3YXLt7MdRcCGtGmSJilAjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjVsgQPA/CSDVX8Hv1B/9kZS/3b6HwFS/QhEnwVS/UlFN/+gXTEFvfruBD0EYhiYIUxEs9A8RqujXlFeT5t50sljwq4Q+Yr3u1fLsaLVw2IJ0YLKfLsGYTvchwH61dsBZT1cQTdXRKmK2w8HYx5GHMwPFGKPd1BysAhzA9D3C8W8370Fw+zv0cNNv2l10HYyMPg4jE0NYvUTo/HbrHoOmAU0M0Aaro4huYzQIX+fqKQxgpTjtV3NMv+ECIwgxRi9E9w3tAJfYAUMdDjqK6GqCFBEXSGrzC0GvJEltU6sqVYRkBYx0EZqkSSGRpJ8RsVK9MStJNatfUiknRCwRL4nDUvIToD9VhNSKt6aYuc4qqKa/skQTqdc+0yO+gpBeo91oX8RYsoirHiQMls3LOPahooJMEW1f6d9+X01flSRaQNdWk9Oljxp9EnPPbtBTIAZ2Old/Bjh9uC7kSg1xvXu/9Ssrval7X4bTr6gPAWqiP6MmumKoiT5HlYlWU1ZiZAntO0hmbZqyKqqcmF84fWZLknJSSZpJORl2WikM2+4Y6RurB+BWkmohnW63ayQYIYbpm67RTpfyqobPvpEAMTi9kbxu+fQWPQNE2ImdOLIwfS3ZY/Q7jXo0TKG9QkR4AyMb3+go9Ws3WbeuLNgnCh8vAIspQHU93p+gaFaCeroAWMXqjVnRsfwFtMDRp/Es0SIR9n8gmpzd7ss7LcfHW4/eVtM79gnk4B+gR/952E1jESoOxVY/thTJEtxm7FfXT3QOxdkGNrQjcILt/wfRisM20UpQszVc9AlXDyYO0pcjlFDRYKpzqM5s7U4BJu3p6H/RvQXgNn0tYXOopvPgK2Z7OOvSOK94/xZM7fbjRKaauPBYaVYLigs11TAenBM92lU0gkxD6vjmEYrTLKUsrDNRXkWwEgavGJ2F/CrOR+mkXUlQcI00Bwf/rz6izExoH7q/2aoHg4O6fbQ5bCw5RuHuxpmzrHqg8KLgk2HFPX6A5ddE9VKFZC8g52yYyRv1woTV8ROF5EFwtwt1UbkJp07MiRo6RtDU6Qr6AxA4+nSyOtWEPnIeS4nt6jT8k8kwKTuDDgIzWsJq9/lkyYta5Cwzy6yjMJ+52/L/JkdHSj0lQ+PQ+Xy27hTrDZTcJyo+vZB66UKyPx96+JmflKyjDreVSC9z71ZUtND7M50eAML1FKCJ6gUyp6V2gp5DHXUVq7Ffble/IK8fWhQ1hsFsZ6q/5nzFigl00ftyMocFA/DsXWIIIg1fjC67OhX1cawTNAR48613WVyNl8Mrn5QFXQxwaxuUe2SqGWq3nKBDge3g4LXgObDRL/NErTndBK17KU7vN21lUpArbN+X14ZuS6miJR7VKdEC3jBCivlEls0mP4HLThLym30VcaWChMncnNnEt8msRzPRfNgAV1EbYXQlnEYRbWPj6U0tEFL/JlG92nTm9JzDMjGpv4FkeDx9aisLhtatEmND6MwcU70MKZ3ySuCUOtFXco911yc3t0CQzsnEJvaGomX2QQr2RWnF5jX2KFShzDKcmEYxUpRkBpSLRa4x7gEXuzcp4Es1ibuldgezqjVR05BMErFIpnPW2aWzKS2L121luRPmycJyhlqqESX+biTYeL5ElK6LMIrHZY8mIxZ778kwVlzHBmccXpZjLN8ifCuzggJp0NBLkISAuuTdZpZfHNM8qNlZVm5Oa/QcPVMb68nPJ49QlFqQpfCaDjv9cH6DEeWsrHKbWhomuP0xDW+c/UyOgBesRKy7hB7FQm72t/Tb257Nfx4knhT3xrtbgtjVGfNFBRY7yL4wumQ33jABk2vwi1u8lOApujVbdc8YLU6Bv19NLqW70MzmlnzeIne/mq/QYU0zyVKRZFyTBfYtPJJ1GPKPllqekVFtysEqbvyt0pN4woFLdH0523T+DPQ5JVbNOGB/jB3oN7ufAg4m3eg7ZXQy2SVX9LbSgNTL2ctYQNCy+8MeYTjsDeeDVqQr0X06Wf2M3+cs80tMNcU1Aw51DoPv+AqO47QdRya1Xj6f7qnDPdRlQX6nwUWAyJq+c2jJiYyk4Jr85jvSDiYLzbKvVqvhGcfZLpnG5ZZjxNHokHGZyv54hauLAmWASMZoJmCz5GNaKSZ+VqbRarVZYk6Daa2CrNpV2ddtFddeM2emBNu5V9buzbOtT+tX2Qigda1xKXVvmnNdpU8emtlnHyF6H2WkOa1n7GM3uyCmGMJy+hK4tjElLsjMyWZqOGzWD2nUgyG4srF9aOTQM9S18eohrXowBLtFZuQm8jJ2b7p0jOFj2vVYsPq8nSard5mupP79caSXZRNn5AkI88WR0JIILQOVruY3NTjY9PI0mkML3eE2KN3CLTW8kS92htNaJF1cNrNDmMLLKYwoXFRwvm3JGK0gg5y5RxybYyqBULp1W8qGn+aLDKMxbQpo7Adlk94CbludvXipnuWOWDZOA/T27n2cesHSDWq52NzHKKWgbAprzZNAAf338Ek9sF7sl4vRYOF90VF0cdnWbRt/jHtHpITuulypp7Tbwn3Oa0lJPFFhDXosOBONHJp3LlOo/u1PQ1kOBdykRlrxG+++cMd96GoDA87l+887wTn+DTkg7K7Gkr8p2Mw4SOO/z2qOKOoDuHcuSFHs7JAs8jJULFN8Wb/zxhp3cUjy1gXxStFcgtJdAtp/BlxS7r6JmvcjWb0/aEyfNuEDHQFxiu3J2+YhJlHu96mhkhd6o8fYWpTMTtkTSdoz7VGnemdeRlEqUoELcJzh9QhOU4iX6ky0KZ/OdE425cv1XcLkiaYo8Ixf2N3+gvwz3Kt1RhHvb0S8z8dpaTbjApNFg511p4l6GVKeStaapz/5HbBtnBTXSikidB4xqDlx/+14fFFGzWi7fYXecbvxriTL/Qj5Pg+Kc3kIYT9odzzqyA20XRyEKG30Dy9mkFsRoo38ihuEasQ18SFjmsK2yM+MloW+B/Cx8d9kZkWfE+6SUltFOre66OhstUK1UV5SeMVmCyeRhbFtrlf9oScyu9p1kuHhhYRiYcxRjXj/AL2JWlH35PuaXICi2aGEGttCZ32EPIKMpYBxaIMscGmCKjphh4ocFZunxvlv2mC3puqF82cLeaYsFogzLDZwmYJKdUW+gpVR0kvaHw2i8rjftyDuQR7lhC4IUVcsKqqBnJs6nel9qwse03puTnql1MMzR3cS3nxp6jI+BYE3C6QJwSzKgcJJzloNZWGtg5HFyX7N+C2q/1G6JBRaeol3wextxoUtYTKJ8pTAz3EiIqm0nq99OVdnf0IDC5SO0tvwUAzXsUjyP9nayhltnXt19keM0C0sGMN/WZJ4sJUO9Q6n1P2cnVPo+hYPQYheYXKsKxdcbmMA3guZrU44YIS5nOyCExeKadkXUK3R4qbpmIowENEbGpK+YSt0oqaV62bh2nlUcPqswHVbERNrFNHu5lynaOchWsBi9TAXtfmnV1QnMiURPX4Nx+1+eoxu3chKtKBtJtx4dm3gSfZQsBb0zfsjdL3c5IyLD01xY/NeUC6LYu1ItaAJ9rx/eo45iJbAkfhNvFaaSHLWoUyKJ07sVstOYdgdB5JQ0uubE6uuTTWgCoHQ9pCuQJMeg+xE8xTqUH2LK1SbJ3r6/eagSz8pBt2w2R9AUm5QXvRx0ydFrdvq3Z9dXf4t7T15ujcrnlRq7ZpbPmFfFMftduNrPw0abTveBcmdLl8voXMoSO/RnYqLC52O5SCa3KhcYe361sJCBG68HulHS67X9HjysE25Xfe9a+ke5EEoLLODS13q7Li/1achO6dlsjqrDNLLJ7Rfjc1S6NtLvZN8ur+8Huv00dtmM5mML15PuqJdVOS71OECnM8s9L1zEU3icOFDWo/rpNYDP0R/NLKYTdqPdF6LSi8wQBoqPBqFo1Od4DMzj7qkE1t8+Z2Too5S494ttadEm105OP1Nukptt9HdllZkwg0mNp/tR3O6UbLx/N+K74JnB9qW597pmno2d3Gh/4N8nCatfbn4miyaeLWaB9e7cct4nUAfnKIuzHTW1oOwr6uPZmrapdYKndYtPNCrWPk4TVsD7ftfDvLk40T7V/09NxiGeogTneHeGYNWZJKP2PbXSQ53Ui1Au0d0oIRIysVBjnmaYhq/EqDEV1dNwDSE2MP1o5XEe0hJLusEPasbgPzbu3nkD9Zv9+u5PObsIVVzlX5vOGTu5BNkve9B/HI+orr0iSombsie1AWDtSQIDKq3mVDNDi3Synr3G5jUZaKu/zpSlDbmjnMyOTKrofb3zQbm746XLoAKcdPSQXqyZmwQ986/g54ardsWwGraSdWfA3ixO9alucfBOLCzGhwj9NhsgFRkGxRHdpfQSSvKJtUZOb1rjMbdjlbqy90OES3N2WxGGhV42+Px+J5Rz23gK6SaBsmfV6Or133vaBtfPDAaWnLpgpTBon93jjHdTRPNitT6tN1iRntaDl981nNMljdtK2zBvWtPuig4GGHzLXFa0s1Jv78Xaqoa2BDMAFylEXzo4BbV2oxj2qWFylSthNiKBIvEKybTjU1LnLKqLYtkBqfii/PF/RqZ6ovWegOwldGfj7GORSBPbjaiA65zKtjymK+UGqEngftETjKW1SM19z1SzthxObp/+woOu0gigZI1Mv6ejETjLLG0oLsj+cXW8/cqPdmaJmW6jYGAt52RhMYYeqvXe6BdOIkhkFRRyjJPs2iF14Otw6fssJOInc9WRc62JfYPc6QVkmqq3i95F9DCnOB/v+x2TrOEoWQLcKE9M6KiG5O2SSh9YtaGZCcekX3t/KcvgAycphiGLo65GmrPJwn7oIhGJV3Hc7Zdad228HijbN3b1IUvlXJzpOppD4LQFZy2S2UYSTVViKLjRTNyWnrHLQR2n/cZEQ/jNJu/amJtuVSc7krx6DtuD1k4LcUEx1ZzQHUyEwPpAUisEAn+wLJG72MouiRIRuntTcNhw9ciTRYbVnT+PWz+Env9yY63PSj4C+AWopPoDBN8fHZKTQNpCVPraEUJtNuINhO2Ohyl+1xMMGonKkJRMQ+3cpq+zxkNcPj8gmlDDEd+2tkKwc1EC9hYE2v/9NRAQeu2Ud+DAjcWu5Fo9fvuubDYPX3PJyXF13Nwl0u4uoqU456K6J+dCG8h7ZvxbSuo52AeKz6bw8yVzq6B+21j0zH+Fa0BHiPDsDf4w4mPgY3LltFpotX6t7O6N9fX5Zkg+PFrW7ZNX6j/Ph3q2w1Ftf3vT7zr3h7JLGXekKr/GsStmwkK9gG4ogIwbw6i1R7NZ09DjwC5MW60+ziCQkr4bTbdD9rq5MYhLdL1rLJD6CjXKpBSo0aNGgn+Ae9Dk6wl9CArAAAAAElFTkSuQmCC"
+					width="450">
+			</section>
+			
+			<section>
+				<h3>Pixel size</h3>
+				<img src="https://seos-project.eu/remotesensing/images/spatial-resolution_400.png" width="700">
+			</section>
+			
+			<section>
+				<img src="https://images.slideplayer.com/24/7344475/slides/slide_7.jpg" width="850">
+			</section>
+			
+			<section>
+				<h3>Relación entre escala y resolución</h3>
+				<ul>El procesamiento de imágenes está interesado:
+					<li><b>Detección:</b> discernir discretamente los objetos</li>
+					<li><b>Reconocer: </b>determinar que tipo de objeto es</li>
+					<li><b>Identificar: </b>identificar el objeto específicamente</li>
+				</ul>
+				<img src="https://i.ytimg.com/vi/AdXBewR-u2A/hqdefault.jpg" width="650">
+			</section>
+			
+			<section>
+				<h3>Escala VS Resolución</h3>
+				<img src="https://miro.medium.com/max/385/0*BL2opZhfAmH32Ne3.gif" width="800">
+			</section>
+			
+			<section>
+				<h3>Escala VS Resolución</h3>
+				<img src="https://miro.medium.com/max/599/1*9py1AUZxr-zQ1ZkFH9jBXQ.png" width="800">
+			</section>
+			
+			<section>
+				<h3>Área Mínima Cartografiable (AMC)</h3>
+				<p>La relación entre la resolución espacial y la escala está mediada por el AMC (mínima área de un
+					elemento que debe ser representado en un mapa)</p>
+				<img src="https://4.bp.blogspot.com/-877gV5vYyW0/V5bxRasaSVI/AAAAAAAAFxQ/UDFfEhYSykMPJoTeJ6v92IW3CjmBPdsjgCLcB/s1600/AREAMINIMA.png"
+					width="650">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/564x/89/c9/68/89c968579b6138ad6211a352a85abefe.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Tamaño del pixel recomendado</h3>
+				<p>Regla de Waldo Tobler --> Map scale = raster resolution (in meters) x 2 x 1000</p>
+				<img src="https://i1.wp.com/acolita.com/wp-content/uploads/2019/06/scale-and-cell-size.png?resize=398%2C240&ssl=1"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.e-education.psu.edu/geog260/sites/www.e-education.psu.edu.geog260/files/7-15-.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.e-education.psu.edu/geog480/sites/www.e-education.psu.edu.geog480/files/remotesensing/geog480/lesson2/figure2_10.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-1-4614-6423-5_101-1/MediaObjects/212922_0_En_101-1_Fig1_HTML.gif"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://image.slidesharecdn.com/mss-150429113159-conversion-gate02/95/multispectral-and-hyperspectral-scanning-9-638.jpg?cb=1430307381"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.nireos.com/wp-content/uploads/2019/09/What-is-Hyperspectral-Imaging.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/spectral-curves-sensor.JPG"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Resolución radiométrica</h3>
+				<img src="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/res_radiometric.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución radiométrica</h3>
+				<img src="https://www.researchgate.net/profile/Anik-Chowdhury-3/publication/341164804/figure/fig5/AS:887926384779267@1588709555512/Effect-of-Radiometric-Resolution-18.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Escala temporal --> Revisit time</h3>
+				<img src="https://www.researchgate.net/profile/Sam-Murphy-9/publication/295296781/figure/fig8/AS:668374623346719@1536364336579/Temporal-resolution-as-a-function-of-latitude-for-a-Landsat-8-b-Sentinel-2a-c_Q640.jpg"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución temporal vs Resolución espacial</h3>
+				<img src="https://www.researchgate.net/profile/C-Mark-Eakin/publication/293486756/figure/fig1/AS:613932758728717@1523384384326/Spatial-and-temporal-scales-of-coral-reef-mapping-and-monitoring-application-in-relation.png"
+					width="650">
+			</section>
+			
+			<section>
+				<h3>Resolución trade-off</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_5.gif"
+					width="500">
+			</section>
+			
+			<section>
+				<h1>Tratamiento de imágenes de satelite</h1>
+				<p>Existen una gran cantidad de procedimientos para el análisis de imágenes de satélite. En este
+					curso nos concentraremos en 4 de ellas:</p>
+				<ul>
+					<li>Pro-procesamiento de imágenes</li>
+					<li>Mejoramiento de imágenes</li>
+					<li>Transformaciones de imágenes</li>
+					<li>Clasificación de imágenes</li>
 				</ul>
 			</section>
-
+			
 			<section>
-				<p> We are interested in how these attribute values vary as the distance
-					between location point pairs increases. We can compute the difference, $γ$, in values by squaring
-					their
-					differences then dividing by 2.</p>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
-					width="1000">
-				$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
+				<h3>QA bands & Bitmasks</h3>
+				<p>Most optical satellite imagery products come with one or more QA-bands that allows the user
+					to assess quality of each pixel and extract pixels that meet their requirements.</p>
+				<img src="https://i1.wp.com/spatialthoughts.com/wp-content/uploads/2021/08/qa_flags.png?resize=768%2C805&ssl=1"
+					width="450">
 			</section>
-
+			
 			<section>
-				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
-					width="1000">
+				<h3>Pre-procesamiento de imágenes</h3>
+				<p>Cualquier imagen adquirida por un sensor remoto presenta una serie
+					de alteraciones radiométricas y geométricas.</p>
+				<img src="https://i.pinimg.com/564x/4e/3d/6f/4e3d6ffc5e3aef2c2afdc9a55b611281.jpg" width="800">
 			</section>
-
+			
 			<section>
-				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
-					width="1000">
+				<img src="https://i.pinimg.com/564x/1d/8a/ab/1d8aabd7459dbc07cb7b0dd8766c0d21.jpg" width="850">
 			</section>
-
+			
 			<section>
-				<h3>Experimental semivariogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
-					width="620">
+				<h3>Striping</h3>
+				<img src="https://d3i71xaburhd42.cloudfront.net/52ecdf3f8086959f68bebe4fe6f494cb67e0962e/2-Figure1-1.png"
+					width="850">
 			</section>
-
+			
 			<section>
-				<h3>Variogram models</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
+				<h3>Line drop</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/nois.jpg"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Bit or noisy error - "salt-and-pepper" effect</h3>
+				<img src="https://www.researchgate.net/profile/Pascal-Monasse/publication/226428136/figure/fig4/AS:302317518770177@1449089521322/The-noisy-satellite-image-impulse-noise-with-denoised-image.png"
+					width="950">
+			</section>
+			
+			<section>
+				<h3>Correción geométrica</h3>
+				<p>The processes of georeferencing (alignment of imagery
+					to its correct geographic location) and orthorectifying
+					(correction for the effects of relief and view direction on
+					pixel location) are components of geometric correction
+					necessary to ensure the exact positioning of an image</p>
+			
+				<p>Landsat Level-1 products are precision registered and orthorectified through a systematic process
+					that
+					involves ground control points and a digital elevation model (DEM).</p>
+				<img src="https://www.pcigeomatics.com/geomatica-help/COMMON/concepts/images/GeometricCorrection.gif"
+					width="500">
+			</section>
+			
+			<section>
+				<h3>Orthographic projection</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/displacement2.png" width="600">
+			</section>
+			
+			<section>
+				<h3>Image Orthorectification</h3>
+				<img src="https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/orthophoto_vs_airphoto.jpg"
 					width="800">
 			</section>
-
+			
 			<section>
-				<h3>Variogram models</h3>
-				<img src="https://gisgeography.com/wp-content/uploads/2016/11/kriging-models-1.png" width="800">
+				<h3>IKONOS Satellite Image Orthorectification</h3>
+				<img src="https://legacy.satimagingcorp.com/media/images/Ikonos_Distortion.gif" width="500">
+			</section>
+			
+			<section>
+				<h3>Resampling</h3>
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZUTuAnliDw-_vmJ0Pf8HEkWxtnEOH1M2VURqjZ5wqxsrhlHM2f4Sn4IBo8W-lTOpCS2E&usqp=CAU"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Solar correction</h3>
+				<p> Solar correction accounts for solar influences on pixel values. Solar correction converts at-sensor
+					radiance to top-of-atmosphere (TOA)
+					reflectance by incorporating exoatmospheric solar irradiance (power of the sun), Earth-Sun distance,
+					and solar elevation angle</p>
+				<img src="https://grass.osgeo.org/grass76/manuals/i_topo_corr_angles.png" width="500">
+			</section>
+			
+			<section>
+				<h3>Atmospheric correction</h3>
+				<p> The energy that is captured by Landsat sensors is influenced by the Earth’s atmosphere. These
+					effects include
+					scattering and absorption due to interactions of the electromagnetic radiation with atmospheric
+					particles (gases, water vapor, and aerosols)</p>
+				<img src="https://8430352m.files.wordpress.com/2013/11/sensor_radiance.png" width="500">
+			</section>
+			
+			<section>
+				<h3>Topographic correction</h3>
+				<p> Topographic correction account for illumination
+					effects from slope, aspect, and elevation that can cause
+					variations in reflectance values for similar features with
+					different terrain positions (Riaño etal. 2003). </p>
+				<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs41324-019-00274-0/MediaObjects/41324_2019_274_Fig1_HTML.png"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>TOA (Level 1) vs BOA (Level 2)</h3>
+				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig2/AS:474184846450688@1490065885221/The-common-units-of-Landsat-imagery-used-in-ecological-analysis-The-units-change-as-each.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/calibration.PNG" width="800">
+			</section>
+			
+			<section>
+				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig5/AS:474186733887488@1490066335548/Dichotomous-decision-tree-for-determining-the-level-of-preprocessing-necessary-for-most.png"
+					width="900">
+			</section>
+			
+			<section>
+				<h3>Radiación termal</h3>
+				<p>La Temperatura cinética es la manifestación interna de la energía traslacional promedio de la
+					moléculas que componen un cuerpo (temperatura cinética). Como consecuencia los objetos
+					irradian energía en función de su temperatura (Temperatura radiante), adicionalmente esta
+					temperatura sensada es de los primeros 50 cm, puede no ser representativa de todo el objeto.
+					Sin embargo debido a la diferencia de emisividad que tienen los objetos, un cuerpo puede tener
+					la misma temperatura y aun así tener diferente radiancia. Solo los cuerpo negros presentan que
+					la Trad = Tcin, para los demas cuerpos la temperatura radiante siempre es menor, ya que la
+					emisividad es menor que 1</p>
+				<img src="http://gsp.humboldt.edu/OLM_2017/courses/GSP_216_Online/images/DN-temp.jpg" width="800">
+			</section>
+			
+			<section>
+				<h1>Image Enhancement</h1>
+				<img src="https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/GUID-E383F01A-627E-45CA-9262-A3987C68AF94-web.gif"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Ajuste del histograma</h3>
+				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-light.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Ajuste del histograma</h3>
+				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-dark.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://image.slidesharecdn.com/imageenhancementtechniquepkmani-140117025656-phpapp02/95/image-enhancement-technique-digital-image-analysis-in-remote-sensing-p-k-mani-11-638.jpg?cb=1440825408"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-3-319-58039-5_3/MediaObjects/442937_1_En_3_Fig15_HTML.png"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://www.mdpi.com/jimaging/jimaging-06-00121/article_deploy/html/images/jimaging-06-00121-g001.png"
+					width="600">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Convolution_arithmetic_-_Same_padding_no_strides.gif"
+					width="300">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://www.onestopgis.com/Aerial-Photography/Introduction-to-Aerial-Photogrammetry/Filters/posts/High-Pass-Laplacian-Edge-Enhancement-Compass-and-Gradient-Operators/The-measurement-units-of-the-variable.webp"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Ratios</h3>
+				<img src="https://image.slidesharecdn.com/lectureforlandsat-100627045135-phpapp01/95/lecture-for-landsat-25-728.jpg?cb=1277614644"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Pan-sharpening</h3>
+				<img src="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/GUID-6E0028FA-DCF0-4AF6-BF23-311F6CF6AD84-web.png"
+					width="520">
+			</section>
+			
+			<section>
+				<h3>Pan-sharpening</h3>
+				<img src="https://i.ytimg.com/vi/UM8WhUEHvzo/hqdefault.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Index</h3>
+				<img src="https://www.researchgate.net/publication/336975237/figure/tbl2/AS:820629183922180@1572664652843/Equations-of-tested-nine-remote-sensing-indices.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>NDVI Index</h3>
+				<img src="https://ece.montana.edu/seniordesign/archive/SP15/OpticalWeedMapping/uploads/4/9/2/7/49273335/1429843234.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Soil Vegetation Wetness Index (SVWI)</h3>
+				<img src="https://www.researchgate.net/profile/J-C-Krapez/publication/239796493/figure/fig7/AS:667831611965460@1536234872451/Soil-Vegetation-Wetness-Index-SVWI-map-computed-from-remote-sensing-data-by-exploiting.jpg"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Composite bands</h3>
+				<img src="https://eo.belspo.be/sites/default/files/images/teledetection/graph_colour_mixing_en_0.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Combinación de bandas ---> True color</h3>
+				<img src="https://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/3-bands.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Combinación de bandas ---> False color</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/bands.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Combinación de "bandas" ---> radios</h3>
+				<img src="https://blog.arabnubia.com/wp-content/uploads/2019/10/1-1-1.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Image transformations</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/pca.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<img src="https://media-exp1.licdn.com/dms/image/C5612AQFCtn794jGtfw/article-inline_image-shrink_1500_2232/0/1544148478074?e=1622678400&v=beta&t=2tJzGddTNZHEOXtOgjwtjtZEtwJBdA8cg1UmB58bXjw"
+					width="850">
+			</section>
+			
+			<section>
+				<h3>Principal components</h3>
+				<img src="https://d3i71xaburhd42.cloudfront.net/90e6bfaf598797b0770f68a74294edc96c015ba0/8-Figure5-1.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Principal components</h3>
+				<img src="https://geol260.academic.wlu.edu/files/lecture_notes/PCs_VA_landsat8.png" width="400">
+			</section>
+			
+			<section>
+				<h3>Tasselled cap</h3>
+				<img src="https://images.squarespace-cdn.com/content/v1/551e8d99e4b0751e1a311984/1431094487685-7N905UJJGJZQCX05T6EY/ke17ZwdGBToddI8pDm48kNkXWAY4c19ZL2Q6aDTJ9edZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVGOUWlvG4s0Yb7ZvY0GELybJMhZBqcGjIFsQEQp_eFUg91lH3P2bFZvTItROhWrBJ0/Tasseled_cap_figure.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Tasselled cap</h3>
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUbEx4PvqXQew2kqliDeZs0uGtR_JkWwILTa3ckZPaEd2LSoxVfbyYtORQA3GIlgvQsyM&usqp=CAU"
+					width="400">
+			</section>
+			
+			<section>
+				<h3>RGB --> IHS</h3>
+				<img src="https://www.researchgate.net/profile/Thiago-Araujo-9/publication/313346771/figure/fig3/AS:458224785727491@1486260710648/FIGURA-3-A-mostra-o-espaco-de-cores-RGB-e-B-mostra-o-espaco-IHS-Araujo-2008.png"
+					width="800">
+				<img src="https://lh3.googleusercontent.com/proxy/jXnTkz0nGW5lkEO4vY6koSJE1Z90P0yiwLGB2OLth6Lp8aqDUkL9IWCbGZsvD-jSNEk7XhiBaXGes9EYwItiZtmKbJdw07BOhQ"
+					width="400">
+			</section>
+			
+			<section>
+				<img src="https://acsess.onlinelibrary.wiley.com/cms/asset/6619d2a0-5bc2-4df0-9d36-87b440d30c8a/ppj220007-fig-0005-m.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/class.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Método no supervisado</h3>
+				<img src="https://www.mdpi.com/applsci/applsci-07-00888/article_deploy/html/images/applsci-07-00888-g001.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.mdpi.com/remotesensing/remotesensing-08-00705/article_deploy/html/images/remotesensing-08-00705-g003.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.researchgate.net/profile/Taskin-Kavzoglu/publication/294596525/figure/fig3/AS:669405537120266@1536610125766/Schematic-diagram-illustrating-the-classification-of-pixel-4-using-minimum-distance.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.researchgate.net/profile/Asid-Ur-Rehman/publication/312919189/figure/fig2/AS:454738085978114@1485429416387/Parallelepiped-classifier-Lillesand-2001.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://plato.fea.ugent.be/masterproef/figuren/shhuang/33333.png" width="1000">
+			</section>
+			
+			<section>
+				<h1>Evaluación</h1>
+				<img src="https://i.pinimg.com/564x/31/29/85/312985109feaa25587ab52fb064be62c.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Cohen´s kappa</h3>
+				<img src="http://1.bp.blogspot.com/-F6bcDBs0EmM/Uvs_BMCWn1I/AAAAAAAAAQA/gV4bx-rVKNA/s1600/representaci%C3%B3n+gr%C3%A1fica+de+kappa.jpg"
+					width="600">
+				<img src="https://study.com/cimages/multimages/16/kappa-formula.jpg" width="400">
 			</section>
 
 			<section>
-				<h3>Parameters in a variogram model</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
-					width="1000">
+			<h3>What is Google Earth Engine?</h3>
+			<ul>
+				<li>A cloud-based platform for planetary scale geospatial analysis</li>
+				<li>Uses Google's computational resources to reduce processing time</li>
+				<li>A massive archive of remote sensing data</li>
+			</ul>
 			</section>
 
 			<section>
-				<h3>Spherical model fit</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
-					width="1000">
+				<h3>Google Earth Engine</h3>
+				<img src="https://developers.google.com/earth-engine/tutorials/community/beginners-cookbook/ee-editor.png" width="800">
+				<figcaption>Source: <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a></figcaption>
 			</section>
 		</section>
-		<!--Networks-->
+
+<!--Networks-->
 		<section>
 			<section>
 				<h1>Networks</h1>
@@ -2921,7 +2980,8 @@
 
 			</section>
 		</section>
-		<!--Spatial model-->
+
+<!--Modeling-->
 		<section>
 			<section>
 				<h1>Multivariate & Global Spatial Regression Models</h1>
