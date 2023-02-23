@@ -31,13 +31,13 @@ M2-222
 [Taller Importar datos raster](/Notebooks/06_DownloadData_Raster.ipynb)  
 
 ### Web spatial tools
-[Taller Web Spatial tools](/Notebooks/07_WebMapping.ipynb) 
-[Taller Mapas interactivos](/Notebooks/08_InteractiveMaps.ipynb) 
-[Taller Leaflet](/Notebooks/09_Leaflet.ipynb)
+[Taller Web Spatial tools](/Notebooks/07_WebMapping.ipynb)  
+[Taller Mapas interactivos](/Notebooks/08_InteractiveMaps.ipynb)  
+[Taller Leaflet](/Notebooks/09_Leaflet.ipynb)  
 
 ### Point pattern analysis
-[Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)
-[Taller Clustering](/Notebooks/11_Clustering.ipynb) 
+[Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)  
+[Taller Clustering](/Notebooks/11_Clustering.ipynb)  
 [Taller Geovisualización](/Notebooks/12_Geovisualization.ipynb)  
 
 ### Choroplet maps
@@ -55,7 +55,7 @@ M2-222
 [Redes](/Notebooks/18_Network.ipynb) 
 
 ### Spatial model
-[Regresión espacial](/Notebooks/19_SpatialRegression.ipynb)
+[Regresión espacial](/Notebooks/19_SpatialRegression.ipynb)  
 [Taller Classification](/Notebooks/20_Clasificacion.ipynb)   
 
 ### Bases de datos espaciales
