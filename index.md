@@ -47,7 +47,7 @@ M2-222
 [Taller Exploración espacial de datos](/Notebooks/14_SpatialAssociation.ipynb)
 
 ### Lattice data analysis (Field model)
-[Taller Geoestadística](/Notebooks/15_Geostatistic.ipynb) 
+[Taller Geoestadística](/Notebooks/15_Geostatistic.ipynb)  
 [Taller Análisis con datos raster](/Notebooks/16_Raster.ipynb)     
 [Taller Google Earth Engine](/Notebooks/17_GEE.ipynb)  
 
