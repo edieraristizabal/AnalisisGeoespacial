@@ -1,6 +1,6 @@
 # Análisis Geoespacial
 
-El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos esapciales en un conetexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como editores *Jupyter Lab* y *Visual Code*. 
+El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos espaciales en un conetexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como editores *Jupyter Lab* y *Visual Code*. 
 
 Todos los scripts disponibles en esta guía han sido reciclados por el profesor Edier Aristizábal, y ajustados la mayoría de ellos de acuerdo con las necesidades del curso. Por lo que se hace un esfuerzo en brindar los créditos a los desarrolladores, pero con toda seguridad no es suficiente dicho esfuerzo y muchos de los créditos seguramente no están. Sin embargo no es por omisión voluntaria, sino por el gran número de desarrolladores consultados, combinaciones y ajustes, que en muchos casos se pierde la trayectoria. Pido disculpas a los programadores que sienten que sus créditos debieron ser otorgados en esta guía.
 
@@ -21,53 +21,51 @@ M2-222
 ### Introducción al curso
 
 ### Geospatial Computational Environment
-[Taller Ambiente de trabajo](/Notebooks/ComputationalEnvironment.ipynb)  
+[Taller Ambiente de trabajo](/Notebooks/01_ComputationalEnvironment.ipynb)  
+
+### Intro análisis espacial
+[Taller Datos espaciales](/Notebooks/02_GeospatialData.ipynb)   
+[Taller Ingeniería de datos](/Notebooks/03_DataEngineering.ipynb)  
+[Taller Operaciones espaciales](/Notebooks/04_SpatialOperation.ipynb)  
+[Taller Importar datos vector](/Notebooks/05_DownloadData_Vector.ipynb)  
+[Taller Importar datos raster](/Notebooks/06_DownloadData_Raster.ipynb)  
+
+### Web spatial tools
+[Taller Web Spatial tools](/Notebooks/07_WebMapping.ipynb) 
+[Taller Mapas interactivos](/Notebooks/08_InteractiveMaps.ipynb) 
+[Taller Leaflet](/Notebooks/09_Leaflet.ipynb)
+
+### Point pattern analysis
+[Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)
+[Taller Clustering](/Notebooks/11_Clustering.ipynb) 
+[Taller Geovisualización](/Notebooks/12_Geovisualization.ipynb)  
+
+### Choroplet maps
+[Taller Mapas Coropletas](/Notebooks/13_Choropleth.ipynb)   
+
+### Lattice data analysis (Object-based model)
+[Taller Exploración espacial de datos](/Notebooks/14_SpatialAssociation.ipynb)
+
+### Lattice data analysis (Field model)
+[Taller Geoestadística](/Notebooks/15_Geostatistic.ipynb) 
+[Taller Análisis con datos raster](/Notebooks/16_Raster.ipynb)     
+[Taller Google Earth Engine](/Notebooks/17_GEE.ipynb)  
+
+### Network analysis
+[Redes](/Notebooks/18_Network.ipynb) 
+
+### Spatial model
+[Regresión espacial](/Notebooks/19_SpatialRegression.ipynb)
+[Taller Classification](/Notebooks/20_Clasificacion.ipynb)   
+
+### Bases de datos espaciales
+[Taller Bases de datos espaciales](/Notebooks/21_SGDB.ipynb) 
 
 ### Intro to Remote Sensing - GIS
 [Taller Remote sensing](/Guias/Guia_SIG.pdf) 
 
-### Web spatial tools
-[Taller Web Spatial tools](/Notebooks/WebMapping.ipynb) 
-
 ### Geospatial Data
 Lecture: [A conceptual framework and comparison of spatial models](https://www.researchgate.net/publication/244954245_A_Conceptual_Framework_and_Comparison_of_Spatial_Data_Models)
-
-[Taller Importar datos raster](/Notebooks/DownloadData_Raster.ipynb)  
-[Taller Importar datos vector](/Notebooks/DownloadData_Vector.ipynb)  
-[Taller Datos espaciales](/Notebooks/GeospatialData.ipynb)   
-[Taller Ingeniería de datos](/Notebooks/DataEngineering.ipynb)  
-[Taller Operaciones espaciales](/Notebooks/SpatialOperation.ipynb)  
-[Taller Geovisualización](/Notebooks/Geovisualization.ipynb)  
-
-### Web mapping
-[Taller Leaflet](/Notebooks/Leaflet.ipynb)
-
-### Point pattern analysis
-[Taller Análisis de patrones de puntos](/Notebooks/PointPatternAnalysis.ipynb) 
-
-### Choroplet maps
-[Taller Mapas Coropletas](/Notebooks/Choropleth.ipynb)   
-[Taller Mapas interactivos](/Notebooks/InteractiveMaps.ipynb) 
-
-
-### Lattice data analysis (Object-based model)
-[Taller Exploración espacial de datos](/Notebooks/ESDA.ipynb)
-
-### Lattice data analysis (Field model)
-[Taller Análisis con datos raster](/Notebooks/Raster.ipynb)   
-[Taller Geoestadística](/Notebooks/Geostatistic.ipynb)   
-[Taller Google Earth Engine](/Notebooks/GEE.ipynb)  
-
-### Network analysis
-[Redes](/Notebooks/Network.ipynb) 
-
-### Spatial model
-[Taller Regionalización](/Notebooks/Regionalization.ipynb)   
-[Regresión espacial](/Notebooks/SpatialRegression.ipynb)
-[Taller Python](/Notebooks/Clasificacion.ipynb)   
-
-### Bases de datos espaciales
-[Taller Bases de datos espaciales](/Notebooks/SGDB.ipynb) 
 
 ## Evaluación
 El curso se evaluará a través de un trabajo individual durante todo el curso, donde el estudiante implementará en una área de 
