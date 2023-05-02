@@ -1,0 +1,3223 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Análisis Geoespacial</title>
+
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/serif.css" id="theme">
+	<link rel="stylesheet" href="dist/style.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+
+</head>
+
+<script>
+	setInterval(showTime, 1000);
+	function showTime() {
+		let time = new Date();
+		let hour = time.getHours();
+		let min = time.getMinutes();
+		let sec = time.getSeconds();
+		am_pm = "am";
+
+		if (hour > 12) {
+			hour -= 12;
+			am_pm = "pm";
+		}
+		if (hour == 0) {
+			hr = 12;
+			am_pm = "am";
+		}
+
+		hour = hour < 10 ? "0" + hour : hour;
+		min = min < 10 ? "0" + min : min;
+		sec = sec < 10 ? "0" + sec : sec;
+
+		let currentTime = hour + ":"
+			+ min + ":" + sec + am_pm;
+
+		document.getElementById("clock")
+			.innerHTML = currentTime;
+	}
+
+	showTime();
+</script>
+
+<div class="reveal">
+	<div class="slides">
+
+		<div id="marca-agua"><img style="border:none;box-shadow:none;width:80px;position:absolute;top:0%;right:0%;"
+				src="https://investigacion.unal.edu.co/fileadmin/recursos/focos/meritocracia/unnamed.jpg" />
+		</div>
+		<div id="lecture"
+		style="font-style: italic;color:rgb(118, 35, 47) ;font-size:14px;position:relative;top:98%; text-align: center;">
+		Curso: Análisis Geoespacial - Prof. Edier Aristizábal - Universidad Nacional de Colombia, sede Medellín
+		</div>
+		<div id="clock" style="font-size:20px;position:absolute;top:98%;right:98%;">0:00:00</div>
+		<section data-background-color="#ffffff" ; data-state="primera">
+			<h1 style="font-size: 60px;">ANÁLISIS GEOESPACIAL</h1>
+			<p>
+			<h4><a href="https://edieraristizabal.github.io/">Prof. Edier Aristizábal</a></h4>
+			</p>
+			<img src="https://i.pinimg.com/originals/f8/5b/28/f85b28f72a65d9c64d8c5e4a7bac57aa.png" alt="unal.jpg"
+				width="500" />
+			<p id="demo" style="position:absolute;top:100%;right:40%;"></p>
+			<script>
+				var d = new Date();
+				var months = ["Jan.", "Feb.", "Mar.", "Apr.", "May.", "Jun.", "Jul.", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+				document.getElementById("demo").innerHTML = months[d.getMonth()] + " " + d.getDate() + " / " + d.getFullYear();
+			</script>
+		</section>
+
+		<section>
+			<h2>First Law of Geography</h2>
+			<p style="text-align: center; font-size: 40px;">“Everything is related to everything else, but near things are more related than distant things."</p>
+			<p style="text-align: right;"><small>Waldo R. Tobler (1970)</small></p>
+		</section>
+
+<!--Intro-->
+		<section>
+			<section>
+				<h1>Introducción</h1>
+			</section>
+
+			<section>
+				<h2>La era de los datos</h2>
+				<img src="https://static.packt-cdn.com/products/9781788835824/graphics/assets/b8a42902-a288-4f90-987a-a1ce15f7746d.jpg"
+					alt="datos" width="900" />
+				<figcaption><small></small></figcaption>
+			</section>
+
+			<section>
+				<h2>La era de los datos</h2>
+				<img src="https://avora.com/wp-content/uploads/2019/09/big-data-growth-1200x675.jpg" alt="datos1"
+					width="1000" />
+				<figcaption><small></small></figcaption>
+			</section>
+
+			<section>
+				<h2>Data store</h2>
+				<img src="https://media.13newsnow.com/assets/WVEC/images/4d531d7f-9935-42d1-aa83-a22ec3af641d/4d531d7f-9935-42d1-aa83-a22ec3af641d_750x422.jpeg"
+					alt="store" width="900" />
+				<figcaption><small></small></figcaption>
+			</section>
+
+			<section>
+				<h2>Data store</h2>
+				<p>Los kilobytes eran almacenados en discos, megabytes fueron almacenados en discos duros, terabytes
+					fueron
+					almacenados en arreglos de discos, y petabytes son almacenados en la nube. </p>
+				<img src="https://images.theconversation.com/files/398619/original/file-20210504-23-1t02hm4.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=600&h=338&fit=crop&dpr=1" alt="store1"
+					width="650" />
+				<figcaption><a href="https://theconversation.com/the-worlds-data-explained-how-much-were-producing-and-where-its-all-stored-159964">Mevin M. Vopson (2021)</a></figcaption>
+			</section>
+
+			<section>
+				<img src="https://pbs.twimg.com/media/C4mvaBTW8AMOWg4.jpg"
+					alt="store" width="700" />
+				<figcaption><small></small></figcaption>
+			</section>
+
+			<section>
+				<h2>Geospatial Data Science</h2>
+				<p>Geospatial data science (GDS) is a subset of Data Science that focuses on the unique characteristics
+					of spatial data, moving beyond simply looking at <strong>where things happen to understand why they
+						happen there</strong></p>
+				<img src="https://images.ctfassets.net/xts27qnup0jr/6h5QxL9l9MgKDk5WUKflxm/ae39e67b4440659626d2379597b3b8a0/what-is-sds.png"
+					width="250">
+				<br>
+				<a href="https://carto.com/what-is-spatial-data-science/"
+					style="font-size: 20px;">https://carto.com/what-is-spatial-data-science/</a>
+			</section>
+
+			<section>
+				<h3>Geospatial data science</h3>
+				<p>The extraction of meaningful information from data involving location, geographic proximity and/or spatial interaction 
+					through the use techniques specifically designed to deal appropriately with spatial data.</p>
+				<figcaption>Source: Anselin (2000)</figcaption>
+			</section>
+
+			<section>
+				<img src="http://www.isds.org.za/images/Picture1.jpg" width="700">
+			</section>
+
+			<section>
+				<h2>Geospatial Data Science</h2>
+				<img src="https://carto.com/img/definitions/spatial-analysis-languages.2906f68c.png" width="450">
+				<br>
+				<a href="https://carto.com/what-is-spatial-data-science/"
+					style="font-size: 20px;">https://carto.com/what-is-spatial-data-science/</a>
+			</section>
+
+			<section>
+				<h3>Geospatial technology</h3>
+				<img src="https://geospatialmedia.s3.amazonaws.com/wp-content/uploads/2017/10/Geospatial-technology-geospatial-industry.png" width="600">
+				<figcaption>Source: <a href="https://www.geospatialworld.net/blogs/what-is-geospatial-industry/"> Components of Geospatial Technology – Credits: Geospatial Global Outlook Report 2017/ GeoBuiz Report 2017</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Charles Picquet (1832)</h3>
+				<img src="http://mundogis.info/wp-content/uploads/2016/11/1832-cholera-map.png" width="400">
+				<figcaption>Source: <a href="http://mundogis.info/blog/2017/11/22/la-historia-de-los-sig-sistema-de-informacion-geografica/">MundoGIS</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Dr. John Snow (1854)</h3>
+				<img src="https://www.datalaria.com/img/JohnSnow/Cholera_map.png" width="850">
+			</section>
+
+			<section>
+				<h3>Fotografía aérea (1858)</h3>
+				<img src="https://api.time.com/wp-content/uploads/2018/05/lawrence-george-san-francisco-earthquake-kite.jpg?quality=85"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Remote sensing (1972)</h3>
+				<img src="https://www.remote-sensing-solutions.com/wp-content/uploads/2019/10/RSS-Sentinel-1.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Roger F. Tomlinson (1960)</h3>
+				<img src="https://www.researchgate.net/profile/Tri-Acharya/publication/337653747/figure/fig3/AS:842257263517696@1577821188266/Color-online-GIS-and-data-layers-from-the-real-world-Source_W640.jpg"
+					width="850">
+			</section>
+
+			<section>
+				<h3>Big Data</h3>
+				<img src="https://www.isotools.org/wp-content/uploads/2019/03/Big-Data.jpg" width="1000">
+			</section>
+
+			<section>
+				<h2>Spatial analysis</h2>
+				<p> It is a broad term that includes
+				<ul>
+					<li>Spatial data manipulation through geographical information systems (GIS),</li> <br>
+					<li>Spatial data analysis in a descriptive and exploratory way, </li><br>
+					<li>Spatial statistics that employ statistical procedures to investigate if inferences can be made</li><br>
+					<li>Spatial modeling which involves the construction of models to identify relationships and
+						predict outcomes in a spatial context.</li>
+				</ul>
+				<figcaption>Source: Sullivan & Unwin (2010)</figcaption>
+			</section>
+
+			<section>
+				<h3>Why spatial is special?</h3>
+				<img src="https://i.pinimg.com/564x/16/97/b2/1697b272b6edb172f164148904e643f4.jpg" width="900">
+			</section>
+
+			<section>
+				<h3>Why spatial is special?</h3>
+				<img src="https://i.pinimg.com/564x/ba/b7/7e/bab77e9b0ecf003610ca4e12b4d4ad27.jpg" width="900">
+			</section>
+
+			<section>
+				<h3>Why spatial is special?</h3>
+				<iframe src="https://ourworldindata.org/explorers/energy?tab=table&facet=none&country=~ARG&Total+or+Breakdown=Select+a+source&Select+a+source=Fossil+fuels&Energy+or+Electricity=Electricity+only&Metric=Annual+generation" loading="lazy" style="width: 100%; height: 500px; border: 0px none;"></iframe>
+			</section>
+
+			<section>
+				<h3>Why spatial is special?</h3>
+				<a href="https://demo-covid19.heavy.ai/omnisci/dashboard/14?filterSet=-M2GRsckrm76tINSMg5c&tab=-MOdYuJj8BdVOW07uH0_"><img src="https://assets-global.website-files.com/620d42e86cb8ec4d0839e59d/620d42e96cb8ec621339f47a_COVID%20Demo%20March%2026%202020_900%20v2.gif" width="900"></a>
+				<figcaption>Source: <a href="https://www.heavy.ai/demos">HEAVY.AI</a></figcaption>
+			</section>
+
+		</section>
+
+<!--Ambiente de trabajo-->
+		<section>
+			<section>
+				<h1>Ambiente de trabajo</h1>
+			</section>
+
+			<section>
+				<h2>TIOBE index - Programming languaje popularity</h2>
+				<img src="https://i.ytimg.com/vi/A_B7owR94XY/maxresdefault.jpg" width="1000">
+			</section>
+
+			<section>
+				<h2>Python</h2>
+				<p><strong style="color: red;">Python code is fast to develop</strong>: As the code is not required to
+					be compiled and built, Python
+					code can be much readily changed and executed. This makes for a fast development cycle.</p>
+				<p><strong style="color: red;">Python code is not as fast in execution</strong>: Since the code is not
+					directly compiled and executed
+					and an additional layer of the Python virtual machine is responsible for execution, Python code
+					runs a little slow as compared to conventional languages like C, C++, etc.</p>
+				<p><strong style="color: red;">Python is interpreted</strong>: Many programming languages require that a
+					program be converted from the
+					source language, into binary code that the computer can
+					understand. Python does not need compilation to binary code, which makes Python easier to work with
+					and much
+					more portable than other programming languages.</p>
+				<p><strong style="color: red;">Python is object oriented</strong>: Python is an object-oriented
+					programming language. Many modern programming languages support object-oriented programming. ArcGIS
+					and QGIS
+					is designed to work with object-oriented languages, and Python qualifies in this respect.</p>
+			</section>
+
+			<section>
+				<h2>Paquetes</h2>
+				<img src="https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/133934088/original/db5ea88316a15191e3c551609dc9d32ac5124b4a/do-any-python-library-task.png"
+					width="760">
+			</section>
+
+			<section>
+				<h2>Jupyter lab</h2>
+				<img src="https://jupyterlab.readthedocs.io/en/stable/_images/notebook_ui.png" width="1000">
+			</section>
+
+
+			<section>
+				<h1>Conda</h1>
+				<img src="https://miro.medium.com/max/1838/1*O5Jgl-KFuvUyujAZhXHYlQ.png" width="1000">
+			</section>
+
+			<section>
+				<img src="https://www.aprendemachinelearning.com/wp-content/uploads/2018/03/pantalla-principal-anaconda-navigator-1024x691.png"
+					width="800">
+			</section>
+
+			<section>
+				<h2>PIP</h2>
+				<img src="https://cdn.activestate.com/wp-content/uploads/2019/12/how-to-install-pip-on-windows.png"
+					width="1000">
+			</section>
+
+			<section>
+				<h1>Docker</h1>
+				<img src="https://miro.medium.com/max/672/1*glD7bNJG3SlO0_xNmSGPcQ.png" width="700">
+			</section>
+
+			<section>
+				<img src="https://geekflare.com/wp-content/uploads/2019/07/dockerfile.png" width="1000">
+			</section>
+
+			<section>
+				<h2>Javascript</h2>
+				<img src="https://miro.medium.com/max/800/0*aH8YUI7nqAZ6b-V_.png" width="1000">
+			</section>
+
+			<section>
+				<h1>Google Earth Engine</h1>
+				<img src="https://www.researchgate.net/publication/318246365/figure/fig3/AS:667869226483731@1536243840816/The-Earth-Engine-interactive-development-environment.png"
+					width="800">
+			</section>
+
+			<section>
+				<h1>Sentinel EO Browser</h1>
+				<img src="https://i.pinimg.com/564x/0f/e5/73/0fe573503ca18dd6674a0a88987d15db.jpg"
+				width="1000">
+			</section>
+			
+		</section>
+		
+<!--Spatial data I-->
+		<section>
+			<section><h1>Spatial data I</h1></section>
+			
+			<section>
+				<p style="text-align: center; font-size: 40px;">Models are simplifications of reality</p>
+				<img src="https://storage.googleapis.com/xebia-blog/1/2019/10/mentalmodel.png">
+			</section>
+			
+			<section>
+				<h1>Measurement scales</h1>
+				<img src="https://studyonline.unsw.edu.au/sites/default/files/UNSW2.png" width="1000">
+			</section>
+			
+			<section>
+				<img src="https://quizzma.com/wp-content/uploads/2020/04/44b2990d644ecb2de5f07ddf4314c39c.jpg"
+					width="850">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/originals/f8/78/21/f8782128cba493baf325051cf52d90f9.jpg" width="850">
+			</section>
+
+			<section>
+				<h3>Spatial data models</h3>
+				<ul>
+					<li><strong>Data</strong> can be defined as verifiable facts about the real world.</li>
+					<li><strong>Information</strong> is data organized to reveal patterns, and to facilitate search.</li>
+					<li><strong>Data model:</strong> an abstraction of the real world which incoprorates onlu those properties thought to be relevant to the application</li>
+					<li><strong>Data structure: </strong>a representation of the data model</li>
+					<li><strong>File format: </strong>the representation of the data in storage hardware</li>
+				</ul>
+				<p> </p>
+				<p></li></p>
+				<p>Real world data must be described in terms of a <strong>data model</strong>, then a <strong>data structure</strong> must be chosen to represent the data 
+					model, and finally a <strong>file format</strong> must be selected that is suitable for that data structure.</p>
+			</section>
+
+			<section>
+				<h3>Spatial data</h3>
+				<p>Spatial data is geographically referenced data, given at known locations and
+					often represented visually through maps. That geographic reference, or the
+					location component of the data, may be represented using any number of
+					coordinate reference systems, for example, longitude and latitude.</p>
+
+				<p>In other words, spatial data is spatially dependent or correlated,
+					and independence between the observations, which is a common assumption
+					for many statistical techniques, is not satisfied</p>
+
+				<p>An observed spatial pattern may be observed in
+					variables strictly depending on the location, or because of direct interactions
+					between the points.</p>
+			</section>
+			<section>
+				<h3>Geospatial data</h3>
+				<p>Geospatial data is data about objects, events, or phenomena that have a location on the surface of
+					the earth,
+					including location information, attribute information (the characteristics
+					of the object, event, or phenomena concerned), and often also temporal information (the time or life
+					span at
+					which the location and attributes exist)</p>
+				<img src="https://www.marklogic.com/wp-content/uploads/2018/02/Diagram-Geospatial-Who-What-Where.svg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Spatial Data Models</h3>
+				<p>Spatial data may be of various broad types: points, lines, areas, and
+					fields. Each type typically requires different techniques and approaches.</p>
+				<img src="https://cdn.uconnectlabs.com/wp-content/uploads/sites/28/2019/08/GIS_technology.jpg"
+					width="500">
+			</section>
+
+			<section>
+				<p>The relationship between real geographic entities and spatial data is
+					complex and scale-dependent.</p>
+				<img src="https://i1.wp.com/transportgeography.org/wp-content/uploads/gis_data_models.png?w=1000&ssl=1"
+					width="700">
+			</section>
+
+			<section>
+				<img src="https://pediaa.com/wp-content/uploads/2019/02/Difference-Between-Raster-and-Vector-Data-Comparison-Summary.jpg"
+					width="550">
+			</section>
+
+			<section>
+				<h3>Types of spatial models</h3>
+				<ul>
+					<li><strong>Object-based (feature) model: </strong>In the object view, we consider the world as a
+						series of entities located in
+						space. Entities are (usually) real. An object is a digital representation of all or part of an
+						entity, which can be described in
+						detail according to their boundary lines and other objects that constitute them or are related
+						to them.</li></br>
+					<li><strong>Field model: </strong> In the field view, the world consists of properties continuously
+						varying across
+						space. It represents data that are considered to be continuously changing in two-dimensional or
+						three-dimensional space.
+						In a field, every location has a value (including ‘‘not here’’
+						or zero) and sets of values taken together define the field.</li>
+				</ul>
+			</section>
+
+			<section>
+				<h1>Object-based model</h1>
+				<h3>Vector</h3>
+				<p>objects are frequently not as simple as this geometric view leads
+					one to assume. They may exist in three spatial dimensions, move and
+					change over time, have a representation that is strongly scale-dependent, relate to entities that
+					are themselves fuzzy and/or have indeterminate boundaries, or even be fractal.</p>
+				<img src="https://pvsmt99345.i.lithium.com/t5/image/serverpage/image-id/49570i26EF3FAEACD21BD4/image-size/medium?v=1.0&px=400"
+					width="400">
+			</section>
+
+			<section>
+				<h3>Vector</h3>
+				<img src="https://sustainability-gis.readthedocs.io/en/latest/_images/geodataframe.png" width="1000">
+			</section>
+
+			<section>
+				<h3>Vector</h3>
+				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1874273409700063-gr2.gif" width="600">
+			</section>
+
+			<section>
+				<h3>Shapefile</h3>
+				<p>A shapefile is a file-based data format native to ArcView software .
+					Conceptually, a shapefile is a feature class–it stores a collection of features that have the same
+					geometry
+					type (point, line, or polygon), the same attributes, and a common spatial extent.
+
+					Despite what its name may imply, a “single” shapefile is actually composed of at least three files,
+					and as many as eight. Each file that makes up a “shapefile” has a common filename but different
+					extension
+					type.</p>
+				<h3>Arc-Info Interchange (e00) </h3>
+				<p>An ArcInfo interchange file, is also known as an export file type, this file format is used to enable
+					a
+					coverage, grid or TIN, and an associated INFO table to be transferred between different machines.
+					This file has the .e00 extension.</p>
+			</section>
+
+			<section>
+				<h3>File Geodatabase</h3>
+				<p>A file geodatabase is a relational database storage format. It’s a far more complex data structure
+					than the
+					shapefile and consists of a .gdb folder housing dozens of files. Its complexity renders it more
+					versatile
+					allowing it to store multiple feature classes and enabling topological definitions. An example of
+					the
+					contents of a geodatabase is shown in the following figure.</p>
+				<img src="https://mgimond.github.io/Spatial/img/geodatabase.jpg" width="1000">
+			</section>
+			<section>
+				<h3>GeoPackage</h3>
+				<p>This is a relatively new data format that follows open format standards (i.e. it is non-proprietary).
+					It’s built on top of SQLite (a self-contained relational database). Its one big advantage over many
+					other
+					vector formats is its compactness–coordinate value, metadata, attribute table, projection
+					information,
+					etc…, are all stored in a single file which facilitates portability. Its filename usually ends in
+					.gpkg.
+					Applications such as QGIS (2.12 and up), R and ArcGIS will recognize this format (ArcGIS version
+					10.2.2
+					and above will read the file from ArcCatalog but requires a script to create a GeoPackage).</p>
+			</section>
+
+			<section>
+				<h3>Geojson</h3>
+				<p>GeoJSON is an Open Standard Format designed for representing simple geographical features, along with
+					their non-spatial attribute</p>
+				<img src="https://miro.medium.com/max/700/1*mGBJnGvBuWAeEbzKZFhp2g.png" width="500">
+				<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Multi-part geometry</h3>
+				<p>Multi-part geometry types are similar to their single-part counterparts. The only difference is that one more hierarchical level is added into the coordinates array, 
+					for specifying multiple shapes.</p>
+					<img src="https://i.pinimg.com/originals/9f/97/81/9f97811c05cd2422743f19d28df964b6.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Geometry collections </h3>
+				<p>A geometry collection is a set of several geometries, where each geometry is one of the previously listed six types, i.e., 
+					any geometry type excluding "GeometryCollection". For example, a "GeometryCollection" consisting of two geometries, 
+					a "Point" and a "MultiLineString", can be defined as follows:</p>
+					<img src="https://i.pinimg.com/564x/4e/5d/c4/4e5dc4636252a69969984dc5f7110828.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Feature </h3>
+				<p>A "Feature" is formed when a geometry is combined with non-spatial attributes, to form a single object. The non-spatial 
+					attributes are encompassed in a property named "properties", containing one or more name-value pairs—one for 
+					each attribute. For example, the following "Feature" represents a geometry with two attributes, named "color" 
+					and "area":</p>
+					<img src="https://i.pinimg.com/564x/0e/af/61/0eaf614fc53087c6e2066a622e0be5ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geojson -- Feature  Collections</h3>
+				<p>A "FeatureCollection" is, like the name suggests, a collection of "Feature" objects. The separate features are contained 
+					in an array, comprising the "features" property. For example, a "FeatureCollection" composed of four features can be 
+					specified as follows:</p>
+					<img src="https://i.pinimg.com/564x/71/95/81/719581743041ece51f82a40e30a611ac.jpg" width="500">
+					<figcaption><a href="https://web-mapping.surge.sh/index.html">Source: Introduction to web mapping by Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3><a href="http://geojson.io/">http://geojson.io/</a></h3>
+				<img src="https://geobgu.xyz/web-mapping/images/geojson_io.png" width="900">
+			</section>
+
+			<section>
+				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
+				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Keyhole Markup Language (KML)</h3>
+				<p>XML based file format, used to visualize spatial data and modelling information like lines, shapes,
+					3D images and points in an Google Earth.</p>
+				<h3>Geography Markup Language (GML)</h3>
+				<p>It is used in the Open GIS Consortium for storing geographical data in a standard interchangeable
+					format, It is based on XML.</p>
+				<h3>SVG (Scalable Vector Graphics) </h3>
+				<p>It is an XML-based vector image format for two-dimensional graphics Any program that recognizes XML
+					can display the SVG image.</p>
+				<h3>DWG</h3>
+				<p>DWG is an intern format for AutoCAD. A DWG file is a database of 2D or 3D drawings.</p>
+			</section>
+
+			<section>
+				<h3>Tidy data</h3>
+				<img src="https://images.squarespace-cdn.com/content/v1/5b872f96aa49a1a1da364999/1572008171822-KJ0300DR4KCHW8NUUN1N/ke17ZwdGBToddI8pDm48kP0H4u0KUkchoILChBGMIUUUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2dskF1CFdD1ghxEpYxbqRasKlXJQr8mv4xxZBDj9ez2c1CjLISwBs8eEdxAxTptZAUg/image.png?format=1500w" width="1000">
+			</section>
+
+			<section>
+				<h3>Dataframe</h3>
+				<img src="https://www.datasciencemadesimple.com/wp-content/uploads/2020/05/create-series-in-python-pandas-0.png" width="1000">
+			</section>
+
+			<section>
+				<h3>Dataframe</h3>
+				<img src="https://www.w3resource.com/w3r_images/pandas-data-structure.svg" width="1000">
+			</section>
+
+			<section>
+				<h3>GeoDataframe</h3>
+				<img src="http://www.geomapik.com/wp-content/uploads/2021/09/geopandas_geodataframe_schema.webp" width="1000">
+			</section>
+
+			<section>
+				<h1>Fiel-based model</h1>
+				<p>In the field view, the world consists of properties continuously varying across
+					space</p>
+				<img src="https://surveyinggroup.com/wp-content/uploads/2019/05/zion_DEM2.jpg"
+					width="750">
+			</section>
+
+			<section>
+				<h3>Raster</h3>
+				<img src="https://www.esri.com/about/newsroom/wp-content/uploads/2018/07/aufall18_Georefer_1.gif"
+					width="780">
+			</section>
+
+			<section>
+				<h3>Raster</h3>
+				<img src="http://www.fire.org/downloads/farsite/WebHelp/layers.gif" width="600">
+			</section>
+
+			<section>
+				<h3>Raster GIS File Format</h3>
+				<h3>txt / ASCII (American Standard Code for Information Interchange)</h3>
+				<p>Standard text document that contains plain text. It can be opened and edited in any text-editing or word-processing program</p>
+				<h3>Imagine</h3>
+				<p>Imagine file format by ERDAS. It consists of a single .img file. 
+					It is sometimes accompanied by an .xml file which usually stores metadata information about the
+					raster layer.</p>
+				<h3>GeoTiff</h3>
+				<p>A GeoTIFF is a TIF file that ends in a three letter. tif extension just like other TIF files, but a GeoTIFF contains additional tags that provide projection information for that image as specified by the GeoTIFF standard</p>
+			</section>
+
+			<section>
+				<h3>Raster GIS File Format</h3>
+				<h3>Enhanced Compression Wavelet (ECW)</h3>
+				<p>Enhanced Compressed Wavelet (from ERDAS). A compressed wavelet format, often lossy</p>
+				<h3>Network Common Data Form (NetCDF)</h3>
+				<p>netCDF file format with The Climate and Forecast (CF) metadata conventions for earth science data. It
+					allows for direct web-access of subsets/aggregations of maps through OPeNDAP protocol.</p>
+				<h3>HDF5</h3>
+				<p>is an open source file format that supports large, complex, heterogeneous data. HDF5 uses a "file directory" like structure that allows you to organize 
+					data within the file in many different structured ways, as you might do with files on your computer</p>
+			</section>
+
+
+		</section>
+
+<!--Spatial data II-->
+		<section>
+			<section>
+				<h1>Spatial data II</h1>
+			</section>
+
+			<section>
+				<h3>Spatial statistics vs Classical statistics</h3>
+				<p>There is a fundamental difference
+					between classical and spatial statistics. In classical statistics, we make a basic
+					assumption regarding the sample: it is a collection of independent observations that follow a
+					specific, usually normal, distribution. Contrariwise, in spatial
+					statistics, because of the inherent <strong>spatial dependence</strong> and the fact that
+					<strong>spatial autocorrelation</strong> exists (usually), the focus is on adopting techniques for
+					detecting and describing these correlations.</p>
+					
+				<p>In other words, in classical statistics, observation
+					independence should exist while, in spatial statistics, spatial
+					dependence usually exists. Classical statistics should be modified accordingly
+					to adapt to this condition.</p>
+				
+			</section>
+
+			<section>
+				<h3>Types</h3>
+				<ul>
+					<li><strong>Point Pattern Analysis</strong>: spatial distribution of <strong>events.</strong></li>
+					<br>
+					<li><strong>Geostatistical Analysis</strong>: continuous <strong>surface</strong> modeling.</li>
+					<br>
+					<li><strong>Lattice Data Analysis (Area)</strong>: Spatial patterns of attributes observed for
+						<strong>discrete</strong> spatial objetcs, where the spatial regions can be regular shapes (grid or pixels) 
+						or irregular shapes (polygons). 
+					</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Spatial data analysis in this course</h3>
+				<ul>
+					<li><strong>Spatial operations</strong></li>
+					<li><strong style="color: red;">Spatial mapping/geovisualization</strong> <em style="font-size: larger; color:blue">--> Showing
+							interesting patterns.</em></li>
+					<li><strong style="color: red;">Spatial statistical analysis</strong> <em
+							style="font-size: larger; color:blue">--> Discovering interesting patterns</em></li>
+					<li><strong style="color: red;">Spatial model</strong> <em style="font-size: larger; color:blue">
+					--> Explaining interesting patterns.</em></li>
+					<li><strong>Spatial database management: </strong></li>
+					<li><strong>Spatial model base management</strong> </li>
+				</ul>
+			</section>
+
+			<section>
+				<h1>Spatial data</h1>
+				<h3>Spatial is special?</h3>
+				<p>Three fundamental properties of spatial data:</p>
+				<ul>
+					<li>Spatial dependence...it is the rule, not the exception</li>
+					<li>Spatial heterogeneity </li>
+					<li>Spatial scale.</li>
+				</ul>
+				<img src="https://www.e-education.psu.edu/maps/sites/www.e-education.psu.edu.maps/files/Images/L2_Figure1b.jpg"
+					width="400">
+			</section>
+
+			<section>
+				<h3>Spatial dependence</h3>
+				<p>Spatial autocorrelation is a complicated name for the obvious fact that data
+					from locations near one another in space are more likely to be similar than
+					data from locations remote from one another.</p>
+				<p>The existence of spatial autocorrelation is therefore a given in geography.
+					Unfortunately, it is also an impediment to the application of conventional
+					statistics</p>
+
+				<p> Spatial autocorrelation introduces redundancy into data</p>
+				<img src="https://desktop.arcgis.com/es/arcmap/10.3/tools/spatial-statistics-toolbox/GUID-5CCEE7E5-839C-46E8-A88B-FCD02F07B209-web.gif"
+					width="800">
+
+			</section>
+
+			<section>
+				<h3>Spatial dependence</h3>
+				<img src="https://winnower-production.s3.amazonaws.com/papers/2847/v5/sources/3cb01227-beb3-4b7c-8e2c-52af22f5d2e6-SAC_illu-1024x374.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Spatial heterogeneity</h3>
+				<p>Global measures of spatial autocorrelation may confirm the existence of positive or negative self-similarity with regard to 
+					distance, but this comes at the cost of a fundamental assumption. The parameters (mean and variance) of the random function 
+					representing the process are assumed to be constant. This is called the stationarity of the random function associated with that 
+					process, and when it is violated (called a nonstationary process), the process is heterogeneous. </p>
+
+					<p>In other words, 
+						a spatial process is said to be stationary when the difference between values of an attribute is only explained by the 
+						distance between the points or units. Another source of spatial heterogeneity is when the spatial dependence is 
+						different in various directions (anisotropy).</p>
+
+						<figcaption>Source: Nikparvar & Thill (2021)</figcaption>
+			</section>
+
+			<section>
+				<h3>Spatial heterogeneity</h3>
+				<img src="https://www.researchgate.net/profile/Richard-Carter-13/publication/47812981/figure/fig3/AS:276908479664153@1443031534707/Global-distribution-of-rainfall-The-number-of-dry-months-in-a-year-Data-source-67.png"
+					width="900">
+			</section>
+
+			<section>
+				<h3>Scale</h3>
+				<p>Scale is also important because it can inform about sampling for training experience. Learning is more reliable when the 
+				distribution of the samples in the training experience is similar to the distribution of the test experience. 
+				In many geographic studies, training occurs on data from a specific geographic area. This makes it challenging to use 
+				the trained model for other geographic regions because the distribution of the test and train data sets is not similar, 
+				due to spatial heterogeneity. </p>
+
+				<p>This means that the sampling strategy for the training data set is essential to cover 
+					the heterogeneity of the phenomena of interest over the spatial frame of study. By increasing the extent of the study area, more processes and 
+					contextual environmental factors may alter the variable and result in non-stationarity by interweaving spatial patterns of 
+					different scales or inconsistent effect of processes in different regions. </p>
+
+					<figcaption>Source: Nikparvar & Thill (2021)</figcaption>
+			</section>
+
+			<section>
+				<h3>First and second order effects</h3>
+				<p>Tree density distribution can be influenced by 1st order effects such as elevation gradient or spatial distribution of soil 
+					characteristics; and by 2nd order effects such as seed dispersal processes where the process is independent 
+					of location and, instead, dependent on the presence of other trees.</p>
+					<img src="https://mgimond.github.io/Spatial/img/1st_2nd_order_property.png" width="500">
+					<figcaption>Source: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
+
+			</section>
+
+			<section>
+				<h3>MAUP</h3>
+				<p>The Modifiable Area Unit Problem (MAUP) problem refers to the influence the zone design has on the
+					outcomes of the
+					analysis. A different designation would probably lead to different results.</p>
+				<img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Maup_rate_numbers.png" width="400">
+				<figcaption>Source: <a href="https://en.wikipedia.org/wiki/Modifiable_areal_unit_problem">https://en.wikipedia.org/wiki/Modifiable_areal_unit_problem</a></figcaption>
+			</section>
+
+			<section>
+				<h3>MAUP</h3>
+				<img src="https://pbs.twimg.com/media/B-8ljgjU0AASq8g.jpg" width="600">
+			</section>
+
+			<section>
+				<h3>MAUP</h3>
+				<img src="http://2rct3i2488gxf9jvb1lqhek9-wpengine.netdna-ssl.com/wp-content/uploads/2020/09/gispopsci_MAUPZone1.gif"
+					width="250">
+			</section>
+
+			<section>
+				<h3>MAUP</h3>
+				<p>There are two types of biases for the MAUP:</p>
+				<img src="https://gdsl-ul.github.io/san/figs/ch1/maup.png" width="700">
+				<figcaption>Source: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a> by Francisco Rowe and Dani Arribas-Bel (2022)</figcaption>
+			</section>
+
+			<section>
+				<h3>Zonal effect</h3>
+				<p>The zonal effect occurs when you group data by various artificial boundaries. In this type of MAUP error, each subsequent boundary yields major 
+					analytical differences.</p>
+				<img src="https://gisgeography.com/wp-content/uploads/2020/11/MAUP-Zone-Effect-678x339.png">
+				<figcaption><a href="https://gisgeography.com/maup-modifiable-areal-unit-problem/">https://gisgeography.com/maup-modifiable-areal-unit-problem/</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Scale effect</h3>
+				<p>The scale effect occurs when maps show different analytical results at different levels of aggregation. Despite using the same points, each successive smaller unit consequently changes 
+					the pattern.</p>
+				<img src="https://gisgeography.com/wp-content/uploads/2020/11/MAUP-Scale-Effect-678x339.png" width="750">
+				<figcaption><a href="https://gisgeography.com/maup-modifiable-areal-unit-problem/">https://gisgeography.com/maup-modifiable-areal-unit-problem/</a></figcaption>
+			</section>
+
+			<section>
+				<img src="https://mgimond.github.io/Spatial/img/v1_and_v2_raw.png" width="400">
+				<br>
+				<img src="https://mgimond.github.io/Spatial/img/unif_aggr.svg" width="400">
+				<br>
+				<img src="https://mgimond.github.io/Spatial/img/irr_aggr.svg" width="400">
+				<figcaption>Source: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial Analysis</a> by Manuel Gimond (2022)</figcaption>
+			</section>
+
+			<section>
+				<h3>The Edge Effects Problem</h3>
+				<p>In the edge effects problem, spatial units
+					that lie in the center of the study area tend to have neighbors in all
+					directions, whereas spatial units at the edges of the study area have
+					neighbors only in some specific directions.</p>
+				<img src="https://www.efolio.soton.ac.uk/blog/biol3056-2016-17/files/2017/03/Diagram.jpg" width="600">
+			</section>
+
+			<section>
+				<h3>Edge effect</h3>
+				<img src="https://www.researchgate.net/profile/Annette-Ersboll/publication/270662840/figure/fig2/AS:267905560477729@1440885071708/Triangulation-of-the-spatial-region-The-mesh-extends-beyond-the-border-of-the-considered.png"
+					width="600">
+			</section>
+
+			<section>
+				<h3>Ecological Fallacy</h3>
+				<p>This problem occurs when a relationship that is
+					statistically significant at one level of analysis is assumed to hold true at a
+					more detailed level as well. This is a typical mistake that occurs when we
+					use aggregated data to describe the behavior of individuals. </p>
+				<img src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Simpsons_paradox_-_animation.gif?20170829113240" width="500">
+				<figcaption>Source: https://commons.wikimedia.org/wiki/File:Simpsons_paradox_-_animation.gif</figcaption>
+			</section>
+
+			<section>
+				<img src="https://pbs.twimg.com/media/EeuQ4LjWsAEZZLD.png" width="800">
+			</section>
+
+			<section>
+				<h3>Neighborhood effect</h3>
+
+				<p>The characteristics of neighboring properties might have certain impact on <strong>the same characteristic</strong> to neighbors.</p>
+
+				<p>“if block group A is next to a high crime neighborhood, then block group A has high crime”</p>
+			</section>
+
+			<section>
+				<h3>Spillover effect</h3>
+				<p>Externalities (sometimes called spillover effects). An externality is a cost or benefit imposed on others (without compensation) </p>
+				
+				<p>The characteristics of neighboring properties might have certain impact on <strong>a different characteristic</strong> to neighbors.</p>
+
+				<p>“if a block group A is next-to a shopping mall, then block group A will experience high crime”</p>
+			</section>
+
+		</section>
+
+<!--Web mapping-->
+		<section>
+			<section><h1>Web mapping</h1></section>
+			<section>
+				<h3>Web mapping</h3>
+				<p>A web map is an interactive display of geographic information, in the form of a web page, that you can use to tell stories 
+					and answer questions. Web maps are interactive. The term interactive implies that the viewer can interact with the map. 
+					This can mean selecting different map data layers or features to view, zooming into a particular part of the map that 
+					you are interested in, inspecting feature properties, editing existing content, or submitting new content, and so on.</p>
+
+				<p>Web maps are useful for various purposes, such as data visualization in journalism (and elsewhere), displaying real-time 
+					spatial data, powering spatial queries in online catalogs and search tools, providing computational tools, reporting, 
+					and collaborative mapping. </p>
+			</section>
+			<section>
+				<img src="https://web-mapping.surge.sh/images/earth_nullschool.png" width="900">
+				<figcaption><a href="https://earth.nullschool.net/">Earth weather</a></figcaption>
+			</section>
+			<section>
+				<img src="https://i0.wp.com/hyperallergic-newspack.s3.amazonaws.com/uploads/2015/07/stuffinspace-small.gif?fit=291%2C180&quality=100&ssl=1" width="600">
+				<figcaption><a href="http://stuffin.space/">Stuff in space</a></figcaption>
+			</section>
+			<section>
+				<img src="https://www.flightradar24.com/blog/wp-content/uploads/2016/04/AirportPins.gif" width="600">
+				<figcaption><a href="http://stuffin.space/">Real-time flight locations</a></figcaption>
+			</section>
+			<section>
+				<h3>Herramientas</h3>
+				<img src="https://web-mapping.surge.sh/web_mapping_files/figure-html/timeline-1.png" width="600">
+				<figcaption>Source: <a href="https://web-mapping.surge.sh">Introduce to Web Mapping</a></figcaption>
+			</section>
+			<section>
+				<h3>Arquitectura</h3>
+				<img src="https://i.pinimg.com/564x/4b/b2/3b/4bb23bf24e8dfa602a2772d16c5ceae4.jpg" width="800">
+				<figcaption>Source: <a href="http://maptimeboston.github.io/web-maps-101/#39">Maptimeboston</a></figcaption>
+			</section>
+			<section>
+				<h3>Tile layers</h3>
+				<p>Tile layers are a fundamental technology behind web maps. They comprise the background layer in most web maps, 
+					thus helping the viewer to locate the foreground layers in geographical space. The word tile in tile layers 
+					comes from the fact that the layer is split into individual rectangular tiles. Tile layers come in two forms, 
+					which we are going to cover next: raster tiles and vector tiles.</p>
+				<p><strong>Raster tiles:</strong> tile layers are usually composed of PNG images. Traditionally, each PNG image is  
+					256 × 256 pixels in size.</p>
+				<p><strong>Vector tiles</strong> Vector tiles are distinguished by the ability to rotate the map while the labels keep 
+					their horizontal orientation, and by the ability to zoom in or out smoothly—without the strict division to discrete 
+					zoom levels that raster tile layers have.</p>
+			</section>
+			<section>
+				<h3>Tile layers</h3>
+				<img src="https://web-mapping.surge.sh/images/tile_zoom_levels.png" width="600">
+				<p>https://a.tile.openstreetmap.org/2/1/3.png</p>
+				<lu>
+					<li>zoom level 2</li>
+					<li>column 1</li>
+					<li>row 3</p></li>
+				</lu>
+			</section>
+			<section>
+				<h3>Zoom level</h3>
+				<img src="https://i.pinimg.com/originals/27/12/9c/27129c73d990af8267c492cda02bbd7b.jpg" width="800">
+				<figcaption>Source: <a href="http://maptimeboston.github.io/web-maps-101/#39">Maptimeboston</a></figcaption>
+			</section>
+			<section>
+				<h3>Vector tiles</h3>
+				<img src="https://www.researchgate.net/profile/Julien-Gaffuri/publication/264244246/figure/fig3/AS:295838975840264@1447544916644/Principle-of-vector-tiling.png" width="600">
+				<figcaption>Source: <a href="https://www.researchgate.net/publication/264244246_Toward_Web_Mapping_with_Vector_Data">Gaffuri (2012)</a></figcaption>
+				<br>
+				<a href="https://web-mapping.surge.sh/examples/example-06-01.html">Ejemplo</a>
+			</section>
+		</section>
+
+<!--Data distribution-->
+		<section>
+			<section>
+				<h1>Data distribution</h1>
+			</section>
+
+			<section>
+				<h3>Underlying data distribution</h3>
+
+				<p>Before making modeling decisions, you need to know the underlying data distribution.</p>
+
+				<img src="https://miro.medium.com/max/720/1*DqaWFp-ylr9BIY_bJtJcDw.webp" width="500">
+				<figcaption><a href="https://towardsdatascience.com/how-to-find-the-best-theoretical-distribution-for-your-data-a26e5673b4bd">E. Taskesen</a></figcaption>
+
+			</section>
+
+			<section>
+				<h1>Frequency Distribution and Histograms</h1>
+				<p><strong>Frequency distribution table</strong> is a table that stores the categories (also called
+					“bins”), the frequency, the relative frequency and the cumulative relative
+					frequency of a single continuous interval variable</p>
+				<p>The <strong>frequency</strong> for a particular category or value (also called “observation”)
+					of a variable is the number of times the category or the value appears in the
+					dataset.</p>
+				<p><strong>Relative frequency</strong> is the proportion (%) of the observations that belong to a
+					category. It is used to understand how a sample or population is distributed
+					across bins (calculated as relative frequency = frequency/n )</p>
+				<p>The <strong>cumulative relative frequency</strong> of each row is the addition of the relative
+					frequency of this row and above. It tells us what percent of a population
+					(observations) ranges up to this bin. The final row should be 100%.</p>
+				<p>A <strong>probability density histogram</strong> is defined so that (i) The area of each box equals
+					the relative frequency (probability) of the
+					corresponding bin, (ii) The total area of the histogram equals 1</p>
+			</section>
+
+			<section>
+				<h3>Histogramas & bins</h3>
+
+				<style>
+					#histograma {
+						width: 800px;
+						height: 500px;
+						margin: 25px auto;
+						position: relative;
+					}
+
+					#nBin {
+						position: relative;
+						left: 50%;
+					}
+
+					#Bin {
+						position: relative;
+						left: 50%;
+					}
+				</style>
+
+				<script src="https://d3js.org/d3.v4.js"></script>
+
+				<div id="histograma"></div>
+
+				<p>
+					<label id="Bin"># bins</label>
+					<input type="number" min="1" max="100" step="30" value="20" id="nBin">
+				</p>
+
+				<script>
+
+					// set the dimensions and margins of the graph
+					var margin = { top: 10, right: 30, bottom: 30, left: 40 },
+						width = 600 - margin.left - margin.right,
+						height = 500 - margin.top - margin.bottom;
+
+					// append the svg object to the body of the page
+					var his = d3.select("#histograma")
+						.append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.append("g")
+						.attr("transform",
+							"translate(" + margin.left + "," + margin.top + ")");
+
+					// get the data
+					d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/1_OneNum.csv", function (data) {
+
+						// X axis: scale and draw:
+						var x = d3.scaleLinear()
+							.domain([0, 1000])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
+							.range([0, width]);
+						his.append("g")
+							.attr("transform", "translate(0," + height + ")")
+							.call(d3.axisBottom(x));
+
+						// Y axis: initialization
+						var y = d3.scaleLinear()
+							.range([height, 0]);
+						var yAxis = his.append("g")
+
+						// A function that builds the graph for a specific value of bin
+						function update(nBin) {
+
+							// set the parameters for the histogram
+							var histogram = d3.histogram()
+								.value(function (d) { return d.price; })   // I need to give the vector of value
+								.domain(x.domain())  // then the domain of the graphic
+								.thresholds(x.ticks(nBin)); // then the numbers of bins
+
+							// And apply this function to data to get the bins
+							var bins = histogram(data);
+
+							// Y axis: update now that we know the domain
+							y.domain([0, d3.max(bins, function (d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+							yAxis
+								.transition()
+								.duration(1000)
+								.call(d3.axisLeft(y));
+
+							// Join the rect with the bins data
+							var u = his.selectAll("rect")
+								.data(bins)
+
+							// Manage the existing bars and eventually the new ones:
+							u
+								.enter()
+								.append("rect") // Add a new rect for each new elements
+								.merge(u) // get the already existing elements as well
+								.transition() // and apply changes to all of them
+								.duration(1000)
+								.attr("x", 1)
+								.attr("transform", function (d) { return "translate(" + x(d.x0) + "," + y(d.length) + ")"; })
+								.attr("width", function (d) { return x(d.x1) - x(d.x0) - 1; })
+								.attr("height", function (d) { return height - y(d.length); })
+								.style("fill", "#69b3a2")
+
+
+							// If less bar in the new histogram, I delete the ones not in use anymore
+							u
+								.exit()
+								.remove()
+
+						}
+
+						// Initialize with 20 bins
+						update(20)
+
+
+						// Listen to the button -> update if user change it
+						d3.select("#nBin").on("input", function () {
+							update(+this.value);
+						});
+
+					});
+				</script>
+
+			</section>
+
+			<section>
+				<h3>Distribución de frecuencia</h3>
+				<img src="https://www.statgraphics.com/hs-fs/hubfs/frequencytable.gif?width=520&name=frequencytable.gif"
+					width="1000">
+			</section>
+
+
+			<section>
+				<h3>Distribución de frecuencia</h3>
+				<img src="https://textimgs.s3.amazonaws.com/boundless-statistics/lative-vs-normal-histogram.svg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Distribución de frecuencia</h3>
+				<img src="https://sphweb.bumc.bu.edu/otlt/MPH-Modules/PH717-QuantCore/PH717-Module6-RandomError/Normal%20Distribution%20deviations.png"
+					width="800">
+			</section>
+
+			<section>
+				<img src="https://www.biologyforlife.com/uploads/2/2/3/9/22392738/c101b0da6ea1a0dab31f80d9963b0368_orig.png"
+					width="1000">
+			</section>
+
+			<section>
+				<h1>Box plot</h1>
+				<p>A boxplot is a graphical representation of the key descriptive statistics of a
+					distribution.</p>
+				<p>The characteristics of a boxplot are</p>
+				<ul>
+					<li>The box is defined by using the lower quartile Q1 (25%; left vertical edge of
+						the box) and the upper quartile Q3 (75%; right vertical edge of the box). The
+						length of the box equals the interquartile range IQR = Q3 - Q1.</li>
+					<li>The median is depicted by using a line inside the box. If the median is not
+						centered, then skewness exists.</li>
+					<li>To trace and depict outliers, we have to calculate the whiskers, which are
+						the lines starting from the edges of the box and extending to the last
+						object not considered an outlier.</li>
+					<li>Objects lying further away than 1.5 IQR are considered outliers.</li>
+					<li>Objects lying more than 3.0 IQR are considered extreme outliers, and
+						those between (1.5 IQR and 3.0 IQR) are considered mild outliers. One
+						may change the 1.5 or 3.0 coefficient to another value according to the
+						study’s needs, but most statistical programs use these values by default.</li>
+					<li>Whiskers do not necessarily stretch up to 1.5 IQR but to the last object
+						lying before this distance from the upper or lower quartiles.</li>
+				</ul>
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/publication/340969321/figure/fig2/AS:885273386811393@1588077031036/Interquartile-range-IQR-projection-on-a-normally-distributed-density-The-median-of-IQR_Q640.jpg"
+					width="650">
+			</section>
+
+			<section>
+				<img src="https://i.stack.imgur.com/urPEC.jpg" width="800">
+			</section>
+
+			<section>
+				<img src="https://www.machinelearningplus.com/wp-content/uploads/2020/04/notched-pclass.png"
+					width="800">
+			</section>
+
+			<section>
+				<h1>QQ plot</h1>
+				<p>The normal QQ plot is a graphical technique that plots data against a theoretical normal distribution
+					that forms a straight line</p>
+				<p>A normal QQ plot is used to identify if the data are normally distributed</p>
+				<p>If data points deviate from the straight line and curves appear (especially in
+					the beginning or at the end of the line), the normality assumption is violated.</p>
+			</section>
+
+			<section>
+				<img src="https://www.learnbyexample.org/wp-content/uploads/r/typical-quantile-quantile-qq-plot.png" width="600">
+				<figcaption><a href="https://www.learnbyexample.org/r-quantile-quantile-qq-plot-base-graph/">Learn by example</a></figcaption>
+			</section>
+
+			<section>
+				<h1>Scatter plot</h1>
+
+				<p>A scatter plot displays the values of two variables as a set of point coordinates</p>
+
+				<p>A scatter plot is used to identify the relations between two variables and trace
+					potential outliers.</p>
+				<p>Inspecting a scatter plot allows one to identify linear or other types of associations</p>
+
+				<p>If points tend to form a linear pattern, a linear
+					relationship between variables is evident. If data points are scattered, the linear
+					correlation is close to zero, and no association is observed between the two
+					variables. Data points that lie further away on the x or y direction (or both) are
+					potential outliers</p>
+			</section>
+
+			<section>
+				<h3>Scatter plot</h3>
+				<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Matriz_de_gr%C3%A1ficos_de_dispers%C3%A3o.svg/660px-Matriz_de_gr%C3%A1ficos_de_dispers%C3%A3o.svg.png"
+					width="1000">
+			</section>
+
+			<section>
+
+				<h2>Visualización D3js: 4 variables</h2>
+
+				<!-- Create a div where the graph will take place -->
+				<div id="my_dataviz"></div>
+
+				<!-- A bit of CSS: change stroke color of circle on hover (white -> black) -->
+				<style>
+					.bubbles {
+						stroke-width: 2px;
+						stroke: white;
+					}
+
+					.bubbles:hover {
+						stroke: black;
+
+					}
+
+					.axis {
+						font-size: 12px;
+						shape-rendering: geometricPrecision;
+					}
+
+					#my_dataviz {
+						width: 800px;
+						height: 600px;
+						margin: 25px auto;
+						position: relative
+					}
+				</style>
+
+				<!-- Load color scale -->
+				<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+				<script>
+
+					// set the dimensions and margins of the graph
+					var margin = { top: 10, right: 20, bottom: 40, left: 50 },
+						width = 800 - margin.left - margin.right,
+						height = 520 - margin.top - margin.bottom;
+
+					// append the svg object to the body of the page
+					var svg = d3.select("#my_dataviz")
+						.append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.append("g")
+						.attr("transform",
+							"translate(" + margin.left + "," + margin.top + ")");
+
+					//Read the data
+					d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/4_ThreeNum.csv", function (data) {
+
+						// Add X axis
+						var x = d3.scaleLinear()
+							.domain([0, 12000])
+							.range([0, width]);
+
+						svg.append("g")
+							.attr("transform", "translate(0," + height + ")")
+							.call(d3.axisBottom(x));
+
+						// Add X axis label:
+						svg.append("text")
+							.attr("text-anchor", "end")
+							.attr("x", width / 2 + margin.left)
+							.attr("y", height + margin.top + 20)
+							.text("GDP per capita")
+							.classed('axis', true);
+
+						// Add Y axis
+						var y = d3.scaleLinear()
+							.domain([35, 90])
+							.range([height, 0]);
+
+						svg.append("g")
+							.call(d3.axisLeft(y));
+
+						// Y axis label:
+						svg.append("text")
+							.attr("text-anchor", "end")
+							.attr("transform", "rotate(-90)")
+							.attr("y", -margin.left + 20)
+							.attr("x", -margin.top - height / 2 + 20)
+							.text("Life expectancy")
+							.classed('axis', true);
+
+
+						// Add a scale for bubble size
+						var z = d3.scaleLinear()
+							.domain([200000, 1310000000])
+							.range([4, 40]);
+
+						// Add a scale for bubble color
+						var myColor = d3.scaleOrdinal()
+							.domain(["Asia", "Europe", "Americas", "Africa", "Oceania"])
+							.range(d3.schemeSet1);
+
+						// -1- Create a tooltip div that is hidden by default:
+						var tooltip = d3.select("#my_dataviz")
+							.append("div")
+							.style("opacity", 0)
+							.attr("class", "tooltip")
+							.style("background-color", "black")
+							.style("border-radius", "5px")
+							.style("padding", "10px")
+							.style("color", "white")
+
+						// -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+						var showTooltip = function (d) {
+							tooltip
+								.transition()
+								.duration(200)
+							tooltip
+								.style("opacity", 1)
+								.html("Country: " + d.country + " - Population: " + d.pop)
+								.style("left", (d3.mouse(this)[0] + 30) + "px")
+								.style("top", (d3.mouse(this)[1] + 30) + "px")
+						}
+						var moveTooltip = function (d) {
+							tooltip
+								.style("left", (d3.mouse(this)[0] + 30) + "px")
+								.style("top", (d3.mouse(this)[1] + 30) + "px")
+						}
+						var hideTooltip = function (d) {
+							tooltip
+								.transition()
+								.duration(200)
+								.style("opacity", 0)
+						}
+
+						// Add dots
+						svg.append('g')
+							.selectAll("dot")
+							.data(data)
+							.enter()
+							.append("circle")
+							.attr("class", function(d) { return "bubbles " + d.continent })
+							.attr("cx", function (d) { return x(d.gdpPercap); })
+							.attr("cy", function (d) { return y(d.lifeExp); })
+							.attr("r", function (d) { return z(d.pop); })
+							.style("fill", function (d) { return myColor(d.continent); })
+							// -3- Trigger the functions
+							.on("mouseover", showTooltip)
+							.on("mousemove", moveTooltip)
+							.on("mouseleave", hideTooltip)
+
+						// Add legend: circles
+						var valuesToShow = [100000000, 1000000000]
+						var xCircle = 650
+						var xLabel = 700
+						svg
+							.selectAll("legend")
+							.data(valuesToShow)
+							.enter()
+							.append("circle")
+							.attr("cx", xCircle)
+							.attr("cy", function (d) { return height - 50 - z(d) })
+							.attr("r", function (d) { return z(d) })
+							.style("fill", "none")
+							.attr("stroke", "black")
+
+						// Add legend: segments
+						svg
+							.selectAll("legend")
+							.data(valuesToShow)
+							.enter()
+							.append("line")
+							.attr('x1', function (d) { return xCircle + z(d) })
+							.attr('x2', xLabel)
+							.attr('y1', function (d) { return height - 50 - z(d) })
+							.attr('y2', function (d) { return height - 50 - z(d) })
+							.attr('stroke', 'black')
+							.style('stroke-dasharray', ('2,2'))
+
+						// Add legend: labels
+						svg
+							.selectAll("legend")
+							.data(valuesToShow)
+							.enter()
+							.append("text")
+							.attr('x', xLabel)
+							.attr('y', function (d) { return height - 50 - z(d) })
+							.text(function (d) { return d / 1000000 })
+							.style("font-size", 10)
+							.attr('alignment-baseline', 'middle')
+
+						// Legend title
+						svg.append("text")
+							.attr('x', xCircle)
+							.attr("y", height - 50 + 30)
+							.text("Population (M)")
+							.style("font-size", 20)
+							.attr("text-anchor", "middle")
+
+						// Add one dot in the legend for each name.
+						var size = 10
+						var allgroups = ["Asia", "Europe", "Americas", "Africa", "Oceania"]
+						svg.selectAll("myrect")
+							.data(allgroups)
+							.enter()
+							.append("circle")
+							.attr("cx", 30)
+							.attr("cy", function (d, i) { return 10 + i * (size + 7) }) // 100 is where the first dot appears. 25 is the distance between dots
+							.attr("r", 7)
+							.style("fill", function (d) { return myColor(d) })
+
+						// Add labels beside legend dots
+						svg.selectAll("mylabels")
+							.data(allgroups)
+							.enter()
+							.append("text")
+							.attr("x", 40 + size * 0.8)
+							.attr("y", function (d, i) { return i * (size + 9) + (size / 2) }) // 100 is where the first dot appears. 25 is the distance between dots
+							.style("fill", function (d) { return myColor(d) })
+							.text(function (d) { return d })
+							.attr("text-anchor", "left")
+							.style("font-size", 15)
+							.style("alignment-baseline", "middle")
+
+					})
+
+
+
+				</script>
+
+			</section>
+
+			<section>
+				<h1>Covariance matrix</h1>
+				<p>Covariance is a measure of the extent to which two variables vary together
+					(i.e., change in the same linear direction). Covariance Cov(X, Y) is calculated as:</p>
+				$cov_{x,y}=\frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{n-1}$
+
+				<p>where
+					$x_i$ is the score of variable X of the i-th object,
+					$y_i$ is the score of variable Y of the i-th object,
+					$\bar{x}$ is the mean value of variable X,
+					$\bar{y}$ is the mean value of variable Y.</p>
+				<p>For positive covariance, if variable X increases, then variable Y increases as well.
+					If the covariance is negative, then the variables change in the opposite way
+					(one increases, the other decreases). Zero covariance indicates no correlation
+					between the variables.</p>
+			</section>
+
+			<section>
+				<img src="https://cdn-images-1.medium.com/max/800/1*5V2y7dyc7YclTRqdVjoOrQ.png" width="800">
+			</section>
+
+			<section>
+				<h1>Correlation coefficient</h1>
+				<p>Correlation coefficient $r_{(x, y)}$ analyzes how two variables (X, Y) are
+					linearly related. Among the correlation coefficient metrics available, the most
+					widely used is the Pearson’s correlation coefficient (also called Pearson
+					product-moment correlation),</p>
+				$r_{(x, y)} = \frac{\text{cov}(X,Y)}{s_x s_y}$
+				<p>Correlation is a measure of association and not of causation.</p>
+			</section>
+
+			<section>
+				<img src="http://www.sharetechnote.com/image/EngMath_CovarianceMatrix_09.png" width="1000">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/4a/ea/fd/4aeafd24be1a92284494c616cc885762.jpg" width="1000">
+			</section>
+			<section>
+				<img src="https://www.math.net/img/a/probability-and-statistics/descriptive-statistics/correlation/sp.svg"
+					width="1000">
+			</section>
+
+			<section>
+				<img src="https://image.shutterstock.com/image-illustration/diagram-highlighting-that-correlation-does-260nw-1401960191.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<img src="https://marketoonist.com/wp-content/uploads/2014/04/140414b.correlation.jpg" width="850">
+			</section>
+		</section>
+
+<section>
+	<h1>Lattice data analysis in Python<br><br>Object-based model</h1>
+</section>
+
+<!--Point pattern analysis-->
+		<section>
+			<section>
+				<h1>Point pattern analysis</h1>
+			</section>
+
+			<section>
+				<h3>Point pattern analysis</h3>
+				<p> A point pattern consists of a set of events at a set of
+					locations, where each event represents a single instance of the phenomenon of
+					interest </p>
+				<p>Most point pattern analysis techniques deal only with the location of the
+					events and not with other attributes they might carry.</p>
+			</section>
+
+			<section>
+				<h3>Process vs Pattern</h3>
+				<p><strong>Spatial process</strong> is a description of how a <strong>spatial pattern</strong> can be
+					generated.</p>
+				<p> There are three main types of spatial process:</p>
+				<ul>
+					<li>Complete spatial randomness process --> <strong>Random spatial pattern</strong>
+						<ul>
+							<li style="font-size:20px">There is an equal probability of event occurrence at any location in
+								the study region (also called first-order stationary).</li>
+							<li style="font-size:20px">The location of an event is independent of the locations of other
+								events (also called second-order stationary).</li>
+						</ul>
+					</li> </br>
+					<li>Competitive process --> <strong>Dispersed</strong>: is a process that leads events to be
+						arranged as far
+						away from each other as possible, events tend to be
+						uniformly distributed</li> </br>
+					<li>Aggregating process --> <strong>Clustered</strong>: is a process where events tend to cluster as
+						a
+						result of some pulling action. The events create clusters in some parts of the study area, and
+						the pattern has a large variation</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Point pattern analysis</h3>
+				<p>There are two main (interrelated) methods of analyzing point patterns, namely
+					the distance-based methods and the density-based methods.</p>
+				<ul>
+					<li><strong>Density-based methods--> Absolute location</strong> use the intensity of events
+						occurrence across
+						space. For this reason, they describe <strong>first-order effects</strong> better. Kernel
+						estimation methods are common density ased methods. In quadrat count methods, space is divided
+						into a regular
+						grid (such as a grid of squares or hexagons) of a unitary area. Each unitary
+						region includes a different number of points due to a spatial process. The
+						distribution analysis and its correspondence to a spatial pattern are based
+						on probabilistic and statistical methods. Another, more widely used
+						method is the kernel density estimation (KDE).</li>
+					<li><strong>Distance-based methods --> Relative location</strong> employ the distances among events
+						and describe
+						<strong>second-order effects</strong>. Such methods include the nearest neighbor method the G
+						and F distance functions,
+						the Ripley’s K distance function and its transformation,
+					</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Centrograhy</h3>
+				<p>A very basic form of point pattern analysis involves summary statistics such as the mean center,
+					standard distance and standard deviational ellipse.</p>
+				<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="700">
+				<figcaption>Source: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
+			</section>
+
+			<section>
+				<h3>Standard deviational ellipse</h3>
+				<p>It is a measure of dispersion (spread) that calculates
+					standard distance separately in the x and y directions. Standard deviational ellipse reveals
+					dispersion
+					and directional trend</p>
+				<img src="https://figshare.com/ndownloader/files/7837051/preview/7837051/preview.jpg" width="350">
+			</section>
+
+			<section>
+				<h3>Convex Hull </h3>
+				<p>The convex hull of a point pattern pp is the smallest convex set that contains pp</p>
+				<img src="http://pysal.org/notebooks/images/explore/pointpats/centrography_53_0.png" width="700">
+			</section>
+
+			<section>
+				<h3>Quadrant density</h3>
+				<p>This technique requires that the study area be divided into sub-regions (aka quadrats). Then,
+					the point density is computed for each quadrat by dividing the number of points in each quadrat
+					by the quadrat’s area. Quadrats can take on many different shapes such as hexagons and triangles</p>
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-quad01-1.png"
+					width="300">
+
+			</section>
+
+			<section>
+				<h3>Kernel Density Function</h3>
+				<p>The kernel density approach is an extension of the quadrat method. Kernel density estimation is a
+					nonparametric method that uses kernel functions to create smooth maps of density values, in which
+					the density at each
+					location indicates the concentration of points within the neighboring area
+					(high concentrations as peaks, low concentrations as valleys)</p>
+				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0001457508002340-gr1.jpg" width="700">
+			</section>
+
+			<section>
+				<h3>Kernel Density Function</h3>
+				<img src="https://www.statsmodels.org/stable/_images/examples_notebooks_generated_kernel_density_12_0.png"
+					width="900">
+			</section>
+
+			<section>
+				<h3>Kernel Density Function</h3>
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-kernel01-1.png"
+					width="900">
+			</section>
+
+			<section>
+				<h3>Kernel Density Function</h3>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM07_Fig11.png" width="1000">
+			</section>
+
+			<section>
+				<h3>Modeling intensity as a function of a covariate</h3>
+				<p>It is often more interesting to model the relationship between the distribution of points and some
+					underlying covariate by defining that relationship mathematically. This can be done by exploring
+					the changes in point density as a function of a covariate.</p>
+				$Pr(X_i) = {\frac{exp(\beta_0 + \beta_1X_i)}{1 + exp (\beta_0 + \beta_1X_i)}}$
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-starbucks-1.png"
+					width="600">
+
+			</section>
+
+			<section>
+				<h3>NN analysis</h3>
+				<p>The
+					method compares the observed spatial distribution to a random theoretical
+					one. The <strong>Average Nearest Neighbor (NN)</strong> tool measures the distance between each
+					feature centroid and its nearest
+					neighbor's centroid location. It then averages all these nearest neighbor distances.
+					If the average distance is less than the average for a hypothetical random distribution,
+					the distribution of the features being analyzed is considered clustered. If the average distance
+					is greater than a hypothetical random distribution, the features are considered dispersed.</p>
+				<img src="https://geographyfieldwork.com/NearestNeighbourFormula2_small.gif" width="250">
+			</section>
+
+			<section>
+				<h3>NN analysis</h3>
+				<img src="https://www.researchgate.net/profile/Kyriacos-Themistocleous/publication/295245529/figure/fig1/AS:362731409559552@1463493315881/Average-nearest-neighbor-summary-of-the-protected-monuments-of-Paphos-District.png"
+					width="500">
+			</section>
+
+			<section>
+				<h3>NN analysis</h3>
+				<p>An extension of this idea is to plot the ANN values for different order neighbors, that is for the
+					first closest point, then the second closest point, and so forth.</p>
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-patterns-1.png"
+					width="500">
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-ANN-plots-1.png"
+					width="400">
+			</section>
+
+			<section>
+				<h3>Ripley's K function</h3>
+				<p>It is a spatial analysis method of analyzing point patterns
+					based on a distance function. The outcome of the function is the
+					expected number of events inside a radius of d.
+					It is calculated as a series of incremental distances d centered on each of the
+					events in turn</p>
+				<img src="https://www.researchgate.net/profile/Thibault-Lagache/publication/259354916/figure/fig1/AS:297121925353473@1447850795608/Analyzing-spatial-point-patterns-with-Ripleys-K-function-The-normalized-and-centered.png"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Ripley's K function</h3>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM07_Fig5.png" width="600">
+			</section>
+
+			<section>
+				<h3>Clustering</h3>
+				<p>El objetivo es identificar subgrupos en los datos, de tal forma que los datos en cada subgrupo
+					(clusters) sean
+					muy similares, mientras que los datos en diferentes subgrupos sean muy diferentes.</p>
+				<img src="https://i.pinimg.com/564x/d3/21/df/d321df3f3abfbfdc400af1ec454f6e5f.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Distance</h3>
+				<img src="https://i.pinimg.com/originals/96/31/74/963174f44981900fdcb1dc5a4632f36e.png" width="400">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/3a/4c/ca/3a4cca6d7b60d2b198578e4cafa63435.jpg" width="800">
+			</section>
+
+			<section>
+				<ul>
+					<li style="color:rgb(15, 15, 15);"><strong>Hierarchical Clustering:</strong> descomposición
+						jerárquica utilizando algún criterio, pueden ser aglomerativos (bottom-up)
+						o de separación (top-down). No necesitan K al inicio.</li>
+					<li style="color:rgb(15, 15, 15);"><strong>Partitioning Methods (</strong> (k-means, PAM, CLARA): se
+						construye a partir de particiones, las cuales son evaluadas
+						por algún criterio. Necesitan K al inicio.</li>
+					<li style="color:rgb(150, 150, 150);">Density-Based Clustering: basados en funciones de conectividad
+						y funciones de densidad.</li>
+					<li style="color:rgb(150, 150, 150);">Model-based Clustering: se utiliza un modelo para agrupar los
+						modelos.</li>
+					<li style="color:rgb(150, 150, 150);">Fuzzy Clustering: A partir de lógica difusa se separan o
+						agrupan los clusters.</li>
+				</ul>
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/originals/11/3f/24/113f2409c3e9afcf77bcd645b3c8f8c6.gif" width="1000">
+			</section>
+
+			<section>
+				<h3>Clustering</h3>
+				<img src="https://i.pinimg.com/564x/a9/95/55/a9955553655ce4912fec48f95c4b6065.jpg" width="600">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/55/86/61/558661c78fe7461fe8bccc4b3b87d91d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/1a/9e/0f/1a9e0f27f121f98a99934576a0b7c3f1.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/28/88/9e/28889e974bea367efaae6c3776d88c19.jpg" width="1000">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/f0/0d/50/f00d50d6b438178c91f0633e663fff1d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>K-means</h3>
+				<img src="https://i.pinimg.com/originals/37/1e/88/371e88c867d1015d65cbab831a7542c5.gif" width="600">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/7f/d8/03/7fd8038ad7b82396ec51b37f573ac02f.jpg" width="800">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/07/d9/ca/07d9ca6c0dbab189b0f8437cabbec092.jpg" width="900">
+			</section>
+
+			<section>
+				<h3>Elbow method</h3>
+				<img src="https://www.oreilly.com/library/view/statistics-for-machine/9781788295758/assets/995b8b58-06f1-4884-a2a1-f3648428e947.png"
+					width="500">
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/publication/340705597/figure/fig2/AS:881376379285504@1587147912170/a-Elbow-Curve-for-K-means-Clustering-b-K-Means-clustering-of-the-developers-on-the.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Método Silhouette</h3>
+				<img src="https://i.pinimg.com/564x/62/df/4c/62df4c59ad9708c0847529b443812817.jpg" width="1200">
+			</section>
+
+			<section>
+				<h3>DBScan</h3>
+				<p>DBSCAN is a density-based clustering method, which means that points that are closely packed together are assigned into the 
+					same cluster and given the same ID. The DBSCAN algorithm has two parameters, which the user needs to specify:</p>
+					<lu>
+						<li>ε —The maximal distance between points to be considered within the same cluster</li>
+						<li>minPts —The minimal number of points required to form a cluster</li>
+					</lu>
+					<p>In short, all groups of at least minPts points, where each point is within ε or less from at least one other point in the 
+						group, are considered to be separate clusters and assigned with unique IDs. All other points are considered “noise” 
+						and are not assigned with an ID.</p>
+					</section>
+					
+					<section>
+						<h3>DBScan</h3>
+						<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
+					</section>
+					
+		</section>
+				
+<!--Geovisualization-->
+		<section>
+
+			<section>
+				<h1>Geovisualization</h1>
+			</section>
+					
+			<section>
+				<h1>Choropleth maps</h1>
+				<p>Choropleth maps are thematic maps in which areas are rendered according to the
+							values of the variable displayed</p>
+							
+							<p>Cloropleth maps are used to obtain a graphical perspective of the spatial
+					distribution of the values of a specific variable across the study area.</p>
+				<p>There are two main categories of variables displayed in
+					choropleth maps:</p>
+				<ul>
+					<li><strong>Spatially extensive variables:</strong> each polygon is rendered based on a
+						measured value that holds for the entire polygon. <strong>Ej. </strong>total population</li></br>
+					<li><strong>Spatially intensive variables: </strong>the values of the variable are adjusted for the
+						area or some other
+						variable. <strong>Ej.</strong> population density</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Choropleth maps</h3>
+
+				<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+				<style>
+					#choroplet {
+						width: 800px;
+						height: 600px;
+						margin: 25px auto;
+						position: relative
+					}
+				</style>
+
+				<!-- Create an element where the map will take place -->
+				<svg id="choroplet"></svg>
+
+				<script>
+
+					// set the dimensions and margins of the graph
+					var margin = { top: 10, right: 20, bottom: 40, left: 50 },
+						width = 800 - margin.left - margin.right,
+						height = 520 - margin.top - margin.bottom;
+
+					// The svg
+					var svg2 = d3.select("#choroplet")
+						.append("svg")
+						.attr("width", width + margin.left + margin.right)
+						.attr("height", height + margin.top + margin.bottom)
+						.append("g")
+						.attr("transform",
+							"translate(" + margin.left + "," + margin.top + ")");;
+
+					// Map and projection
+					var path = d3.geoPath();
+					var projection = d3.geoMercator()
+						.scale(70)
+						.center([0, 20])
+						.translate([width / 2, height / 2]);
+
+					// Data and color scale
+					var data2 = d3.map();
+					var colorScale = d3.scaleThreshold()
+						.domain([100000, 1000000, 10000000, 30000000, 100000000, 500000000])
+						.range(d3.schemeBlues[7]);
+
+					// Load external data and boot
+					d3.queue()
+						.defer(d3.json, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+						.defer(d3.csv, "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world_population.csv", function (d) { data2.set(d.code, +d.pop); })
+						.await(ready);
+
+					function ready(error, topo) {
+
+						let mouseOver = function (d) {
+							d3.selectAll(".Country")
+								.transition()
+								.duration(200)
+								.style("opacity", .5)
+							d3.select(this)
+								.transition()
+								.duration(200)
+								.style("opacity", 1)
+								.style("stroke", "black")
+						}
+
+						let mouseLeave = function (d) {
+							d3.selectAll(".Country")
+								.transition()
+								.duration(200)
+								.style("opacity", .8)
+							d3.select(this)
+								.transition()
+								.duration(200)
+								.style("stroke", "transparent")
+						}
+
+						// Draw the map
+						svg2.append("g")
+							.selectAll("path")
+							.data(topo.features)
+							.enter()
+							.append("path")
+							// draw each country
+							.attr("d", d3.geoPath()
+								.projection(projection)
+							)
+							// set the color of each country
+							.attr("fill", function (d) {
+								d.total = data2.get(d.id) || 0;
+								return colorScale(d.total);
+							})
+							.style("stroke", "transparent")
+							.attr("class", function (d) { return "Country" })
+							.style("opacity", .8)
+							.on("mouseover", mouseOver)
+							.on("mouseleave", mouseLeave)
+					}
+
+				</script>
+
+			</section>
+
+			<section>
+				<iframe title="Unemployment in the US" aria-label="Map" id="datawrapper-chart-a0Jqr" src="https://datawrapper.dwcdn.net/a0Jqr/1/" scrolling="no" frameborder="0" style="border: none;" width="739" height="561"></iframe>
+			</section>
+
+			<section>
+				<h2>Breaks</h2>
+				<img src="http://3.bp.blogspot.com/-wWK6DkVsIlU/UNXP5OxuONI/AAAAAAAANAc/KL7mQs4p8P4/s400/breaks20_5.jpeg"
+					width="750">
+			</section>
+
+			<section>
+				<h2>Breaks</h2>
+				<img src="https://uploads-ssl.webflow.com/5f6a4786fa53db61032919f9/5fa44acd9fd5f0dd50b07af2_histogram_examples.png"
+					width="750">
+			</section>
+
+			<section>
+				<h2>Breaks</h2>
+				<img src="https://kaitlyncoleman22.files.wordpress.com/2015/11/lab66.jpg?w=712" width="770">
+			</section>
+
+		</section>																			
+
+<!--Spatial association-->
+		<section>
+
+			<section>
+				<h1>Spatial association</h1>
+			</section>
+
+			<section>
+				<h1>Spatial dependence</h1>
+				<p>Characteristics of spatial data in terms of spatial
+					autocorrelation and spatial heterogeneity. Many statistical
+					tests used for nonspatial data are based on the hypothesis that samples
+					are randomly selected and observations are independent. When we collect spatial data, however, this
+					hypothesis is usually violated. This phenomenon is described as “spatial dependence.”</p>
+				<img src="https://www.researchgate.net/profile/Jane-Foster-4/publication/282219849/figure/fig7/AS:669670436773889@1536673282062/Figure-S3-Example-of-spatial-dependence-in-residual-errors-for-logistic-models_W640.jpg"
+					width="500">
+			</section>
+
+			<section>
+				<h3>Spatial autocorrelation</h3>
+				<p>Formal property that measures the degree to which near and distant things are related</p>
+				<p>Refers to systematic spatial changes that are observed as clusters of similar values or a systematic
+					spatial
+					pattern.</p>
+				<img src="http://emilkirkegaard.dk/en/wp-content/uploads/SAC_illu.png" width="1000">
+			</section>
+
+			<section>
+				<h3>Spatial heterogeneity</h3>
+				<p>Spatial heterogeneity refers to structural relationships that change with the location of the object.
+					These changes can be abrupt (e.g. countryside–town) or continuous.</p>
+				<p>Spatial heterogeneity refers to the uneven distribution of a trait, event, or
+					relationship across a region</p>
+			</section>
+
+			<section>
+				<h1>Spatial weight matrix (W)</h1>
+				<p>Spatial weights are numbers that reflect some sort of distance, time or cost
+					between a target spatial object and every other object in the dataset or
+					specified neighborhood. Spatial weights quantify the spatial or spatiotemporal
+					relationships among the spatial features of a neighborhood.</p>
+				<img src="https://4.bp.blogspot.com/-9DjqtTXrno0/XErTomq2ofI/AAAAAAAACIY/qO9iqrv2SMEb2pw_tazpQCS-cY8JgTTnwCLcBGAs/s400/W.jpg"
+					width="600">
+			</section>
+
+			<section>
+				<h3>Neighborhood</h3>
+				<p>Neighborhood in the spatial analysis context is a geographically localized area
+					to which local spatial analysis and statistics are applied based on the hypothesis
+					that objects within the neighborhood are likely to interact more than those
+					outside it.</p>
+				<ul>
+					<li><strong>Neighbours by contiguity:</strong> areas that share common boundaries</li>
+					<li><strong>neighbours by distance:</strong> areas will be defined as neighbours if they are within
+						a specified radius</li>
+				</ul>
+			</section>
+
+			<section>
+				<h1>First & Second order processes</h1>
+				<p>Neighbourhood can
+					be first order, second order or higher. A first-order neighbourhood means that only neighbours
+					of the examined object are considered (according to the contiguity criterion), while in the
+					case of the second-order neighbourhood matrix, neighbours’ neighbours are also included
+					(also according to the contiguity criterion).</p>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM05_Fig1.png" width="600">
+			</section>
+
+
+			<section>
+				<h3>First order process</h3>
+				<p>It is one that produces a variation in point density in response to some causal variable</p>
+				<p><strong>Ej.</strong> The density of cases of malaria echoes the density of particular species of
+					mosquito</p>
+
+				<h3>Second-order process</h3>
+				<p>It results from interactions, when the presence of one point makes others more likely in the
+					immediate vicinity</p>
+				<p><strong>Ej.</strong> Patterns of contagious disease reflect second-order processes, when the disease
+					is passed from an initial carrier
+					to family members, co-workers, sexual partners, and others who come into contact with infectious
+					carriers</p>
+				<p>Competition for space provides a familiar example of a form of second-order process that results in
+					an exception
+					to Tobler’s First Law</p>
+				<p><strong>Ej.</strong> The presence of a shopping center in an area generally discourages other
+					shopping centers from locating nearby</p>
+			</section>
+
+			<section>
+				<img src="https://mgimond.github.io/Spatial/img/1st_2nd_order_property.png" width="800">
+			</section>
+
+			<section>
+				<h1>Spatial Relationships</h1>
+				<h3>Adjacency (Contiguity)</h3>
+				<p>Adjacency can be thought of as the nominal, or binary, equivalent of distance.
+					Two spatial entities are either adjacent or they are not.</p>
+			</section>
+
+			<section>
+				<p>Contiguity among features means the features have common borders. We have three types of contiguity:
+				</p>
+				<ul>
+					<li><strong>Rook Contiguity:</strong> the features share common edges</li>
+					<li><strong>Bishop Contiguity:</strong> the features share common vertices (corners)</li>
+					<li><strong>Queen Contiguity:</strong> the feature share common edges and corners.</li>
+				</ul>
+				<img src="https://1.bp.blogspot.com/-GDiVqN1VGOQ/XErPMHz1WdI/AAAAAAAACIM/xVMLbNjq50A9FRv1RL7gU95if-qdUPbOgCLcBGAs/s640/Contiguity.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Contiguity</h3>
+				<img src="https://d3i71xaburhd42.cloudfront.net/edc8bde1bba660f775d8a7d50b91fe24ed1a96c9/5-Figure3-1.png"
+					width="900">
+			</section>
+
+
+			<section>
+				<img src="https://d3i71xaburhd42.cloudfront.net/e9b3f350363570cbff3da4678a2fe72f92c283aa/13-Figure2.12-1.png"
+					width="900">
+			</section>
+
+			<section>
+				<img src="https://3.bp.blogspot.com/-3LeoAxWaqTk/XErWqq1XRhI/AAAAAAAACIs/eDO-eFi0Q8IVIHSar3GwmCtm03Vywi9iQCLcBGAs/s1600/chess_board_Rook.jpg"
+					width="350">
+				<img src="https://3.bp.blogspot.com/-GjMKpazGmos/XErWZKDTKBI/AAAAAAAACIk/XB0FZi5UDyInmqaZaj2tWd4gNXyliSkJQCLcBGAs/s1600/W_Matrix_Rook.jpg"
+					width="350">
+			</section>
+
+			<section>
+				<h3>Ej.</h3>
+				<img src="https://1.bp.blogspot.com/-WVD6M6Xwo0o/XEvmzUW-e8I/AAAAAAAACI8/kEnUMjp0Ji8n6y4EMrjfp62DiZ3Y3bFfwCEwYBhgL/s1600/spatial_units2.jpg"
+					width="500">
+			</section>
+
+			<section>
+				<img src="https://4.bp.blogspot.com/-rmxa4R9STxc/XEvrNWNTUtI/AAAAAAAACJE/s6Lbmn2OlgcDqf1GjH7FYjxnLuUsTLSnQCLcBGAs/s640/W_matrix_spatial_units2.jpg"
+					width="1000">
+			</section>
+
+			<section>
+				<h3>Distance</h3>
+				<p>Among the most common distance measures used in geographical analysis are
+					the Euclidean distance, the Manhattan distance, the Minkowski distance, the
+					Pearson’s correlation distance, the Spearman correlation distance, the network
+					distance, and the geodetic distance. In spatial statistics, Euclidean and Manhattan distance
+					are those most widely used</p>
+				<p>Using the coordinates of the centres of the areas, one can also create a matrix of spatial weights
+					according to the
+					criterion of neighbourhood in a radius of d km. This means that the neighbour will be an object
+					whose centre is not
+					more than d km away in a straight line. A special case of such a matrix is the inclusion of all
+					areas as neighbours.</p>
+			</section>
+
+			<section>
+				<h3>Minkowski Distance</h3>
+				<p>The Minkowski distance is a generalized form of the Euclidean distance (if p=2) and the Manhattan
+					distance (if p=1).</p>
+				$\left(\sum_{i = 1}^n |x_i-y_i|^p\right)^{1 / p}$
+
+				<h3 style="color: black;">Euclidean distance</h3>
+				$\sqrt{\sum_{i = 1}^n (x_i-y_i)^2}$
+
+				<h3 style="color: black;">Manhattan distance</h3>
+				$\left(\sum_{i = 1}^n |x_i-y_i|^p\right)^{1 / p}$
+			</section>
+
+			<section>
+				<h3>Interaction</h3>
+				<p>Interaction may be considered as a combination of distance and contiguity,
+					and rests on the intuitively obvious idea that nearer things are more closely
+					related than distant things</p>
+
+				<p>Various types of functions can be used, including reciprocal function (or inverse distance), negative
+					power (or inverse distance
+					squared for a power of 2), negative exponential or linear with a
+					negative slope (which is uncommon).</p>
+			</section>
+
+			<section>
+				<h3> Matrix of k nearest neighbours (knn)</h3>
+				<p>The matrix k nearest neighbours (knn neighbours, knn) is usually constructed for point data, because
+					unlike the
+					contiguity matrix, it only examines point data (without referring to areas). One can also create a
+					knn matrix for
+					area data by first determining the area centroids (centres of gravity of regions – spatial
+					geometries) and operating
+					on these points. In the case of point data, the knn matrix is a natural analytical solution,
+					although determining the
+					number of neighbours is most often based on modelling or random experience. I</p>
+			</section>
+
+			<section>
+				<h1>Standarized Spatial Weights</h1>
+				<p>Row standardization is recommended when there is a potential bias in the
+					distribution of spatial objects and their attribute values due to poorly designed
+					sampling procedures.</p>
+				<p>Row standardization should also be used when polygon features refer to
+					administrative boundaries or any type of man-made zones.</p>
+			</section>
+
+			<section>
+				<h3><strong>Ej.</strong></h3>
+				<img src="https://i.pinimg.com/564x/a6/98/74/a6987485b3a856f6a5c3aec17c57e5af.jpg" width="800">
+			</section>
+
+			<section>
+				<h1>Spatial lag</h1>
+				<p><strong>Spatial lag</strong>is when the dependent variable y in place i is affected by the
+					independent variables in both place i and j.</p>
+				<img src="https://i.pinimg.com/564x/6f/f4/fd/6ff4fd1ca6e10d272de5577a24501710.jpg" width="500">
+				<img src="https://i.pinimg.com/564x/64/64/0f/64640f9ad261567706f9cec72a6d7f50.jpg" width="200">
+			</section>
+
+			<section>
+				<h3><strong></strong></h3>
+				<img src="https://i.pinimg.com/564x/ba/68/bb/ba68bb5ed7da39fca687d8a91f36759b.jpg" width="800">
+			</section>
+
+			<section>
+				<h1>Global indicator of Spatial Association (GISA)</h1>
+				<p>The measures (test statistics) related to the existence of spatial autocorrelation in data, that is,
+					focusing on whether there is any spatial autocorrelation
+					in the data</p>
+			</section>
+
+			<section>
+				<h3>Indice de Moran</h3>
+				<p>The positive value of global
+					Moran implies the existence of a positive autocorrelation, and conversely,
+					the negative value implies the existence of a negative autocorrelation</p>
+				<img src="https://pro.arcgis.com/es/pro-app/latest/tool-reference/spatial-statistics/GUID-2089108B-3773-4558-A63E-8EE028F0A1C0-web.png"
+					width="550">
+			</section>
+
+			<section>
+				<img src="https://i.ytimg.com/vi/_0Tzo1qbN-A/maxresdefault.jpg" width="600">
+			</section>
+
+			<section>
+				<p>If there is no relationship between Income and Incomelag, the slope will be close to flat (resulting
+					in a Moran’s I value near 0).</p>
+				<img src="https://mgimond.github.io/Spatial/img/MoranI_scatter_plot.png" width="600">
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/publication/334175751/figure/fig5/AS:776383198400513@1562115587621/Comparison-of-Residual-Morans-I-index-for-traditional-least-squares-method-OLS-a-and_W640.jpg"
+					width="800">
+				<img src="https://desktop.arcgis.com/es/arcmap/10.3/tools/spatial-statistics-toolbox/GUID-5CCEE7E5-839C-46E8-A88B-FCD02F07B209-web.gif"
+					width="600">
+			</section>
+
+			<section>
+				<h3>Moran’s I at different lags</h3>
+				<p>Moran’s I at different spatial lags defined by a 50 km width annulus at 50 km distance increments.
+					Red dots indicate Moran I values for which a P-value was 0.05 or less.</p>
+				<img src="https://mgimond.github.io/Spatial/img/MoranI_distance_band.png" width="800">
+			</section>
+
+			<section>
+				<h1>Local indicators of Spatial Association (LISA)</h1>
+				<p>A local statistic is any descriptive
+					statistic associated with a spatial data set whose value varies from place to
+					place.</p>
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/profile/Cristina-Gomez-4/publication/229346700/figure/fig4/AS:300773247340565@1448721338553/Morans-I-scatterplot-The-slope-of-the-regression-line-is-an-estimation-of-the-global.png"
+					width="700">
+			</section>
+
+			<section>
+				<h3>Moran´s I scatter plot</h3>
+				<img src="https://aledemogr.files.wordpress.com/2015/04/ggplot2-moranplot1.png" width="750">
+			</section>
+
+			<section>
+				<h3>Moran´s I scatter plot</h3>
+				<p>Red points and polygons highlight counties with high income values surrounded by high income
+					counties. Blue points and polygons highlight counties with low income values surrounded by low
+					income counties.</p>
+				<img src="https://mgimond.github.io/Spatial/img/HH_LL_noP.png" width="400">
+				<img src="https://mgimond.github.io/Spatial/img/HH_LL_noP_map.png" width="300">
+			</section>
+
+			<section>
+				<h3>Moran´s I scatter plot</h3>
+				<p>Significantly High-High and Low-Low clusters with P-values less than or equal to 0.5.</p>
+				<img src="https://mgimond.github.io/Spatial/img/HH_LL_P.png" width="400">
+				<img src="https://mgimond.github.io/Spatial/img/HH_LL_P_map.png" width="300">
+			</section>
+		</section>
+
+<section>
+	<h1>Lattice data analysis in Python<br><br>Field model</h1>
+</section>
+
+<!--Geostatistics-->
+		<section>
+			
+			<section>
+				<h1>Geostatistics</h1>
+			</section>
+
+			<section>
+				<h2>Geostatistics</h2>
+				<p>The type of spatial statistical analysis dealing with
+					continuous field variables is named “geostatistics”</p>
+					
+					<p> Geostatistics focus on the description of the spatial variation in a set of observed values and on
+						their prediction at unsampled
+						locations</p>
+					</section>
+					
+					<section>
+						<h1>Spatial interpolation</h1>
+						<p>techniques used with points that represent samples of a continuous field are interpolation methods
+						</p>
+						<p>Here, our point data represents sampled observations of an entity that can be measured anywhere
+							within our study area</p>
+							<p>There are many interpolation tools available, but these tools can usually be grouped into two
+								categories: <strong>deterministic</strong> and interpolation methods</p>
+							</section>
+							
+							<section>
+								<h3>Proximity interpolation</h3>
+								<p> It was introduced by Alfred H. Thiessen more than a century ago. The goal is simple: Assign to all
+									unsampled locations the value of the closest sampled location. This generates a tessellated surface
+									whereby lines that split the midpoint between each sampled location are connected thus enclosing an
+									area.
+									Each area ends up enclosing a sample point whose value it inherits.</p>
+									<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
+									width="800">
+								</section>
+								
+								<section>
+									<h3>Voronoi diagram</h3>
+									<img src="https://miro.medium.com/max/1000/1*QjyawBrtDOfIuC2WOI2ZKQ.gif" width="500">
+									<figcaption>Source: <a href="https://en.wikipedia.org/wiki/Voronoi_diagram#/media/File:Voronoi_growth_euclidean.gif">Wikipedia</a></figcaption>
+								</section>
+								
+								<section>
+						<h3>Voronoi & Delanauy triangulation</h3>
+						<img src="https://miro.medium.com/max/1400/1*83fR2bOCP7fVbAuY0YSplA.png" width="1000">
+						<figcaption>Source: <a href="https://towardsdatascience.com/the-fascinating-world-of-voronoi-diagrams-da8fc700fa1b">Francesco Bellelli in towardsdatascience</a></figcaption>
+					</section>
+
+					<section>
+						<h3>Inverse Distance Weighted (IDW)</h3>
+						<p> The IDW technique computes an average value for unsampled locations using values from nearby
+							weighted
+							locations. The weights are proportional to the proximity of the sampled points to the unsampled
+							location
+							and can be specified by the IDW power coefficient. </p>
+							$\hat{Z_j} = \frac{\sum_i{Z_i / d ^ n_{ij}}}{\sum_i{1 / d ^ n_{ij}}}$
+						<p>So a large
+							n
+							results in nearby points wielding a much greater influence on the unsampled location than a point
+							further away resulting in an interpolated output looking like a Thiessen interpolation. On the other
+							hand, a very small value of
+							n
+							will give all points within the search radius equal weight such that all unsampled locations will
+							represent nothing more than the mean values of all sampled points within the search radius.</p>
+					</section>
+
+					<section>
+						<h3>Kriging</h3>
+						<p>Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few. This
+							section will focus on ordinary kriging (OK) interpolation. This form of kriging usually involves
+							four steps:</p>
+						<ul>
+							<li>Removing any spatial trend in the data</li>
+							<li>Computing the experimental variogram, $γ$ , which is a measure of spatial autocorrelation.</li>
+							<li>Defining an experimental variogram model that best characterizes the spatial autocorrelation in
+								the data.</li>
+								<li>Interpolating the surface using the experimental variogram.</li>
+							<li>Adding the kriged interpolated surface to the trend interpolated surface to produce the final
+								output.</li>
+						</ul>
+					</section>
+
+					<section>
+						<p> We are interested in how these attribute values vary as the distance
+							between location point pairs increases. We can compute the difference, $γ$, in values by squaring
+							their
+							differences then dividing by 2.</p>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
+							width="1000">
+						$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
+					</section>
+
+					<section>
+						<h3>Experimental variogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+							width="1000">
+						</section>
+
+						<section>
+						<h3>Experimental variogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
+							width="1000">
+					</section>
+
+					<section>
+						<h3>Experimental semivariogram</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+							width="620">
+					</section>
+
+					<section>
+						<h3>Variogram models</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
+						width="800">
+					</section>
+					
+					<section>
+						<h3>Variogram models</h3>
+						<img src="https://gisgeography.com/wp-content/uploads/2016/11/kriging-models-1.png" width="800">
+					</section>
+					
+					<section>
+						<h3>Parameters in a variogram model</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
+						width="1000">
+					</section>
+					
+					<section>
+						<h3>Spherical model fit</h3>
+						<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
+						width="1000">
+					</section>
+		</section>
+		
+<!--Earth observation-->
+		<section>
+			<section>
+				<h1>Earth observation</h1>
+			</section>
+			
+			<section>
+				<h1>Sensores Remotos</h1>
+				<img src="https://www.researchgate.net/profile/Deborah-Balk-2/publication/253129924/figure/fig1/AS:298024912867328@1448066084166/Diagram-of-Elements-of-a-Remote-Sensing-System.png"
+					width="800">
+			</section>
+			
+			<section>
+				<img src="https://ars.els-cdn.com/content/image/3-s2.0-B9780128092545000026-f02-01-9780128092545.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Ley de Stefan-Boltzmann & Ley de Wien</h3>
+				<img src="http://3.bp.blogspot.com/--LNjn2jEHcg/UTsc-31r9GI/AAAAAAAADrs/3ZMIwpZ0FO8/s1600/spectral_emissive_power_of_a_288k_balckbody.jpg"
+					width="900">
+			</section>
+			
+			<section>
+				<img src="https://www.cientec.or.cr/sites/default/files/espectro.jpg" width="1000">
+			</section>
+			
+			<section>
+				<h1>Unidades</h1>
+				<ul>
+					<li><b>Energía radiante: </b> total de energía radiada en todas las direcciones (J).</li>
+					<li><b>Flujo radiante: </b>energía radiada en todas las direcciones por unidad de tiempo (W).</li>
+					<li><b>Irradiancia: </b>flujo radiante incidente sobre unidad de área (w/m2).</li>
+					<li style="color: blue;"><b>Radiancia: </b>flujo radiante emitido o reflejado por unidad de área y
+						por ángulo solido de medida (W Sr/m2).</li>
+					<li><b>Emisividad: </b>relación entre la emitancia y la de un emisor perfecto.</li>
+					<li style="color: blue;"><b>Reflectancia: </b> relación entre el flujo incidente y el flujo
+						reflejado por una superficie.</li>
+					<li><b>Absortancia: </b>relación entre el flujo incidente y el flujo que absorbe una superficie.
+					</li>
+					<li><b>Transmitancia: </b>relación entre el flujo incidente y el transmitido por una superficie.
+					</li>
+				</ul>
+				<img src="https://www.researchgate.net/publication/335182992/figure/fig2/AS:792150774120449@1565874870037/General-concept-of-a-satellite-or-ground-based-remote-sensing-measurement-of-reflected_W640.jpg"
+					width="500">
+			</section>
+			
+			<section>
+				<h3>Radiación solar & Radiación terrestre</h3>
+				<img src="https://media.cheggcdn.com/media%2Fc21%2Fc2109982-6c81-47a9-884e-cba8a9c3d57c%2FphpEF50FM.png"
+					width="900">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://pltfrmrsrcs.sagepub.com/images/geography/9781412956970-p2422-1.jpg" width="850">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://www.researchgate.net/profile/Aurelie-Shapiro/publication/324537528/figure/fig3/AS:631598739365924@1527596282701/The-difference-between-four-major-types-of-remote-sensors-passive-sensors.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Tipos de sensores</h3>
+				<img src="https://www.researchgate.net/profile/Tullio-Tanzi-2/publication/271846153/figure/fig2/AS:295102191816705@1447369253180/The-frequency-bands-of-the-passive-and-active-sensors-for-optical-imaging-and-for-radio.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Interacción de la atmósfera</h3>
+				<img src="https://ltb.itc.utwente.nl/uploads/studyarea/498/Pics_2015_jpg/Fig2_6.jpg" width="650">
+			</section>
+			
+			<section>
+				<img src="https://www.researchgate.net/publication/334970647/figure/fig3/AS:788525624610824@1565010567844/Solar-spectra-outside-of-the-atmosphere-at-ground-level-and-the-theoretical-blackbody.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Firma espectral</h3>
+				<p>La firma espectral se define como el comportamiento diferencial que presenta la radiación reflejada
+					(reflectancia) o emitida (emitancia) desde algún tipo de superficie u objeto terrestre en los
+					distintos
+					rangos del espectro electromagnético. Una forma gráfica de estudiar este comportamiento es
+					disponer los datos de reflectancia (%) en el eje Y y la longitud de onda λ en el eje X. Al unir los
+					puntos con una línea continua se origina una representación bidimensional de la firma espectral.</p>
+				<img src="https://crisp.nus.edu.sg/~research/tutorial/hcube.gif" width="500">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/originals/2d/41/70/2d4170e9e2a960afa5ad3123b8604fcb.jpg" width="1000">
+			</section>
+			
+			<section>
+				<h1>Raster</h1>
+				<p>Raster data (also known as grid data) represents surfaces. A raster, in its most basic form, is a
+					matrix of cells (or pixels)
+					grouped into rows and columns (or a grid), each cell containing a value reflecting information such
+					as temperature.
+					Each pixel corresponds to a particular geographic location. </p>
+				<p>The extent and cell size of the raster, the number of rows and columns, and the spatial reference
+					system are all factors to consider
+					(or CRS)</p>
+			
+			</section>
+			
+			<section>
+				<h1>Raster</h1>
+				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_concept.png"
+					width="600">
+				<figcaption>Representation of raster data. Source: National Ecological Observatory Network (NEON) via
+					datacarpentry</figcaption>
+			</section>
+			
+			
+			<section>
+				<h1>Resolución de imágenes</h1>
+				<img src="https://datacarpentry.org/organization-geospatial/fig/dc-spatial-raster/raster_resolution.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Resolución espacial</h3>
+				<p><b>Para films (análogas) → resolving power of the film:</b> La resolución es función de la
+					distribución del tamaño de los granos de silver halide en la
+					emulsión. Los films con granos gruesos tienen una resolución menor sin embargo son mas
+					sensibles o rápidos a la luz, por el contrario con granos mas finos tienen mas resolución, pero
+					son menos sensible o lentos a la luz.</p>
+				<img src="https://www.cloudynights.com/uploads/monthly_12_2011/post-17464-14073829930923_thumb.gif"
+					width="550">
+			</section>
+			
+			<section>
+				<h3>Escala</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/GSD.jpg" width="1000">
+				<a href="https://datacarpentry.org/organization-geospatial/aio/index.html"
+					style="font-size: 20px;">Source: National Ecological Observatory Network (NEON)</a>
+			</section>
+			
+			<section>
+				<h3>IFOV --> GSD --> Pixel --> Resolución </h3>
+				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S1350449509001017-gr1.jpg" width="450">
+			</section>
+			
+			<section>
+				<h3>IFOV</h3>
+				<img src="https://www.novuslight.com/uploads//n/Defense_Fig.-1_IFOV_diagram.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>IFOV</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_3.gif"
+					width="450">
+				<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPQAAADPCAMAAAD1TAyiAAAAkFBMVEX////+/v77+/sAAACysrL4+PiSkpLPz8+JiYmzs7PV1dW4uLjb29v19fXy8vK2trarq6t8fHzk5OTt7e2Dg4OmpqZ7e3uYmJienp7n5+fKysovLy/ExMReXl7Ly8va2tppaWlERERycnJLS0tVVVU3NzcgICBZWVlOTk5iYmIVFRU8PDwlJSUNDQ1tbW0aGhqadRH8AAAP9klEQVR4nO1dC2OqOgxOG8AHDxV8oLJNfM75OP//390mBY/b9E4Q3YXLt7MdRcCGtGmSJilAjRo1atSoUaNGjRo1atSoUaNGjRo1atSoUaNGjVsgQPA/CSDVX8Hv1B/9kZS/3b6HwFS/QhEnwVS/UlFN/+gXTEFvfruBD0EYhiYIUxEs9A8RqujXlFeT5t50sljwq4Q+Yr3u1fLsaLVw2IJ0YLKfLsGYTvchwH61dsBZT1cQTdXRKmK2w8HYx5GHMwPFGKPd1BysAhzA9D3C8W8370Fw+zv0cNNv2l10HYyMPg4jE0NYvUTo/HbrHoOmAU0M0Aaro4huYzQIX+fqKQxgpTjtV3NMv+ECIwgxRi9E9w3tAJfYAUMdDjqK6GqCFBEXSGrzC0GvJEltU6sqVYRkBYx0EZqkSSGRpJ8RsVK9MStJNatfUiknRCwRL4nDUvIToD9VhNSKt6aYuc4qqKa/skQTqdc+0yO+gpBeo91oX8RYsoirHiQMls3LOPahooJMEW1f6d9+X01flSRaQNdWk9Oljxp9EnPPbtBTIAZ2Old/Bjh9uC7kSg1xvXu/9Ssrval7X4bTr6gPAWqiP6MmumKoiT5HlYlWU1ZiZAntO0hmbZqyKqqcmF84fWZLknJSSZpJORl2WikM2+4Y6RurB+BWkmohnW63ayQYIYbpm67RTpfyqobPvpEAMTi9kbxu+fQWPQNE2ImdOLIwfS3ZY/Q7jXo0TKG9QkR4AyMb3+go9Ws3WbeuLNgnCh8vAIspQHU93p+gaFaCeroAWMXqjVnRsfwFtMDRp/Es0SIR9n8gmpzd7ss7LcfHW4/eVtM79gnk4B+gR/952E1jESoOxVY/thTJEtxm7FfXT3QOxdkGNrQjcILt/wfRisM20UpQszVc9AlXDyYO0pcjlFDRYKpzqM5s7U4BJu3p6H/RvQXgNn0tYXOopvPgK2Z7OOvSOK94/xZM7fbjRKaauPBYaVYLigs11TAenBM92lU0gkxD6vjmEYrTLKUsrDNRXkWwEgavGJ2F/CrOR+mkXUlQcI00Bwf/rz6izExoH7q/2aoHg4O6fbQ5bCw5RuHuxpmzrHqg8KLgk2HFPX6A5ddE9VKFZC8g52yYyRv1woTV8ROF5EFwtwt1UbkJp07MiRo6RtDU6Qr6AxA4+nSyOtWEPnIeS4nt6jT8k8kwKTuDDgIzWsJq9/lkyYta5Cwzy6yjMJ+52/L/JkdHSj0lQ+PQ+Xy27hTrDZTcJyo+vZB66UKyPx96+JmflKyjDreVSC9z71ZUtND7M50eAML1FKCJ6gUyp6V2gp5DHXUVq7Ffble/IK8fWhQ1hsFsZ6q/5nzFigl00ftyMocFA/DsXWIIIg1fjC67OhX1cawTNAR48613WVyNl8Mrn5QFXQxwaxuUe2SqGWq3nKBDge3g4LXgObDRL/NErTndBK17KU7vN21lUpArbN+X14ZuS6miJR7VKdEC3jBCivlEls0mP4HLThLym30VcaWChMncnNnEt8msRzPRfNgAV1EbYXQlnEYRbWPj6U0tEFL/JlG92nTm9JzDMjGpv4FkeDx9aisLhtatEmND6MwcU70MKZ3ySuCUOtFXco911yc3t0CQzsnEJvaGomX2QQr2RWnF5jX2KFShzDKcmEYxUpRkBpSLRa4x7gEXuzcp4Es1ibuldgezqjVR05BMErFIpnPW2aWzKS2L121luRPmycJyhlqqESX+biTYeL5ElK6LMIrHZY8mIxZ778kwVlzHBmccXpZjLN8ifCuzggJp0NBLkISAuuTdZpZfHNM8qNlZVm5Oa/QcPVMb68nPJ49QlFqQpfCaDjv9cH6DEeWsrHKbWhomuP0xDW+c/UyOgBesRKy7hB7FQm72t/Tb257Nfx4knhT3xrtbgtjVGfNFBRY7yL4wumQ33jABk2vwi1u8lOApujVbdc8YLU6Bv19NLqW70MzmlnzeIne/mq/QYU0zyVKRZFyTBfYtPJJ1GPKPllqekVFtysEqbvyt0pN4woFLdH0523T+DPQ5JVbNOGB/jB3oN7ufAg4m3eg7ZXQy2SVX9LbSgNTL2ctYQNCy+8MeYTjsDeeDVqQr0X06Wf2M3+cs80tMNcU1Aw51DoPv+AqO47QdRya1Xj6f7qnDPdRlQX6nwUWAyJq+c2jJiYyk4Jr85jvSDiYLzbKvVqvhGcfZLpnG5ZZjxNHokHGZyv54hauLAmWASMZoJmCz5GNaKSZ+VqbRarVZYk6Daa2CrNpV2ddtFddeM2emBNu5V9buzbOtT+tX2Qigda1xKXVvmnNdpU8emtlnHyF6H2WkOa1n7GM3uyCmGMJy+hK4tjElLsjMyWZqOGzWD2nUgyG4srF9aOTQM9S18eohrXowBLtFZuQm8jJ2b7p0jOFj2vVYsPq8nSard5mupP79caSXZRNn5AkI88WR0JIILQOVruY3NTjY9PI0mkML3eE2KN3CLTW8kS92htNaJF1cNrNDmMLLKYwoXFRwvm3JGK0gg5y5RxybYyqBULp1W8qGn+aLDKMxbQpo7Adlk94CbludvXipnuWOWDZOA/T27n2cesHSDWq52NzHKKWgbAprzZNAAf338Ek9sF7sl4vRYOF90VF0cdnWbRt/jHtHpITuulypp7Tbwn3Oa0lJPFFhDXosOBONHJp3LlOo/u1PQ1kOBdykRlrxG+++cMd96GoDA87l+887wTn+DTkg7K7Gkr8p2Mw4SOO/z2qOKOoDuHcuSFHs7JAs8jJULFN8Wb/zxhp3cUjy1gXxStFcgtJdAtp/BlxS7r6JmvcjWb0/aEyfNuEDHQFxiu3J2+YhJlHu96mhkhd6o8fYWpTMTtkTSdoz7VGnemdeRlEqUoELcJzh9QhOU4iX6ky0KZ/OdE425cv1XcLkiaYo8Ixf2N3+gvwz3Kt1RhHvb0S8z8dpaTbjApNFg511p4l6GVKeStaapz/5HbBtnBTXSikidB4xqDlx/+14fFFGzWi7fYXecbvxriTL/Qj5Pg+Kc3kIYT9odzzqyA20XRyEKG30Dy9mkFsRoo38ihuEasQ18SFjmsK2yM+MloW+B/Cx8d9kZkWfE+6SUltFOre66OhstUK1UV5SeMVmCyeRhbFtrlf9oScyu9p1kuHhhYRiYcxRjXj/AL2JWlH35PuaXICi2aGEGttCZ32EPIKMpYBxaIMscGmCKjphh4ocFZunxvlv2mC3puqF82cLeaYsFogzLDZwmYJKdUW+gpVR0kvaHw2i8rjftyDuQR7lhC4IUVcsKqqBnJs6nel9qwse03puTnql1MMzR3cS3nxp6jI+BYE3C6QJwSzKgcJJzloNZWGtg5HFyX7N+C2q/1G6JBRaeol3wextxoUtYTKJ8pTAz3EiIqm0nq99OVdnf0IDC5SO0tvwUAzXsUjyP9nayhltnXt19keM0C0sGMN/WZJ4sJUO9Q6n1P2cnVPo+hYPQYheYXKsKxdcbmMA3guZrU44YIS5nOyCExeKadkXUK3R4qbpmIowENEbGpK+YSt0oqaV62bh2nlUcPqswHVbERNrFNHu5lynaOchWsBi9TAXtfmnV1QnMiURPX4Nx+1+eoxu3chKtKBtJtx4dm3gSfZQsBb0zfsjdL3c5IyLD01xY/NeUC6LYu1ItaAJ9rx/eo45iJbAkfhNvFaaSHLWoUyKJ07sVstOYdgdB5JQ0uubE6uuTTWgCoHQ9pCuQJMeg+xE8xTqUH2LK1SbJ3r6/eagSz8pBt2w2R9AUm5QXvRx0ydFrdvq3Z9dXf4t7T15ujcrnlRq7ZpbPmFfFMftduNrPw0abTveBcmdLl8voXMoSO/RnYqLC52O5SCa3KhcYe361sJCBG68HulHS67X9HjysE25Xfe9a+ke5EEoLLODS13q7Li/1achO6dlsjqrDNLLJ7Rfjc1S6NtLvZN8ur+8Huv00dtmM5mML15PuqJdVOS71OECnM8s9L1zEU3icOFDWo/rpNYDP0R/NLKYTdqPdF6LSi8wQBoqPBqFo1Od4DMzj7qkE1t8+Z2Too5S494ttadEm105OP1Nukptt9HdllZkwg0mNp/tR3O6UbLx/N+K74JnB9qW597pmno2d3Gh/4N8nCatfbn4miyaeLWaB9e7cct4nUAfnKIuzHTW1oOwr6uPZmrapdYKndYtPNCrWPk4TVsD7ftfDvLk40T7V/09NxiGeogTneHeGYNWZJKP2PbXSQ53Ui1Au0d0oIRIysVBjnmaYhq/EqDEV1dNwDSE2MP1o5XEe0hJLusEPasbgPzbu3nkD9Zv9+u5PObsIVVzlX5vOGTu5BNkve9B/HI+orr0iSombsie1AWDtSQIDKq3mVDNDi3Synr3G5jUZaKu/zpSlDbmjnMyOTKrofb3zQbm746XLoAKcdPSQXqyZmwQ986/g54ardsWwGraSdWfA3ixO9alucfBOLCzGhwj9NhsgFRkGxRHdpfQSSvKJtUZOb1rjMbdjlbqy90OES3N2WxGGhV42+Px+J5Rz23gK6SaBsmfV6Or133vaBtfPDAaWnLpgpTBon93jjHdTRPNitT6tN1iRntaDl981nNMljdtK2zBvWtPuig4GGHzLXFa0s1Jv78Xaqoa2BDMAFylEXzo4BbV2oxj2qWFylSthNiKBIvEKybTjU1LnLKqLYtkBqfii/PF/RqZ6ovWegOwldGfj7GORSBPbjaiA65zKtjymK+UGqEngftETjKW1SM19z1SzthxObp/+woOu0gigZI1Mv6ejETjLLG0oLsj+cXW8/cqPdmaJmW6jYGAt52RhMYYeqvXe6BdOIkhkFRRyjJPs2iF14Otw6fssJOInc9WRc62JfYPc6QVkmqq3i95F9DCnOB/v+x2TrOEoWQLcKE9M6KiG5O2SSh9YtaGZCcekX3t/KcvgAycphiGLo65GmrPJwn7oIhGJV3Hc7Zdad228HijbN3b1IUvlXJzpOppD4LQFZy2S2UYSTVViKLjRTNyWnrHLQR2n/cZEQ/jNJu/amJtuVSc7krx6DtuD1k4LcUEx1ZzQHUyEwPpAUisEAn+wLJG72MouiRIRuntTcNhw9ciTRYbVnT+PWz+Env9yY63PSj4C+AWopPoDBN8fHZKTQNpCVPraEUJtNuINhO2Ohyl+1xMMGonKkJRMQ+3cpq+zxkNcPj8gmlDDEd+2tkKwc1EC9hYE2v/9NRAQeu2Ud+DAjcWu5Fo9fvuubDYPX3PJyXF13Nwl0u4uoqU456K6J+dCG8h7ZvxbSuo52AeKz6bw8yVzq6B+21j0zH+Fa0BHiPDsDf4w4mPgY3LltFpotX6t7O6N9fX5Zkg+PFrW7ZNX6j/Ph3q2w1Ftf3vT7zr3h7JLGXekKr/GsStmwkK9gG4ogIwbw6i1R7NZ09DjwC5MW60+ziCQkr4bTbdD9rq5MYhLdL1rLJD6CjXKpBSo0aNGgn+Ae9Dk6wl9CArAAAAAElFTkSuQmCC"
+					width="450">
+			</section>
+			
+			<section>
+				<h3>Pixel size</h3>
+				<img src="https://seos-project.eu/remotesensing/images/spatial-resolution_400.png" width="700">
+			</section>
+			
+			<section>
+				<img src="https://images.slideplayer.com/24/7344475/slides/slide_7.jpg" width="850">
+			</section>
+			
+			<section>
+				<h3>Relación entre escala y resolución</h3>
+				<ul>El procesamiento de imágenes está interesado:
+					<li><b>Detección:</b> discernir discretamente los objetos</li>
+					<li><b>Reconocer: </b>determinar que tipo de objeto es</li>
+					<li><b>Identificar: </b>identificar el objeto específicamente</li>
+				</ul>
+				<img src="https://i.ytimg.com/vi/AdXBewR-u2A/hqdefault.jpg" width="650">
+			</section>
+			
+			<section>
+				<h3>Escala VS Resolución</h3>
+				<img src="https://miro.medium.com/max/385/0*BL2opZhfAmH32Ne3.gif" width="800">
+			</section>
+			
+			<section>
+				<h3>Escala VS Resolución</h3>
+				<img src="https://miro.medium.com/max/599/1*9py1AUZxr-zQ1ZkFH9jBXQ.png" width="800">
+			</section>
+			
+			<section>
+				<h3>Área Mínima Cartografiable (AMC)</h3>
+				<p>La relación entre la resolución espacial y la escala está mediada por el AMC (mínima área de un
+					elemento que debe ser representado en un mapa)</p>
+				<img src="https://4.bp.blogspot.com/-877gV5vYyW0/V5bxRasaSVI/AAAAAAAAFxQ/UDFfEhYSykMPJoTeJ6v92IW3CjmBPdsjgCLcB/s1600/AREAMINIMA.png"
+					width="650">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/564x/89/c9/68/89c968579b6138ad6211a352a85abefe.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Tamaño del pixel recomendado</h3>
+				<p>Regla de Waldo Tobler --> Map scale = raster resolution (in meters) x 2 x 1000</p>
+				<img src="https://i1.wp.com/acolita.com/wp-content/uploads/2019/06/scale-and-cell-size.png?resize=398%2C240&ssl=1"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.e-education.psu.edu/geog260/sites/www.e-education.psu.edu.geog260/files/7-15-.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.e-education.psu.edu/geog480/sites/www.e-education.psu.edu.geog480/files/remotesensing/geog480/lesson2/figure2_10.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-1-4614-6423-5_101-1/MediaObjects/212922_0_En_101-1_Fig1_HTML.gif"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://image.slidesharecdn.com/mss-150429113159-conversion-gate02/95/multispectral-and-hyperspectral-scanning-9-638.jpg?cb=1430307381"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="https://www.nireos.com/wp-content/uploads/2019/09/What-is-Hyperspectral-Imaging.png"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Resolución espectral</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/spectral-curves-sensor.JPG"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Resolución radiométrica</h3>
+				<img src="https://www.e-education.psu.edu/natureofgeoinfo/sites/www.e-education.psu.edu.natureofgeoinfo/files/image/res_radiometric.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución radiométrica</h3>
+				<img src="https://www.researchgate.net/profile/Anik-Chowdhury-3/publication/341164804/figure/fig5/AS:887926384779267@1588709555512/Effect-of-Radiometric-Resolution-18.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Escala temporal --> Revisit time</h3>
+				<img src="https://www.researchgate.net/profile/Sam-Murphy-9/publication/295296781/figure/fig8/AS:668374623346719@1536364336579/Temporal-resolution-as-a-function-of-latitude-for-a-Landsat-8-b-Sentinel-2a-c_Q640.jpg"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Resolución temporal vs Resolución espacial</h3>
+				<img src="https://www.researchgate.net/profile/C-Mark-Eakin/publication/293486756/figure/fig1/AS:613932758728717@1523384384326/Spatial-and-temporal-scales-of-coral-reef-mapping-and-monitoring-application-in-relation.png"
+					width="650">
+			</section>
+			
+			<section>
+				<h3>Resolución trade-off</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/dyk_2_5.gif"
+					width="500">
+			</section>
+			
+			<section>
+				<h1>Tratamiento de imágenes de satelite</h1>
+				<p>Existen una gran cantidad de procedimientos para el análisis de imágenes de satélite. En este
+					curso nos concentraremos en 4 de ellas:</p>
+				<ul>
+					<li>Pro-procesamiento de imágenes</li>
+					<li>Mejoramiento de imágenes</li>
+					<li>Transformaciones de imágenes</li>
+					<li>Clasificación de imágenes</li>
+				</ul>
+			</section>
+			
+			<section>
+				<h3>QA bands & Bitmasks</h3>
+				<p>Most optical satellite imagery products come with one or more QA-bands that allows the user
+					to assess quality of each pixel and extract pixels that meet their requirements.</p>
+				<img src="https://i1.wp.com/spatialthoughts.com/wp-content/uploads/2021/08/qa_flags.png?resize=768%2C805&ssl=1"
+					width="450">
+			</section>
+			
+			<section>
+				<h3>Pre-procesamiento de imágenes</h3>
+				<p>Cualquier imagen adquirida por un sensor remoto presenta una serie
+					de alteraciones radiométricas y geométricas.</p>
+				<img src="https://i.pinimg.com/564x/4e/3d/6f/4e3d6ffc5e3aef2c2afdc9a55b611281.jpg" width="800">
+			</section>
+			
+			<section>
+				<img src="https://i.pinimg.com/564x/1d/8a/ab/1d8aabd7459dbc07cb7b0dd8766c0d21.jpg" width="850">
+			</section>
+			
+			<section>
+				<h3>Striping</h3>
+				<img src="https://d3i71xaburhd42.cloudfront.net/52ecdf3f8086959f68bebe4fe6f494cb67e0962e/2-Figure1-1.png"
+					width="850">
+			</section>
+			
+			<section>
+				<h3>Line drop</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/nois.jpg"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Bit or noisy error - "salt-and-pepper" effect</h3>
+				<img src="https://www.researchgate.net/profile/Pascal-Monasse/publication/226428136/figure/fig4/AS:302317518770177@1449089521322/The-noisy-satellite-image-impulse-noise-with-denoised-image.png"
+					width="950">
+			</section>
+			
+			<section>
+				<h3>Correción geométrica</h3>
+				<p>The processes of georeferencing (alignment of imagery
+					to its correct geographic location) and orthorectifying
+					(correction for the effects of relief and view direction on
+					pixel location) are components of geometric correction
+					necessary to ensure the exact positioning of an image</p>
+			
+				<p>Landsat Level-1 products are precision registered and orthorectified through a systematic process
+					that
+					involves ground control points and a digital elevation model (DEM).</p>
+				<img src="https://www.pcigeomatics.com/geomatica-help/COMMON/concepts/images/GeometricCorrection.gif"
+					width="500">
+			</section>
+			
+			<section>
+				<h3>Orthographic projection</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/displacement2.png" width="600">
+			</section>
+			
+			<section>
+				<h3>Image Orthorectification</h3>
+				<img src="https://prd-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/s3fs-public/styles/full_width/public/thumbnails/image/orthophoto_vs_airphoto.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>IKONOS Satellite Image Orthorectification</h3>
+				<img src="https://legacy.satimagingcorp.com/media/images/Ikonos_Distortion.gif" width="500">
+			</section>
+			
+			<section>
+				<h3>Resampling</h3>
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZUTuAnliDw-_vmJ0Pf8HEkWxtnEOH1M2VURqjZ5wqxsrhlHM2f4Sn4IBo8W-lTOpCS2E&usqp=CAU"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Solar correction</h3>
+				<p> Solar correction accounts for solar influences on pixel values. Solar correction converts at-sensor
+					radiance to top-of-atmosphere (TOA)
+					reflectance by incorporating exoatmospheric solar irradiance (power of the sun), Earth-Sun distance,
+					and solar elevation angle</p>
+				<img src="https://grass.osgeo.org/grass76/manuals/i_topo_corr_angles.png" width="500">
+			</section>
+			
+			<section>
+				<h3>Atmospheric correction</h3>
+				<p> The energy that is captured by Landsat sensors is influenced by the Earth’s atmosphere. These
+					effects include
+					scattering and absorption due to interactions of the electromagnetic radiation with atmospheric
+					particles (gases, water vapor, and aerosols)</p>
+				<img src="https://8430352m.files.wordpress.com/2013/11/sensor_radiance.png" width="500">
+			</section>
+			
+			<section>
+				<h3>Topographic correction</h3>
+				<p> Topographic correction account for illumination
+					effects from slope, aspect, and elevation that can cause
+					variations in reflectance values for similar features with
+					different terrain positions (Riaño etal. 2003). </p>
+				<img src="https://media.springernature.com/lw685/springer-static/image/art%3A10.1007%2Fs41324-019-00274-0/MediaObjects/41324_2019_274_Fig1_HTML.png"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>TOA (Level 1) vs BOA (Level 2)</h3>
+				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig2/AS:474184846450688@1490065885221/The-common-units-of-Landsat-imagery-used-in-ecological-analysis-The-units-change-as-each.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/calibration.PNG" width="800">
+			</section>
+			
+			<section>
+				<img src="https://www.researchgate.net/profile/Nicholas-Young-22/publication/312202874/figure/fig5/AS:474186733887488@1490066335548/Dichotomous-decision-tree-for-determining-the-level-of-preprocessing-necessary-for-most.png"
+					width="900">
+			</section>
+			
+			<section>
+				<h3>Radiación termal</h3>
+				<p>La Temperatura cinética es la manifestación interna de la energía traslacional promedio de la
+					moléculas que componen un cuerpo (temperatura cinética). Como consecuencia los objetos
+					irradian energía en función de su temperatura (Temperatura radiante), adicionalmente esta
+					temperatura sensada es de los primeros 50 cm, puede no ser representativa de todo el objeto.
+					Sin embargo debido a la diferencia de emisividad que tienen los objetos, un cuerpo puede tener
+					la misma temperatura y aun así tener diferente radiancia. Solo los cuerpo negros presentan que
+					la Trad = Tcin, para los demas cuerpos la temperatura radiante siempre es menor, ya que la
+					emisividad es menor que 1</p>
+				<img src="http://gsp.humboldt.edu/OLM_2017/courses/GSP_216_Online/images/DN-temp.jpg" width="800">
+			</section>
+			
+			<section>
+				<h1>Image Enhancement</h1>
+				<img src="https://desktop.arcgis.com/en/arcmap/latest/manage-data/raster-and-images/GUID-E383F01A-627E-45CA-9262-A3987C68AF94-web.gif"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Ajuste del histograma</h3>
+				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-light.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Ajuste del histograma</h3>
+				<img src="https://www.earthdatascience.org/images/earth-analytics/raster-data/raster-image-stretch-dark.jpg"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://image.slidesharecdn.com/imageenhancementtechniquepkmani-140117025656-phpapp02/95/image-enhancement-technique-digital-image-analysis-in-remote-sensing-p-k-mani-11-638.jpg?cb=1440825408"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://media.springernature.com/original/springer-static/image/chp%3A10.1007%2F978-3-319-58039-5_3/MediaObjects/442937_1_En_3_Fig15_HTML.png"
+					width="700">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://www.mdpi.com/jimaging/jimaging-06-00121/article_deploy/html/images/jimaging-06-00121-g001.png"
+					width="600">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/e/ee/Convolution_arithmetic_-_Same_padding_no_strides.gif"
+					width="300">
+			</section>
+			
+			<section>
+				<h3>Filters</h3>
+				<img src="https://www.onestopgis.com/Aerial-Photography/Introduction-to-Aerial-Photogrammetry/Filters/posts/High-Pass-Laplacian-Edge-Enhancement-Compass-and-Gradient-Operators/The-measurement-units-of-the-variable.webp"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Ratios</h3>
+				<img src="https://image.slidesharecdn.com/lectureforlandsat-100627045135-phpapp01/95/lecture-for-landsat-25-728.jpg?cb=1277614644"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Pan-sharpening</h3>
+				<img src="https://desktop.arcgis.com/en/arcmap/10.3/manage-data/raster-and-images/GUID-6E0028FA-DCF0-4AF6-BF23-311F6CF6AD84-web.png"
+					width="520">
+			</section>
+			
+			<section>
+				<h3>Pan-sharpening</h3>
+				<img src="https://i.ytimg.com/vi/UM8WhUEHvzo/hqdefault.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Index</h3>
+				<img src="https://www.researchgate.net/publication/336975237/figure/tbl2/AS:820629183922180@1572664652843/Equations-of-tested-nine-remote-sensing-indices.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>NDVI Index</h3>
+				<img src="https://ece.montana.edu/seniordesign/archive/SP15/OpticalWeedMapping/uploads/4/9/2/7/49273335/1429843234.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Soil Vegetation Wetness Index (SVWI)</h3>
+				<img src="https://www.researchgate.net/profile/J-C-Krapez/publication/239796493/figure/fig7/AS:667831611965460@1536234872451/Soil-Vegetation-Wetness-Index-SVWI-map-computed-from-remote-sensing-data-by-exploiting.jpg"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Composite bands</h3>
+				<img src="https://eo.belspo.be/sites/default/files/images/teledetection/graph_colour_mixing_en_0.png"
+					width="1000">
+			</section>
+			
+			<section>
+				<h3>Combinación de bandas ---> True color</h3>
+				<img src="https://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/3-bands.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Combinación de bandas ---> False color</h3>
+				<img src="http://gsp.humboldt.edu/OLM/Courses/GSP_216_Online/images/bands.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Combinación de "bandas" ---> radios</h3>
+				<img src="https://blog.arabnubia.com/wp-content/uploads/2019/10/1-1-1.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Image transformations</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/pca.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<img src="https://media-exp1.licdn.com/dms/image/C5612AQFCtn794jGtfw/article-inline_image-shrink_1500_2232/0/1544148478074?e=1622678400&v=beta&t=2tJzGddTNZHEOXtOgjwtjtZEtwJBdA8cg1UmB58bXjw"
+					width="850">
+			</section>
+			
+			<section>
+				<h3>Principal components</h3>
+				<img src="https://d3i71xaburhd42.cloudfront.net/90e6bfaf598797b0770f68a74294edc96c015ba0/8-Figure5-1.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Principal components</h3>
+				<img src="https://geol260.academic.wlu.edu/files/lecture_notes/PCs_VA_landsat8.png" width="400">
+			</section>
+			
+			<section>
+				<h3>Tasselled cap</h3>
+				<img src="https://images.squarespace-cdn.com/content/v1/551e8d99e4b0751e1a311984/1431094487685-7N905UJJGJZQCX05T6EY/ke17ZwdGBToddI8pDm48kNkXWAY4c19ZL2Q6aDTJ9edZw-zPPgdn4jUwVcJE1ZvWEtT5uBSRWt4vQZAgTJucoTqqXjS3CfNDSuuf31e0tVGOUWlvG4s0Yb7ZvY0GELybJMhZBqcGjIFsQEQp_eFUg91lH3P2bFZvTItROhWrBJ0/Tasseled_cap_figure.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Tasselled cap</h3>
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUbEx4PvqXQew2kqliDeZs0uGtR_JkWwILTa3ckZPaEd2LSoxVfbyYtORQA3GIlgvQsyM&usqp=CAU"
+					width="400">
+			</section>
+			
+			<section>
+				<h3>RGB --> IHS</h3>
+				<img src="https://www.researchgate.net/profile/Thiago-Araujo-9/publication/313346771/figure/fig3/AS:458224785727491@1486260710648/FIGURA-3-A-mostra-o-espaco-de-cores-RGB-e-B-mostra-o-espaco-IHS-Araujo-2008.png"
+					width="800">
+				<img src="https://lh3.googleusercontent.com/proxy/jXnTkz0nGW5lkEO4vY6koSJE1Z90P0yiwLGB2OLth6Lp8aqDUkL9IWCbGZsvD-jSNEk7XhiBaXGes9EYwItiZtmKbJdw07BOhQ"
+					width="400">
+			</section>
+			
+			<section>
+				<img src="https://acsess.onlinelibrary.wiley.com/cms/asset/6619d2a0-5bc2-4df0-9d36-87b440d30c8a/ppj220007-fig-0005-m.jpg"
+					width="800">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/earthsciences/images/resource/tutor/fundam/images/class.gif"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Método no supervisado</h3>
+				<img src="https://www.mdpi.com/applsci/applsci-07-00888/article_deploy/html/images/applsci-07-00888-g001.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.mdpi.com/remotesensing/remotesensing-08-00705/article_deploy/html/images/remotesensing-08-00705-g003.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.researchgate.net/profile/Taskin-Kavzoglu/publication/294596525/figure/fig3/AS:669405537120266@1536610125766/Schematic-diagram-illustrating-the-classification-of-pixel-4-using-minimum-distance.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://www.researchgate.net/profile/Asid-Ur-Rehman/publication/312919189/figure/fig2/AS:454738085978114@1485429416387/Parallelepiped-classifier-Lillesand-2001.png"
+					width="600">
+			</section>
+			
+			<section>
+				<h3>Image classification</h3>
+				<img src="https://plato.fea.ugent.be/masterproef/figuren/shhuang/33333.png" width="1000">
+			</section>
+			
+			<section>
+				<h1>Evaluación</h1>
+				<img src="https://i.pinimg.com/564x/31/29/85/312985109feaa25587ab52fb064be62c.jpg" width="800">
+			</section>
+			
+			<section>
+				<h3>Cohen´s kappa</h3>
+				<img src="http://1.bp.blogspot.com/-F6bcDBs0EmM/Uvs_BMCWn1I/AAAAAAAAAQA/gV4bx-rVKNA/s1600/representaci%C3%B3n+gr%C3%A1fica+de+kappa.jpg"
+					width="600">
+				<img src="https://study.com/cimages/multimages/16/kappa-formula.jpg" width="400">
+			</section>
+
+			<section>
+			<h3>What is Google Earth Engine?</h3>
+			<ul>
+				<li>A cloud-based platform for planetary scale geospatial analysis</li>
+				<li>Uses Google's computational resources to reduce processing time</li>
+				<li>A massive archive of remote sensing data</li>
+			</ul>
+			</section>
+
+			<section>
+				<h3>Google Earth Engine</h3>
+				<img src="https://developers.google.com/earth-engine/tutorials/community/beginners-cookbook/ee-editor.png" width="800">
+				<figcaption>Source: <a href="https://developers.google.com/earth-engine/guides/playground">Earth Engine Code Editor</a></figcaption>
+			</section>
+		</section>
+
+<!--Networks-->
+		<section>
+			<section>
+				<h1>Networks</h1>
+			</section>
+
+			<section>
+				<img src="https://miro.medium.com/max/1400/1*3UxNxRpl8hVpW-jt_64Rhg.gif" width="1001">
+				<figcaption>Image by <a href="https://twitter.com/EliasW_/status/1461994337756233730">Elias Wilberg</a>. Bike-sharing bikes in Helsinki and Espoo from one summer weekday in 2021</figcaption>
+
+			</section>
+		</section>
+
+<!--Modeling-->
+		<section>
+			<section>
+				<h1>Multivariate & Global Spatial Regression Models</h1>
+			</section>
+
+			<section>
+				<h3>Simple Linear Regression model</h3>
+				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i + \hat{\epsilon}_i$</div>
+				<img src="https://miro.medium.com/proxy/1*nrt8HIKU6CKto9F74ZjwwQ.png" width="800">
+			</section>
+
+			<section>
+				<h3>Regresión lineal</h3>
+				<img src="https://sebastianraschka.com/images/faq/closed-form-vs-gd/simple_regression.png"
+					width="700">
+			</section>
+
+			<section>
+				<h3>Multivariate regression model </h3>
+				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i + \hat{\beta}_2 X_2 +
+					\hat{\beta}_n X_n +\hat{\epsilon}_i$</div>
+				<img src="https://miro.medium.com/proxy/1*ug_G5ZUYTzUj5qFxtbGPPw.png" width="900">
+			</section>
+
+			<section>
+				<h3>Multivariate regression model </h3>
+				<img src="https://miro.medium.com/max/2400/1*uU8OrmvDMY4hduEJLdod-w.png" width="700">
+			</section>
+
+			<section>
+				<h3>Ordinary least squares regression (OLS)</h3>
+				<p><strong>Assumptions</strong></p>
+				<ul>
+					<li><strong>Linear relationship</strong> between the dependent and independent variables</li>
+					<li><strong>Multivariate normality</strong>: the residual of the linear model should be normally distributed</li>
+					<li><strong>No multicolinearity</strong> between independent variables, i.e. they should not correlate between each other</li>
+					<li><strong>Homoscedasticity</strong>: the errors/residuals should have constant variance (no trends)</li>
+					<li><strong>No autocorrelation</strong>: residuals (errors) in the model shoul not be correlqated in any way</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Resultados</h3>
+				<img src="https://i.pinimg.com/564x/8f/0d/94/8f0d94a435f024e3b8fd7ea06b3e27dc.jpg" width="850">
+				<figcaption><a href="https://medium.com/analytics-vidhya/how-to-interpret-result-from-linear-regression-3f7ae7679ef9#:~:text=Omnibus%2FProb%20%28Omnibus%29%20%E2%80%94%20Omnibus%20test%20is%20carried%20out,to%20zero%20is%20preferred%2C%20that%20would%20indicate%20normality.">Source: Medium (Stuti Singh, 2020)</a></figcaption>
+			</section>
+
+			<section>
+				<h3>$R^2$</h3>
+				<img src="https://i.pinimg.com/564x/8a/77/a2/8a77a228608c54d2d87ba7612f33dd60.jpg" width="750">
+			</section>
+
+			<section>
+				<h2>Adjusted $R^2$</h2>
+				<img src="https://i.pinimg.com/564x/cb/3e/27/cb3e278d4299d12d832aaa4b6dc34d1d.jpg" width="850">
+			</section>
+
+			<section>
+				<h3>Spatial regression</h3>
+				<p>Spatial regression is about explicitly introducing space or geographical context into the statistical framework of a regression</p>
+				<p>Introducing <strong>spatial dependence</strong> in a regression can be done by considering:</p>
+				<lu>
+					<li>Exogenous effects (Wx): take into account the spatial lag of the <strong>explanatory variable</strong></li>
+					<li>Spatial error model: include the spatial lag in the <strong>error term</strong> of the equation</li>
+					<li>Spatial lag model (Wy): introduce a spatial lag to the <strong>dependent variable</strong></li>
+				</lu>
+				<p>Introducing <strong>spatial heterogeneity</strong> in a regression can be done by considering:</p>
+				<lu>
+					<li>Proximity variables: Consider closeness to factors / environmental characteristics that might influence the modelled phenomena as an explanatory</li>
+					<li>Spatial fixed effects (FE) / Spatial regimes (SR): Consider the uniqueness of a place and (i) allow the constant term to vary geographically (Fes) or 
+						(ii) allow also the explanatory variables (in adition to constant) to vary geographically</li>
+				</lu>
+				<br>
+				<figcaption>Source: <a href="https://sustainability-gis.readthedocs.io/en/latest/index.html">Spatial data science for sustainable development</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<p>GWR is an extension of the linear regression model that allows the
+					regression coefficients to vary across geographical space.</p>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM34_Fig1.png" width="800">
+			</section>
+			
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 (u_i,v_i) + \sum_{k=1}^{m}\hat{\beta}_k (u_i,v_i) X_{ik} +\hat{\epsilon}_i$</div>
+			<p>where $(ui, vi)$ are the spatial coordinates of the observations $i$, and $β_k (ui, vi)$ are the coefficients estimated 
+				at those locations.</p>
+				<p>Thus, in contrast to global LRMs, GWR conducts local regression at a series of locations to estimate 
+					local coefficients (the geographical part of GWR), using observations weighted by their distances to the location at 
+					the center of the moving window/kernel (the weighted part).</p>
+			</section>
+
+			<section>
+				<h3>Parameters</h3>
+				<p><strong>Bandwidth</strong> is the distance band or number of neighbors used for each local regression
+					equation and is perhaps the most important parameter to consider for Geographically Weighted
+					Regression, as it controls the degree of smoothing in the model.</p>
+				<p>It can be based on either <strong>Number of Neighbors</strong> or <strong>Distance Band</strong>.
+					When Number of Neighbors is used, the neighborhood size is a function of a specified number of
+					neighbors, which allows neighborhoods to be smaller where features are dense and larger where
+					features are sparse. When Distance Band is used, the neighborhood size remains constant for each
+					feature in the study area, resulting in more features per neighborhood where features are dense and
+					fewer per neighborhood where they are sparse.</p>
+			</section>
+
+			<section>
+				<h3>Parameters</h3>
+				<p>The power of GWR is that it applies a geographical weighting to the features used in each of the
+					local regression equations. Features that are farther away from the regression point are given less
+					weight and thus have less influence on the regression results for the target feature; features that
+					are closer have more weight in the regression equation. The weights are determined using a kernel,
+					which is a distance decay function that determines how quickly weights decrease as distances
+					increase. The Geographically Weighted Regression tool provides two kernel options in the Local
+					Weighting Scheme parameter, Gaussian and Bisquare.</p>
+			</section>
+
+			<section>
+				<h3>Single bandwidth</h3>
+				<p>a single bandwidth is used in GWR under the assumption that the response-to-predictor relationships operate 
+					over the same scales for all of the variables contained in the model. This may be unrealistic because some 
+					relationships can operate at larger scales and others at smaller ones. A standard GWR will nullify these 
+					differences and find a “best-on-average” scale of relationship non-stationarity (geographical variation)</p>
+			</section>
+
+			<section>
+				<h3>Multiscale GWR</h3>
+				<p>In this, the bandwidth for each relationship is determined separately, allowing the scale of individual 
+					response-to-predictor relationships to vary.</p>
+			</section>
+
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<img src="https://www.researchgate.net/profile/Thierry-Feuillet/publication/275137995/figure/fig4/AS:272623607218181@1442009941094/Schematic-representation-of-the-geographically-weighted-regression-and-its-spatial.png"
+					width="500">
+			</section>
+
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<img src="https://desktop.arcgis.com/es/arcmap/10.3/tools/spatial-statistics-toolbox/GUID-2C0DC6C8-B6AA-41C9-A8DC-277FE927AD40-web.png"
+					width="600">
+			</section>
+
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM34_Fig2.png" width="350">
+			</section>
+
+			<section>
+				<h3>Geographycally Weighted Regresion (GWR)</h3>
+				<img src="https://gistbok.ucgis.org/sites/default/files/AM34_Fig3.png" width="900">
+			</section>
+
+			<section>
+				<h3></h3>
+				<img src="https://blogs.ubc.ca/mappinglungcancer/files/2018/04/Map1_GWR.png" width="800">
+			</section>
+
+			<section>
+				<h3></h3>
+				<img src="https://mgwr.readthedocs.io/en/latest/_static/images/gwr-mgwr.png" width="800">
+			</section>
+
+			<section>
+				<h3></h3>
+				<img src="https://www.researchgate.net/profile/Muhammad-Imran-3/publication/259124685/figure/fig7/AS:297224006324235@1447875133959/Classification-of-the-geographically-weighted-regression-GWR-coefficients-for-communal.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Distribución del error</h3>
+				<img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fsrep40607/MediaObjects/41598_2017_Article_BFsrep40607_Fig3_HTML.jpg?as=webp"
+					width="550">
+			</section>
+		</section>
+
+
+	</div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/menu/menu.js"></script>
+<script src="plugin/math/math.js"></script>
+
+<script>
+	// More info about initialization & config:
+	// - https://revealjs.com/initialization/
+	// - https://revealjs.com/config/
+	Reveal.initialize({
+		controls: true,
+		progress: true,
+		center: true,
+		slideNumber: 'c/t',
+		hash: true,
+		math: {
+			// mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+			config: 'TeX-AMS_HTML-full',
+			TeX: {
+				Macros: {
+					R: '\\mathbb{R}',
+					set: ['\\left\\{#1 \\; ; \\; #2\\right\\}', 2]
+				}
+			}
+		},
+		menu: {
+			side: 'left', // 'left' or 'right'.
+			width: 'normal', // 'normal', 'wide', 'third', 'half', 'full', or
+			numbers: false,
+			titleSelector: 'h1, h2, h3',
+			useTextContentForMissingTitles: false,
+			hideMissingTitles: false,
+			markers: true,
+			custom: false,
+			themes: true,
+			themesPath: 'dist/theme/',
+			transitions: false,  // ['None', 'Fade', 'Slide']
+			openButton: true,
+			openSlideNumber: true,
+			keyboard: true,
+			sticky: false,
+			autoOpen: true,
+			delayInit: false,
+			openOnInit: false,
+			loadIcons: true
+		},
+
+		// Learn about plugins: https://revealjs.com/plugins/
+		plugins: [RevealMarkdown, RevealHighlight, RevealNotes, RevealMenu, RevealMath],
+		dependencies: [
+
+		]
+	});
+</script>
+</body>
+
+</html>
