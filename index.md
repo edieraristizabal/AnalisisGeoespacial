@@ -1,6 +1,6 @@
 # Análisis Geoespacial
 
-El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos espaciales en un conetexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como editores *Jupyter Lab* y *Visual Code*. 
+El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos espaciales en un contexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como editores *Jupyter Lab* y *Visual Code*. 
 
 Todos los scripts disponibles en esta guía han sido reciclados por el profesor Edier Aristizábal, y ajustados la mayoría de ellos de acuerdo con las necesidades del curso. Por lo que se hace un esfuerzo en brindar los créditos a los desarrolladores, pero con toda seguridad no es suficiente dicho esfuerzo y muchos de los créditos seguramente no están. Sin embargo no es por omisión voluntaria, sino por el gran número de desarrolladores consultados, combinaciones y ajustes, que en muchos casos se pierde la trayectoria. Pido disculpas a los programadores que sienten que sus créditos debieron ser otorgados en esta guía.
 
@@ -39,6 +39,7 @@ M2-222
 [Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)  
 [Taller Clustering](/Notebooks/11_Clustering.ipynb)  
 [Taller Geovisualización](/Notebooks/12_Geovisualization.ipynb)  
+Lecture: [Spatial point pattern analysisi and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ### Choroplet maps
 [Taller Mapas Coropletas](/Notebooks/13_Choropleth.ipynb)   
@@ -75,25 +76,25 @@ presentaciones con el avance de su trabajo de la siguiente forma:
 #### Presentación del problema
 * Porcentaje de evaluación: 20%
 * Tiempo: 5 min.
-* Alcance: Presentacion del problema de investigación y fuente de información.
+* Alcance: presentacion del problema de investigación y fuente de información.
 * Fecha: luego de terminar el modulo. Geospatial data
 
 #### Presentaciòn de avances
 * Porcentaje de evaluación: 20%
 * Tiempo: 10 min.
-* Alcance: Avances.
+* Alcance: avances.
 * Fecha: luego de terminar el modulo. Raster analysis
 
 #### Presentación final
 * Porcentaje de evaluación: 30%
 * Tiempo: 15 min.
-* Alcance: Presentación trabajo final.
-* Fecha: Al final del curso
+* Alcance: presentación trabajo final.
+* Fecha: al final del curso
 
 El 30% final corresponde al trabajo escrito en formato artículo (Introducción, Datos \& metodología, Resultados, Discusión, 
 y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
 
 ## Link de interés
-* [The Core of GIS Science](https://ltb.itc.utwente.nl/page/498/dashboard)
+* [The Core of GIS Science](https://ltb.itc.utwente.nl/page/498/dashboard)  
 * [Remote sensing & GIS application](http://ecoursesonline.iasri.res.in/course/view.php?id=53)  
-* [Geospatial big data handling theory and methods: A review and research challenges](https://www.sciencedirect.com/science/article/pii/S0924271615002439?via%3Dihub)
+* [Geospatial big data handling theory and methods: A review and research challenges](https://www.sciencedirect.com/science/article/pii/S0924271615002439?via%3Dihub)  
