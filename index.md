@@ -39,6 +39,7 @@ M2-222
 [Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)  
 [Taller Clustering](/Notebooks/11_Clustering.ipynb)  
 [Taller Geovisualización](/Notebooks/12_Geovisualization.ipynb)  
+Lecture: [Spatial point pattern analysisi and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ### Choroplet maps
 [Taller Mapas Coropletas](/Notebooks/13_Choropleth.ipynb)   
