@@ -1,0 +1,97 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**:
+
+```{r}
+library(remotes) # R Package Installation from Remote Repositories, Including 'GitHub'
+```
+
+```{r}
+remotes::install_github("paezha/isdas")
+```
+
+```{r}
+library(isdas)
+```
+
+```{r}
+data("snow_deaths")
+data("snow_pumps")
+```
+
+```{r}
+head(snow_deaths)
+```
+
+```{r}
+head(snow_pumps)
+```
+
+```{r}
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+
+```
+
+```{r}
+ggplot() +
+  geom_point(data = snow_deaths, aes(x = long, y = lat), color = "blue", shape = 16) +
+  geom_point(data = snow_pumps, aes(x = long, y = lat), color = "black", shape = 17)
+```
+
+```{r}
+library(leaflet) # Create Interactive Web Maps with the JavaScript 'Leaflet'
+
+```
+
+```{r}
+m <- leaflet(data = snow_deaths) |> 
+  setView(lng = -0.136, lat = 51.513, zoom = 16)
+m <- m |> addTiles()
+m
+```
+
+```{r}
+m <- m |> 
+  addMarkers(~long, 
+             ~lat, 
+             clusterOptions = markerClusterOptions(),
+             group = "Deaths")
+m
+```
+
+```{r}
+m_test <- leaflet () |> 
+  setView(lng = -0.136, lat = 51.513, zoom = 16) |> 
+  addTiles() |> 
+  addMarkers(data = snow_deaths, 
+             ~long, 
+             ~lat, 
+             clusterOptions = markerClusterOptions(), 
+             group = "Deaths") |> 
+  addMarkers(data = snow_pumps, 
+             ~long, 
+             ~lat, 
+             group = "Pumps")
+m_test
+```
+
+```{r}
+if (!require("leaflet.extras")) install.packages('leaflet.extras')
+library(leaflet.extras) # Extra Functionality for 'leaflet' Package
+```
+
+```{r}
+m2 <- leaflet(data = snow_deaths) |> 
+  setView(lng = -0.136, 
+          lat = 51.513, 
+          zoom = 16) |> 
+  addTiles()
+
+m2 |> 
+  addHeatmap(lng = ~long, 
+             lat = ~lat, 
+             intensity = ~Count,
+             blur = 40, 
+             max = 1, 
+             radius = 25)
+```

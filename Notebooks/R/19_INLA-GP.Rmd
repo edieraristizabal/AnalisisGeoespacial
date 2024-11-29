@@ -1,0 +1,435 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-2-inla/) by Lionel Hertzog, and [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html)
+
+## Procesos Gaussianos con INLA
+
+La geoestadística basada en modelos puede utilizarse para analizar datos espaciales relacionados con un fenómeno subyacente continuo en el espacio que se ha recolectado en un conjunto finito de ubicaciones. La geoestadística basada en modelos emplea modelos estadísticos para capturar la estructura de correlación espacial en los datos, lo que permite realizar inferencias estadísticas rigurosas y facilita la producción de predicciones espaciales junto con medidas de incertidumbre del fenómeno de interés (Diggle, Tawn y Moyeed 1998).
+
+Asumiendo datos gaussianos observados en un conjunto de $n$ ubicaciones, ${Y₁, …, Yₙ}$, podemos considerar el siguiente modelo para obtener predicciones en ubicaciones no muestreadas:
+
+$Yᵢ | S(sᵢ) ∼ N(μ + S(sᵢ), τ²), i = 1, …, n.$
+
+Aquí, $μ$ es un efecto medio constante, y $S(⋅)$ es un campo gaussiano espacial de media cero. Este modelo puede extenderse a situaciones en las que la variación estocástica en los datos no sea gaussiana, así como para incluir covariables y otros efectos aleatorios para tener en cuenta otros tipos de variabilidad.
+
+La inferencia en la geoestadística basada en modelos puede realizarse utilizando los enfoques INLA y la ecuación diferencial parcial estocástica (SPDE), los cuales proporcionan una alternativa computacionalmente eficiente a los métodos MCMC (Lindgren y Rue 2015). En resumen, esto implica resolver una SPDE en una malla discreta de puntos e interpolar para obtener una solución continua a lo largo del dominio espacial (Krainski et al. 2019), que se calcula utilizando INLA (Rue, Martino y Chopin 2009).
+
+```{r}
+library(geoR)
+library(ggplot2)
+library(tidyverse)
+library(INLA)
+```
+
+```{r}
+# the ca20 dataset
+# load the example dataset,
+# calcium content in soil samples in Brazil
+data(ca20)
+# put this in a data frame
+dat <- data.frame(x = ca20$coords[,1],y = ca20$coords[,2],calcium = ca20$data, 
+                  elevation = ca20$covariate[,1], 
+                  region = factor(ca20$covariate[,2]))
+```
+
+```{r}
+# meshes in 2D space can be created as follow:
+mesh <- inla.mesh.2d(loc = dat[,c("x", "y")], max.edge = c(50, 5000))
+```
+
+La función `inla.mesh.2d` del paquete INLA se utiliza para crear una malla para el modelado espacial. Esta malla aproxima el efecto espacial en sus datos y juega un papel crucial en la captura de la dependencia espacial.
+
+Aquí un desglose de los puntos clave:
+
+-   **Función:** `inla.mesh.2d`
+-   **Propósito:** Crea una malla bidimensional para el análisis espacial en modelos INLA.
+-   **Argumentos:**
+    -   `loc`: Esto especifica la ubicación de sus muestras. Suele ser un marco de datos con columnas para latitud y longitud (u otras coordenadas espaciales).
+    -   `max.edge`: Controla la precisión de la malla. Define la distancia máxima permitida entre dos nodos conectados en la malla. Un valor más bajo (por ejemplo, 50 metros) crea una malla más fina con más detalles, pero requiere más recursos computacionales. Por el contrario, un valor más alto (por ejemplo, 5000 metros) crea una malla más gruesa que es computacionalmente más rápida pero puede pasar por alto variaciones espaciales más finas.
+
+**Compromiso entre precisión y cómputo:**
+
+Existe una compensación entre la precisión de la malla y el tiempo de cómputo. Una malla más precisa (`max.edge` más pequeño) conduce a una predicción más suave que captura patrones espaciales sutiles, pero tarda más en calcularse. Una malla más gruesa (`max.edge` más grande) es computacionalmente más rápida pero puede pasar por alto detalles espaciales importantes.
+
+**Exploración interactiva con meshbuilder:**
+
+El paquete INLA también proporciona la función `meshbuilder` para la exploración interactiva de la creación de mallas. Esto le permite visualizar diferentes opciones de malla basadas en su configuración `max.edge` y elegir la que mejor equilibre la precisión y la viabilidad computacional para su análisis específico.
+
+En resumen, `inla.mesh.2d` es una herramienta esencial para crear mallas en el modelado espacial de INLA. Al considerar cuidadosamente la compensación entre precisión y cómputo, y potencialmente usar `meshbuilder` para la exploración, puede crear una malla adecuada para capturar los efectos espaciales en sus datos.
+
+```{r}
+Amat <- inla.spde.make.A(mesh, loc = as.matrix(dat[,c("x", "y")]))
+```
+
+## Efecto espacial en INLA con ecuaciones diferenciales parciales estocásticas (EDPE)
+
+INLA estima el efecto espacial utilizando una herramienta matemática compleja llamada ecuación diferencial parcial estocástica (EDPE). La idea básica es que podemos estimar un efecto espacial continuo utilizando un conjunto de puntos discretos (los nodos definidos en la malla) y funciones base, similar a las splines de regresión. Esto facilita mucho la estimación de los campos espaciales.
+
+El enfoque de la ecuación diferencial parcial estocástica (SPDE) implementado en el paquete R-INLA proporciona una forma flexible y computacionalmente eficiente de modelar datos geoestadísticos y realizar predicciones en ubicaciones no muestreadas (Lindgren y Rue 2015). Suponemos que, subyacente a los datos observados, hay una variable continua en el espacio que puede modelarse utilizando un campo aleatorio gaussiano (GRF) con una función de covarianza de Matérn, que se define como:
+
+$Cov(x(sᵢ), x(sⱼ)) = (σ² / 2^(ν - 1)Γ(ν))(κ ||sᵢ - sⱼ||)^ν Kν(κ ||sᵢ - sⱼ||).$
+
+Aquí, $σ²$ denota la varianza marginal del campo espacial. $Kν(⋅)$ se refiere a la función de Bessel modificada de segunda especie y orden $ν > 0$. El valor entero de $ν$ determina la suavidad del campo y típicamente se fija, ya que es difícil de estimar en aplicaciones. $κ > 0$ está relacionado con el rango $ρ$, que representa la distancia a la cual la correlación entre dos puntos se vuelve aproximadamente 0. Específicamente, $ρ = √(8ν) / κ$, y a esta distancia la correlación espacial es cercana a 0.1 (Cameletti et al. 2013).
+
+Como se muestra en Whittle (1963), un GRF con una matriz de covarianza de Matérn puede representarse como la solución de la siguiente SPDE en dominio continuo:
+
+$(κ² − Δ)^(α/2)(τx(s)) = W(s).$
+
+Aquí, $x(s)$ representa un GRF, y $W(s)$ es un proceso de ruido blanco espacial gaussiano. El parámetro $α$ controla la suavidad exhibida por el GRF, $τ$ controla su varianza, y $κ > 0$ es un parámetro de escala. El laplaciano $Δ$ se define como $∑(dᵢ = 1 ∂² / ∂x²ᵢ)$, donde $d$ es la dimensión del dominio espacial.
+
+Los parámetros de la función de covarianza de Matérn y la SPDE están relacionados de la siguiente manera. El parámetro de suavidad $ν$ de la función de covarianza de Matérn se expresa como $ν = α − d/2$, y la varianza marginal $σ²$ está relacionada con la SPDE mediante:
+
+$σ² = (Γ(ν) / Γ(α))(4π)^(d/2)κ^(−2ν)τ².$
+
+En el caso donde $d = 2$ y $ν = 1/2$, lo que corresponde a la función de covarianza exponencial, el parámetro $α = ν + d/2 = 1/2 + 1 = 3/2$. En el paquete R-INLA, el valor predeterminado es $α = 2$, aunque también están disponibles opciones dentro del rango $0 ≤ α < 2$.
+
+El método de elementos finitos puede usarse para encontrar una solución aproximada a la SPDE. Este método implica dividir el dominio espacial en un conjunto de triángulos no superpuestos, creando una malla triangulada con $n$ nodos y $n$ funciones base. Las funciones base, denotadas como $ψₖ(⋅$)\$, son funciones lineales por partes en cada triángulo. Toman el valor de 1 en el vértice $k$, y 0 en todos los demás vértices.
+
+Luego, el campo gaussiano indexado de manera continua $x$ se representa como un campo aleatorio de Markov gaussiano indexado de manera discreta (GMRF) mediante una suma de funciones base definidas en la malla triangulada:
+
+$x(s) = ∑(nₖ = 1) ψₖ(s)xₖ,$
+
+donde $n$ es el número de vértices de la triangulación, $ψₖ(⋅)$ representa las funciones base lineales por partes, y ${xₖ}$ denotan pesos distribuidos de forma gaussiana con media cero.
+
+La distribución conjunta del vector de pesos se asigna a una distribución gaussiana representada como $x = (x₁, …, xₙ) ∼ N(0, Q^−1(τ, κ))$
+
+Esta distribución aproxima la solución $x(s)$ de la SPDE en los nodos de la malla. Las funciones base transforman la aproximación $x(s)$ desde los nodos de la malla a las otras ubicaciones espaciales de interés.
+
+Ahora bien, la parte complicada de configurar la EDPE es definir los previos para:
+
+-   **Alcance del efecto espacial (parámetro κ):** Este parámetro representa la distancia a partir de la cual dos puntos se pueden considerar espacialmente independientes. En otras palabras, ¿a qué distancia deben estar dos ubicaciones para que su efecto espacial sea prácticamente nulo? Un κ alto indica un efecto espacial de largo alcance (las ubicaciones distantes se influencian entre sí), mientras que un κ bajo indica un efecto de corto alcance (la influencia espacial se limita a las ubicaciones cercanas).
+-   **Variación del efecto espacial (parámetro δ):** Este parámetro representa la variabilidad del campo espacial de un punto a otro. Un δ alto indica un campo espacial con mucha variación (los valores del efecto espacial cambian drásticamente a lo largo del espacio), mientras que un δ bajo indica un campo espacial con poca variación (los valores del efecto espacial son relativamente similares en todo el espacio).
+
+Encontrar los valores óptimos para κ y δ es crucial para capturar adecuadamente el efecto espacial en su modelo. INLA permite especificar valores iniciales para estos parámetros, y luego estima sus valores finales durante el proceso de ajuste del modelo.
+
+```{r}
+spde <- inla.spde2.pcmatern(mesh, 
+                            prior.range = c(500, 0.5),
+                            prior.sigma = c(2, 0.05))
+```
+
+## Definiendo Priores para el Efecto Espacial en INLA: Alcance y Variación
+
+Establecer valores iniciales (priores) para el alcance y la variación del efecto espacial en INLA (representados por los parámetros κ y δ respectivamente) puede ser una tarea delicada, ya que estos valores tienen un gran impacto en el modelo ajustado. Afortunadamente, como el ajuste de modelos en INLA es relativamente rápido, es fácil realizar un análisis de sensibilidad para comprender qué configuraciones funcionan mejor.
+
+### Alcance del Efecto Espacial (parámetro κ)
+
+El prior para el alcance del efecto espacial corresponde con la siguiente fórmula:
+
+```         
+P(κ < κ₀) = p₀
+```
+
+-   κ: Representa el alcance del efecto espacial (distancia a partir de la cual se considera que dos puntos son independientes).
+-   κ₀: Valor inicial específico del alcance.
+-   p₀: Probabilidad asociada al valor inicial κ₀.
+
+Por ejemplo, si definimos:
+
+```         
+P(κ < 500) = 0.5
+```
+
+Significa que estamos estableciendo una probabilidad del 50% de que el alcance real del efecto espacial sea menor a 500 metros. En otras palabras, hay una posibilidad del 50% de que dos ubicaciones separadas por más de 500 metros tengan efectos espaciales independientes. A mayor valor de κ, mayor alcance del efecto espacial (las ubicaciones distantes se influencian entre sí).
+
+### Variación del Efecto Espacial (parámetro δ)
+
+De manera similar, el prior para la variación del efecto espacial se establece mediante la siguiente fórmula:
+
+```         
+P(δ > δ₀) = p₀
+```
+
+-   δ: Representa la variación del efecto espacial (cuánto cambia el efecto de un punto a otro).
+-   δ₀: Valor inicial específico de la variación.
+-   p₀: Probabilidad asociada al valor inicial δ₀.
+
+Por ejemplo:
+
+```         
+P(δ > 2) = 0.05
+```
+
+Indica que asignamos una probabilidad del 5% a la posibilidad de que la variación del efecto espacial sea mayor a 2. En otras palabras, hay una probabilidad del 95% de que la variación sea menor o igual a 2, lo que sugiere un campo espacial con una variación relativamente baja (los valores del efecto cambian poco en el espacio).
+
+**Recomendaciones:**
+
+-   Experimentar con diferentes valores de κ₀, δ₀ y p₀ para observar cómo afectan el modelo ajustado.
+-   Consultar fuentes adicionales para encontrar configuraciones apropiadas según el tipo de análisis que se esté realizando.
+-   Se recomienda establecer valores iniciales relativamente fuertes para δ (p₀ cercano a 0 y alejado de 0.5). Priores demasiado vagos (p₀ cercano a 0.5) pueden causar problemas en el modelo, especialmente en modelos complejos.
+
+Tenga en cuenta que INLA permite especificar estos valores iniciales y luego estima los valores finales durante el proceso de ajuste del modelo. El análisis de sensibilidad y la referencia a otras fuentes te ayudarán a encontrar una buena configuración inicial para tus modelos espaciales en INLA.
+
+```{r}
+# create the data stack
+dat_stack <- inla.stack(data = list(calcium = dat$calcium), # the response variable
+                        A = list(Amat, 1, 1, 1), # the projection matrix
+                        effects = list(i = 1:spde$n.spde, # the spatial effect
+                                       Intercept = rep(1, nrow(dat)), 
+                                       elevation = dat$elevation,
+                                       region = factor(dat$region)))
+```
+
+## La clave está en la proyección de los efectos
+
+El punto clave aquí es el argumento `A` donde especificamos la proyección de los diferentes efectos. El efecto espacial se denomina `i` (aunque podemos nombrarlo como queramos) y está indexado por el número de nodos de la malla. Recordemos que cuanto más fina sea la malla, más precisa será la estimación del efecto espacial. Este efecto espacial `i` está vinculado a los datos a través de la matriz de proyección `A_mat`.
+
+Los demás efectos se vinculan directamente a los datos, por lo que no necesitan matrices de proyección.
+
+Aquí desglosamos un poco más la terminología:
+
+-   **Efecto espacial (`i`)**: Representa la variación espacial que se estima a través de la EDPE. Se modela utilizando los nodos de la malla y las funciones base.
+-   **Matriz de proyección (`A_mat`)**: Esta matriz vincula el efecto espacial estimado en cada nodo de la malla con las observaciones puntuales. Básicamente, indica cómo contribuye el efecto espacial en cada nodo al valor de la variable respuesta en cada ubicación observada.
+-   **Efectos directos**: Estos efectos son covariables que se incluyen en el modelo además del efecto espacial. A diferencia del efecto espacial, se relacionan directamente con las observaciones puntuales sin necesidad de una matriz de proyección.
+
+## Predicción en Modelos Espaciales INLA
+
+En INLA, por lo general, es más sencillo obtener predicciones del modelo pasando directamente los nuevos datos que se quieren utilizar para predecir al ajuste del modelo. En otras palabras, necesitamos definir estos nuevos datos **antes** de ajustar el modelo.
+
+Aquí vamos a ver cómo predecir el efecto de la elevación y la región sobre la variable respuesta, teniendo en cuenta el efecto espacial:
+
+1.  **Datos para la predicción:**
+    -   Comenzaremos por definir un nuevo conjunto de datos que solo contenga las variables de elevación y región para las ubicaciones donde queremos predecir la variable respuesta.
+    -   Este nuevo conjunto de datos debe tener el mismo formato que las variables de elevación y región utilizadas en el modelo original.
+    -   Es importante asegurarse de que las ubicaciones para las que se desea predecir estén dentro del rango del área de estudio cubierta por el modelo original.
+2.  **Ajuste del modelo:**
+    -   Durante el ajuste del modelo en INLA, se incluirá este nuevo conjunto de datos junto con los datos originales utilizados para entrenar el modelo.
+    -   INLA utilizará los valores de elevación y región en los nuevos datos para predecir los valores de la variable respuesta en esas ubicaciones específicas.
+
+Al incluir los nuevos datos en el ajuste del modelo, INLA tendrá en cuenta tanto el efecto directo de la elevación y la región como el efecto espacial estimado en el modelo original. Esto permite obtener predicciones más precisas que consideren la dependencia espacial y las relaciones con las covariables de interés.
+
+```{r}
+# a newdata to get the predictions
+modmat <- expand.grid(elevation = seq(min(dat$elevation), 
+                                      max(dat$elevation), 
+                                      length.out = 10),
+                      region = unique(dat$region))
+
+# the stack for these predictions
+pred_stack_fixef <- inla.stack(data = list(calcium = NA),
+                               A = list(1, 1, 1),
+                               effects = list(Intercept = rep(1, nrow(modmat)),
+                                              elevation = modmat$elevation,
+                                              region = factor(modmat$region)),
+                               tag = "prd_fixef")
+```
+
+## Puntos clave de la predicción en INLA
+
+Aquí hay un desglose de los puntos clave de la predicción en el modelo INLA que se acaba de describir:
+
+-   **Datos para la predicción**:
+    -   Se define un nuevo conjunto de datos que solo incluye las variables de elevación y región para las ubicaciones donde se desean las predicciones.
+    -   El modelo utilizará estos valores para predecir la variable respuesta en esas ubicaciones específicas.
+    -   Un aspecto crucial es que se establece `calcium=NA` en este conjunto de datos. Esto indica a INLA que estime los valores de calcio (`calcium`) basándose en los efectos (incluido el espacial) y los parámetros del modelo.
+    -   La etiqueta `prd_fixef` en el stack permite posteriormente extraer fácilmente los valores predichos.
+-   **Predicción espacial**:
+    -   Debido al modelado espacial, las predicciones también se pueden realizar a lo largo del espacio.
+    -   Una opción sería predecir solo en base al campo espacial, pero lo más interesante es tener en cuenta también las covariables (elevación y región) para obtener predicciones espaciales más precisas.
+    -   Obtener el stack de predicción para este escenario es un poco más complejo. Se necesitan valores de elevación y región no solo en las ubicaciones observadas, sino en todo el espacio de estudio.
+-   **Pasos adicionales**:
+    -   Se requieren algunos pasos previos a INLA que pueden parecer complicados.
+    -   El objetivo final es crear rásteres con información de elevación y región a partir de los datos disponibles. Estos rásteres se utilizarán luego para predecir la variable respuesta en todo el espacio de estudio.
+
+En resumen, la predicción en INLA para modelos espaciales implica definir datos para predicciones puntuales y, si se desea, generar predicciones espaciales teniendo en cuenta los efectos espaciales y las covariables. Los pasos adicionales previos a INLA pueden incluir la creación de rásteres a partir de los datos para cubrir todo el espacio de estudio.
+
+```{r}
+library(raster)
+library(fields) # for Tps
+
+## first we define an empty raster to hold the coordinates of the predictions
+r <- raster(xmn = min(dat$x), xmx = max(dat$x),
+            ymn = min(dat$y), ymx = max(dat$y),
+            resolution = 25)
+
+## the we use thin-plate spline to derive elevation across the data
+elev_m <- Tps(dat[,c("x","y")], dat$elevation)
+```
+
+```{r}
+## put this into a raster
+elev <- interpolate(r, elev_m)
+
+## for the region info we create a SpatialPolygons 
+## based on the coordinates given in the ca20 object
+pp <- SpatialPolygons(list(Polygons(list(Polygon(ca20[[5]])), ID = "reg1"),
+                           Polygons(list(Polygon(ca20[[6]])), ID = "reg2"),
+                           Polygons(list(Polygon(ca20[[7]])), ID = "reg3")))
+# turn the SpatialPolygon into a raster object
+region <- rasterize(pp, r)
+
+# the new data frame with coordinates from the raster
+# plus elevation and region information
+newdat <- as.data.frame(xyFromCell(r, cell = 1:ncell(r)))
+newdat$elevation <- values(elev)
+newdat$region <- factor(values(region))
+# remove NAs
+newdat <- na.omit(newdat)
+
+# create a new projection matrix for the points
+Apred <- inla.spde.make.A(mesh,
+                          loc = as.matrix(newdat[,c("x", "y")]))
+
+# put this in a new stack
+pred_stack_alleff <- inla.stack(data = list(calcium = NA),
+                               A = list(Apred, 1, 1, 1),
+                               effects = list(i = 1:spde$n.spde,
+                                              Intercept = rep(1, nrow(newdat)),
+                                              elevation = newdat$elevation,
+                                              region = factor(newdat$region)),
+                               tag = "prd_alleff")
+```
+
+## Obteniendo predicciones espaciales con covariables en INLA
+
+Aquí detallamos el proceso para obtener predicciones espaciales teniendo en cuenta las covariables (elevación y región) en un modelo INLA:
+
+1.  **Información espacial de rásteres:**
+    -   Se parte de un ráster que representa la región de interés. Este ráster debe contener información sobre las variables de elevación y región.
+2.  **Datos para la predicción (newdat):**
+    -   Se crea un nuevo objeto de datos (`newdat`) que contiene los valores de elevación y región extraídos del ráster para las ubicaciones donde se desean las predicciones.
+    -   Es importante asegurarse de que la extensión del ráster cubra el área de interés para las predicciones.
+    -   Al igual que en el caso anterior, se establece `calcium=NA` en este conjunto de datos para indicar que INLA debe estimar los valores de la variable respuesta (calcio) a partir de los efectos y parámetros del modelo.
+3.  **Matriz de proyección:**
+    -   Se define una nueva matriz de proyección que refleje cómo contribuyen el efecto espacial estimado (campo espacial), la elevación y la región a las predicciones en cada ubicación.
+    -   Esta matriz de proyección es más compleja que la utilizada para predicciones puntuales porque tiene que tener en cuenta todos los efectos que se utilizan para la predicción.
+4.  **Nueva pila (stack) de predicción:**
+    -   Se crea una nueva pila de predicción en INLA que incluya:
+        -   El objeto `newdat` que contiene los valores de elevación y región para las predicciones.
+        -   La matriz de proyección recién definida.
+        -   Una etiqueta única para identificar esta pila de predicción (por ejemplo, "prediccion_espacial").
+
+```{r}
+# put all the stacks together
+all_stack <- inla.stack(dat_stack, pred_stack_fixef,
+                      pred_stack_alleff)
+```
+
+```{r}
+# fit the model
+m_inla <- inla(calcium ~ -1 + Intercept + elevation + region + f(i, model = spde),
+            data = inla.stack.data(all_stack),
+            control.predictor = list(A = inla.stack.A(all_stack), compute = TRUE),
+            quantiles = NULL)
+```
+
+## Ejecutando el modelo INLA para predicción espacial
+
+Se estima que la ejecución del modelo dure alrededor de 30 segundos. Aquí desglosamos los pasos principales del código que acabaste de mencionar:
+
+**1. Ajuste del modelo:**
+
+-   **fórmula del modelo:** El primer argumento define la fórmula del modelo. Se utiliza `-1` para eliminar la intercepción interna y ajustarla por separado.
+-   **efecto espacial aleatorio (f()):** La función `f()` se utiliza para especificar un efecto aleatorio (`i`) que sigue el modelo de EDPE definido anteriormente.
+-   **datos y matriz de proyección:** Se pasan los datos de predicción (`newdat`) y la matriz de proyección recién creada.
+-   **estimación de valores (compute=TRUE):** Se configura `compute=TRUE` para indicar a INLA que estime los valores de la variable respuesta (calcio) que se proporcionaron como `NA` en `newdat`.
+
+**2. Resumen del modelo:**
+
+Una vez ajustado el modelo, se puede obtener su resumen utilizando las funciones de INLA para ver información como:
+
+-   Efectos fijos (coeficientes estimados para elevación y región)
+-   Parámetros de correlación espacial (nu y rho)
+-   Valores p y otros indicadores de significación estadística
+
+```{r}
+summary(m_inla)
+```
+
+## Examinando las predicciones del modelo INLA
+
+Una vez ajustado el modelo INLA para las predicciones espaciales, podemos analizar los resultados de diferentes maneras:
+
+**1. Predicciones basadas solo en efectos fijos:**
+
+Ahora que lo mencionas, podemos comenzar por observar las predicciones que solo tienen en cuenta los efectos fijos (elevación y región). Esto implica promediar las variaciones espaciales para ver el impacto general de estas covariables en la variable respuesta:
+
+-   INLA proporciona funciones para extraer las predicciones basadas únicamente en los efectos fijos.
+-   Al analizar estas predicciones, podemos evaluar cómo cambian los valores predichos en función de la elevación y la región, promediando el efecto espacial.
+
+**2. Predicciones espaciales completas:**
+
+Además de los efectos fijos, las predicciones espaciales completas también incorporan el efecto espacial estimado en el modelo.
+
+-   INLA permite extraer las predicciones espaciales totales, que reflejan la variación de la variable respuesta en todo el espacio de estudio.
+-   Estas predicciones considerarán tanto la influencia de las covariables (elevación y región) como la dependencia espacial.
+
+**3. Visualización de las predicciones:**
+
+Una vez extraídas las predicciones, ya sean de efectos fijos o espaciales completas, podemos visualizarlas para comprender mejor los patrones espaciales y la relación con las covariables:
+
+-   Podemos utilizar herramientas de representación geográfica (por ejemplo, mapas) para mostrar las predicciones espaciales en el contexto del área de estudio.
+-   La visualización de las predicciones en relación con los valores observados de la variable respuesta permite evaluar la precisión del modelo.
+
+```{r}
+## first we create an index to easily find these 
+## prediction within the fitted model
+id_fixef <- inla.stack.index(all_stack, "prd_fixef")$data
+
+## add to modmat the prediction and their sd
+modmat$calcium <- m_inla$summary.fitted.values[id_fixef, "mean"]
+modmat$sd <- m_inla$summary.fitted.values[id_fixef, "sd"]
+
+## a plot with the original data
+ggplot(dat, aes(x = elevation, y = calcium)) +
+  geom_ribbon(data = modmat, aes(ymin = calcium - 2 * sd,
+                                 ymax = calcium + 2 * sd,
+                                 fill = region),
+              alpha = 0.2) +
+  geom_line(data = modmat, aes(color = region)) +
+  geom_point(aes(color = region))
+```
+
+## Visualizando las predicciones de efectos fijos en INLA
+
+Ahora que hemos visto la teoría, veamos cómo visualizar las predicciones basadas únicamente en los efectos fijos (elevación y región) en tu modelo INLA:
+
+**1. Extraer predicciones de efectos fijos:**
+
+Como mencionaste anteriormente, utilizaste una etiqueta específica (por ejemplo, "prediccion_efectos_fijos") al definir la pila de predicción. Esto nos permite extraer fácilmente las predicciones relevantes del objeto del modelo.
+
+En INLA, el resumen del modelo (`summary`) contiene un marco de datos llamado `summary.fitted.values`. Este marco de datos almacena información sobre las predicciones, y podemos filtrarlo utilizando la etiqueta definida anteriormente.
+
+**2. Obtener media y desviación estándar:**
+
+Una vez filtradas las predicciones de efectos fijos, podemos calcular la media y la desviación estándar. Estas métricas resumen el impacto general de las covariables (elevación y región) en la variable respuesta, promediando la variación espacial.
+
+**3. Representación gráfica:**
+
+Finalmente, podemos representar gráficamente la media y la desviación estándar junto con los datos originales. Esto te permitirá:
+
+-   Visualizar cómo cambian los valores predichos en función de la elevación y la región.
+-   Comparar las predicciones de efectos fijos con los datos observados para evaluar la capacidad del modelo para capturar las tendencias generales.
+
+**4. El mapa genial:**
+
+¡Y ahora viene la parte emocionante: el mapa! Una vez que tengas las predicciones espaciales completas (que incluyen el efecto espacial), podrás visualizarlas en un mapa. Esto te permitirá ver la variación de la variable respuesta en todo el espacio de estudio, teniendo en cuenta tanto las covariables como la dependencia espacial.
+
+**Herramientas de visualización:**
+
+Existen varias herramientas de software y bibliotecas que puedes utilizar para crear mapas a partir de tus predicciones espaciales INLA. Algunos ejemplos populares incluyen:
+
+-   `ggplot2` (en R)
+-   `folium` (en Python)
+-   ArcGIS Pro
+-   QGIS
+
+```{r}
+# again get the correct indices
+id_alleff <- inla.stack.index(all_stack, "prd_alleff")$data
+
+# now add the model predictions
+newdat$pred <- m_inla$summary.fitted.values[id_alleff, "mean"]
+newdat$sd <- m_inla$summary.fitted.values[id_alleff, "sd"]
+# get lower and upper confidence interval
+newdat$lower_ci <- with(newdat, pred - 2 * sd)
+newdat$upper_ci <- with(newdat, pred + 2 * sd)
+
+# some data wraggling
+nn <- pivot_longer(newdat, cols = c("pred", "lower_ci", "upper_ci"))
+
+ggplot(nn, aes(x=x, y=y, fill=value)) +
+  geom_raster() +
+  facet_wrap(~name) +
+  scale_fill_continuous(type = "viridis")
+```

@@ -1,0 +1,276 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html)
+
+## Procesos Gaussianos con INLA
+
+```{r}
+library(sf)
+library(rnaturalearth)
+library(sf)
+library(terra)
+library(geodata)
+library(INLA)
+library(rasterVis)
+```
+
+Los promedios anuales de los niveles de concentración de PM2.5 registrados en 1429 estaciones de monitoreo de la Agencia de Protección Ambiental de los Estados Unidos en 2022 se encuentran en el archivo PM25USA2022.csv, que se puede descargar desde este sitio web. Usamos la función `read.csv()` para leer los datos, que contienen los valores de longitud y latitud de las estaciones de monitoreo, y los valores registrados de PM2.5 en microgramos por metro cúbico. Luego, usamos la función `st_as_sf()` para transformar el data.frame obtenido en un objeto `sf` con CRS geográfico dado por el código EPSG 4326.
+
+```{r}
+
+f <- file.path("https://www.paulamoraga.com/book-spatial/", "data/PM25USA2022.csv")
+d <- read.csv(f)
+d <- st_as_sf(d, coords = c("longitude", "latitude"))
+st_crs(d) <- "EPSG:4326"
+```
+
+Luego, obtenemos el mapa de los EE. UU. con la función `ne_countries()` de `rnaturalearth`. Usamos `st_crop()` para eliminar Alaska y otras áreas que están fuera de la región comprendida por los valores de longitud (–130, 60) y los valores de latitud (18, 72).
+
+```{r}
+map <- ne_countries(type = "countries",
+                    country = "United States of America",
+                    scale = "medium", returnclass = "sf")
+map <- st_crop(map, xmin = -130, xmax = -60, ymin = 18, ymax = 72)
+```
+
+```{r}
+d <- st_filter(d, map)
+nrow(d)
+```
+
+```{r}
+library(ggplot2)
+library(viridis)
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = value)) +
+  scale_color_viridis()
+```
+
+Aquí, construimos una matriz `coop` con las ubicaciones donde se predecirán los niveles de contaminación del aire. Primero, creamos una cuadrícula ráster de 100 × 100 celdas que cubre el mapa usando la función `rast()` de `terra`. Luego, obtenemos las coordenadas de las celdas con la función `xyfromCell()` de `terra`.
+
+```{r}
+# raster grid covering map
+grid <- terra::rast(map, nrows = 100, ncols = 100)
+# coordinates of all cells
+xy <- terra::xyFromCell(grid, 1:ncell(grid))
+```
+
+Luego, usamos la función `st_as_sf()` para crear un objeto `sf` con las coordenadas de las ubicaciones de predicción, especificando las coordenadas como un data frame, el nombre de las coordenadas y el CRS. Obtenemos los índices de las coordenadas de los puntos que están dentro del mapa con `st_intersects()` configurando `sparse = FALSE`. Luego usaremos estos índices para identificar las ubicaciones de predicción. También obtenemos las coordenadas de los puntos que están dentro del mapa con `sf_filter()`. La Figura muestra las ubicaciones de predicción.
+
+```{r}
+# transform points to a sf object
+dp <- st_as_sf(as.data.frame(xy), coords = c("x", "y"),
+                 crs = st_crs(map))
+
+# indices points within the map
+indicespointswithin <- which(st_intersects(dp, map,
+                                           sparse = FALSE))
+
+# points within the map
+dp <- st_filter(dp, map)
+
+# plot
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = dp)
+```
+
+En nuestro modelo, utilizamos la temperatura promedio y la precipitación como covariables. Los valores mensuales de estas variables a nivel global pueden obtenerse con la función `worldclim_global()` de `geodata`.
+
+```{r}
+covtemp <- worldclim_global(var = "tavg", res = 10,
+                            path = tempdir())
+covprec <- worldclim_global(var = "prec", res = 10,
+                            path = tempdir())
+```
+
+Después de descargar los datos, calculamos los promedios mensuales y extraemos los valores en las ubicaciones de observación y predicción con la función `extract()` de `terra`.
+
+```{r}
+# Extract at observed locations
+d$covtemp <- extract(mean(covtemp), st_coordinates(d))[, 1]
+d$covprec <- extract(mean(covprec), st_coordinates(d))[, 1]
+# Extract at prediction locations
+dp$covtemp <- extract(mean(covtemp), st_coordinates(dp))[, 1]
+dp$covprec <- extract(mean(covprec), st_coordinates(dp))[, 1]
+```
+
+```{r}
+library("patchwork")
+p1 <- ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = covtemp)) +
+  scale_color_viridis()
+p2 <- ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = covprec)) +
+  scale_color_viridis()
+p1/p2
+
+```
+
+Los datos con los que estamos trabajando tienen un CRS geográfico que referencia ubicaciones utilizando valores de longitud y latitud. Para trabajar con kilómetros en lugar de grados, usamos `st_transform()` para transformar el CRS de los objetos `sf` con los datos correspondientes a las ubicaciones observadas (d) y las ubicaciones de predicción (dp) de geográfico a un CRS proyectado. Específicamente, utilizamos la proyección de Mercator dada por el código EPSG 3857 y usamos kilómetros como unidades. Para ello, usamos la proyección dada por `st_crs("EPSG:3857")$proj4string`, reemplazando `+units=m` por `+units=km`.
+
+```{r}
+st_crs("EPSG:3857")$proj4string
+projMercator<-"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0
++x_0=0 +y_0=0 +k=1 +units=km +nadgrids=@null +wktext +no_defs"
+d <- st_transform(d, crs = projMercator)
+dp <- st_transform(dp, crs = projMercator)
+```
+
+```{r}
+# Observed coordinates
+coo <- st_coordinates(d)
+
+# Predicted coordinates
+coop <- st_coordinates(dp)
+```
+
+Ahora especificamos el modelo que utilizamos para predecir los valores de PM2.5 en ubicaciones no muestreadas. Suponemos que $Yᵢ$, los valores de PM2.5 medidos en las ubicaciones $i = 1, …, n$, pueden modelarse como
+
+$Yᵢ ∼ N(μᵢ, σ²)$,
+
+$μᵢ = β₀ + β₁ × tempᵢ + β₂ × precᵢ + S(x$ᵢ),
+
+donde $β₀$ es la intersección, y $β₁$ $β₂$ son, respectivamente, los coeficientes de temperatura y precipitación. $S(⋅)$ es un efecto aleatorio espacial que se modela como un proceso gaussiano de media cero con función de covarianza de Matérn.
+
+```{r}
+summary(dist(coo)) # summary of distances between locations
+```
+
+Para ajustar el modelo utilizando el enfoque SPDE, primero creamos una malla triangulada que cubre la región de estudio donde aproximamos el campo aleatorio gaussiano como un campo aleatorio de Markov gaussiano. INLA produce buenas aproximaciones utilizando una malla fina compuesta por triángulos muy pequeños y con una gran distancia de separación entre las ubicaciones y el borde de la malla para evitar efectos de borde que aumentan la varianza cerca del límite. En algunas aplicaciones, el uso de una malla tan fina podría ser computacionalmente intensivo, y normalmente trabajamos con mallas que aún producen buenas aproximaciones consistentes en una región interna con triángulos pequeños donde se necesita precisión, y una extensión externa con triángulos más grandes donde no se necesitan aproximaciones precisas.
+
+Aquí, creamos la malla con la función `inla.mesh.2d()` de R-INLA. Pasamos como argumentos `loc = coo` con las coordenadas de ubicación, y `max.edge = c(200, 500)` con las longitudes máximas permitidas de los bordes de los triángulos en la región y la extensión para tener triángulos más pequeños dentro de la región que en la extensión. También especificamos `cutoff = 1` con la distancia mínima permitida entre puntos para evitar la construcción de muchos triángulos pequeños en áreas donde las ubicaciones están cerca unas de otras (Figura 15.4). El número de vértices de la malla se puede obtener con `mesh$n`, y la malla se puede graficar de la siguiente manera.
+
+```{r}
+mesh <- inla.mesh.2d(loc = coo, max.edge = c(200, 500),
+                     cutoff = 1)
+mesh$n
+```
+
+```{r}
+plot(mesh)
+points(coo, col = "red")
+axis(1)
+axis(2)
+```
+
+Luego, usamos la función `inla.spde2.matern()` para construir el modelo SPDE. Esta función tiene parámetros `mesh` con la malla triangulada construida y `constr = TRUE` para imponer una restricción de integración a cero. Además, establecemos el parámetro de suavidad $ν$ igual a 1. En el caso espacial $d = 2$ y $α = ν + d / 2 = 2$.
+
+```{r}
+spde <- inla.spde2.matern(mesh = mesh, alpha = 2, constr = TRUE)
+```
+
+Luego, creamos un conjunto de índices para el modelo SPDE usando la función `inla.spde.make.index()`, donde proporcionamos el nombre del efecto (`s`) y el número de vértices en el modelo SPDE (`spde$n.spde`). Esta función genera una lista con el vector `s` que va del 1 al `spde$n.spde`. Además, crea dos vectores, `s.group` y `s.repl`, que contienen todos los elementos establecidos en 1 y longitudes iguales al número de vértices de la malla.
+
+```{r}
+indexs <- inla.spde.make.index("s", spde$n.spde)
+lengths(indexs)
+```
+
+Usamos la función `inla.spde.make.A()` de R-INLA, pasando la malla (`mesh`) y las coordenadas (`coo`) para construir fácilmente una matriz de proyección A que proyecta el campo aleatorio gaussiano espacialmente continuo desde las observaciones hasta los nodos de la malla.
+
+```{r}
+A <- inla.spde.make.A(mesh = mesh, loc = coo)
+```
+
+Podemos ver que la matriz de proyección $A$ tiene un número de filas igual al número de observaciones y un número de columnas igual al número de vértices de la malla. También observamos que los elementos de cada fila de $A$ suman 1.
+
+```{r}
+# dimension of the projection matrix
+dim(A)
+```
+
+También creamos una matriz de proyección para las ubicaciones de predicción.
+
+```{r}
+Ap <- inla.spde.make.A(mesh = mesh, loc = coop)
+```
+
+Ahora creamos un stack con los datos para estimación y predicción que organiza datos, efectos y matrices de proyección. Creamos stacks para estimación (`stk.e`) y predicción (`stk.p`) usando `tag` para identificar el tipo de datos, `data` con la lista de vectores de datos, `A` con las matrices de proyección, y `effects` con una lista de efectos fijos y aleatorios. Primero, creamos un stack llamado `stk.e` que contiene los datos para estimación, el cual está etiquetado con la cadena "est". En `data`, especificamos el vector de respuesta con los valores observados de PM2.5. La matriz de proyección se da en el argumento `A`, que es una lista donde el segundo elemento es la matriz de proyección para los efectos aleatorios (A) y el primer elemento se establece en 1 para indicar que los efectos fijos se mapean directamente uno a uno a la respuesta. Para definir los efectos, pasamos una lista que contiene los efectos fijos y aleatorios. Los efectos fijos son un `data.frame` que consta de una intersección (b0) y covariables de temperatura (covtemp) y precipitación (covprec). El efecto aleatorio está representado por el campo aleatorio gaussiano espacial `s` que contiene una lista con los índices del objeto SPDE (`indexs`). Además, construimos otro stack llamado `stk.p` para predicción, que está etiquetado con la etiqueta "pred". Los datos, la matriz de proyección y los efectos se especifican para las ubicaciones de predicción. El vector de respuesta en el argumento `data` de este stack se establece en una lista con `NA` porque estos son los valores que queremos predecir. Finalmente, combinamos `stk.e` y `stk.p` en un solo stack completo llamado `stk.full`.
+
+```{r}
+# stack for estimation stk.e
+stk.e <- inla.stack(tag = "est",
+data = list(y = d$value), A = list(1, A),
+effects = list(data.frame(b0 = rep(1, nrow(A)),
+covtemp = d$covtemp, covprec = d$covprec),
+s = indexs))
+
+# stack for prediction stk.p
+stk.p <- inla.stack(tag = "pred",
+data = list(y = NA), A = list(1, Ap),
+effects = list(data.frame(b0 = rep(1, nrow(Ap)),
+covtemp = dp$covtemp, covprec = dp$covprec),
+s = indexs))
+
+# stk.full has stk.e and stk.p
+stk.full <- inla.stack(stk.e, stk.p)
+```
+
+Luego, especificamos la fórmula incluyendo la variable de respuesta, el símbolo \~ y los efectos fijos y aleatorios. En la fórmula, eliminamos la intersección añadiendo 0 e incluimos la intersección como un término de covariable añadiendo `b0`. Este paso asegura que todos los términos de covariable se capturen adecuadamente dentro de la matriz de proyección.
+
+```{r}
+formula <- y ~ 0 + b0 + covtemp + covprec + f(s, model = spde)
+```
+
+Finalmente, llamamos a `inla()` especificando la fórmula, la familia, el stack con los datos y las opciones. Establecemos `control.predictor = list(compute = TRUE)` y `control.compute = list(return.marginals.predictor = TRUE)` para calcular y devolver las marginales para el predictor lineal.
+
+```{r}
+res <- inla(formula, family = "gaussian",
+       data = inla.stack.data(stk.full),
+       control.predictor = list(compute = TRUE,
+                                A = inla.stack.A(stk.full)),
+       control.compute = list(return.marginals.predictor = TRUE))
+```
+
+```{r}
+res$summary.fixed
+```
+
+Observamos que el coeficiente de temperatura es $^β₁ = 0.239$ con un intervalo creíble del 95% igual a (0.201, 0.28). El coeficiente de precipitación es $^β₂ = 0.003$ con un intervalo creíble del 95% igual a (–0.003, 0.009). Así, la temperatura está significativamente asociada con PM2.5, mientras que la precipitación no es significativa.
+
+El objeto `res$summary.fitted.values` contiene la media posterior y los cuantiles de los valores ajustados. Podemos obtener los índices correspondientes a las ubicaciones de predicción utilizando la función `inla.stack.index()` pasando el stack completo y `tag = "pred"`. Luego, recuperamos la columna "mean" con la media posterior, y las columnas "0.025quant" y "0.975quant" con los límites inferior y superior de los intervalos creíbles del 95% que denotan la incertidumbre de las predicciones.
+
+```{r}
+index <- inla.stack.index(stack = stk.full, tag = "pred")$data
+pred_mean <- res$summary.fitted.values[index, "mean"]
+pred_ll <- res$summary.fitted.values[index, "0.025quant"]
+pred_ul <- res$summary.fitted.values[index, "0.975quant"]
+```
+
+Asignamos los valores predichos a sus celdas correspondientes dentro del mapa que están en el objeto `grid` que contiene las ubicaciones de predicción.
+
+```{r}
+grid$mean <- NA
+grid$ll <- NA
+grid$ul <- NA
+
+grid$mean[indicespointswithin] <- pred_mean
+grid$ll[indicespointswithin] <- pred_ll
+grid$ul[indicespointswithin] <- pred_ul
+
+summary(grid) # negative values for the lower limit
+```
+
+Luego, graficamos la media posterior y los intervalos creíbles del 95% de los valores predichos de PM2.5 con la función `levelplot()` del paquete `rasterVis`. La Figura 15.5 muestra mapas con el patrón espacial de los niveles predichos de PM2.5 así como su incertidumbre asociada.
+
+```{r}
+
+levelplot(grid, layout = c(1, 3),
+names.attr = c("Mean", "2.5 percentile", "97.5 percentile"))
+```
+
+También podemos obtener probabilidades de que PM2.5 supere un umbral específico con la función `inla.pmarginal()`. Específicamente, calculamos las probabilidades de que los niveles de PM2.5 superen los 10 microgramos por metro cúbico. Es decir, P(PM2.5 \> 10) = 1 – P(PM2.5 ≤ 10).
+
+```{r}
+excprob <- sapply(res$marginals.fitted.values[index],
+FUN = function(marg){1-inla.pmarginal(q = 10, marginal = marg)})
+```
+
+Luego, añadimos las probabilidades de excedencia como una capa en `grid`, y las graficamos con `levelplot()`. En `levelplot()`, establecemos `margin = FALSE` para ocultar los gráficos marginales de los resúmenes de columnas y filas del objeto raster. La Figura muestra las probabilidades de que los niveles de PM2.5 superen los 10 microgramos por metro cúbico. Observamos altas probabilidades en la costa oeste y en la parte sur del país.
+
+```{r}
+grid$excprob <- NA
+grid$excprob[indicespointswithin] <- excprob
+
+levelplot(grid$excprob, margin = FALSE)
+```

@@ -19,6 +19,7 @@ M2-222
 ## Programa
 
 ### Introducción al curso
+[How to learn Geospatial Data Science](https://towardsdatascience.com/how-to-learn-geospatial-data-science-in-2023-441d8386284e)
 
 ### Geospatial Computational Environment
 [Taller Ambiente de trabajo](/Notebooks/01_ComputationalEnvironment.ipynb)  

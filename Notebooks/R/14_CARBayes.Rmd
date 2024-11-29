@@ -1,0 +1,175 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [Jim Clark](https://rpubs.com/jimclark/883880), [CARBayes](https://cran.r-project.org/web/packages/CARBayes/vignettes/CARBayes.pdf), and [CRAN](https://search.r-project.org/CRAN/refmans/CARBayes/html/00Index.html)
+
+# Spatial Generalised Linear Mixed Models for Areal Unit Data: CARBayes
+
+```{r}
+library(spBayes)
+library(maps)
+library(RANN)
+library(gjam)
+library(CARBayes)
+library(CARBayesdata)
+library(mgcv)
+```
+
+```{r}
+#### Set up a square lattice region
+m <- 12
+xEast  <- 1:m
+xNorth <- 1:m
+grid   <- expand.grid(xEast, xNorth)
+n      <- nrow(grid)
+plot( NULL, xlim = c(0, m), ylim = c(0, m), xlab='East', ylab='North' )
+abline(v=grid[,1], h=grid[,2])
+text(grid[,1] - .5, grid[,2] - .5, 1:n, cex=.8)
+```
+
+```         
+Set up distance and neighbourhood (W, based on sharing a common border) matrices
+```
+
+```{r}
+D <- W <- as.matrix(dist(grid))
+W[W != 1] <- 0 
+```
+
+```{r}
+Q <- 3
+x <- matrix( rnorm(Q*n), n, Q )
+x[,1] <- 1
+x2    <- x[,2]
+x3    <- x[,3]
+beta  <- matrix( rnorm(Q), Q, 1)
+sigma <- .1
+```
+
+```{r}
+# simulated based on distance D
+phi <- t( rmvn(1, rep(0,n), 1*exp(-0.1*D) ) )
+y   <- x%*%beta + phi[,2] + rnorm(n, 0, sigma)
+```
+
+```{r}
+form <- as.formula(y ~ x2 + x3)
+
+## Gaussian model
+gaussianModel <- S.CARleroux(formula = form, family  = 'gaussian', W = W, 
+                             burnin = 20000, n.sample = 100000, thin = 10, verbose = F)
+gaussianModel
+```
+
+```{r}
+#autocorrelation parameter
+plot( gaussianModel$samples$rho, bty = 'n' )
+```
+
+```{r}
+#random effect
+fv <- gaussianModel$fitted.values
+mf <- min(fv)
+cc <- fv - mf
+ss <- seq(0, max(cc), length.out=10)
+cc <- findInterval(cc, ss)
+
+colM <- colorRampPalette( c("red","orange","blue"))
+colm <- colM(10)
+
+symbols(x=grid[,1], y=grid[,2], squares = cc*0+1, bg=colm[cc],
+        fg=colm[cc],inches=F, xlab='East', ylab='North')
+```
+
+```{r}
+#no gaussean
+lambda <- exp(x%*%beta + phi[,2] + rnorm(n, 0, sigma))
+y <- rpois(n, lambda)
+
+poissonModel <- S.CARbym(formula=form, family="poisson",
+                         W=W, burnin=20000, n.sample=100000, thin=10, verbose=F)
+poissonModel
+```
+
+##Multilevel model
+
+```{r}
+#### Set up a square lattice region
+x.easting <- 1:10
+x.northing <- 1:10
+Grid <- expand.grid(x.easting, x.northing)
+K <- nrow(Grid)
+```
+
+```{r}
+#### set up distance and neighbourhood (W, based on sharing a common border) matrices
+distance <- as.matrix(dist(Grid))
+W <-array(0, c(K,K))
+W[distance==1] <-1 
+```
+
+```{r}
+#### Generate the number of individuals per area and which individuals to which areas
+n <- sample(5:30, K, replace=TRUE)
+n.total <- sum(n)
+ind.area.temp <- rep(1:K, n)
+ind.area <- sample(ind.area.temp, n.total, replace=FALSE)
+```
+
+```{r}
+#### Generate the covariates and response data
+x1 <- rnorm(n.total)
+x2 <- rnorm(n.total)
+phi <- mvrnorm(n=1, mu=rep(0,K), Sigma=0.4 * exp(-0.1 * distance))
+phi.extend <- phi[ind.area]
+logit <- x1 + x2 + phi.extend
+prob <- exp(logit) / (1 + exp(logit))
+trials <- rep(50,n.total)
+Y <- rbinom(n=n.total, size=trials, prob=prob)
+```
+
+```{r}
+#### Run the model
+formula <- Y ~ x1 + x2
+
+#### Toy example for checking
+model <- S.CARmultilevel(formula=formula, family="binomial", ind.area=ind.area,
+                trials=trials, W=W, burnin=10, n.sample=50)
+
+model
+```
+
+```{r}
+#### Set up a square lattice region
+x.easting <- 1:10
+x.northing <- 1:10
+Grid <- expand.grid(x.easting, x.northing)
+K <- nrow(Grid)
+
+#### set up distance and neighbourhood (W, based on sharing a common border) matrices
+distance <- as.matrix(dist(Grid))
+W <-array(0, c(K,K))
+W[distance==1] <-1 	
+	
+#### Generate the covariates and response data
+x1 <- rnorm(K)
+x2 <- rnorm(K)
+theta <- rnorm(K, sd=0.05)
+phi <- mvrnorm(n=1, mu=rep(0,K), Sigma=0.4 * exp(-0.1 * distance))
+logit <- x1 + x2 + theta + phi
+prob <- exp(logit) / (1 + exp(logit))
+trials <- rep(50,K)
+Y <- rbinom(n=K, size=trials, prob=prob)
+
+
+#### Run the BYM model
+formula <- Y ~ x1 + x2
+## Not run: model <- S.CARbym(formula=formula, family="binomial", trials=trials,
+#W=W, burnin=20000, n.sample=100000)
+## End(Not run)
+
+#### Toy example for checking
+model <- S.CARbym(formula=formula, family="binomial", trials=trials,
+W=W, burnin=20, n.sample=50)
+
+model
+```

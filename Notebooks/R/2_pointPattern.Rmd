@@ -1,0 +1,130 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: 
+
+# Point pattern
+
+```{r}
+library(isdas) # Companion Package for Book An Introduction to Spatial Data Analysis and Statistics
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(spatstat) # Spatial Point Pattern Analysis, Model-Fitting, Simulation, Tests
+```
+
+```{r}
+data("PointPatterns")
+summary(PointPatterns)
+```
+
+```{r}
+ggplot() + geom_point(data = PointPatterns, aes(x = x, y = y)) + 
+  facet_wrap(~ Pattern) +
+  coord_fixed()
+```
+
+```{r}
+summary(filter(PointPatterns, Pattern == "Pattern 1"))
+```
+
+```{r}
+ggplot() + geom_bin2d(data = filter(PointPatterns, Pattern == "Pattern 1"), aes(x = x, y = y),
+             binwidth = c(0.25, 0.25)) +
+             geom_point(data = filter(PointPatterns, Pattern == "Pattern 1"), aes(x = x, y = y)) + 
+             scale_fill_distiller(palette = "RdBu") + 
+             coord_fixed()
+```
+
+```{r}
+Wnd <- owin(c(0,1), c(0,1)) 
+ppp1 <- as.ppp(PointPatterns,Wnd)
+summary(ppp1)
+plot(ppp1)
+```
+
+```{r}
+plot(split.ppp(ppp1)$`Pattern 1`)
+```
+
+```{r}
+quadratcount(split(ppp1),nx = 4,ny = 4)
+
+data("pp0_df")
+data("pp1_df")
+data("pp2_df")
+data("pp3_df")
+data("pp4_df")
+data("pp5_df")
+```
+
+```{r}
+W <- owin(xrange = c(0, 1),yrange = c(0, 1))
+pp0.ppp <- as.ppp(pp0_df,W = W)
+pp1.ppp <- as.ppp(pp1_df, W = W)
+pp2.ppp <- as.ppp(pp2_df, W = W)
+pp3.ppp <- as.ppp(pp3_df, W = W)
+pp4.ppp <- as.ppp(pp4_df, W = W)
+pp5.ppp <- as.ppp(pp5_df, W = W)
+
+PointPatterns.ppp <- as.ppp(PointPatterns, W = W)
+plot(split(PointPatterns.ppp))
+plot(split(PointPatterns.ppp)$"Pattern 4")
+```
+
+```{r}
+#Conteo x cuadrantes
+plot(quadratcount(split(pp0.ppp),nx = 3, ny = 3))
+q_test <- quadrat.test(split(PointPatterns.ppp)$"Pattern 2", nx = 3, ny = 3)
+q_test
+plot(q_test)
+#first number (top left corner) is the number of events in the quadrat. 
+#The second number (top right corner) is the expected number of events for a null landscape. 
+#The third number is a residual, based on the difference between the observed and expected number of events. 
+```
+
+```{r}
+#Kernel density
+kernel_density <- density(split(pp0.ppp),sigma = 0.1)
+plot(kernel_density)
+```
+
+```{r}
+#Vecino mas cercano
+pp0_nn1 <- nndist(split(pp0.ppp)$"Pattern 1")
+ggplot(data = data.frame(dist = pp0_nn1), aes(dist)) + geom_histogram(binwidth = 0.03)
+```
+
+```{r}
+# The function %mark% is used to add a variable (a "mark") to a `ppp` object. In this example, the variable we are adding to "Pattern 1" is the distance from the event to its nearest neighbor, as calculated above
+split(pp0.ppp)$"Pattern 1" %mark% (pp0_nn1) %>% plot(markscale = 1, main = "Stienen diagram")
+```
+
+```{r}
+#G function
+plot(pp1.ppp)
+g_pattern0 <- Gest(split(pp0.ppp)$"Pattern 0", correction = "none")
+plot(g_pattern0)
+```
+
+```{r}
+#empty space map
+plot(pp1.ppp)
+empty_space_map1 <- distmap(pp1.ppp) 
+plot(empty_space_map1)
+```
+
+```{r}
+#F function
+f_pattern1 <- Fest(pp1.ppp, correction = "none")
+plot(f_pattern1)
+```
+
+```{r}
+#K function
+plot(pp3.ppp)
+k_pattern3 <- Kest(pp3.ppp, correction = "none")
+plot(k_pattern3)
+```
+
+```{r}
+env_pp1 <- envelope(pp1.ppp,Gest,nsim = 99,funargs = list(correction = "none"))
+plot(env_pp1)
+```

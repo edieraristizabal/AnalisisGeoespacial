@@ -1,0 +1,240 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**:
+
+# Area Data
+
+```{r}
+library(cartogram) # Create Cartograms with R
+library(isdas) # Companion Package for Book An Introduction to Spatial Data Analysis and Statistics
+library(gridExtra) # Miscellaneous Functions for "Grid" Graphics
+library(plotly) # Create Interactive Web Graphics via 'plotly.js'
+library(sf) # Simple Features for R
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(spdep)
+library(tmap)
+
+```
+
+```{r}
+data("Hamilton_CT")
+summary(Hamilton_CT)
+```
+
+```{r}
+#cloropleta
+ggplot(Hamilton_CT) + geom_sf(aes(fill = cut_number(POPULATION, 5)), color = NA, size = 0.1) +
+  scale_fill_brewer(palette = "YlOrRd") + coord_sf() + labs(fill = "Population")
+```
+
+```{r}
+pop_den.map <- ggplot(Hamilton_CT) + geom_sf(aes(fill = cut_number(POP_DENSITY, 5)), color = "white", size = 0.1) +
+  scale_fill_brewer(palette = "YlOrRd") + labs(fill = "Pop Density")
+pop_den.map
+```
+
+```{r}
+ggplot(Hamilton_CT) + 
+  geom_sf(aes(fill = cut_number((AGE_65_TO_69 +
+                                   AGE_70_TO_74 +
+                                   AGE_75_TO_79 +
+                                   AGE_80_TO_84 +
+                                   AGE_MORE_85) / POPULATION, 5)),
+          color = NA, 
+          size = 0.1) +
+  scale_fill_brewer(palette = "YlOrRd") +
+  labs(fill = "Prop Age 65+")
+```
+## Cartogramas
+
+```{r}
+CT_pop_cartogram <- cartogram_cont(Hamilton_CT, weight = "POPULATION")
+ggplot(CT_pop_cartogram) + 
+  geom_sf(aes(fill = cut_number(POPULATION, 5)), color = "white", size = 0.1) +
+  scale_fill_brewer(palette = "YlOrRd") +
+  labs(fill = "Population")
+```
+## Vecindad
+
+### Vecindad basada en contiguidad
+```{r}
+#Spatial weight matrixes
+Hamilton_CT.nb <- poly2nb(pl = Hamilton_CT, queen = TRUE)
+summary(Hamilton_CT.nb)
+
+Hamilton_CT.w <- nb2listw(Hamilton_CT.nb)
+```
+
+```{r}
+# Plot the geometry of the zoning system
+plot(Hamilton_CT |> st_geometry(), border = "gray")
+
+# Plot the neighbhorhood relationships; this uses two arguments: the `nb` class object and the coordinates of the centroids of the zoning system
+plot(Hamilton_CT.nb, Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+```
+
+```{r}
+id <- 20 # area id
+Hamilton_CT$neighbors <- "other"
+Hamilton_CT$neighbors[id] <- "area"
+Hamilton_CT$neighbors[Hamilton_CT.nb[[id]]] <- "neighbors"
+ggplot(Hamilton_CT) + geom_sf(aes(fill = neighbors)) + theme_bw() +
+  scale_fill_manual(values = c("gray30", "gray", "white"))
+```
+
+```{r}
+nb <- poly2nb(Hamilton_CT, queen = TRUE)
+nblags <- spdep::nblag(neighbours = nb, maxlag = 2)
+```
+
+```{r}
+# Neighbors of first order
+plot(st_geometry(Hamilton_CT), border = "lightgray")
+plot(nblags[[1]], Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+```
+
+```{r}
+# Neighbors of first order
+plot(st_geometry(Hamilton_CT), border = "lightgray")
+plot(nblags[[2]], Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+```
+
+```{r}
+# Neighbors of order 1 until order 2
+nb <- spdep::poly2nb(Hamilton_CT, queen = TRUE)
+nblagsc <- spdep::nblag_cumul(nblags)
+plot(st_geometry(Hamilton_CT), border = "lightgray")
+plot(nblagsc, Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+```
+
+
+### Vecindad KNN
+```{r}
+coo <- st_centroid(Hamilton_CT)
+nb <- knn2nb(knearneigh(coo, k = 3)) # k number nearest neighbors
+plot(st_geometry(Hamilton_CT), border = "lightgray")
+
+plot(nb, Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+
+```
+
+### Vecindad basada en distancias
+
+```{r}
+# Neighbors based on distance
+nb <- dnearneigh(x = st_centroid(Hamilton_CT), d1 = 0, d2 = 10000)
+plot(st_geometry(Hamilton_CT), border = "lightgray")
+plot(nb, Hamilton_CT |> st_centroid() |> st_coordinates(),
+     add = TRUE,
+     col = "red")
+```
+## Matriz de vecindad
+
+```{r}
+nb <- poly2nb(Hamilton_CT, queen = TRUE)
+nbw <- spdep::nb2listw(nb, style = "W")
+nbw$weights[1:3]
+```
+```{r}
+coo <- st_centroid(Hamilton_CT)
+nb <- poly2nb(Hamilton_CT, queen = TRUE)
+dists <- nbdists(nb, coo)
+ids <- lapply(dists, function(x){1/x})
+nbw <- nb2listw(nb, glist = ids, style = "B")
+nbw$weights[1:3]
+```
+
+```{r}
+m2 <- listw2mat(nbw)
+lattice::levelplot(t(m2),
+                   scales = list(y = list(at = c(50, 100, 150),
+                       labels = c(50, 100, 150))))
+```
+
+```{r}
+#Spatial moving average
+POP_DENSITY.sma <- lag.listw(x = Hamilton_CT.w, Hamilton_CT$POP_DENSITY)
+
+Hamilton_CT <- left_join(Hamilton_CT, data.frame(TRACT = Hamilton_CT$TRACT, POP_DENSITY.sma), by = "TRACT")
+```
+
+```{r}
+#Moran Index
+mc <- moran(Hamilton_CT$POP_DENSITY, Hamilton_CT.w, n = 188, S0 =  188)
+mc$I
+```
+
+```{r}
+#Moran plot
+mp <- moran.plot(Hamilton_CT$POP_DENSITY, Hamilton_CT.w)
+```
+
+```{r}
+Hamilton_CT$lmp <- lmoran[, 5] # p-values are in column 5
+
+Hamilton_CT$quadrant <- NA
+# high-high
+Hamilton_CT[(mp$x >= 0 & mp$wx >= 0) & (Hamilton_CT$lmp <= 0.05), "quadrant"]<- 1
+# low-low
+Hamilton_CT[(mp$x <= 0 & mp$wx <= 0) & (Hamilton_CT$lmp <= 0.05), "quadrant"]<- 2
+# high-low
+Hamilton_CT[(mp$x >= 0 & mp$wx <= 0) & (Hamilton_CT$lmp <= 0.05), "quadrant"]<- 3
+# low-high
+Hamilton_CT[(mp$x <= 0 & mp$wx >= 0) & (Hamilton_CT$lmp <= 0.05), "quadrant"]<- 4
+# non-significant
+Hamilton_CT[(Hamilton_CT$lmp > 0.05), "quadrant"] <- 5
+```
+
+```{r}
+tm_shape(Hamilton_CT) + tm_fill(col = "quadrant",
+  labels = c("High-High", "Non-significant")) +
+  tm_legend(text.size = 1)  + tm_borders(alpha = 0.5) +
+  tm_layout(frame = FALSE,  title = "Clusters")  +
+  tm_layout(legend.outside = TRUE)
+```
+
+
+```{r}
+#Moran hypohesis with montecarlo
+moran.test(Hamilton_CT$POP_DENSITY, Hamilton_CT.w)
+```
+
+```{r}
+#Local Moran Index
+lmoran <- localmoran(Hamilton_CT$POP_DENSITY, Hamilton_CT.w)
+summary(lmoran)
+```
+```{r}
+tmap_mode("view")
+Hamilton_CT$lmI <- lmoran[, "Ii"] # local Moran's I
+Hamilton_CT$lmZ <- lmoran[, "Z.Ii"] # z-scores
+
+
+p1 <- tm_shape(Hamilton_CT) +
+  tm_polygons(col = "POP_DENSITY", title = "vble", style = "quantile") +
+  tm_layout(legend.outside = TRUE)
+
+p2 <- tm_shape(Hamilton_CT) +
+  tm_polygons(col = "lmI", title = "Local Moran's I",
+              style = "quantile") +
+  tm_layout(legend.outside = TRUE)
+
+p3 <- tm_shape(Hamilton_CT) +
+  tm_polygons(col = "lmZ", title = "Z-score",
+              breaks = c(-Inf, 1.65, Inf)) +
+  tm_layout(legend.outside = TRUE)
+
+
+tmap_arrange(p1, p2, p3)
+```
+

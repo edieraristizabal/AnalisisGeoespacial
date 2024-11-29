@@ -1,0 +1,187 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [Advanced Spatial Modeling with Stochastic Partial Differential Equations Using R and INLA](https://becarioprecario.bitbucket.io/spde-gitbook/ch-lcox.html).
+
+# log-Gaussian Cox process (LGCP)
+
+Un patrón de puntos registra la ocurrencia de eventos en una región de estudio. Ejemplos típicos incluyen la ubicación de árboles en un bosque o las coordenadas GPS de casos de enfermedades en una región. Las ubicaciones de los eventos observados dependen de un proceso espacial subyacente, que a menudo se modela utilizando una función de intensidad $\lambda(s)$. La función de intensidad mide el número promedio de eventos por unidad de espacio, y puede ser modelada para depender de covariables y otros efectos.
+
+Bajo el supuesto del modelo de proceso de puntos log-Cox, modelamos la log-intensidad del proceso de Cox con un predictor lineal Gaussiano. En este caso, el proceso log-Cox se conoce como un proceso Cox log-Gaussiano (LGCP, Møller, Syversveen y Waagepetersen 1998), y la inferencia se puede realizar utilizando INLA. Un proceso de Cox es simplemente un nombre para un proceso de Poisson con intensidad variable; por lo tanto, utilizamos la verosimilitud de Poisson. El enfoque original utilizado para ajustar estos modelos en INLA (y en otro software) divide la región de estudio en celdas, que forman una cuadrícula, y cuenta el número de puntos en cada una (Møller y Waagepetersen 2003). Estos conteos pueden modelarse utilizando una verosimilitud de Poisson condicionada a un predictor lineal Gaussiano, y se puede usar INLA para ajustar el modelo (Illian, Sørbye y Rue 2012).
+
+En este capítulo nos enfocamos en un nuevo enfoque que considera modelos Stochastic Partial Differential Equation (SPDE) directamente, desarrollado en Simpson et al. (2016). Este enfoque tiene una buena justificación teórica y considera una aproximación directa de la verosimilitud del modelo de proceso de puntos log-Cox. Las observaciones se modelan considerando su ubicación exacta en lugar de agruparlas en celdas. Junto con la flexibilidad para definir una malla, este enfoque puede manejar áreas no rectangulares sin desperdiciar esfuerzo computacional en un área rectangular grande.
+
+```{r}
+library(spatstat)
+library(RandomFields)
+library(rgeos)
+```
+
+La función `rLGCP` utiliza la función `GaussRF()` del paquete **RandomFields** (Schlather et al. 2015) para simular desde el campo espacial sobre una cuadrícula. Hay un parámetro interno para controlar la resolución de la cuadrícula, que especificamos para dar 300 píxeles en cada dirección:
+
+```{r}
+win <- owin(c(0, 3), c(0, 3))
+
+```
+
+Modelamos la intensidad como
+
+$$
+\log(\lambda(s)) = \beta_0 + S(s),
+$$
+
+donde $\beta_0$ es un valor fijo y $S(s)$ es un proceso espacial Gaussiano con covarianza de Matérn y media cero. El parámetro $\beta_0$ puede considerarse como un nivel medio global para la log-intensidad; es decir, la log-intensidad fluctúa alrededor de este valor según el proceso espacial $S(s)$.
+
+Si no hay campo espacial, el número esperado de puntos es $e^{\beta_0}$ multiplicado por el área de la ventana. Esto significa que el número esperado de puntos es:
+
+```{r}
+beta0 <- 3
+exp(beta0) * diff(range(win$x)) * diff(range(win$y))
+```
+
+Por lo tanto, este valor de $\beta_0$ producirá un número razonable de puntos en las siguientes simulaciones. Si establecemos $\beta_0$ demasiado bajo, obtendremos casi ningún punto, y no seremos capaces de producir resultados razonables. También es posible utilizar una función en varias covariables, por ejemplo, un GLM.
+
+En este taller, utilizamos una función de covarianza de Matérn con $\nu = 1$. Los otros parámetros son la varianza y la escala. Los siguientes valores para estos parámetros producirán una intensidad suave del proceso puntual:
+
+```{r}
+sigma2x <- 0.2
+range <- 1.2
+nu <- 1
+```
+
+El valor de $\sigma^2_x$ se establece para hacer que la log-intensidad varíe un poco alrededor de la media, pero siempre dentro de un rango razonable de valores. Además, con estos parámetros $\nu = 1$ y el rango del proceso espacial $S(s)$ es (aproximadamente) 2, lo que produce cambios suaves en la ventana de estudio actual. Valores más pequeños del rango práctico producirán un proceso espacial $S(s)$ (y, a su vez, la intensidad del proceso espacial) que cambia rápidamente en la ventana de estudio. De manera similar, valores muy grandes del rango práctico producirán un proceso espacial casi constante $S(s)$, de modo que la log-intensidad estará muy cerca de $\beta_0$ en todos los puntos de la ventana de estudio.
+
+Los puntos del proceso puntual se simulan de la siguiente manera:
+
+```{r}
+set.seed(1)
+lg.s <- rLGCP('matern', beta0, var = sigma2x,scale = range / sqrt(8), nu = nu, win = win)
+```
+
+Tanto el campo espacial como el patrón de puntos son devueltos. Las coordenadas de los eventos observados del patrón de puntos se pueden obtener de la siguiente manera:
+
+```{r}
+xy <- cbind(lg.s$x, lg.s$y)[, 2:1]
+```
+
+El numero de puntos simulados es:
+
+```{r}
+(n <- nrow(xy))
+```
+
+La exponencial de los valores simulados del campo espacial se devuelve como el atributo Lambda del objeto. A continuación, extraemos los valores de λ(s) y resumimos el log(λ(s)).
+
+```{r}
+Lam <- attr(lg.s, 'Lambda')
+rf.s <- log(Lam$v)
+summary(as.vector(rf.s))
+```
+
+Siguiendo a Simpson et al. (2016), los parámetros del modelo de proceso puntual de Cox log-Gaussiano pueden estimarse con INLA.
+
+INLA es un paquete que permite ajustar una amplia gama de modelos. Utiliza la aproximación de Laplace para ajustar modelos bayesianos de manera mucho más rápida que algoritmos como MCMC (Cadena de Markov Monte Carlo). INLA permite ajustar modelos geoestadísticos a través de ecuaciones diferenciales parciales estocásticas (EDPE). Puedes encontrar más información sobre esto en estos dos Gitbooks:
+
+-   spde-gitbook [<https://becarioprecario.bitbucket.io/spde-gitbook>]
+-   inla-gitbook [<https://becarioprecario.bitbucket.io/inla-gitbook>]
+
+Ajustar un modelo espacial en INLA requiere un conjunto específico de pasos:
+
+1.  **Crear una malla:** Se crea una malla para aproximar el efecto espacial. Esta malla discretiza el espacio de estudio en pequeñas unidades (píxeles o celdas) que permiten modelar la variación espacial continua.
+
+2.  **Crear una matriz de proyección:** Esta matriz vincula las observaciones puntuales a la malla creada. Básicamente, indica a qué celda de la malla pertenece cada observación.
+
+3.  **Definir la ecuación diferencial parcial estocástica (EDPE):** La EDPE describe la relación espacial entre las variables del modelo. Diferentes tipos de EDPE capturan diferentes patrones de dependencia espacial.
+
+4.  **Especificar opcionalmente un conjunto de datos para predicciones:** Si deseas realizar predicciones en ubicaciones no observadas, puedes especificar un conjunto de datos adicional que contenga las coordenadas de los puntos de predicción.
+
+5.  **Apilar los objetos en un objeto stack:** INLA trabaja con un objeto especial llamado "stack" que combina la información de la malla, la matriz de proyección, la EDPE y cualquier otro dato relevante para el modelo.
+
+6.  **Ajustar el modelo:** Una vez creado el objeto stack, se utiliza la función `inla()` del paquete INLA para ajustar el modelo y obtener los resultados de la inferencia bayesiana.
+
+```{r}
+library("devtools")
+devtools::install_github(repo = "https://github.com/hrue/r-inla", ref = "stable", subdir = "rinla", build = FALSE)
+```
+
+```{r}
+inla.upgrade() # for the stable version
+```
+
+```{r}
+library(INLA)
+```
+
+En términos simplificados, construiremos un conjunto de datos ampliado y ejecutaremos una regresión de Poisson con INLA. El conjunto de datos ampliado se compone de una respuesta binaria, con 1 para los puntos observados y 0 para algunas observaciones ficticias. Tanto las observaciones reales como las ficticias tendrán valores "esperados" o pesos asociados que se incluirán en la regresión de Poisson. Esto se explicará paso a paso en las siguientes secciones.
+
+Para una inferencia adecuada con el LGCP, debemos tener cuidado al construir la malla. En el caso particular del análisis de patrones de puntos, generalmente no usamos los puntos de ubicación como nodos de la malla. Necesitamos una malla que cubra la región de estudio; para esto utilizamos `loc.domain` para construir la malla. Además, solo usamos una pequeña primera extensión exterior, pero no una segunda extensión exterior.
+
+```{r}
+loc.d <- 3 * cbind(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0))
+mesh <- inla.mesh.2d(loc.domain = loc.d, offset = c(0.3, 1), 
+  max.edge = c(0.3, 0.7), cutoff = 0.05)
+nv <- mesh$n
+```
+
+El modelo SPDE se definirá considerando los PC-priors derivados en Fuglstad et al. (2018) para los parámetros del modelo: rango y desviación estándar marginal. Estos se definen de la siguiente manera:
+
+```{r}
+spde <- inla.spde2.pcmatern(mesh = mesh,
+  # PC-prior on range: P(practic.range < 0.05) = 0.01
+  prior.range = c(0.05, 0.01),
+  # PC-prior on sigma: P(sigma > 1) = 0.01
+  prior.sigma = c(1, 0.01)) 
+```
+
+El enfoque SPDE para el análisis de patrones puntuales define el modelo en los nodos de la malla. Para ajustar el modelo de proceso puntual de log-Cox, estos puntos se consideran como puntos de integración. El método en Simpson et al. (2016) define que el número esperado de eventos es proporcional al área alrededor del nodo (las áreas de los polígonos en la malla dual). Esto significa que en los nodos de la malla con triángulos más grandes, también hay valores esperados más grandes. El comando `inla.mesh.fem(mesh)$va` proporciona este valor para cada nodo de la malla. Estos valores para los nodos en el dominio interno se pueden usar para calcular la intersección entre los polígonos de la malla dual y el polígono del dominio de estudio. Para ello, utilizamos la función `book.mesh.dual()`:
+
+```{r}
+dmesh <- book.mesh.dual(mesh)
+```
+
+Esta función está disponible en el archivo `spde-book-functions.R` y devuelve la malla dual en un objeto de la clase `SpatialPolygons`. El polígono del dominio se puede convertir en una clase `SpatialPolygons` de la siguiente manera:
+
+```{r}
+domain.polys <- Polygons(list(Polygon(loc.d)), '0')
+domainSP <- SpatialPolygons(list(domain.polys))
+```
+
+El vector de pesos que hemos calculado es exactamente lo que necesitamos usar como exposición (E) en la verosimilitud de Poisson en INLA (con la pequeña modificación de que log(E) se define como cero si E=0. Aumentamos el vector de unos para las observaciones (que representan los puntos) con una secuencia de ceros (que representan los nodos de la malla):
+
+```{r}
+w <- sapply(1:length(dmesh), function(i) {
+  if (gIntersects(dmesh[i, ], domainSP))
+    return(gArea(gIntersection(dmesh[i, ], domainSP)))
+  else return(0)
+})
+```
+
+El vector de exposición y la matriz de proyección se definen. Para los puntos de integración, esta es simplemente una matriz diagonal porque estos lugares son solo los vértices de la malla. La matriz de proyección completa es:
+
+```{r}
+y.pp <- rep(0:1, c(nv, n))
+e.pp <- c(w, rep(0, n)) 
+imat <- Diagonal(nv, rep(1, nv))
+lmat <- inla.spde.make.A(mesh, xy)
+A.pp <- rbind(imat, lmat)
+```
+
+Configuramos el conjunto de datos de la siguiente manera:
+
+```{r}
+stk.pp <- inla.stack(
+  data = list(y = y.pp, e = e.pp), 
+  A = list(1, A.pp),
+  effects = list(list(b0 = rep(1, nv + n)), list(i = 1:nv)),
+  tag = 'pp')
+```
+
+Las marginales posteriores para todos los parámetros del modelo se obtienen ajustando el modelo con INLA:
+
+```{r}
+pp.res <- inla(y ~ 0 + b0 + f(i, model = spde), 
+  family = 'poisson', data = inla.stack.data(stk.pp), 
+  control.predictor = list(A = inla.stack.A(stk.pp)), 
+  E = inla.stack.data(stk.pp)$e)
+
+pp.res$summary.hyperpar
+```

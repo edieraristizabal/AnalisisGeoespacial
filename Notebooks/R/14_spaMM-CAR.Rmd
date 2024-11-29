@@ -1,0 +1,158 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-1-spamm-vs-glmmtmb/) by Lionel Hertzog
+
+# Spatial Generalised Linear Mixed Models for Areal Unit Data: spaMM
+
+## Modelo no espacial
+
+A continuación se presenta un ejemplo donde incluso si hay un patrón espacial en los datos, esto no significa que deban usarse modelos de regresión espacial. En algunos casos, los patrones espaciales en la variable respuesta son generados por patrones espaciales presentes en las covariables, como el gradiente de temperatura, la elevación, etc. Una vez que tomamos en cuenta el efecto de estas covariables, los patrones espaciales en la variable respuesta desaparecen.
+
+```{r}
+# load libraries
+library(tidyverse)
+library(gridExtra)
+library(NLMR)
+library(DHARMa)
+
+# simulate a random temperature gradient
+temp <- nlm_distancegradient(ncol = 100, nrow = 100, origin = c(1,10,1,10), rescale = TRUE)
+
+# extract the temperature values at 100 random points
+dat <- data.frame(x = runif(100,0,100), y = runif(100,0,100))
+dat$temperature <- raster::extract(temp, dat)
+
+# simulate tree height
+dat$height <- 20 + 35 * dat$temperature + rnorm(100)
+
+# plot spatial pattern in tree height
+ggplot(dat, aes(x = x, y = y, size = height)) +
+  geom_point() +
+  scale_size_continuous(range = c(1,10))
+```
+
+```{r}
+# fit a non-spatial model
+m_non <- lm(height ~ temperature, dat)
+```
+
+```{r}
+# formal test
+sims <- simulateResiduals(m_non)
+testSpatialAutocorrelation(sims, x = dat$x, y = dat$y, plot = FALSE)
+```
+
+## Modelo espacial
+
+```{r}
+library(geoR)
+library(viridis)
+data(ca20)
+# put this in a data frame
+dat <- data.frame(x = ca20$coords[,1], y = ca20$coords[,2], calcium = ca20$data, elevation = ca20$covariate[,1], region = factor(ca20$covariate[,2]))
+
+# plot the data
+ggplot(dat, aes(x=x, y = y, color =calcium, shape = region)) +
+  geom_point() +
+  scale_color_viridis(option = "A")
+```
+
+```{r}
+# fit a no-spatial model
+m_lm <- lm(calcium ~ elevation + region, dat)
+# test for spatial autocorrelation
+sims <- simulateResiduals(m_lm)
+testSpatialAutocorrelation(sims, dat$x, dat$y, plot = FALSE)
+```
+
+```{r}
+library(spaMM)
+# fit the model
+m_spamm <- fitme(calcium ~ elevation + region + Matern(1 | x + y), data = dat, family = "gaussian") # this take a bit of time
+# model summary
+summary(m_spamm)
+```
+
+Hay dos salidas principales de interés aquí: la primera son los **efectos fijos (beta)**, que son los parámetros de regresión estimados (pendientes). Luego, el parámetro de correlación **nu** y **rho** que representan la fuerza y la velocidad de decaimiento del efecto espacial. Podemos convertir esto en el efecto de correlación espacial real al graficar la correlación estimada entre dos ubicaciones en función de su distancia.
+
+Aquí desglosamos un poco más la terminología:
+
+-   **Efectos fijos (beta):** En este contexto, los efectos fijos se refieren a los coeficientes estimados en la regresión lineal. Representan el cambio promedio en la variable respuesta por unidad de cambio en una variable predictora, suponiendo que todas las demás variables permanecen constantes.
+-   **Parámetro de correlación nu (nu):** Nu es un parámetro que controla la fuerza de la autocorrelación espacial. Un valor de nu cercano a 1 indica una autocorrelación espacial fuerte, mientras que un valor cercano a 0 indica una autocorrelación espacial débil o inexistente.
+-   **Parámetro de correlación rho (rho):** Rho es otro parámetro que controla la autocorrelación espacial, pero también afecta la velocidad a la que la correlación decae con la distancia. Un valor de rho positivo indica una autocorrelación espacial positiva (ubicaciones cercanas tienen valores similares), mientras que un valor negativo indica una autocorrelación espacial negativa (ubicaciones cercanas tienen valores diferentes). El valor absoluto de rho determina la rapidez con que la correlación decae con la distancia. Un valor cercano a 1 indica un decaimiento lento, mientras que un valor cercano a 0 indica un decaimiento rápido.
+
+En resumen, el análisis proporciona información sobre la relación entre las variables predictoras y la variable respuesta, teniendo en cuenta la autocorrelación espacial. Los efectos fijos (beta) indican la fuerza de las relaciones lineales, mientras que los parámetros nu y rho cuantifican la autocorrelación espacial y su decaimiento con la distancia. Para visualizar completamente el efecto de correlación espacial, se recomienda graficar la correlación estimada entre dos ubicaciones en función de su distancia.
+
+```{r}
+dd <- dist(dat[,c("x","y")])
+mm <- MaternCorr(dd, nu = 0.43, rho = 0.01)
+plot(as.numeric(dd), as.numeric(mm), xlab = "Distance between pairs of location [in m]", ylab = "Estimated correlation")
+```
+
+```{r}
+sims <- simulateResiduals(m_spamm)
+plot(sims)
+```
+
+```{r}
+# the effect of elevation
+newdat <- expand.grid(x = 5000, y = 5200, elevation = seq(3, 7, length.out = 10), region = factor(1, levels = c(1:3)))
+
+newdat$calcium <- as.numeric(predict(m_spamm, newdat, re.form = NA)) # re.form = NA used to remove spatial effects
+newdat$calcium <- newdat$calcium + mean(c(0,fixef(m_spamm)[3:4])) # to remove region effect
+# get 95% confidence intervals around predictions
+newdat <- cbind(newdat, get_intervals(m_spamm, newdata = newdat, intervals = "fixefVar", re.form = NA) + mean(c(0,fixef(m_spamm)[3:4])))
+
+
+gg1 <- ggplot(dat, aes(x = elevation, y = calcium)) +
+  geom_point() +
+  geom_path(data = newdat) +
+  geom_ribbon(data = newdat, aes(ymin = fixefVar_0.025, ymax = fixefVar_0.975), alpha = 0.2)
+
+# now for region effect
+newdat <- data.frame(x = 5000, y = 5200, elevation = mean(dat$elevation), region = factor(1:3)) # averaging out elevation effect
+newdat$calcium <- as.numeric(predict(m_spamm, newdat, re.form = NA))
+# get 95% CI
+newdat <- cbind(newdat,get_intervals(m_spamm, newdata = newdat, intervals = "fixefVar", re.form = NA))
+
+gg2 <- ggplot(dat, aes(x = region, y = calcium)) +
+  geom_jitter() +
+  geom_point(data = newdat, color = "red", size = 2) +
+  geom_linerange(data = newdat, aes(ymin = fixefVar_0.025, ymax = fixefVar_0.975), color = "red")
+
+# plot together
+grid.arrange(gg1, gg2, ncol = 2)
+```
+
+Ahora podemos predecir el efecto de la elevación y la región sobre la variable respuesta, teniendo en cuenta los efectos espaciales.
+
+Esto significa que podemos utilizar el modelo de regresión espacial para estimar el impacto de la elevación y la región en la variable de respuesta, incluso después de considerar la autocorrelación espacial entre las mediciones. Al controlar los efectos espaciales, podemos aislar el efecto directo de la elevación y la región en la variable que estamos estudiando.
+
+```{r}
+library(fields)
+library(raster)
+# derive a DEM
+elev_m <- Tps(dat[,c("x","y")], dat$elevation)
+```
+
+```{r}
+r <- raster(xmn = 4950, xmx = 5970, ymn = 4800, ymx = 5720, resolution = 10)
+elev <- interpolate(r, elev_m)
+
+# for the region info use the limits given in ca20
+pp <- SpatialPolygons(list(Polygons(list(Polygon(ca20$reg1)), ID = "reg1"),Polygons(list(Polygon(ca20$reg2)), ID = "reg2"), Polygons(list(Polygon(ca20$reg3)), ID = "reg3")))
+region <- rasterize(pp, r)
+
+# predict at any location
+newdat <- expand.grid(x = seq(4960, 5960, length.out = 50), y = seq(4830, 5710, length.out = 50))
+newdat$elevation <- extract(elev, newdat[,1:2])
+newdat$region <- factor(extract(region, newdat[,1:2]))
+# remove NAs
+newdat <- na.omit(newdat)
+# predict
+newdat$calcium <- as.numeric(predict(m_spamm, newdat))
+
+(gg_spamm <- ggplot(newdat,aes(x=x, y=y, fill = calcium)) +
+  geom_raster() +
+  scale_fill_viridis())
+```

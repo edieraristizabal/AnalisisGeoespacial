@@ -1,0 +1,396 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [UCLA](https://stats.oarc.ucla.edu/r/dae/poisson-regression/).
+
+```{r}
+library(spatstat)
+library(sf)
+library(sp)
+library(tidyverse)
+library(cowplot)
+library(datasets)
+library(jtools)
+library(broom)
+library(ggstance)
+library(sandwich)
+```
+
+```{r}
+# Install the package if not already installed
+install.packages("ggstance")
+```
+
+```{r}
+# Simulate realization of a cox process
+genDat_cox <- function(b0, b1, dim, noise_mean = NULL, noise_sd = NULL, plotdat = TRUE){
+  
+  # Define the window of interest
+  win <- owin(c(0,dim[1]), c(0,dim[2]))
+  
+  # set number of pixels to simulate an environmental covariate
+  spatstat.options(npixel=c(dim[1],dim[2]))
+  
+  y0 <- seq(win$yrange[1], win$yrange[2],
+            length=spatstat.options()$npixel[2])
+  x0 <- seq(win$xrange[1], win$xrange[2],
+            length=spatstat.options()$npixel[1])
+  multiplier <- 1/dim[2]
+  
+  # Make the environmental covariate
+  gridcov <- outer(x0,y0, function (x,y) multiplier*y + 0*x)
+  
+  # Set the parameter values
+  beta0 <- b0
+  beta1 <- b1
+  
+  if(!is.null(noise_mean) && !is.null(noise_sd)){
+    noise_mean <- noise_mean
+    noise_sd <- noise_sd
+  }
+  
+  else{
+    noise_mean = 0
+    noise_sd = 1
+  }
+  
+  # Create 'im' objects for simulating the point process
+  # First we create a random field (just noise), then the intensity
+  # field made of our linear predictors and we sum up the two images
+  # to get the intensity of the point process
+  noise <- rnoise(rnorm, mean = noise_mean, sd = noise_sd, w = win) 
+  linear <- im(b0 + b1*gridcov, xrange = c(0,20), yrange = c(0,20))
+  intensity <- noise + linear
+  
+  # Simulate the point pattern
+  pp <- rpoispp(exp(intensity), xcol=x0, yrow=y0)
+  qcounts <- quadratcount(pp, ny=dim[1], nx=dim[2])
+  dens <- density(pp)
+  Lambda <- as.vector(t(qcounts))
+  
+  if(plotdat == TRUE){
+    par(mfrow=c(2,2), mar=c(2,2,1,1), mgp=c(1,0.5,0))
+    plot(noise, main = 'White noise')
+    plot(im(gridcov), main = 'Covariate')
+    plot(intensity, main = 'log Intensity')
+    plot(dens, main = 'Intensity of the point pattern')
+  }
+  # Return a list with which I can play with
+  return(list(Lambda = Lambda, pp = pp, gridcov = gridcov))
+}
+```
+
+```{r}
+# Set a seed
+set.seed(123)
+
+# We now have a double stochastic process where the intensity is random
+b0 <- 2
+b1 <- 3
+dim <- c(20,20)
+noise_mean <- 1
+noise_sd <- 0.5
+
+# Generate data
+pp <- genDat_cox(b0, b1, dim, noise_mean, noise_sd)
+```
+
+```{r}
+# Simulate realization of a Log-Gaussian Cox process
+genDat_lgcp <- function(b0, b1, dim, var, scale, plotdat = TRUE){
+  
+  # Define the window of interest
+  win <- owin(c(0,dim[1]), c(0,dim[2]))
+  
+  # set number of pixels to simulate an environmental covariate
+  spatstat.options(npixel=c(dim[1],dim[2]))
+  
+  y0 <- seq(win$yrange[1], win$yrange[2],
+            length=spatstat.options()$npixel[2])
+  x0 <- seq(win$xrange[1], win$xrange[2],
+            length=spatstat.options()$npixel[1])
+  multiplier <- 1/dim[2]
+  
+  # Make the environmental covariate
+  gridcov <- outer(x0,y0, function (x,y) multiplier*y + 0*x)
+  
+  # Set the parameter values
+  beta0 <- b0
+  beta1 <- b1
+  var <- var
+  scale <- scale
+  
+  # Simulate the LGCP, here we define the covariance structure as being exponential
+  GP <- rLGCP(model="exp", 
+              mu=im(beta0 + beta1*gridcov, xcol=x0, yrow=y0), 
+              var=var, scale=scale, win = win)
+  
+  # Get the realisation of the LGCP as an sf object - easier to handle
+  g <- as.ppp(GP)
+  GP_sp <- as.SpatialPoints.ppp(g)
+  GP_sf <- st_as_sf(GP_sp)
+  
+  # Get the result in a grid
+  grid <- st_make_grid(GP_sf, n = dim, what = 'polygons') %>% 
+    st_as_sf() %>% 
+    mutate(Lambda = lengths(st_intersects(., GP_sf)),
+           cov = as.vector(t(gridcov)))
+  
+  if(plotdat == TRUE){
+    par(mfrow=c(1,2), mar=c(2,2,1,1), mgp=c(1,0.5,0))
+    plot(grid["Lambda"], main = 'Intensity of the point pattern')
+  }
+  # Return a list with which I can play with
+  return(grid)
+}
+
+```
+
+```{r}
+b0 <- 2
+b1 <- 3
+var <- 0.5
+scale <- 0.4
+dim = c(10,10)
+genDat_lgcp(b0, b1, dim, var, scale, plotdat = TRUE)
+```
+
+## Modelos Lineales Generalizados (GLM) para Poisson
+
+Los GLM son modelos en los que las variables de respuesta siguen una distribución distinta a la distribución normal. Esto contrasta con los modelos de regresión lineal, en los que las variables de respuesta siguen una distribución normal. Esto se debe a que los Modelos Lineales Generalizados tienen variables de respuesta que son categóricas, como Sí, No; o Grupo A, Grupo B, y, por lo tanto, no varían de $-\infty$ a $+\infty$. Por lo tanto, la relación entre las variables de respuesta y las variables predictoras puede no ser lineal. En GLM:
+
+$$y_i = \alpha + \beta_1x_{1i} + \beta_2x_{2i} + ... + \beta_px_{pi} + e_i \quad \text{para } i = 1, 2, ... n$$
+
+La variable de respuesta $y_i$ se modela mediante una función lineal de las variables predictoras y algún término de error.
+
+Un modelo de Regresión de Poisson es un Modelo Lineal Generalizado (GLM) que se utiliza para modelar datos de conteo y tablas de contingencia. El resultado $Y$ (conteo) es un valor que sigue la distribución de Poisson. Se asume que el logaritmo de los valores esperados (media) se puede modelar en una forma lineal mediante algunos parámetros desconocidos.
+
+Para transformar la relación no lineal en una forma lineal, se utiliza una función de enlace que es el logaritmo para la Regresión de Poisson. Por esta razón, un modelo de Regresión de Poisson también se llama modelo log-lineal. La forma matemática general del modelo de Regresión de Poisson es:
+
+\$ \log(y) = \alpha + \beta\_1x_1 + \beta\_2x_2 + ... + \beta\_px_p\
+\$
+
+Donde,
+
+-   $y$: Es la variable de respuesta
+-   $\alpha$ y $\beta$: Son coeficientes numéricos, donde $\alpha$ es la intersección, a veces $\alpha$ también se representa por $\beta_0$, que es lo mismo
+-   $x$: Es la variable predictora o explicativa
+
+Los coeficientes se calculan utilizando métodos como la Estimación de Máxima Verosimilitud (MLE) o la cuasi-verosimilitud máxima.
+
+Consideremos una ecuación con una variable predictora y una variable de respuesta:
+
+$\log(y) = \alpha + \beta(x)$
+
+Esto es equivalente a:
+
+$y = e^{(\alpha + \beta(x))} = e^{\alpha} + e^{\beta} \cdot x$
+
+**Nota**: En los modelos de Regresión de Poisson, las variables predictoras o explicativas pueden ser una mezcla de valores numéricos o categóricos.
+
+Una de las características más importantes para la distribución de Poisson y la Regresión de Poisson es la equidispersión, lo que significa que la media y la varianza de la distribución son iguales.
+
+La varianza mide la dispersión de los datos. Es el "promedio de las diferencias al cuadrado respecto a la media". La varianza (Var) es igual a 0 si todos los valores son idénticos. Cuanto mayor sea la diferencia entre los valores, mayor será la varianza. La media es el promedio de los valores de un conjunto de datos. El promedio es la suma de los valores dividida por el número de valores.
+
+Digamos que la media ($\mu$) está denotada por $E(X)$:
+
+$E(X) = \mu$
+
+Para la Regresión de Poisson, la media y la varianza están relacionadas de la siguiente manera:
+
+$\text{var}(X) = \sigma^2E(X)$
+
+Donde $\sigma^2$ es el parámetro de dispersión. Dado que $\text{var}(X) = E(X)$ (varianza = media) debe cumplirse para que el modelo de Poisson se ajuste completamente, $\sigma^2$ debe ser igual a 1.
+
+Cuando la varianza es mayor que la media, eso se llama sobredispersión y es mayor que 1. Si es menor que 1, se conoce como subdispersión.
+
+## Ejemplo 1
+
+Este conjunto de datos analiza cuántas roturas de urdimbre ocurrieron en diferentes tipos de telares por telar, por una longitud fija de hilo.
+
+```{r}
+data <- warpbreaks
+columns <- names(data) # Extract column names from dataframe
+columns # show columns
+```
+
+Hay mediciones en 9 telares de cada uno de los seis tipos de urdimbre, para un total de 54 entradas en el conjunto de datos.
+
+Veamos cómo está estructurado el conjunto de datos usando el comando `ls.str()`:
+
+```{r}
+ls.str(warpbreaks)
+```
+
+A partir de lo anterior, podemos ver tanto los tipos como los niveles presentes en los datos. Lee esto para aprender un poco más sobre los factores en R.
+
+Ahora trabajaremos con el dataframe de datos. Recuerda, con un modelo de Distribución de Poisson estamos tratando de averiguar cómo algunas variables predictoras afectan a una variable de respuesta. Aquí, `breaks` es la variable de respuesta y `wool` y `tension` son las variables predictoras.
+
+Podemos visualizar la continuidad de los datos de la variable dependiente `breaks` creando un histograma:
+
+```{r}
+hist(data$breaks)
+```
+
+Claramente, los datos no tienen la forma de una curva de campana como en una distribución normal.
+
+Veamos la media (`mean()`) y la varianza (`var()`) de la variable dependiente:
+
+```{r}
+mean(data$breaks) # calculate mean
+var(data$breaks) # calculate variance
+```
+
+La varianza es mucho mayor que la media, lo que sugiere que tendremos sobredispersión en el modelo.
+
+Vamos a ajustar el modelo de Poisson utilizando el comando `glm()`.
+
+```{r}
+# model poisson regression using glm()
+poisson.model <- glm(breaks ~ wool + tension, data, family = poisson(link = "log"))
+summary(poisson.model)
+```
+
+Se nos ha proporcionado mucha información, ahora necesitamos interpretarla. La primera columna llamada *Estimate* muestra los valores de los coeficientes de $\alpha$ (intercepto), $\beta_1$, y así sucesivamente. A continuación, se presenta la interpretación de las estimaciones de los parámetros:
+
+-   $exp(\alpha) =$ efecto sobre la media $\mu$, cuando $X = 0$.
+-   $exp(\beta) =$ con cada aumento unitario en $X$, la variable predictora tiene un efecto multiplicativo de $exp(\beta)$ sobre la media de $Y$, es decir, $\mu$.
+-   Si $\beta = 0$, entonces $exp(\beta) = 1$, y el conteo esperado es $exp(\alpha)$, y $Y$ y $X$ no están relacionados.
+-   Si $\beta > 0$, entonces $exp(\beta) > 1$, y el conteo esperado es $exp(\beta)$ veces mayor que cuando $X = 0$.
+-   Si $\beta < 0$, entonces $exp(\beta) < 1$, y el conteo esperado es $exp(\beta)$ veces menor que cuando $X = 0$.
+
+Si `family = poisson` se mantiene en `glm()`, estos parámetros se calculan utilizando la Estimación de Máxima Verosimilitud (MLE).
+
+R trata las variables categóricas como variables ficticias (*dummy variables*). Las variables categóricas, también llamadas variables indicadoras, se convierten en variables ficticias asignando a los niveles en la variable una representación numérica. La regla general es que si hay $k$ categorías en una variable de factor, la salida de `glm()` tendrá $k-1$ categorías con 1 restante como categoría base.
+
+Podemos ver en el resumen anterior que para `wool`, 'A' se ha hecho la base y no se muestra en el resumen. De manera similar, para `tension` 'L' se ha hecho la categoría base.
+
+Para ver qué variables explicativas tienen un efecto sobre la variable de respuesta, observaremos los valores *p*. Si el *p* es menor que 0.05, entonces la variable tiene un efecto sobre la variable de respuesta. En el resumen anterior, podemos ver que todos los valores *p* son menores que 0.05, por lo tanto, ambas variables explicativas (`wool` y `tension`) tienen un efecto significativo en `breaks`. Observa cómo la salida de R utiliza \*\*\* al final de cada variable. El número de estrellas indica la significancia.
+
+Antes de comenzar a interpretar los resultados, verifiquemos si el modelo tiene sobredispersión o subdispersión. Si la Desviación Residual es mayor que los grados de libertad, entonces existe sobredispersión. Esto significa que las estimaciones son correctas, pero los errores estándar (desviación estándar) son incorrectos y no son tenidos en cuenta por el modelo.
+
+La desviación nula (*Null deviance*) muestra qué tan bien la variable de respuesta es predicha por un modelo que incluye solo el intercepto (media general), mientras que la residual lo hace con la inclusión de variables independientes. Arriba, podemos ver que la adición de 3 (53-50 =3) variables independientes disminuyó la desviación a 210.39 desde 297.37. Una mayor diferencia en los valores significa un mal ajuste.
+
+Entonces, para tener un error estándar más correcto, podemos usar un modelo *quasi-poisson*.
+
+Una vez que se ha creado el modelo, podemos usar `predict(model, data, type)` para predecir resultados utilizando nuevos *dataframes* que contengan datos diferentes a los datos de entrenamiento. Veamos un ejemplo.
+
+```{r}
+# make a dataframe with new data
+newdata = data.frame(wool = "B", tension = "M")
+
+# use 'predict()' to run model on new data
+predict(poisson.model, newdata = newdata, type = "response")
+```
+
+*jtools* proporciona `plot_summs()` y `plot_coefs()` para visualizar el resumen del modelo y también nos permite comparar diferentes modelos con *ggplot2*.
+
+```{r}
+plot_summs(poisson.model, scale = TRUE, exp = TRUE)
+```
+
+## Ejemplo 2
+
+En este ejemplo, `num_awards` es la variable de resultado e indica el número de premios obtenidos por los estudiantes en una escuela secundaria en un año. `math` es una variable predictora continua que representa las puntuaciones de los estudiantes en su examen final de matemáticas, y `prog` es una variable predictora categórica con tres niveles que indica el tipo de programa en el que estaban inscritos los estudiantes. Está codificado como 1 = “General”, 2 = “Académico” y 3 = “Vocacional”. Comencemos cargando los datos y observando algunas estadísticas descriptivas.
+
+```{r}
+p <- read.csv("https://stats.idre.ucla.edu/stat/data/poisson_sim.csv")
+p <- within(p, {
+  prog <- factor(prog, levels=1:3, labels=c("General", "Academic", 
+                                                     "Vocational"))
+  id <- factor(id)
+})
+summary(p)
+```
+
+Cada variable tiene 200 observaciones válidas y sus distribuciones parecen bastante razonables. La media y la varianza incondicional de nuestra variable de resultado no son extremadamente diferentes. Nuestro modelo asume que estos valores, condicionados a las variables predictoras, serán iguales (o al menos aproximadamente iguales).
+
+Podemos usar la función `tapply` para mostrar las estadísticas resumidas por tipo de programa. La tabla a continuación muestra el número promedio de premios por tipo de programa y sugiere que el tipo de programa es un buen candidato para predecir el número de premios, nuestra variable de resultado, ya que el valor medio del resultado parece variar según `prog`. Además, las medias y varianzas dentro de cada nivel de `prog`—las medias y varianzas condicionales—son similares. Se traza un histograma condicional separado por tipo de programa para mostrar la distribución.
+
+```{r}
+with(p, tapply(num_awards, prog, function(x) {
+  sprintf("M (SD) = %1.2f (%1.2f)", mean(x), sd(x))
+}))
+```
+
+```{r}
+ggplot(p, aes(num_awards, fill = prog)) +
+  geom_histogram(binwidth=.5, position="dodge")
+```
+
+A continuación, se presenta una lista de algunos métodos de análisis que puede haber encontrado. Algunos de los métodos enumerados son bastante razonables, mientras que otros han caído en desuso o tienen limitaciones.
+
+-   **Regresión de Poisson** – La regresión de Poisson se usa a menudo para modelar datos de conteo. La regresión de Poisson tiene una serie de extensiones útiles para modelos de conteo.
+
+-   **Regresión binomial negativa** – La regresión binomial negativa se puede usar para datos de conteo sobre-dispersos, es decir, cuando la varianza condicional excede la media condicional. Se puede considerar como una generalización de la regresión de Poisson, ya que tiene la misma estructura de media que la regresión de Poisson y un parámetro adicional para modelar la sobre-dispersión. Si la distribución condicional de la variable de resultado está sobre-dispersada, los intervalos de confianza para los coeficientes en la regresión binomial negativa probablemente serán más amplios en comparación con los de una regresión de Poisson.
+
+-   **Modelo de regresión inflacionado por ceros** – Los modelos inflacionados por ceros intentan tener en cuenta los ceros en exceso. En otras palabras, se piensa que existen dos tipos de ceros en los datos: “ceros verdaderos” y “ceros en exceso”. Los modelos inflacionados por ceros estiman dos ecuaciones simultáneamente, una para el modelo de conteo y otra para los ceros en exceso.
+
+-   **Regresión OLS** – Las variables de resultado de conteo a veces se transforman logarítmicamente y se analizan utilizando regresión OLS. Muchos problemas surgen con este enfoque, incluyendo la pérdida de datos debido a valores indefinidos generados al tomar el logaritmo de cero (lo cual es indefinido) y estimaciones sesgadas.
+
+En este punto, estamos listos para realizar nuestro análisis del modelo de Poisson utilizando la función `glm`. Ajustamos el modelo y lo almacenamos en el objeto `m1`, obteniendo al mismo tiempo un resumen del modelo.
+
+```{r}
+summary(m1 <- glm(num_awards ~ prog + math, family="poisson", data=p))
+```
+
+Cameron y Trivedi (2009) recomendaron usar errores estándar robustos para las estimaciones de parámetros con el fin de controlar las ligeras violaciones de la suposición de distribución de que la varianza es igual a la media. Usamos el paquete `sandwich` de R a continuación para obtener los errores estándar robustos y calcular los valores p en consecuencia. Junto con los valores p, también hemos calculado el intervalo de confianza del 95% usando las estimaciones de parámetros y sus errores estándar robustos.
+
+```{r}
+cov.m1 <- vcovHC(m1, type="HC0")
+std.err <- sqrt(diag(cov.m1))
+r.est <- cbind(Estimate= coef(m1), "Robust SE" = std.err,
+"Pr(>|z|)" = 2 * pnorm(abs(coef(m1)/std.err), lower.tail=FALSE),
+LL = coef(m1) - 1.96 * std.err,
+UL = coef(m1) + 1.96 * std.err)
+
+r.est
+```
+
+La salida anterior indica que la tasa de incidencia para `prog = "Academic"` es 2.96 veces la tasa de incidencia para el grupo de referencia (`prog = "General"`). De manera similar, la tasa de incidencia para `prog = "Vocational"` es 1.45 veces la tasa de incidencia para el grupo de referencia, manteniendo constantes las demás variables. El cambio porcentual en la tasa de incidencia de `num_awards` es del 7% por cada aumento unitario en `math`. Para obtener información adicional sobre las diversas métricas en las que se pueden presentar los resultados y la interpretación de estas, consulte "Regression Models for Categorical Dependent Variables Using Stata, Second Edition" de J. Scott Long y Jeremy Freese (2006).
+
+A veces, podríamos querer ver las medias marginales esperadas. Por ejemplo, ¿cuáles son los conteos esperados para cada tipo de programa manteniendo el puntaje de matemáticas en su media general? Para responder a esta pregunta, podemos utilizar la función `predict`. En primer lugar, crearemos un pequeño conjunto de datos para aplicar la función `predict`.
+
+```{r}
+(s1 <- data.frame(math = mean(p$math),
+  prog = factor(1:3, levels = 1:3, labels = levels(p$prog))))
+```
+
+```{r}
+predict(m1, s1, type="response", se.fit=TRUE)
+```
+
+En la salida anterior, vemos que el número de eventos predicho para el nivel 1 de `prog` es aproximadamente 0.21, manteniendo `math` en su media. El número de eventos predicho para el nivel 2 de `prog` es mayor, con 0.62, y el número de eventos predicho para el nivel 3 de `prog` es aproximadamente 0.31. Las razones de estos conteos predichos ($\frac{0.62}{0.21} = 2.96$, $\frac{0.31}{0.21} = 1.45$) coinciden con lo que vimos al observar el IRR.
+
+También podemos graficar el número de eventos predichos con los comandos a continuación. El gráfico indica que se predicen más premios para aquellos en el programa académico (`prog = 2`), especialmente si el estudiante tiene una alta puntuación en matemáticas. El menor número de premios predichos es para los estudiantes en el programa general (`prog = 1`). El gráfico superpone las líneas de valores esperados sobre los puntos reales, aunque se añadió una pequeña cantidad de ruido aleatorio vertical para reducir el sobreapilamiento.
+
+```{r}
+## calculate and store predicted values
+p$phat <- predict(m1, type="response")
+
+## order by program and then by math
+p <- p[with(p, order(prog, math)), ]
+
+## create the plot
+ggplot(p, aes(x = math, y = phat, colour = prog)) +
+  geom_point(aes(y = num_awards), alpha=.5, position=position_jitter(h=.2)) +
+  geom_line(size = 1) +
+  labs(x = "Math Score", y = "Expected number of awards")
+```
+
+Los siguientes puntos se deben considerar en este tipo de analisis:
+
+Cuando parece haber un problema de dispersión, primero debemos verificar si nuestro modelo está especificado correctamente, como en el caso de variables omitidas y formas funcionales. Por ejemplo, si omitimos la variable predictora `prog` en el ejemplo anterior, nuestro modelo podría parecer tener un problema de sobre-dispersión. En otras palabras, un modelo mal especificado podría presentar un síntoma como un problema de sobre-dispersión.
+
+Suponiendo que el modelo esté correctamente especificado, se debe verificar la suposición de que la varianza condicional es igual a la media condicional. Existen varias pruebas, incluido el test de razón de verosimilitud del parámetro de sobre-dispersión $\alpha$ al ejecutar el mismo modelo usando una distribución binomial negativa. El paquete `pscl` en R (Political Science Computational Laboratory, Stanford University) proporciona muchas funciones para datos binomiales y de conteo, incluido `odTest` para probar la sobre-dispersión.
+
+Una causa común de la sobre-dispersión es el exceso de ceros, que a su vez es generado por un proceso adicional de generación de datos. En esta situación, se debe considerar un modelo inflado de ceros.
+
+Si el proceso de generación de datos no permite ceros (como el número de días pasados en el hospital), entonces un modelo truncado en cero puede ser más apropiado.
+
+Los datos de conteo a menudo tienen una variable de exposición, que indica la cantidad de veces que el evento podría haber ocurrido. Esta variable debe ser incorporada en un modelo de Poisson utilizando la opción `offset`.
+
+La variable de resultado en una regresión de Poisson no puede tener números negativos, y la exposición no puede tener ceros.
+
+Existen muchas medidas diferentes del pseudo-R-cuadrado. Todas intentan proporcionar información similar a la proporcionada por el R-cuadrado en la regresión OLS, aunque ninguna de ellas puede ser interpretada exactamente como el R-cuadrado en la regresión OLS. Para una discusión de varios pseudo-R-cuadrados, consulte Long y Freese (2006) o nuestra página de FAQ ¿Qué son los pseudo R-cuadrados?.
+
+La regresión de Poisson se estima mediante estimación de máxima verosimilitud. Generalmente requiere un tamaño de muestra grande.

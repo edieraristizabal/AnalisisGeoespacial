@@ -1,0 +1,161 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**:
+
+Imprimir
+
+```{r}
+#comentario: Por qué sale error?
+print(Hello world)
+```
+
+```{r}
+print("Hello World")
+```
+
+```{r}
+HelloWorld=3
+#Cual es el resultado del siguiente print y por que?
+print(HelloWorld)
+```
+
+Cual es el error en este caso?
+
+```{r}
+Hello World=3
+print(Hello World)
+```
+
+El simbolo para multiplicar en `R` es `*`
+
+```{r}
+2 * 3
+```
+
+Ojo con el orden de las operaciones. En lugar de aprenderselas, siempre es mejor utilizar los parentesis. Es mas facil de entender el codigo.
+
+```{r}
+2 * (3 + 5)
+```
+
+Cual es el resultado de una operacion logica
+
+```{r}
+2 * 3 + 5 < 2 * (3 + 5)
+```
+
+Cual es el resultado de la siguiente expresion:
+
+```{r}
+x <- 2
+```
+
+`<-` significa que le asigna el valor de 2 a un objeto llamado `x`"
+
+```{r}
+print(x)
+```
+
+Clases in R
+
+```{r}
+class(x)
+```
+
+Cual es la clase de:
+
+```{r}
+class(HelloWorld)
+```
+
+Cual es la clase de "y"
+
+```{r}
+y="Hello World"
+class(y)
+```
+
+```{r}
+print(y)
+```
+
+c() es uan funcion para concatenar, y crear en este caso un vector
+
+```{r}
+a=c(1,2,3,4)
+class(a)
+print(a)
+```
+
+Para crear una matriz matrix()
+
+```{r}
+m=matrix(c(1,2,3,4),nrow = 2, ncol=2)
+print(m)
+```
+
+```{r}
+Name <- c('Hamilton','Waterloo','Toronto')
+Population <- c(551751, 219153, 2731571)
+AvgSalary <- c(45692, 57625, 48920)
+Latitude <- c(43.255203, 43.4668, 43.6532)
+Longitude <- c(-79.843826, -80.51639, -79.3832)
+```
+
+dataframe
+
+```{r}
+Cities <- data.frame(Name, Population, AvgSalary, Latitude, Longitude)
+```
+
+Indexar
+
+```{r}
+Cities[1,1]
+```
+
+```{r}
+Cities$Name[1]
+```
+
+```{r}
+Cities$Population[1] + Cities$Population[2]
+```
+
+Como funciona el siguiente codigo?
+
+```{r}
+Cities$Population[Cities$Name=='Hamilton'] + Cities$Population[Cities$Name=='Waterloo']
+
+```
+
+```{r}
+sum(Cities$Population)
+```
+
+```{r}
+max(Cities$Population)
+```
+
+### Instalar paquetes
+
+Solo se debe instalar uan vez los paquetes. Luego solo se importan.
+
+```{r}
+install.packages("ggplot2")
+
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+ggplot(data = Cities, aes(x = Name, y = Population)) + geom_bar(stat = "identity")
+```
+
+Un mapa
+
+```{r}
+ggplot(data = Cities,aes(x = Longitude, y = Latitude)) + geom_point() +  geom_text(aes(label = Name)) + geom_point(aes(size = Population))
+```

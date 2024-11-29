@@ -1,0 +1,97 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-1-spamm-vs-glmmtmb/) by Lionel Hertzog
+
+# Spatial Generalised Linear Mixed Models for Areal Unit Data: glmTMB
+
+```{r}
+library(glmmTMB)
+# fitst we need to create a numeric factor recording the coordinates of the sampled locations
+dat$pos <- numFactor(scale(dat$x), scale(dat$y))
+# then create a dummy group factor to be used as a random term
+dat$ID <- factor(rep(1, nrow(dat)))
+
+# fit the model
+m_tmb <- glmmTMB(calcium ~ elevation + region + mat(pos + 0 | ID), dat) # take some time to fit
+# model summary of fixed effects
+summary(m_tmb)
+```
+
+```{r}
+sims <- simulateResiduals(m_tmb)
+plot(sims)
+```
+
+```{r}
+# some R magic to extract and re-order the estimated correlation between pairs of locations
+fit_cor <- matrix(as.numeric(attr(VarCorr(m_tmb)$cond$ID, "correlation")), nrow = 178, ncol = 178, byrow = FALSE, 
+                  dimnames = attr(attr(VarCorr(m_tmb)$cond$ID, "correlation"),"dimnames"))
+
+ff <- dimnames(fit_cor)[[1]]
+ff <- gsub("pos","",ff)
+fit_cor2 <- fit_cor[order(match(ff, dat$pos)), order(match(ff, dat$pos))]
+
+# plot
+plot(as.numeric(dd), fit_cor2[lower.tri(fit_cor2)],
+     xlab = "Distance between pairs of location [m]",
+     ylab = "Estimated correlation")
+```
+
+```{r}
+# the effect of elevation
+newdat <- data.frame(elevation = seq(3, 7, length = 10), region = factor(1, levels = 1:3))
+# turn this into a model matrix
+mm <- model.matrix(~ elevation + region, newdat)
+newdat$calcium <- mm %*% fixef(m_tmb)$cond + mean(c(0, fixef(m_tmb)$cond[3:4])) # predicted values removing region effects
+pvar <- diag(mm %*% tcrossprod(vcov(m_tmb)$cond, mm))
+newdat$lci <- newdat$calcium - 1.96 * sqrt(pvar)
+newdat$uci <- newdat$calcium + 1.96 * sqrt(pvar)
+
+gg1 <- ggplot(dat, aes(x = elevation, y = calcium)) +
+  geom_point() +
+  geom_line(data = newdat) +
+  geom_ribbon(data = newdat, aes(ymin = lci, ymax = uci), alpha = 0.2)
+
+# the effect of region
+newdat <- data.frame(elevation = mean(dat$elevation), region = factor(1:3))
+# turn this into a model matrix
+mm <- model.matrix(~ elevation + region, newdat)
+newdat$calcium <- mm %*% fixef(m_tmb)$cond # predicted values 
+pvar <- diag(mm %*% tcrossprod(vcov(m_tmb)$cond, mm))
+newdat$lci <- newdat$calcium - 1.96 * sqrt(pvar)
+newdat$uci <- newdat$calcium + 1.96 * sqrt(pvar)
+
+gg2 <- ggplot(dat, aes(x = region, y = calcium)) +
+  geom_jitter() +
+  geom_point(data = newdat, color = "red", size = 2) +
+  geom_linerange(data = newdat, aes(ymin = lci, ymax = uci), color = "red")
+
+# plot together
+grid.arrange(gg1, gg2, ncol = 2)
+```
+
+```{r}
+# predict at any location
+newdat <- expand.grid(x = seq(4960, 5960, length.out = 50), y = seq(4830, 5710, length.out = 50))
+newdat$ID <- factor(rep(1, nrow(newdat)))
+newdat$elevation <- extract(elev, newdat[,1:2])
+newdat$region <- factor(extract(region, newdat[,1:2]))
+# remove NAs
+newdat <- na.omit(newdat)
+newdat$pos <- numFactor(((newdat$x - mean(dat$x)) / sd(dat$x)), ((newdat$y - mean(dat$y)) / sd(dat$y)))
+# predict in slices of 100 predictions to speed up computation
+pp <- rep(NA, 1927)
+for(i in seq(1, 1927, by = 100)){
+  if(i == 1901){
+    pp[1901:1927] <- predict(m_tmb, newdat[1901:1927,], allow.new.levels = TRUE)
+  }
+  else{
+    pp[i:(i+99)] <- predict(m_tmb, newdat[i:(i+99),], allow.new.levels = TRUE)
+  }
+  # print(i)
+}
+newdat$calcium <- pp
+(gg_tmb <- ggplot(newdat,aes(x=x, y=y, fill = calcium)) +
+  geom_raster() +
+  scale_fill_viridis())
+```
