@@ -1,0 +1,241 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio
+Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal
+([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on
+[datascience+](https://datascienceplus.com/spatial-regression-in-r-part-2-inla/)
+by Lionel Hertzog, and [Spatial Statistics for Data Science: Theory and
+Practice with
+R](https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html)
+
+## Bayesian Spatial Varying Coefficient models (Bsvc)
+
+En un modelo Bayesian Spatially Varying Coefficient (SVC), la prior
+covariance matrix define cómo se modela la variabilidad y correlación
+espacial de los coeficientes en el modelo. La distinción entre una forma
+separable y no separable se refiere a cómo se estructura la covarianza
+entre las ubicaciones espaciales y las diferentes variables explicativas
+en el modelo.
+
+### Forma Separable
+
+En un modelo con covarianza separable, se asume que la matriz de
+covarianza espacial se puede descomponer en dos componentes
+independientes:
+
+Σ=Σ𝑠⊗Σ𝑐
+
+donde:
+
+Σ𝑠es la matriz de covarianza espacial, que captura la dependencia entre
+las ubicaciones geográficas. Σ𝑐es la matriz de covarianza entre los
+coeficientes de las variables explicativas. Esto implica que la
+dependencia espacial y la correlación entre coeficientes se modelan de
+manera independiente, lo que simplifica los cálculos y permite una mayor
+flexibilidad en la especificación de cada componente.
+
+### Forma No Separable
+
+En una covarianza no separable, la matriz de covarianza es completamente
+general y no se puede descomponer en dos partes independientes:
+
+Σ=𝑓(𝑠,𝑐) donde la dependencia espacial y la correlación entre
+coeficientes están intrínsecamente ligadas en una estructura más
+compleja. Esto significa que la relación espacial entre los coeficientes
+puede depender de la interacción entre las variables explicativas y la
+geografía.
+
+Si se asume que la estructura espacial y la correlación entre
+coeficientes son independientes, la forma separable es una buena opción.
+Si se sospecha que la interacción entre espacio y coeficientes es
+fuerte, una forma no separable puede ser más adecuada, aunque con mayor
+costo computacional.
+
+Un modelo SVC modela los coeficientes 𝛽𝑘(𝑠) como funciones del espacio:
+
+𝑦(𝑠)=𝑋(𝑠)𝛽(𝑠)+𝜖(𝑠) donde:
+
+𝑦(𝑠) es la variable respuesta en la ubicación . 𝑋(𝑠) es la matriz de
+covariables en s. 𝛽(𝑠)=(𝛽1(𝑠),…,𝛽𝐾(𝑠))⊤​ (s))⊤ son los coeficientes
+espacialmente variables. 𝜖(𝑠)∼𝑁(0,𝜎2) es el error aleatorio. Los
+coeficientes espaciales se modelan como un proceso gaussiano
+multivariado (MGP):
+
+𝛽(𝑠)∼𝐺𝑃(𝜇,Σ(𝑠,𝑠′)) donde la matriz de covarianza Σ(s,𝑠′) captura tanto
+la correlación espacial como la interdependencia entre los coeficientes.
+
+### Implementación de la Covarianza No Separable
+
+En la forma no separable, la matriz de covarianza Σ(𝑠,𝑠′) se construye
+como una matriz general de covarianza bloqueada que captura
+simultáneamente la estructura espacial y la correlación entre
+coeficientes:
+
+Cada submatriz Σ𝛽𝑖,𝛽𝑗(𝑠,𝑠′) representa la covarianza entre los
+coeficientes 𝛽𝑖𝛽𝑗en dos ubicaciones espaciales 𝑠 y 𝑠′. Para definir
+estas submatrices, podemos usar un proceso gaussiano multivariado con un
+kernel espacial de la forma:
+
+Σ𝛽𝑖,𝛽𝑗(𝑠,𝑠′)=𝜌𝑖𝑗𝐾spatial(𝑠,𝑠′;𝜃𝑠) ) donde:
+
+𝜌𝑖𝑗es el parámetro de correlación entre los coeficientes
+𝛽𝑖y𝛽𝑗.𝐾spatial(𝑠,𝑠′;𝜃𝑠) es una función de covarianza espacial (kernel)
+con parámetros espaciales 𝜃𝑠, como el kernel exponencial cuadrático
+(Matérn 3/2, 5/2, etc.)
+
+```{r}
+
+#Implementación en INLA (SVC Separable)
+
+library(INLA)
+library(sp)
+library(rgdal)
+library(fields)
+library(ggplot2)
+
+# 1. Datos simulados
+n <- 100
+set.seed(123)
+coords <- cbind(runif(n, 0, 10), runif(n, 0, 10))
+X1 <- rnorm(n)
+X2 <- rnorm(n)
+y <- 3 + 2 * X1 + 1.5 * X2 + rnorm(n)
+
+# 2. Construcción de la malla para el SPDE
+mesh <- inla.mesh.2d(loc = coords, max.edge = c(1, 2), cutoff = 0.1)
+
+# 3. Modelo SPDE para capturar dependencia espacial
+spde <- inla.spde2.matern(mesh = mesh, alpha = 2)
+
+# 4. Índices para los efectos aleatorios espaciales
+idx <- inla.spde.make.index("spatial.field", n.spde = spde$n.spde, n.group = 2)
+
+# 5. Matriz de predictores y el stack
+A <- inla.spde.make.A(mesh = mesh, loc = coords, group = rep(1:2, each = n))
+
+stack <- inla.stack(
+  data = list(y = y),
+  A = list(A, 1),
+  effects = list(
+    list(idx = idx),
+    data.frame(intercept = 1, X1 = X1, X2 = X2)
+  ),
+  tag = "estimation"
+)
+
+# 6. Modelo con estructura separable
+formula <- y ~ -1 + intercept + X1 + X2 +
+  f(spatial.field, model = spde, group = spatial.field.group, control.group = list(model = "exchangeable"))
+
+# 7. Ajustar el modelo
+result <- inla(
+  formula, data = inla.stack.data(stack),
+  family = "gaussian",
+  control.predictor = list(A = inla.stack.A(stack), compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE, cpo = TRUE)
+)
+
+summary(result)
+
+```
+
+
+```{r}
+# 1. Definir la matriz de correlación entre coeficientes
+rho_prior <- list(initial = log(0.5 / (1 - 0.5)), fixed = FALSE)
+
+# 2. Modelo con estructura no separable
+formula_ns <- y ~ -1 + intercept + X1 + X2 +
+  f(spatial.field, model = spde, group = spatial.field.group,
+    control.group = list(model = "iid", hyper = rho_prior))
+
+# 3. Ajustar el modelo
+result_ns <- inla(
+  formula_ns, data = inla.stack.data(stack),
+  family = "gaussian",
+  control.predictor = list(A = inla.stack.A(stack), compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE, cpo = TRUE)
+)
+
+summary(result_ns)
+```
+
+## Gaussian Process Splines dentro de modelos GAM (Generalized Additive Models)
+```{r}
+library(mgcv)
+library(ggplot2)
+library(dplyr)
+library(gratia)  # Para visualizar resultados GAM
+
+# Generar datos simulados
+set.seed(123)
+n <- 100
+coords <- data.frame(x = runif(n, 0, 10), y = runif(n, 0, 10))
+X1 <- rnorm(n)
+X2 <- rnorm(n)
+y <- 3 + 2 * X1 + 1.5 * X2 + sin(coords$x) + rnorm(n, sd=0.5)
+
+# Unir los datos en un dataframe
+data <- data.frame(y, X1, X2, x = coords$x, y = coords$y)
+
+# Modelo GAM con splines espaciales para modelar el efecto espacial
+gam_separable <- gam(y ~ X1 + X2 + s(x, y, bs="tp") + s(X1, x, y, bs="tp") + s(X2, x, y, bs="tp"),
+                     data = data, method = "REML")
+
+# Resumen del modelo
+summary(gam_separable)
+
+# Visualizar los efectos espaciales
+draw(gam_separable)
+```
+
+s(x, y, bs="tp") modela un efecto espacial global con splines de base delgada (tp = thin plate splines).
+s(X1, x, y, bs="tp") y s(X2, x, y, bs="tp") permiten que los coeficientes de regresión de X1 y X2 varíen espacialmente.
+method="REML" usa máxima verosimilitud restringida para evitar sobreajuste.
+
+Este modelo es eficiente, pero asume que la correlación espacial es independiente de la correlación entre los coeficientes.
+
+```{r}
+# Modelo GAM con interacción espacial no separable
+gam_nonseparable <- gam(y ~ s(x, y, bs="tp") + te(X1, x, y, bs=c("tp", "tp")) + te(X2, x, y, bs=c("tp", "tp")),
+                        data = data, method = "REML")
+
+# Resumen del modelo
+summary(gam_nonseparable)
+
+# Visualizar los efectos espaciales
+draw(gam_nonseparable)
+```
+
+s(x, y, bs="tp") modela un efecto espacial base.
+te(X1, x, y, bs=c("tp", "tp")) usa un tensor de producto que permite que X1 y la localización interactúen no separablemente.
+te(X2, x, y, bs=c("tp", "tp")) hace lo mismo con 𝑋2.
+Este modelo permite que la variabilidad espacial de los coeficientes esté correlacionada con la ubicación, lo que lo hace más flexible.
+ 
+```{r}
+ AIC(gam_separable, gam_nonseparable)
+
+cat("Deviance explained (Separable):", summary(gam_separable)$dev.expl, "\n")
+cat("Deviance explained (Non-separable):", summary(gam_nonseparable)$dev.expl, "\n")
+
+# Predicción en una malla espacial
+grid <- expand.grid(x = seq(0, 10, length=50), y = seq(0, 10, length=50))
+grid$X1 <- 0
+grid$X2 <- 0
+
+# Predicciones del modelo no separable
+grid$pred_nonseparable <- predict(gam_nonseparable, newdata = grid, type="response")
+
+ggplot(grid, aes(x, y, fill=pred_nonseparable)) +
+  geom_tile() +
+  scale_fill_viridis_c() +
+  theme_minimal() +
+  ggtitle("Efecto Espacial del Modelo No Separable")
+
+```
