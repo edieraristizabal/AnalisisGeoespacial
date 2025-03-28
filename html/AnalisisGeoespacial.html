@@ -498,13 +498,67 @@
 			</section>
 
 			<section>
-				<h3>Efectos directos &  efectos indirectos (Spillover effect or Externalities)</h3>
+				<h3>Efectos de X sobre y</h3>
 				<p>Los <strong>efectos directos</strong> son los efectos que una variable independiente tiene sobre la variable dependiente en la misma unidad espacial.</p>
-				<p>Los <strong>efectos indirectos</strong> son los efectos que una variable explicativa en una unidad tiene sobre la variable dependiente en otras unidades vecinas. Son un costo o beneficio que se impone a otros (sin compensación). Las características de las propiedades vecinas pueden tener cierto impacto sobre una característica diferente de los vecinos.</p>
-				<figcaption>“if a block group A is next-to a shopping mall, then block group A will experience high crime”</figcaption>
+				<p>Los <strong>efectos indirectos</strong> son los efectos que una variable explicativa en una unidad tiene sobre la variable dependiente en otras unidades vecinas.</p>
 				<p>El término <strong>spillover</strong> es sinónimo de efectos indirectos, pero a veces se usa de forma más cualitativa para describir el fenómeno general de propagación del efecto entre unidades</p>
-				<p>Los <strong> efectos marginales</strong>  son la derivada de la variable dependiente respecto a una variable explicativa, es decir, cuánto cambia la variable dependiente 
-					cuando una variable independiente aumenta una unidad, tomando en cuenta la retroalimentación espacial.</p>
+				<p>Los <strong> efectos marginales</strong>  son la derivada de la variable dependiente respecto a una variable explicativa.</p>
+				<p>Los <strong>efectos fijos</strong> (fixef effects) capturan características específicas y constantes de cada unidad. Se modelan como parámetros específicos para cada unidad.</p>
+				<p>Los <strong>efectos aleatorios</strong> (random effects) se usan en modelos jerarquicos para entender el patron general, se estiman como una varianza común que describe la variabilidad entre las unidades.</p>
+				<p></p>
+			</section>
+
+			<section>
+				<h3>Efectos de X sobre y</h3>
+				<table>
+					<thead>
+					  <tr>
+						<th>Tipo de efecto</th>
+						<th>¿Qué representa?</th>
+						<th>¿Depende de la estructura espacial?</th>
+						<th>¿Unidad específica?</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr>
+						<td><strong>Directo</strong></td>
+						<td>Efecto de X sobre Y en la misma unidad</td>
+						<td>✅</td>
+						<td>✅</td>
+					  </tr>
+					  <tr>
+						<td><strong>Indirecto</strong></td>
+						<td>Efecto de X sobre Y en unidades vecinas</td>
+						<td>✅</td>
+						<td>❌</td>
+					  </tr>
+					  <tr>
+						<td><strong>Spillover</strong></td>
+						<td>Propagación espacial de los efectos</td>
+						<td>✅</td>
+						<td>❌</td>
+					  </tr>
+					  <tr>
+						<td><strong>Marginal</strong></td>
+						<td>Cambio en Y ante un cambio unitario en X</td>
+						<td>✅ (en modelos espaciales)</td>
+						<td>Depende</td>
+					  </tr>
+					  <tr>
+						<td><strong>Fijo</strong></td>
+						<td>Diferencias no observadas por unidad</td>
+						<td>❌ (no espacial por defecto)</td>
+						<td>✅</td>
+					  </tr>
+					  <tr>
+						<td><strong>Aleatorio</strong></td>
+						<td>Variabilidad aleatoria entre unidades</td>
+						<td>✅ (Modelos Jerárquicos)</td>
+						<td>❌</td>
+					  </tr>
+					  <tr>
+					</tbody>
+				  </table>
 			</section>
 
 		</section>
