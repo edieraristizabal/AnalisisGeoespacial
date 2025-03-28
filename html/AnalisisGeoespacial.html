@@ -15,6 +15,27 @@
 	<!-- Theme used for syntax highlighted code -->
 	<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
 
+	<style>
+		table {
+		  width: 100%;
+		  border-collapse: collapse;
+		  margin-top: 15px;
+		  font-size: 0.6em;
+		}
+		th, td {
+		  border: 1px solid #ccc;
+		  padding: 8px;
+		  text-align: center;
+		}
+		th {
+		  background-color: #e0ecf8;
+		}
+		.highlight {
+		  font-weight: bold;
+		  color: #1a4e80;
+		}
+	  </style>
+
 </head>
 
 <script>
@@ -316,7 +337,14 @@
 				<h1>Google Earth Engine</h1>
 				<img src="https://www.researchgate.net/publication/318246365/figure/fig3/AS:667869226483731@1536243840816/The-Earth-Engine-interactive-development-environment.png"
 					width="800">
-			</section>		
+			</section>	
+			
+			<section>
+				<h3>Material de apoyo</h3>
+				<ul>
+					<li><a href="https://www.fdsp.net/intro.html">Foundations of Data Science with Python by John M. Shea</a></li>
+				</ul>
+			</section>
 		</section>
 
 <!--Thinking spatial-->
@@ -2538,6 +2566,48 @@
 				<h3>Besag-York-Mollié (BYM) Model</h3>
 				<p>This model combines ICAR for spatial effects and unstructured random effects, allowing for both spatially structured and unstructured variability.</p>
 			</section>
+
+			<section>
+				<h3>Interpretación de la dependencia espacial</h3>
+				<p>La dependencia espacial puede interpretarse de dos formas:</p>
+				<ul>
+				  <li><span class="highlight">Omitir variables (latent):</span> dependencia debida a factores no observados.</li>
+				  <li><span class="highlight">Interacción con vecinos (spillover):</span> resultado del proceso de interacción espacial.</li>
+				</ul>
+				<br>
+				<table>
+				  <tr>
+					<th>Modelo</th>
+					<th>Tipo de dependencia</th>
+					<th>¿Spillover observable?</th>
+					<th>¿Estructura latente?</th>
+				  </tr>
+				  <tr>
+					<td>SAR<br>(Spatial Autoregressive)</td>
+					<td>Global (interacción en WY)</td>
+					<td>Sí</td>
+					<td>No</td>
+				  </tr>
+				  <tr>
+					<td>SDM<br>(Spatial Durbin Model)</td>
+					<td>Global + local (WY y WX)</td>
+					<td>Sí</td>
+					<td>No</td>
+				  </tr>
+				  <tr>
+					<td>CAR<br>(Conditional Autoregressive)</td>
+					<td>Local condicional (Yi | Yj)</td>
+					<td>No</td>
+					<td>Sí</td>
+				  </tr>
+				  <tr></tr>
+				</table>
+				<p>Interpretación clave del modelo CAR</p>
+				<ul>
+				  <li>No implica causalidad ni retroalimentación espacial.</li>
+				  <li>Captura autocorrelación en los efectos aleatorios espaciales.</li>
+				</ul>
+			  </section>
 		</section>
 
 <section>
