@@ -1,0 +1,98 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on van Ravenzwaaij, Cassey & Brown (2018). A simple introduction to Markov Chain Monte-Carlo.
+
+# --------------------------
+# PARÁMETROS DEL MODELO
+# --------------------------
+
+k <- 250              # Valor inicial del parámetro mu (puede estar lejos de la media verdadera)
+n_iter <- 500         # Número total de iteraciones del algoritmo MCMC
+burnin <- 50          # Número de iteraciones iniciales que se descartan (fase de burn-in)
+true_mean <- 100      # Valor real de la media de la distribución objetivo
+true_sd <- 15         # Desviación estándar conocida de la distribución objetivo
+
+# --------------------------
+# INICIALIZACIÓN
+# --------------------------
+
+samples <- numeric(n_iter)      # Vector para guardar las muestras generadas por MCMC
+likelihoods <- numeric(n_iter)  # Vector para guardar los valores de verosimilitud (likelihood)
+samples[1] <- k                 # Asignamos el valor inicial al primer elemento de la cadena
+likelihoods[1] <- dnorm(true_mean, samples[1], true_sd)  # Calculamos la verosimilitud inicial
+
+# --------------------------
+# BUCLE PRINCIPAL DEL ALGORITMO DE METROPOLIS
+# --------------------------
+
+for (i in 2:n_iter) {
+  
+  # 1. Propuesta: generar nuevo valor a partir del valor anterior, sumando ruido aleatorio N(0,5)
+  proposal <- samples[i - 1] + rnorm(1, 0, 5)
+
+  # 2. Calcular la verosimilitud del valor propuesto y del valor actual
+  p_proposal <- dnorm(true_mean, proposal, true_sd)       # L(D | μ = propuesta)
+  p_current  <- dnorm(true_mean, samples[i - 1], true_sd) # L(D | μ = actual)
+
+  # 3. Verificar que la verosimilitud actual sea válida (no NA, no 0)
+  if (!is.na(p_current) && p_current > 0) {
+    
+    # 4. Calcular la razón de aceptación (posterior propuesta / posterior actual)
+    ratio <- p_proposal / p_current
+    
+    # 5. Decidir si aceptamos la propuesta: con probabilidad igual a 'ratio'
+    if (runif(1) < ratio) {
+      samples[i] <- proposal           # Aceptamos: guardamos la propuesta
+      likelihoods[i] <- p_proposal     # Guardamos su likelihood
+    } else {
+      samples[i] <- samples[i - 1]     # Rechazamos: repetimos el valor anterior
+      likelihoods[i] <- p_current
+    }
+    
+  } else {
+    # Si la verosimilitud está mal definida, repetir el valor anterior por seguridad
+    samples[i] <- samples[i - 1]
+    likelihoods[i] <- p_current
+  }
+}
+
+# --------------------------
+# FILTRAR MUESTRAS POSTERIORES AL BURN-IN
+# --------------------------
+
+samples_post <- samples[(burnin + 1):n_iter]  # Nos quedamos solo con las muestras representativas
+
+# --------------------------
+# GRÁFICAS DE RESULTADOS
+# --------------------------
+
+par(mfrow = c(1, 3))  # Dividir la ventana gráfica en 1 fila y 3 columnas
+
+# 1. Gráfica de la evolución del likelihood
+plot(likelihoods, type = "l", col = "blue", lwd = 2,
+     main = paste("Likelihood (inicio =", k, ")"),
+     xlab = "Iteración", ylab = "Likelihood")
+abline(v = burnin, col = "red", lty = 2, lwd = 2)  # Línea vertical indicando el fin del burn-in
+
+# 2. Histograma de las muestras post burn-in
+hist(samples_post, breaks = 30, col = "skyblue", border = "white",
+     main = "Histograma post burn-in", xlab = expression(mu))
+
+# 3. Comparación entre la densidad estimada por MCMC y la verdadera
+if (length(unique(samples_post)) > 1) {
+  densidad_mcmc <- density(samples_post)  # Estimar densidad de las muestras
+  x_vals <- seq(min(densidad_mcmc$x), max(densidad_mcmc$x), length.out = 200)
+  y_real <- dnorm(x_vals, mean = true_mean, sd = true_sd)  # Densidad teórica
+  
+  plot(densidad_mcmc, main = "Densidad vs Teórica",
+       xlab = expression(mu), ylab = "Densidad", col = "darkgreen", lwd = 2)
+  lines(x_vals, y_real, col = "red", lwd = 2, lty = 2)  # Añadir densidad teórica
+  legend("topright", legend = c("MCMC", "Teórica"),
+         col = c("darkgreen", "red"), lty = c(1, 2), lwd = 2, bty = "n")
+} else {
+  # Si no hay variabilidad, mostrar mensaje de advertencia
+  plot(1, type = "n", xlab = "", ylab = "", axes = FALSE,
+       main = "Sin variabilidad en muestras")
+  text(1, 1, "No se generó distribución", col = "red")
+}
+

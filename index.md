@@ -22,46 +22,66 @@ M2-222
 [How to learn Geospatial Data Science](https://towardsdatascience.com/how-to-learn-geospatial-data-science-in-2023-441d8386284e)
 
 ### Geospatial Computational Environment
-[Taller Ambiente de trabajo](/Notebooks/01_ComputationalEnvironment.ipynb)  
+[Taller Ambiente de trabajo en Python](/Notebooks/Python/01_ComputationalEnvironment.ipynb)
+[Taller Ambiente de trabajo en R](/Notebooks/R/0_Intro.Rmd)  
 
 ### Intro análisis espacial
-[Taller Datos espaciales](/Notebooks/02_GeospatialData.ipynb)   
-[Taller Ingeniería de datos](/Notebooks/03_DataEngineering.ipynb)  
-[Taller Operaciones espaciales](/Notebooks/04_SpatialOperation.ipynb)  
-[Taller Importar datos vector](/Notebooks/05_DownloadData_Vector.ipynb)  
-[Taller Importar datos raster](/Notebooks/06_DownloadData_Raster.ipynb)  
+[Taller Datos espaciales](/Notebooks/Python/02_GeospatialData.ipynb)   
+[Taller Ingeniería de datos](/Notebooks/Python/03_DataEngineering.ipynb)  
+[Taller Operaciones espaciales](/Notebooks/Python/04_SpatialOperation.ipynb)  
+[Taller Importar datos vector](/Notebooks/Python/05_DownloadData_Vector.ipynb)  
+[Taller Importar datos raster](/Notebooks/Python/06_DownloadData_Raster.ipynb)  
 
 ### Web spatial tools
-[Taller Web Spatial tools](/Notebooks/07_WebMapping.ipynb)  
-[Taller Mapas interactivos](/Notebooks/08_InteractiveMaps.ipynb)  
-[Taller Leaflet](/Notebooks/09_Leaflet.ipynb)  
+[Taller Web Spatial tools](/Notebooks/Python/07_WebMapping.ipynb)  
+[Taller Mapas interactivos](/Notebooks/Python/08_InteractiveMaps.ipynb)  
+[Taller Leaflet](/Notebooks/Python/09_Leaflet.ipynb)  
 
 ### Point pattern analysis
-[Taller Análisis de patrones de puntos](/Notebooks/10_PointPatternAnalysis.ipynb)  
-[Taller Clustering](/Notebooks/11_Clustering.ipynb)  
-[Taller Geovisualización](/Notebooks/12_Geovisualization.ipynb)  
+[Taller Análisis de patrones de puntos](/Notebooks/Python/10_PointPatternAnalysis.ipynb)
+[Taller Análisis de Voronoi](/Notebooks/Python/10_VoronoiGrids.ipynb)  
+[Taller Análisis Poisson](/Notebooks/Python/10_GML_Poisson.ipynb)  
+[Taller Análisis Poisson en R](/Notebooks/R/10_poisson.Rmd)  
+[Taller Análisis LGcox](/Notebooks/Python/10_LGCox.ipynb)
+[Taller Análisis LGcox en R](/Notebooks/R/10_INLA-LGCP.Rmd)  
+[Taller Análisis LGcox en R](/Notebooks/R/10_INLA-LGCP2.Rmd)  
+[Taller Clustering](/Notebooks/Python/11_Clustering.ipynb)  
+[Taller Geovisualización](/Notebooks/Python/12_Geovisualization.ipynb)  
+[Taller Geovisualización en R](/Notebooks/R/1_Visualizacion.Rmd) 
+[Taller Patrones de puntos en R](/Notebooks/R/2_pointPattern.Rmd)  
 Lecture: [Spatial point pattern analysisi and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ### Choroplet maps
-[Taller Mapas Coropletas](/Notebooks/13_Choropleth.ipynb)   
+[Taller Mapas Coropletas](/Notebooks/Python/13_Choropleth.ipynb)   
+[Taller datos discretos en R](/Notebooks/R/3_areaData.Rmd)  
 
 ### Lattice data analysis (Object-based model)
-[Taller Exploración espacial de datos](/Notebooks/14_SpatialAssociation.ipynb)
+[Taller Exploración espacial de datos](/Notebooks/Python/14_SpatialAssociation.ipynb)
 
 ### Lattice data analysis (Field model)
-[Taller Geoestadística](/Notebooks/15_Geostatistic.ipynb)  
-[Taller Análisis con datos raster](/Notebooks/16_Raster.ipynb)     
-[Taller Google Earth Engine](/Notebooks/17_GEE.ipynb)  
+[Taller Geoestadística](/Notebooks/Python/15_Geostatistic.ipynb)  
+[Taller Análisis con datos raster](/Notebooks/Python/16_Raster.ipynb)     
+[Taller Google Earth Engine](/Notebooks/Python/17_GEE.ipynb)  
+[Taller Modelos Gaussianos](/Notebooks/Python/19_GaussianProcess.ipynb)  
+[Taller Kriging en R](/Notebooks/R/15_Kriging.Rmd)  
+[Taller GP en R](/Notebooks/R/19_INLA-GP.Rmd)  
+[Taller GP en R](/Notebooks/R/19_INLA-GP2.Rmd)  
 
 ### Network analysis
-[Redes](/Notebooks/18_Network.ipynb) 
+[Redes](/Notebooks/Python/18_Network.ipynb) 
 
 ### Spatial model
-[Regresión espacial](/Notebooks/19_SpatialRegression.ipynb)  
-[Taller Classification](/Notebooks/20_Clasificacion.ipynb)   
+[Regresión espacial](/Notebooks/Python/19_SpatialRegression.ipynb)
+[MGWR](/Notebooks/Python/19_MGWR.ipynb)  
+[Taller Classification](/Notebooks/Python/20_Clasificacion.ipynb)   
+[Taller CAR en R](/Notebooks/R/1_glmTMB-CAR.Rmd)  
+[Taller CARBayes en R](/Notebooks/R/14_CARBayes.Rmd)  
+[Taller INLA-CAR en R](/Notebooks/R/14_INLA-CAR.Rmd)  
+[Taller spaMM en R](/Notebooks/R/14_spaMM-CAR.Rmd)  
+[Taller SVC en R](/Notebooks/R/20_Bsvc.Rmd)  
 
 ### Bases de datos espaciales
-[Taller Bases de datos espaciales](/Notebooks/21_SGDB.ipynb) 
+[Taller Bases de datos espaciales](/Notebooks/Python/21_SGDB.ipynb) 
 
 ### Intro to Remote Sensing - GIS
 [Taller Remote sensing](/Guias/Guia_SIG.pdf) 
@@ -75,13 +95,13 @@ su elección las herramientas de análisis presentadas en el curso. Para el segu
 presentaciones con el avance de su trabajo de la siguiente forma:
 
 #### Presentación del problema
-* Porcentaje de evaluación: 20%
+* Porcentaje de evaluación: 10%
 * Tiempo: 5 min.
 * Alcance: presentacion del problema de investigación y fuente de información.
 * Fecha: luego de terminar el modulo. Geospatial data
 
 #### Presentaciòn de avances
-* Porcentaje de evaluación: 20%
+* Porcentaje de evaluación: 30%
 * Tiempo: 10 min.
 * Alcance: avances.
 * Fecha: luego de terminar el modulo. Raster analysis
@@ -93,7 +113,7 @@ presentaciones con el avance de su trabajo de la siguiente forma:
 * Fecha: al final del curso
 
 El 30% final corresponde al trabajo escrito en formato artículo (Introducción, Datos \& metodología, Resultados, Discusión, 
-y Conclusiones). La entrega de este trabajo se realizará en formato PDF mediante la herramienta de Google classroom, 8 dias posterior a la presentación final.
+y Conclusiones).
 
 ## Link de interés
 * [The Core of GIS Science](https://ltb.itc.utwente.nl/page/498/dashboard)  
