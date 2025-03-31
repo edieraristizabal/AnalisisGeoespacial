@@ -8,7 +8,7 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 [Ir al programa...](/Programa_AnalisisGeoespacial.pdf)
 
 ### Horario del curso
-Martes & Jueves 10:00 - 12:00 a.m.
+Miercoles & Viernes 8:00 - 10:00 a.m.
 
 ### Aula:
 M2-101
