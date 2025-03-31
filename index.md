@@ -11,7 +11,7 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 Martes & Jueves 10:00 - 12:00 a.m.
 
 ### Aula:
-M2-222
+M2-101
 
 ## Diapositivas del curso
 [Ir a presentación...](/html/AnalisisGeoespacial.html)
