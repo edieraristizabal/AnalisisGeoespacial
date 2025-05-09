@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio
 Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal
@@ -145,7 +139,6 @@ summary(result)
 
 ```
 
-
 ```{r}
 # 1. Definir la matriz de correlación entre coeficientes
 rho_prior <- list(initial = log(0.5 / (1 - 0.5)), fixed = FALSE)
@@ -167,6 +160,7 @@ summary(result_ns)
 ```
 
 ## Gaussian Process Splines dentro de modelos GAM (Generalized Additive Models)
+
 ```{r}
 library(mgcv)
 library(ggplot2)
@@ -195,11 +189,14 @@ summary(gam_separable)
 draw(gam_separable)
 ```
 
-s(x, y, bs="tp") modela un efecto espacial global con splines de base delgada (tp = thin plate splines).
-s(X1, x, y, bs="tp") y s(X2, x, y, bs="tp") permiten que los coeficientes de regresión de X1 y X2 varíen espacialmente.
-method="REML" usa máxima verosimilitud restringida para evitar sobreajuste.
+s(x, y, bs="tp") modela un efecto espacial global con splines de base
+delgada (tp = thin plate splines). s(X1, x, y, bs="tp") y s(X2, x, y,
+bs="tp") permiten que los coeficientes de regresión de X1 y X2 varíen
+espacialmente. method="REML" usa máxima verosimilitud restringida para
+evitar sobreajuste.
 
-Este modelo es eficiente, pero asume que la correlación espacial es independiente de la correlación entre los coeficientes.
+Este modelo es eficiente, pero asume que la correlación espacial es
+independiente de la correlación entre los coeficientes.
 
 ```{r}
 # Modelo GAM con interacción espacial no separable
@@ -213,11 +210,13 @@ summary(gam_nonseparable)
 draw(gam_nonseparable)
 ```
 
-s(x, y, bs="tp") modela un efecto espacial base.
-te(X1, x, y, bs=c("tp", "tp")) usa un tensor de producto que permite que X1 y la localización interactúen no separablemente.
-te(X2, x, y, bs=c("tp", "tp")) hace lo mismo con 𝑋2.
-Este modelo permite que la variabilidad espacial de los coeficientes esté correlacionada con la ubicación, lo que lo hace más flexible.
- 
+s(x, y, bs="tp") modela un efecto espacial base. te(X1, x, y, bs=c("tp",
+"tp")) usa un tensor de producto que permite que X1 y la localización
+interactúen no separablemente. te(X2, x, y, bs=c("tp", "tp")) hace lo
+mismo con 𝑋2. Este modelo permite que la variabilidad espacial de los
+coeficientes esté correlacionada con la ubicación, lo que lo hace más
+flexible.
+
 ```{r}
  AIC(gam_separable, gam_nonseparable)
 

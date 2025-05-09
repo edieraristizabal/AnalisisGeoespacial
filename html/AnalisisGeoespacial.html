@@ -1513,13 +1513,11 @@
 
 			<section>
 				<h3>Point pattern analysis</h3>
-				<p> A point pattern consists of a set of events at a set of
-					locations, where each event represents a single instance of the phenomenon of
-					interest </p>
 				<p>Los puntos son entidades espaciales que pueden entenderse de dos maneras fundamentalmente diferentes:</p>
 				<ul>
-					<li>Por un lado, los puntos pueden considerarse como objetos fijos en el dominio del espacio, es decir, su ubicación se toma como dada (exógena). El análisis de este tipo de datos puntuales es muy similar al de otros tipos de datos espaciales discretos, como polígonos y líneas.</li>
-					<li>Por otro lado, una observación que ocurre en un punto también puede verse como un sitio de medición de un proceso geográficamente continuo subyacente. En este caso, la medición teóricamente podría realizarse en cualquier lugar, pero solo se llevó a cabo en ciertos sitios. Este enfoque implica que tanto la ubicación como la medición importan.</li>
+					<li>Los puntos son eventos (análisis sobre DÓNDE ocurren las cosas) Aquí, la ubicación del punto ES el dato. No hay otra variable. 
+						Solo te interesa saber si hay patrones en esas ubicaciones. Un patrón de puntos consiste en un conjunto de eventos ubicados en ciertos lugares, donde cada evento representa una única instancia del fenómeno de interés.</li>
+					<li>Los puntos son lugares donde tomaste una medida (análisis sobre QUÉ VALOR tiene algo en diferentes lugares). Una observación que ocurre en un punto también puede verse como un sitio de medición de un proceso geográficamente continuo subyacente. Este enfoque implica que tanto la ubicación como la medición importan.</li>
 				</ul>
 			</section>
 
@@ -1539,36 +1537,27 @@
 				<p>El <strong>proceso</strong> se refiere al mecanismo subyacente que está en funcionamiento para generar el 
 					resultado que observamos. Debido a su naturaleza abstracta, no lo vemos directamente. Sin embargo, 
 					en muchos contextos, el foco principal del análisis es aprender sobre qué determina un fenómeno dado y 
-					cómo se combinan esos factores para generarlo. En este contexto, el “proceso” está asociado con el cómo. 
-					Por otro lado, el <strong>patrón</strong> se refiere al resultado de ese proceso. En algunos casos, 
+					cómo se combinan esos factores para generarlo. En este contexto, el “proceso” está asociado con el cómo. </p>
+				<p>Por otro lado, el <strong>patrón</strong> se refiere al resultado de ese proceso. En algunos casos, 
 					es la única evidencia del proceso que podemos observar y, por lo tanto, el único insumo con el que 
 					contamos para reconstruirlo. Aunque observable directamente y, quizás, más fácil de abordar, el patrón 
-					es solo un reflejo del proceso. El verdadero desafío no es caracterizar el primero, sino usarlo para 
-					deducir el segundo.</p>
+					es solo un reflejo del proceso. </p>
+				<p>El verdadero desafío no es caracterizar el patrón, sino usarlo para deducir el proceso.</p>
 			</section>
 
 			<section>
 				<h3>Process vs Pattern</h3>
-				<p><strong>Spatial process</strong> is a description of how a <strong>spatial pattern</strong> can be
-					generated.</p>
-				<p> There are three main types of spatial process:</p>
+				<p>El <strong>Proceso espacial</strong> es una descripción de cómo puede generarse un <strong>patrón espacial</strong>.</p>
+				<p>Existen tres tipos principales de proceso espacial:</p>				
 				<ul>
-					<li>Complete spatial randomness process --> <strong>Random spatial pattern</strong>
+					<li>Aleatorio (CSR – Complete Spatial Randomness): Los eventos se distribuyen sin una estructura reconocible
 						<ul>
-							<li style="font-size:20px">There is an equal probability of event occurrence at any location in
-								the study region (also called first-order stationary).</li>
-							<li style="font-size:20px">The location of an event is independent of the locations of other
-								events (also called second-order stationary).</li>
+							<li style="font-size:20px">Existe una probabilidad igual de ocurrencia de eventos en cualquier ubicación dentro de la región de estudio (también llamado estacionariedad de primer orden).</li>
+							<li style="font-size:20px">La ubicación de un evento es independiente de las ubicaciones de otros eventos (también llamado estacionariedad de segundo orden).</li>
 						</ul>
 					</li> </br>
-					<li>Competitive process --> <strong>Dispersed</strong>: is a process that leads events to be
-						arranged as far
-						away from each other as possible, events tend to be
-						uniformly distributed</li> </br>
-					<li>Aggregating process --> <strong>Clustered</strong>: is a process where events tend to cluster as
-						a
-						result of some pulling action. The events create clusters in some parts of the study area, and
-						the pattern has a large variation</li>
+					<li>Disperso (Regular/Uniforme): Es un proceso que hace que los eventos se dispongan lo más alejados posible entre sí; los eventos tienden a distribuirse de manera uniforme.</li> </br>
+					<li>Agrupado (Clustered): Los puntos tienden a aparecer juntos en grupos o “clústeres”. Puede ser resultado de un proceso subyacente.</li>
 				</ul>
 			</section>
 
@@ -1623,11 +1612,9 @@
 
 			<section>
 				<h3>Kernel Density Function</h3>
-				<p>The kernel density approach is an extension of the quadrat method. Kernel density estimation is a
-					nonparametric method that uses kernel functions to create smooth maps of density values, in which
-					the density at each
-					location indicates the concentration of points within the neighboring area
-					(high concentrations as peaks, low concentrations as valleys)</p>
+				<p>TEs una técnica no paramétrica que permite estimar la intensidad local de un patrón de puntos en el espacio. 
+					En vez de contar cuántos puntos hay en un cuadrado (como en el método de cuadrantes), 
+					KDE suaviza la información de los puntos en un mapa continuo.</p>
 				<img src="https://ars.els-cdn.com/content/image/1-s2.0-S0001457508002340-gr1.jpg" width="700">
 			</section>
 
