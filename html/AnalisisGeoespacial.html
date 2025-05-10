@@ -1512,10 +1512,10 @@
 			</section>
 
 			<section>
-				<h3>Point pattern analysis</h3>
+				<h3>Análisis de patrones de puntos</h3>
 				<p>Los puntos son entidades espaciales que pueden entenderse de dos maneras fundamentalmente diferentes:</p>
 				<ul>
-					<li>Los puntos son eventos (análisis sobre DÓNDE ocurren las cosas) Aquí, la ubicación del punto ES el dato. No hay otra variable. 
+					<li>Los puntos son eventos (análisis sobre DÓNDE ocurren las cosas). Aquí, la ubicación del punto es el dato. No hay otra variable. 
 						Solo te interesa saber si hay patrones en esas ubicaciones. Un patrón de puntos consiste en un conjunto de eventos ubicados en ciertos lugares, donde cada evento representa una única instancia del fenómeno de interés.</li>
 					<li>Los puntos son lugares donde tomaste una medida (análisis sobre QUÉ VALOR tiene algo en diferentes lugares). Una observación que ocurre en un punto también puede verse como un sitio de medición de un proceso geográficamente continuo subyacente. Este enfoque implica que tanto la ubicación como la medición importan.</li>
 				</ul>
@@ -1546,7 +1546,7 @@
 			</section>
 
 			<section>
-				<h3>Process vs Pattern</h3>
+				<h3>Proceso & Patrón</h3>
 				<p>El <strong>Proceso espacial</strong> es una descripción de cómo puede generarse un <strong>patrón espacial</strong>.</p>
 				<p>Existen tres tipos principales de proceso espacial:</p>				
 				<ul>
@@ -1562,41 +1562,23 @@
 			</section>
 
 			<section>
-				<h3>Point pattern analysis</h3>
-				<p>There are two main (interrelated) methods of analyzing point patterns, namely
-					the distance-based methods and the density-based methods.</p>
+				<h3>Análisis de patrones de puntos</h3>
+				<p>Existen dos métodos principales (interrelacionados) para analizar patrones de puntos: los métodos basados en la distancia y los métodos basados en la densidad.</p>
 				<ul>
-					<li><strong>Density-based methods--> Absolute location</strong> use the intensity of events
-						occurrence across space. For this reason, they describe <strong>first-order effects</strong> better. Kernel
-						estimation methods are common density ased methods. In quadrat count methods, space is divided
-						into a regular grid (such as a grid of squares or hexagons) of a unitary area.</li>
-					<li><strong>Distance-based methods --> Relative location</strong> employ the distances among events
-						and describe <strong>second-order effects</strong>. Such methods include the nearest neighbor method the G
-						and F distance functions, the Ripley’s K distance function and its transformation.
-					</li>
+					<li><strong>Métodos basados en densidad --> Ubicación absoluta</strong> utilizan la intensidad de ocurrencia de eventos en el espacio. Por esta razón, describen mejor los <strong>efectos de primer orden</strong>. Los métodos de estimación por kernel son ejemplos comunes de este enfoque. En los métodos de conteo por cuadrantes, el espacio se divide en una cuadrícula regular (como una malla de cuadrados o hexágonos) de área unitaria.</li>
+					<li><strong>Métodos basados en distancia --> Ubicación relativa</strong> emplean las distancias entre eventos y describen los <strong>efectos de segundo orden</strong>. Estos métodos incluyen el método del vecino más cercano, las funciones de distancia G y F, la función de distancia K de Ripley y su transformación.</li>
 				</ul>
 			</section>
+			
 
 			<section>
 				<h3>Centrograhy</h3>
-				<p>A very basic form of point pattern analysis involves summary statistics such as the mean center,
-					standard distance and standard deviational ellipse.</p>
 				<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="700">
 				<figcaption>Source: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
 			</section>
 
 			<section>
-				<h3>Standard deviational ellipse</h3>
-				<p>It is a measure of dispersion (spread) that calculates
-					standard distance separately in the x and y directions. Standard deviational ellipse reveals
-					dispersion
-					and directional trend</p>
-				<img src="https://figshare.com/ndownloader/files/7837051/preview/7837051/preview.jpg" width="350">
-			</section>
-
-			<section>
 				<h3>Convex Hull </h3>
-				<p>The convex hull of a point pattern pp is the smallest convex set that contains pp</p>
 				<img src="http://pysal.org/notebooks/images/explore/pointpats/centrography_53_0.png" width="500">
 			</section>
 
@@ -1607,7 +1589,6 @@
 					by the quadrat’s area. Quadrats can take on many different shapes such as hexagons and triangles</p>
 				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-quad01-1.png"
 					width="300">
-
 			</section>
 
 			<section>
@@ -1620,39 +1601,16 @@
 
 			<section>
 				<h3>Kernel Density Function</h3>
-				<img src="https://www.statsmodels.org/stable/_images/examples_notebooks_generated_kernel_density_12_0.png"
-					width="900">
-			</section>
-
-			<section>
-				<h3>Kernel Density Function</h3>
 				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-kernel01-1.png"
 					width="900">
 			</section>
 
 			<section>
-				<h3>Modeling intensity as a function of a covariate</h3>
-				<p>It is often more interesting to model the relationship between the distribution of points and some
-					underlying covariate by defining that relationship mathematically. This can be done by exploring
-					the changes in point density as a function of a covariate.</p>
-				$Pr(y/X_i) = {\frac{exp(\beta_0 + \beta_1X_i)}{1 + exp (\beta_0 + \beta_1X_i)}}$
-				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-starbucks-1.png"
-					width="600">
-
-			</section>
-
-			<section>
-				<h3>NN analysis</h3>
-				<p>The
-					method compares the observed spatial distribution to a random theoretical
-					one. The <strong>Average Nearest Neighbor (ANN)</strong> tool measures the distance between each
-					feature centroid and its nearest
-					neighbor's centroid location. It then averages all these nearest neighbor distances.
-					If the average distance is less than the average for a hypothetical random distribution,
-					the distribution of the features being analyzed is considered clustered. If the average distance
-					is greater than a hypothetical random distribution, the features are considered dispersed.</p>
+				<h3>Análisis de vecino más cercano (NN)</h3>
+				<p>El método compara la distribución espacial observada con una distribución teórica aleatoria. La herramienta de <strong>Vecino Más Cercano Promedio (ANN)</strong> mide la distancia entre el centroide de cada entidad y el centroide de su vecino más cercano. Luego promedia todas estas distancias al vecino más cercano. Si la distancia promedio es menor que la distancia promedio de una distribución aleatoria hipotética, se considera que la distribución de las entidades analizadas está agrupada. Si la distancia promedio es mayor que la de una distribución aleatoria hipotética, se considera que las entidades están dispersas.</p>
 				<img src="https://geographyfieldwork.com/NearestNeighbourFormula2_small.gif" width="250">
 			</section>
+			
 
 			<section>
 				<h3>NN analysis</h3>
@@ -1661,25 +1619,20 @@
 			</section>
 
 			<section>
-				<h3>NN analysis</h3>
-				<p>An extension of this idea is to plot the ANN values for different order neighbors, that is for the
-					first closest point, then the second closest point, and so forth.</p>
-				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-patterns-1.png"
-					width="500">
-				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-ANN-plots-1.png"
-					width="400">
+				<h3>Análisis de vecino más cercano (NN)</h3>
+				<p>Una extensión de esta idea es graficar los valores de ANN para vecinos de diferente orden, es decir, para el punto más cercano, luego el segundo más cercano, y así sucesivamente.</p>
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-patterns-1.png" width="500">
+				<img src="https://mgimond.github.io/Spatial/11-Point-Patterns_files/figure-html/f11-diff-ANN-plots-1.png" width="400">
 			</section>
+			
 
 			<section>
-				<h3>Ripley's K function</h3>
-				<p>It is a spatial analysis method of analyzing point patterns
-					based on a distance function. The outcome of the function is the
-					expected number of events inside a radius of d.
-					It is calculated as a series of incremental distances d centered on each of the
-					events in turn</p>
+				<h3>Función K de Ripley</h3>
+				<p>Es un método de análisis espacial para estudiar patrones de puntos basado en una función de distancia. El resultado de la función es el número esperado de eventos dentro de un radio \( d \). Se calcula como una serie de distancias incrementales \( d \) centradas, sucesivamente, en cada uno de los eventos.</p>
 				<img src="https://www.researchgate.net/profile/Thibault-Lagache/publication/259354916/figure/fig1/AS:297121925353473@1447850795608/Analyzing-spatial-point-patterns-with-Ripleys-K-function-The-normalized-and-centered.png"
 					width="1000">
 			</section>
+			
 
 			<section>
 				<h3>Clustering</h3>
@@ -1785,14 +1738,160 @@
 					
 		</section>
 
-<!--GML Poisson-->
+<!--GLM-->
 		<section>
 			<section>
-				<h1>GML Poisson</h1>
+				<h1>Modelos Lineales Generalizados (GML)</h1>
 			</section>
 
 			<section>
-				<h2>Poisson distribution</h2>
+				<h2>Modelos Lineales Generalizados (GML)</h2>
+				<p>Los Modelos Lineales Generalizados (GLM) son una extensión de los modelos lineales clásicos (como la regresión lineal) que permiten modelar una variedad más amplia de tipos 
+					de datos, incluyendo aquellos que no siguen una distribución normal. Estos modelos son especialmente útiles cuando la variable dependiente sigue una distribución distinta, 
+					como una distribución binomial (en el caso de variables de respuesta dicotómicas), una distribución de Poisson (para conteos), o una distribución gamma (para variables 
+					continuas positivas).</p>
+				<ul>
+					<li>Función de enlace (𝑔(⋅)): Establece la relación entre la media de la variable dependiente 𝑌 y los predictores lineales.</li>
+					<li>Distribución de la variable dependiente: La variable dependiente 𝑌 sigue una distribución dentro de la familia exponencial (por ejemplo, normal, binomial, Poisson, etc.).</li>
+					<li>Predictores lineales: La relación entre los predictores 𝑋1, 𝑋2,…,Xp y la variable dependiente se describe mediante una combinación lineal de los mismos.</li>
+				</ul>
+				<p>\[g(\mathbb{E}[Y_i]) = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \dots + \beta_p X_{ip}\]</p>
+			</section>
+
+			<section>
+				<h2>Modelos GLM</h2>
+			
+				<h3>Regresión Lineal Gaussiana</h3>
+				<p>\[
+				\mathbb{E}[Y_i] = \mu_i = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
+				\]</p>
+			
+				<h3>Regresión Logística</h3>
+				<p>\[
+				\log\left(\frac{\mu_i}{1-\mu_i}\right) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
+				\]</p>
+			
+				<h3>Regresión Poisson</h3>
+				<p>\[
+				\log(\mu_i) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
+				\]</p>
+			
+				<h3>Regresión Binomial Negativa</h3>
+					<p>\[
+				\log(\mu_i) = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p
+				\]</p>
+			</section>
+			
+			<section>
+                <h3>Regresión Logística</h3>
+                <p><strong>Distribución de la variable dependiente:</strong> Binomial \( Y_i \sim \text{Binomial}(n, \mu_i) \)</p>
+                <p><strong>Función de enlace:</strong> Logit (función logística)</p>
+                <p><strong>Formulación matemática:</strong></p>
+                <p>\[
+                \log\left(\frac{\mu_i}{1-\mu_i}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p
+                \]</p>
+                <p>Este modelo se utiliza cuando la variable dependiente es binaria (por ejemplo, éxito o fracaso).</p>
+            </section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/ac/72/4b/ac724bf934ca55b2b499a8bae9b2b261.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/c1/81/8d/c1818de769e0a8cbbc7af29cc1732948.jpg" alt="RL"
+					width="800" />
+			</section>
+
+			<section>
+				<h3>Odds</h3>
+				<img src="https://i.pinimg.com/564x/71/62/82/716282a8a064055ebd69e01d530359da.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<h3>Limitaciones de los Odds</h3>
+				<img src="https://i.pinimg.com/564x/b7/e0/72/b7e0721e704900e6cb444383dbd85a31.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<h3>Función <i>LOGIT</i></h3>
+				<p>Sea p(x) la probabilidad de éxito cuando el valor de la variable predictora es x, entonces:</p>
+				<div style="font-size: 25px;">
+					$p(x) = \frac{e^{a+\sum bx}}{1+e^{a+\sum bx}} = \frac{1}{1+e^{-(a+\sum bx)}}$
+					<p></p>
+					$\frac{p(x)}{1-p(x)} = e^{a+\sum bx}$
+					<p></p>
+					$Ln(\frac{p(x)}{1-p(x)}) = a+\sum bx$
+				</div>
+				<p>Donde $a$ es el intercepto del modelo, $b$ son los coeficientes del modelo de regresión
+					logística, y $x$
+					son las variables independientes (predictoras).</p>
+				$P(y=1) = \frac{1}{1+e^{-(a+\sum bx)}}$
+				<p>Donde, P es la probabilidad de Bernoulli que una unidad de terreno pertenece al grupo de no
+					deslizamientos
+					o al grupo de si deslizamiento. P varía de 0 a 1 en forma de curva “S” (logística).</p>
+			</section>
+
+			<section>
+				<h3>Odds</h3>
+				<img src="https://i.pinimg.com/564x/e8/89/df/e889dfae226ec31c53134bc8210b5c23.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<h3>Regresión Logística</i></h3>
+				<img src="https://i.pinimg.com/564x/59/ce/fe/59cefecb396127fa7252a395c30eb23f.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<h3>Regresión Logística</i></h3>
+				<img src="https://i.pinimg.com/564x/61/e3/8f/61e38fb081e8b0638a090514b2550f6b.jpg" alt="RL"
+					width="900" />
+			</section>
+
+			<section>
+				<h3>Regresión Logística</i></h3>
+				<img src="https://i.pinimg.com/564x/2e/79/b2/2e79b2dc2878c4b1ef05cb5d7c1a5b30.jpg" alt="RL"
+					width="900" />
+				<figcaption><small>Fuente: Chen et al (2016), río Yangtze (China)</small></figcaption>
+			</section>
+
+			<section>
+				<h3>Resultado</h3>
+				<img src="https://i.pinimg.com/564x/8f/0d/94/8f0d94a435f024e3b8fd7ea06b3e27dc.jpg" width="900" />
+			</section>
+
+			<section>
+				<h3>$R^2$</h3>
+				<img src="https://i.pinimg.com/564x/c0/5a/e9/c05ae9934cfddfba7604c824269f6278.jpg" width="900" />
+			</section>
+
+			<section>
+				<h3>$R^2$</h3>
+				<img src="https://i.pinimg.com/564x/fd/9c/4d/fd9c4dabee71c0db7ca8b6ea500e1d51.jpg" width="900" />
+			</section>
+
+			<section>
+				<h3>$R^2$</h3>
+				<img src="https://i.pinimg.com/564x/cb/3e/27/cb3e278d4299d12d832aaa4b6dc34d1d.jpg" width="900" />
+			</section>
+
+			<section>
+                <h3>Regresión con Poisson</h3>
+                <p><strong>Distribución de la variable dependiente:</strong> Poisson \( Y_i \sim \text{Poisson}(\mu_i) \)</p>
+                <p><strong>Función de enlace:</strong> Logaritmo natural</p>
+                <p><strong>Formulación matemática:</strong></p>
+                <p>\[
+                \log(\mu_i) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p
+                \]</p>
+                <p>Este modelo se utiliza cuando la variable dependiente representa un conteo de eventos en un intervalo de tiempo o espacio.</p>
+            </section>
+
+			<section>
+				<h3>GLM de Poisson</h3>
 				<p>A Poisson distribution is a discrete probability distribution, meaning that it gives the probability of a discrete 
 					(i.e., countable) outcome. For Poisson distributions, the discrete outcome is the number of times an event occurs, 
 					represented by $k$. You can use a Poisson distribution if:</p>
@@ -1801,7 +1900,7 @@
 						of another event.
 					<li>You know the mean number of events occurring within a given interval of time (1D) or space (2D). This number is called $λ$ (lambda), 
 						and it is assumed to be constant.</li>
-					<li>two events cannot occur at exactly the same instant or place.</li>
+					<li>Two events cannot occur at exactly the same instant or place.</li>
 					</li>
 				</ul>
 			</section>
@@ -1826,16 +1925,55 @@
 			</section>
 
 			<section>
-				<h2>Poisson</h2>
+				<h3>Poisson</h3>
 				<img src="https://i.pinimg.com/736x/22/62/9a/22629a6a1b6799fcafa77c8ee4677380.jpg" width="700">
 			</section>
 
 			<section>
-				<h2>Poisson</h2>
-				<img src="https://i.pinimg.com/736x/0c/0e/b3/0c0eb3ebbbd22b7498a4d7e3fdbe85a4.jpg" width="600">
+				<h3>Poisson</h3>
+				<img src="https://i.pinimg.com/736x/27/86/87/2786875dc5b7e4174ae76c6ee9cea4f3.jpg" width="500">
 			</section>
-		</section>
 
+			<section>
+                <h3>Regresión Binomial Negativa</h3>
+                <p><strong>Distribución de la variable dependiente:</strong> Binomial Negativa \( Y_i \sim \text{NegBin}(\mu_i, \theta) \)</p>
+                <p><strong>Función de enlace:</strong> Logaritmo natural</p>
+                <p><strong>Formulación matemática:</strong></p>
+                <p>\[
+                \log(\mu_i) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_p X_p
+                \]</p>
+                <p>Este modelo se utiliza cuando la variable dependiente es un conteo de eventos, pero hay sobredispersión (la varianza es mayor que la media), 
+					lo que no se captura adecuadamente con el modelo de Poisson.</p>
+            </section>
+
+			<section>
+				<h3>Tipos de ceros en datos de conteo</h3>
+				<p>Cuando modelamos eventos como deslizamientos, los ceros en los datos pueden surgir de al menos tres fuentes:</p>
+			
+				<h4>Ceros estructurales (verdaderos ceros)</h4>
+				<p><strong>Ejemplo:</strong> Lugares donde realmente no pueden ocurrir deslizamientos (e.g., lagos, llanuras totalmente estables).</p>
+			
+				<h4>Ceros aleatorios (cero por casualidad)</h4>
+				<p><strong>Ejemplo:</strong> Zonas propensas a deslizamientos donde podrían haber ocurrido, pero no ocurrieron durante el periodo observado.</p>
+			
+				<h4>Ceros por omisión o errores de observación</h4>
+				<p><strong>Ejemplo:</strong> Eventos que sí ocurrieron, pero no se registraron por limitaciones en los inventarios (e.g., imágenes satelitales de baja resolución) 
+					o falta de monitoreo.</p>
+			</section>
+			
+			
+			<section>
+				<h3>Modelos Zero-Inflated </h3>
+				<p>Los modelos de conteo clásicos como Poisson o binomial negativa suponen que los ceros ocurren como parte del proceso natural. Pero en muchos contextos reales 
+					(como deslizamientos), hay más ceros de los que esos modelos predicen.</p>
+				<ul>
+					<li>Una parte binaria (modelo logístico) que predice la probabilidad de estar en el grupo "siempre cero".</li>
+					<li>Una parte de conteo (binomial negativa) que modela el número de eventos si no está en el grupo "siempre cero".</li>
+				</ul>
+			</section>
+
+		</section>
+			
 <section>
 	<h1 style="font-size:larger">Areal data<br><br>Discrete</h1>
 </section>
