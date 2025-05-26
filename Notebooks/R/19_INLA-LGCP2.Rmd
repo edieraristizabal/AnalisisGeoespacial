@@ -1,0 +1,338 @@
+**CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
+**Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
+**Credits**: The content of this notebook is based on [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/point-process-modeling.html).
+
+# log-Gaussian Cox process (LGCP)
+
+Los Procesos de Cox Log-Gaussianos (LGCPs) se utilizan típicamente para modelar fenómenos impulsados por el medio ambiente (Diggle et al. 2013). Un LGCP es un proceso de Poisson con una intensidad variable, que a su vez es un proceso estocástico de la forma
+
+Λ(s) = exp(Z(s)),
+
+donde Z = {Z(s) : s ∈ R²} es un proceso Gaussiano. Entonces, condicionado a Λ(⋅), el proceso de puntos es un proceso de Poisson inhomogéneo con intensidad Λ(⋅). Esto implica que el número de eventos en cualquier región A se distribuye según una Poisson con media ∫A Λ(s) ds, y las ubicaciones de los eventos son una muestra aleatoria independiente de la distribución en A con una densidad de probabilidad proporcional a Λ(⋅). Un modelo LGCP también puede incluir variables explicativas espaciales, proporcionando un enfoque flexible para describir y predecir una amplia gama de fenómenos espaciales.
+
+En este capítulo, asumimos que hemos observado un patrón espacial de puntos de ubicaciones de eventos {x_i : i = 1, ..., n} que ha sido generado como una realización de un LGCP, y mostramos cómo ajustar un modelo LGCP a los datos utilizando los enfoques INLA y SPDE. El Capítulo 15 introdujo el enfoque SPDE y describió su implementación en el contexto de la geoestadística basada en modelos utilizando un ejemplo de predicción de contaminación del aire. Aquí, describimos cómo usar SPDE para ajustar un modelo LGCP a un patrón de puntos de especies de plantas para estimar la intensidad del proceso.
+
+```{r}
+library("sf")
+library("spocc")
+library("ggplot2")
+library(sf)
+library(terra)
+library(rnaturalearth)
+library(INLA)
+library(rgeos)
+```
+
+```{r}
+devtools::install_github("cran/rgeos")
+```
+
+En este ejemplo, estimamos la intensidad de las especies de plantas de Solanum en Bolivia desde enero de 2015 hasta diciembre de 2022, obtenidas de la base de datos Global Biodiversity Information Facility (GBIF) con el paquete `spocc`. Recuperamos los datos utilizando la función `occ()`, especificando el nombre científico de la especie de planta, la fuente de datos, las fechas y el código del país. También especificamos `has_coords = TRUE` para devolver solo las ocurrencias que tienen coordenadas, y `limit = 1000` para establecer el límite en el número de registros. Aquí, mostramos cómo formular y ajustar un modelo LGCP para las especies de plantas de Solanum en Bolivia utilizando un campo aleatorio Gaussiano continuo con INLA y SPDE. El modelo nos permite estimar la intensidad del proceso que genera las ubicaciones.
+
+```{r}
+df <- occ(query = "solanum", from = "gbif",
+          date = c("2015-01-01", "2022-12-31"),
+          gbifopts = list(country = "BO"),
+          has_coords = TRUE, limit = 1000)
+d <- occ2df(df)
+```
+
+Utilizamos la función `st_as_sf()` para crear un objeto `sf` llamado `d` que contiene las nrow(d) = 263 ubicaciones recuperadas. Establecemos el sistema de referencia de coordenadas (CRS) al código EPSG 4326 ya que las coordenadas de las ubicaciones están dadas por valores de longitud y latitud.
+
+```{r}
+d <- st_as_sf(d[, 2:3], coords = c("longitude", "latitude"))
+st_crs(d) <- "EPSG:4326"
+```
+
+Para trabajar con kilómetros en lugar de grados, proyectamos los datos a UTM 19S correspondiente al código EPSG 5356 con kilómetros como unidades. Para hacerlo, obtenemos `st_crs("EPSG:5356")$proj4string` y cambiamos `+units=m` por `+units=km`.
+
+```{r}
+st_crs("EPSG:5356")$proj4string
+projUTM <- "+proj=utm +zone=19 +south +ellps=GRS80
++towgs84=0,0,0,0,0,0,0 +units=km +no_defs"
+d <- st_transform(d, crs = projUTM)
+```
+
+También obtenemos el mapa de Bolivia con el paquete `rnaturalearth` y lo proyectamos a UTM 19S con kilómetros como unidades.
+
+```{r}
+
+map <- ne_countries(type = "countries", country = "Bolivia",
+                    scale = "medium", returnclass = "sf")
+map <- st_transform(map, crs = projUTM)
+```
+
+```{r}
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = d) + coord_sf(datum = projUTM)
+```
+
+Finalmente, creamos un data frame llamado `coo` con las ubicaciones de los eventos.
+
+```{r}
+coo <- st_coordinates(d)
+```
+
+Ahora, construimos una matriz con las ubicaciones `coop` donde queremos predecir la intensidad del proceso puntual. Para hacerlo, primero creamos un raster que cubra el mapa utilizando la función `rast()` del paquete `terra`. Luego, recuperamos las coordenadas de las celdas con la función `xyFromCell()` del paquete `terra`.
+
+```{r}
+# raster grid covering map
+grid <- terra::rast(map, nrows = 100, ncols = 100)
+# coordinates of all cells
+xy <- terra::xyFromCell(grid, 1:ncell(grid))
+```
+
+Creamos un objeto `sf` llamado `dp` con las ubicaciones de predicción utilizando `st_as_sf()`, y usamos `st_filter()` para conservar las ubicaciones de predicción que se encuentran dentro del mapa. También recuperamos los índices de los puntos dentro del mapa utilizando `st_intersects()`, configurando `sparse = FALSE`.
+
+```{r}
+# transform points to a sf object
+dp <- st_as_sf(as.data.frame(xy), coords = c("x", "y"),
+               crs = st_crs(map))
+
+# indices points within the map
+indicespointswithin <- which(st_intersects(dp, map,
+                                           sparse = FALSE))
+
+# points within the map
+dp <- st_filter(dp, map)
+```
+
+```{r}
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = dp) + coord_sf(datum = projUTM)
+```
+
+```{r}
+coop <- st_coordinates(dp)
+```
+
+Utilizamos un LGCP para modelar el patrón de puntos de las especies de plantas. Así, asumimos que el proceso que origina las ubicaciones de las especies de plantas es un proceso de Poisson con una intensidad variable expresada como
+
+$log(Λ(s)) = β₀ + Z(s),$
+
+donde β₀ es el intercepto y Z(⋅) es un proceso espacial gaussiano de media cero con función de covarianza Matérn.
+
+Para ajustar el modelo utilizando INLA y SPDE, primero construimos una malla. En el análisis de patrones de puntos, generalmente no empleamos las ubicaciones como vértices de la malla. Construimos una malla que cubre la región de estudio utilizando la función `inla.mesh.2d()`, estableciendo `loc.domain` igual a una matriz con las ubicaciones de los puntos en el límite de la región. Los otros argumentos son los siguientes: `max.edge` denota las longitudes máximas permitidas de los bordes de los triángulos en la región interior y la extensión. `offset` especifica el tamaño de las extensiones interior y exterior alrededor de las ubicaciones de los datos. `cutoff` es la distancia mínima permitida entre puntos que utilizamos para evitar construir muchos triángulos pequeños alrededor de ubicaciones agrupadas.
+
+```{r}
+
+summary(dist(coo)) # summary of distances between event locations
+```
+
+```{r}
+loc.d <- cbind(st_coordinates(map)[, 1], st_coordinates(map)[, 2])
+
+mesh <- inla.mesh.2d(loc.domain = loc.d, max.edge = c(50, 100), offset = c(50, 100), cutoff = 1)
+```
+
+```{r}
+plot(mesh)
+points(coo, col = "red")
+axis(1)
+axis(2)
+```
+
+También creamos las variables `nv` con el número de vértices de la malla y la variable `n` con el número de eventos del patrón de puntos. Más adelante, utilizaremos estas variables para construir las pilas de datos.
+
+```{r}
+(nv <- mesh$n)
+```
+
+```{r}
+(n <- nrow(coo))
+```
+
+```{r}
+spde <- inla.spde2.matern(mesh = mesh, alpha = 2, constr = TRUE)
+```
+
+Utilizamos la función `inla.spde2.matern()` para construir el modelo SPDE en la malla.
+
+```{r}
+book.mesh.dual <- function(mesh) {
+    if (mesh$manifold=='R2') {
+        ce <- t(sapply(1:nrow(mesh$graph$tv), function(i)
+            colMeans(mesh$loc[mesh$graph$tv[i, ], 1:2])))
+        library(parallel)
+        pls <- mclapply(1:mesh$n, function(i) {
+            p <- unique(Reduce('rbind', lapply(1:3, function(k) {
+            j <- which(mesh$graph$tv[,k]==i)
+            if (length(j)>0) 
+            return(rbind(ce[j, , drop=FALSE],
+            cbind(mesh$loc[mesh$graph$tv[j, k], 1] +
+            mesh$loc[mesh$graph$tv[j, c(2:3,1)[k]], 1], 
+            mesh$loc[mesh$graph$tv[j, k], 2] +
+            mesh$loc[mesh$graph$tv[j, c(2:3,1)[k]], 2])/2))
+            else return(ce[j, , drop=FALSE])
+            })))
+            j1 <- which(mesh$segm$bnd$idx[,1]==i)
+            j2 <- which(mesh$segm$bnd$idx[,2]==i)
+            if ((length(j1)>0) | (length(j2)>0)) {
+            p <- unique(rbind(mesh$loc[i, 1:2], p,
+            mesh$loc[mesh$segm$bnd$idx[j1, 1], 1:2]/2 +
+            mesh$loc[mesh$segm$bnd$idx[j1, 2], 1:2]/2, 
+            mesh$loc[mesh$segm$bnd$idx[j2, 1], 1:2]/2 +
+            mesh$loc[mesh$segm$bnd$idx[j2, 2], 1:2]/2))
+            yy <- p[,2]-mean(p[,2])/2-mesh$loc[i, 2]/2
+            xx <- p[,1]-mean(p[,1])/2-mesh$loc[i, 1]/2
+            }
+            else {
+            yy <- p[,2]-mesh$loc[i, 2]
+            xx <- p[,1]-mesh$loc[i, 1]
+            }
+            Polygon(p[order(atan2(yy,xx)), ])
+        })
+        return(SpatialPolygons(lapply(1:mesh$n, function(i)
+            Polygons(list(pls[[i]]), i))))
+    }
+    else stop("It only works for R2!")
+}
+```
+
+Aquí, creamos los vectores con el número observado y esperado de eventos. Primero, creamos la malla dual que consiste en un conjunto de polígonos alrededor de cada vértice de la malla original. Podemos crear la malla dual utilizando la función `book.mesh.dual()` que se proporciona en Krainski et al. (2019).
+
+```{r}
+dmesh <- book.mesh.dual(mesh)
+plot(dmesh)
+axis(1)
+axis(2)
+```
+
+Para ajustar el LGCP, los vértices de la malla se consideran como puntos de integración. Los valores esperados correspondientes a los vértices de la malla son proporcionales a las áreas alrededor de los vértices de la malla, es decir, las áreas de los polígonos de la malla dual. Calculamos un vector de pesos llamado `w` con las áreas de la intersección entre cada polígono de la malla dual y la región de estudio utilizando el siguiente código.
+
+```{r}
+# Domain polygon is converted into a SpatialPolygons
+domain.polys <- Polygons(list(Polygon(loc.d)), '0')
+domainSP <- SpatialPolygons(list(domain.polys))
+
+# Because the mesh is larger than the study area, we need to
+# compute the intersection between each polygon
+# in the dual mesh and the study area
+
+w <- sapply(1:length(dmesh), function(i) {
+  if (gIntersects(dmesh[i, ], domainSP))
+    return(gArea(gIntersection(dmesh[i, ], domainSP)))
+  else return(0)
+})
+```
+
+```{r}
+sum(w) # sum weights
+```
+
+```{r}
+st_area(map) # area of the study region
+```
+
+```{r}
+plot(mesh)
+points(mesh$loc[which(w > 0), 1:2], col = "black", pch = 20)
+points(mesh$loc[which(w == 0), 1:2], col = "red", pch = 20)
+```
+
+Luego, creamos vectores de los conjuntos de datos aumentados con los valores observados y esperados. Los valores observados se especificarán en la fórmula del modelo como respuesta. Los valores esperados se especificarán en la fórmula del modelo como el componente `E` de la media para la verosimilitud de Poisson definida como
+
+$E_i = \exp(\eta_i)$
+
+donde $\eta_i$ es el predictor lineal.
+
+El vector `y.pp` contiene la variable de respuesta. Los primeros `nv` elementos son ceros correspondientes a los vértices de la malla. Los últimos `n` elementos son unos correspondientes a los eventos observados.
+
+El vector `e.pp` contiene los valores esperados. Los primeros `nv` elementos son los pesos `w` que representan la intersección entre las áreas alrededor de cada uno de los vértices de la malla y la región de estudio. Los siguientes `n` elementos son ceros correspondientes a los eventos puntuales.
+
+```{r}
+y.pp <- rep(0:1, c(nv, n))
+e.pp <- c(w, rep(0, n))
+```
+
+```{r}
+head(cbind(y.pp, e.pp))
+```
+
+```{r}
+tail(cbind(y.pp, e.pp))
+```
+
+Construimos la matriz de proyección `A.pp` para proyectar el campo aleatorio Gaussiano desde las observaciones a los vértices de la triangulación. Esta matriz se construye utilizando la matriz de proyección para los vértices de la malla, que es una matriz diagonal (`A.int`), y la matriz de proyección para las ubicaciones de eventos (`A.y`).
+
+```{r}
+# Projection matrix for the integration points (mesh vertices)
+A.int <- Diagonal(nv, rep(1, nv))
+# Projection matrix for observed points (event locations)
+A.y <- inla.spde.make.A(mesh = mesh, loc = coo)
+# Projection matrix for mesh vertices and event locations
+A.pp <- rbind(A.int, A.y)
+```
+
+También creamos la matriz de proyección `Ap.pp` para las ubicaciones de predicción.
+
+```{r}
+Ap.pp <- inla.spde.make.A(mesh = mesh, loc = coop)
+```
+
+Ahora usamos la función `inla.stack()` para construir pilas para estimación y predicción que organizan los datos, efectos y matrices de proyección. En los argumentos de `inla.stack()`, `data` es una lista con los valores observados (`y`) y esperados (`e`). El argumento `A` contiene las matrices de proyección, y el argumento `effects` es una lista con los efectos fijos y aleatorios. Luego, las pilas de estimación y predicción se combinan en una pila completa.
+
+```{r}
+# stack for estimation
+stk.e.pp <- inla.stack(tag = "est.pp",
+data = list(y = y.pp, e = e.pp), 
+A = list(1, A.pp),
+effects = list(list(b0 = rep(1, nv + n)), list(s = 1:nv)))
+
+# stack for prediction stk.p
+stk.p.pp <- inla.stack(tag = "pred.pp",
+data = list(y = rep(NA, nrow(coop)), e = rep(0, nrow(coop))),
+A = list(1, Ap.pp),
+effects = list(data.frame(b0 = rep(1, nrow(coop))),
+               list(s = 1:nv)))
+
+# stk.full has stk.e and stk.p
+stk.full.pp <- inla.stack(stk.e.pp, stk.p.pp)
+```
+
+La fórmula se especifica incluyendo la variable de respuesta en el lado izquierdo y los efectos aleatorios en el lado derecho.
+
+```{r}
+formula <- y ~ 0 + b0 + f(s, model = spde)
+```
+
+Ajustamos el modelo llamando a `inla()`. En la función, especificamos `link = 1` para calcular los valores ajustados que se encuentran en `res$summary.fitted.values` y `res$marginals.fitted.values` con la misma función de enlace que la familia especificada en el modelo.
+
+```{r}
+res <- inla(formula,  family = 'poisson',
+data = inla.stack.data(stk.full.pp),
+control.predictor = list(compute = TRUE, link = 1,
+                         A = inla.stack.A(stk.full.pp)),
+E = inla.stack.data(stk.full.pp)$e)
+```
+
+Un resumen de los resultados se puede inspeccionar escribiendo `summary(res)`. El marco de datos `res$summary.fitted.values` contiene los valores ajustados. Los índices de las filas correspondientes a las predicciones se pueden obtener con `inla.stack.index()` especificando la etiqueta "pred.pp" del stack de predicción.
+
+```{r}
+index <- inla.stack.index(stk.full.pp, tag = "pred.pp")$data
+pred_mean <- res$summary.fitted.values[index, "mean"]
+pred_ll <- res$summary.fitted.values[index, "0.025quant"]
+pred_ul <- res$summary.fitted.values[index, "0.975quant"]
+```
+
+Luego, añadimos capas a la cuadrícula raster con la media posterior y los percentiles 2.5 y 97.5 en las celdas que están dentro del mapa.
+
+```{r}
+grid$mean <- NA
+grid$ll <- NA
+grid$ul <- NA
+
+grid$mean[indicespointswithin] <- pred_mean
+grid$ll[indicespointswithin] <- pred_ll
+grid$ul[indicespointswithin] <- pred_ul
+```
+
+Finalmente, creamos mapas de la media posterior y los límites inferior y superior de los intervalos creíbles del 95% de la intensidad del proceso puntual de especies en Bolivia (Figura 23.4). Para ello, utilizamos la función `levelplot()` del paquete `rasterVis`, especificando `names.attr` con el nombre de cada panel y `layout` con el número de columnas y filas.
+
+```{r}
+library(rasterVis)
+levelplot(raster::brick(grid), layout = c(3, 1),
+names.attr = c("Mean", "2.5 percentile", "97.5 percentile"))
+```
+
+En general, observamos una baja intensidad de especies, con mayor intensidad en la parte centro-occidental de Bolivia. Cabe destacar que hemos modelado los datos de ocurrencia de especies recuperados de GBIF asumiendo que el patrón puntual espacial observado es una realización del proceso subyacente que genera las ubicaciones de las especies. En aplicaciones reales, es importante entender cómo se recolectaron los datos y evaluar posibles sesgos en los datos, como la sobrerepresentación de ciertas áreas, que pueden invalidar los resultados. Además, es importante incorporar el conocimiento de expertos para crear modelos que incluyan covariables relevantes y efectos aleatorios para tener en cuenta diversos tipos de variabilidad, lo que permite una comprensión más completa de la variable en investigación.
