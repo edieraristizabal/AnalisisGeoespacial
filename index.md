@@ -16,6 +16,9 @@ M2-101
 ## Diapositivas del curso
 [Ir a presentación...](/html/AnalisisGeoespacial.html)
 
+## Libro del curso
+[Libro guía](https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/intro.html)
+
 ## Programa
 
 ### Introducción al curso
@@ -78,10 +81,10 @@ Lecture: [Spatial point pattern analysisi and its application in geographical ep
 [Taller CARBayes en R](/Notebooks/R/14_CARBayes.Rmd)  
 [Taller INLA-CAR en R](/Notebooks/R/14_INLA-CAR.Rmd)  
 [Taller spaMM en R](/Notebooks/R/14_spaMM-CAR.Rmd)  
-[Taller SVC en R](/Notebooks/R/20_Bsvc.Rmd)  
-[Taller Análisis LGcox](/Notebooks/Python/19_LGCox.ipynb)
-[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP.Rmd)  
-[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP2.Rmd)  
+[Taller SVC en R](/Notebooks/R/20_Bsvc.Rmd)    
+[Taller Análisis LGcox](/Notebooks/Python/19_LGCox.ipynb)    
+[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP.Rmd)    
+[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP2.Rmd)    
 
 ### Bases de datos espaciales
 [Taller Bases de datos espaciales](/Notebooks/Python/21_SGDB.ipynb) 
