@@ -52,14 +52,15 @@ M2-101
 [Taller Geovisualización](/Notebooks/Python/12_Geovisualization.ipynb)  
 [Taller Geovisualización en R](/Notebooks/R/1_Visualizacion.Rmd) 
 [Taller Patrones de puntos en R](/Notebooks/R/2_pointPattern.Rmd)  
-Lecture: [Spatial point pattern analysisi and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
+Lecture: [Spatial point pattern analysis and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ### Choroplet maps
 [Taller Mapas Coropletas](/Notebooks/Python/13_Choropleth.ipynb)   
 [Taller datos discretos en R](/Notebooks/R/3_areaData.Rmd)  
 
 ### Lattice data analysis (Object-based model)
-[Taller Exploración espacial de datos](/Notebooks/Python/14_SpatialAssociation.ipynb)
+[Taller Exploración espacial de datos](/Notebooks/Python/14_SpatialAssociation.ipynb)  
+Lecture: [Causal Inference With Spatial Econometric Models](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/gean.70010)  
 
 ### Lattice data analysis (Field model)
 [Taller Geoestadística](/Notebooks/Python/15_Geostatistic.ipynb)  
