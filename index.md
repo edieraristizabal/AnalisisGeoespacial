@@ -11,10 +11,10 @@ Todos los scripts disponibles en esta guía han sido reciclados por el profesor 
 Miercoles & Viernes 8:00 - 10:00 a.m.
 
 ### Aula:
-M2-101
+M7-504
 
 ## Diapositivas del curso
-[Ir a presentación...](/html/AnalisisGeoespacial.html)
+[Ir a diapositivas...](/html/AnalisisGeoespacial.html)
 
 ## Libro del curso
 [Libro guía](https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/intro.html)
@@ -25,7 +25,7 @@ M2-101
 [How to learn Geospatial Data Science](https://towardsdatascience.com/how-to-learn-geospatial-data-science-in-2023-441d8386284e)
 
 ### Geospatial Computational Environment
-[Taller Ambiente de trabajo en Python](/Notebooks/Python/01_ComputationalEnvironment.ipynb)
+[Taller Ambiente de trabajo en Python](/Notebooks/Python/01_ComputationalEnvironment.ipynb)  
 [Taller Ambiente de trabajo en R](/Notebooks/R/0_Intro.Rmd)  
 
 ### Intro análisis espacial
@@ -52,6 +52,7 @@ M2-101
 [Taller Geovisualización](/Notebooks/Python/12_Geovisualization.ipynb)  
 [Taller Geovisualización en R](/Notebooks/R/1_Visualizacion.Rmd) 
 [Taller Patrones de puntos en R](/Notebooks/R/2_pointPattern.Rmd)  
+
 Lecture: [Spatial point pattern analysis and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ### Choroplet maps
@@ -60,6 +61,7 @@ Lecture: [Spatial point pattern analysis and its application in geographical epi
 
 ### Lattice data analysis (Object-based model)
 [Taller Exploración espacial de datos](/Notebooks/Python/14_SpatialAssociation.ipynb)  
+
 Lecture: [Causal Inference With Spatial Econometric Models](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/gean.70010)  
 
 ### Lattice data analysis (Field model)

@@ -155,11 +155,6 @@
 
 			<section>
 				<h3>Why spatial is special?</h3>
-				<iframe src="https://ourworldindata.org/explorers/energy?tab=table&facet=none&country=~ARG&Total+or+Breakdown=Select+a+source&Select+a+source=Fossil+fuels&Energy+or+Electricity=Electricity+only&Metric=Annual+generation" loading="lazy" style="width: 100%; height: 500px; border: 0px none;"></iframe>
-			</section>
-
-			<section>
-				<h3>Why spatial is special?</h3>
 				<a href="https://demo-covid19.heavy.ai/omnisci/dashboard/14?filterSet=-M2GRsckrm76tINSMg5c&tab=-MOdYuJj8BdVOW07uH0_"><img src="https://assets-global.website-files.com/620d42e86cb8ec4d0839e59d/620d42e96cb8ec621339f47a_COVID%20Demo%20March%2026%202020_900%20v2.gif" width="700"></a>
 				<figcaption>Source: <a href="https://www.heavy.ai/demos">HEAVY.AI</a></figcaption>
 			</section>
@@ -172,7 +167,7 @@
 
 			<section>
 				<h3>Dr. John Snow (1854)</h3>
-				<img src="https://www.datalaria.com/img/JohnSnow/Cholera_map.png" width="700">
+				<img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Snow-cholera-map-1.jpg" width="550">
 			</section>
 
 			<section>
@@ -2506,6 +2501,41 @@
 			<section>
 				<h3>Modelo multinivel</h3>
 				<img src="https://i.pinimg.com/736x/10/0a/e4/100ae42b73e75976cfb4d4a66eb306b0.jpg" width="500">
+			</section>
+
+			<section>
+				<h3>Intraclass Correlation Coefficient</h3>
+				<p>\[
+				Y_{ij} = \beta_0 + \beta_1 X_1 + \mu_j + \epsilon_{ij}
+				\]</p>
+
+				<p>\[\mu_j = iid, N(0,\sigma_0^2)\]</p>
+				<p>\[\epsilon_{ij} = iid, N(0,\sigma^2)\]</p>
+				<p>where $Y_{ij}$ is the dependent variable for individual $i$ in group $j$, $X_1$ is an independent variable, 
+					$β_0$ is the overall intercept, $β_1$ is the coefficient for the independent variable, $μ_j$ is the random effect for group $j$, 
+					and $ε_{ij}$ is the residual error term for individual $i$ in group $j$.</p>
+				<p>\[
+					Cov(Y_{ij},Y_{ji}) = \mu_j\ = \sigma_0^2
+					\]</p>
+
+				<p>\[
+					Corr(Y_{ij},Y_{ji}) = \frac{\sigma_0^2}{\sigma_0^2+\sigma^2}
+					\]</p>
+			</section>
+			
+			<section>
+				<h3>Intraclass Correlation Coefficient</h3>
+				<p>La Correlación Intraclase es la razón entre la varianza entre grupos y la varianza total. Te indica la 
+					proporción de la varianza total en Y que es explicada por la agrupación en conglomerados. También puedes interpretarla como 
+					la correlación entre las observaciones dentro del mismo grupo.</p>
+
+				<p>\[
+					Corr(Y_{ij},Y_{ji}) = \frac{\sigma_0^2}{\sigma_0^2+\sigma^2}
+					\]</p>
+
+				<li>Justificar tu modelo: Un ICC cercano a cero indica que no hay un efecto de agrupación real. Los datos dentro de un mismo grupo son tan diferentes entre sí como lo son de los datos de otros grupos. En este caso, no necesitas un modelo complejo (como un modelo mixto) y puedes usar un método más sencillo (como una regresión lineal estándar) </li>
+				<li>Interpretar la varianza: El valor del ICC cuantifica la proporción de la varianza total que es explicada por la pertenencia a un grupo. </li>
+				<li>Evaluar predictores: Te permite evaluar si estas nuevas variables explican la varianza que originalmente existía entre los grupos o la que existía dentro de ellos, refinando así tu comprensión del fenómeno estudiado.</li>
 			</section>
 		</section>
 
