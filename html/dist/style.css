@@ -42,11 +42,13 @@
 
 
 .reveal section p {
-    font-size: 0.7em;
+    font-size: 0.55em;
+    line-height: 1.4;
       }
 
 .reveal section li {
-    font-size: 0.6em;
+    font-size: 0.5em;
+    line-height: 1.4;
       }
 
 .reveal .slide-number {
