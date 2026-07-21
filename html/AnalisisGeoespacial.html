@@ -3275,7 +3275,7 @@
 					whereby lines that split the midpoint between each sampled location are connected thus enclosing an
 					area.
 					Each area ends up enclosing a sample point whose value it inherits.</p>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
 					width="800">
 			</section>
 
@@ -3296,21 +3296,12 @@
 			</section>
 
 			<section>
-				<h3>Inverse Distance Weighted (IDW)</h3>
-				<p> The IDW technique computes an average value for unsampled locations using values from nearby
-					weighted
-					locations. The weights are proportional to the proximity of the sampled points to the unsampled
-					location
-					and can be specified by the IDW power coefficient. </p>
-				$\hat{Z_j} = \frac{\sum_i{Z_i / d ^ n_{ij}}}{\sum_i{1 / d ^ n_{ij}}}$
-				<p>So a large
-					n
-					results in nearby points wielding a much greater influence on the unsampled location than a point
-					further away resulting in an interpolated output looking like a Thiessen interpolation. On the other
-					hand, a very small value of
-					n
-					will give all points within the search radius equal weight such that all unsampled locations will
-					represent nothing more than the mean values of all sampled points within the search radius.</p>
+				<h3>Inverse Distance Weighted (IDW) para n= 2 y n=15</h3>
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-idw1-1.png"
+					width="450">
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-idw2-1.png"
+					width="450">
+
 			</section>
 
 			<section>
@@ -3334,32 +3325,26 @@
 					between location point pairs increases. We can compute the difference, $γ$, in values by squaring
 					their
 					differences then dividing by 2.</p>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
 					width="1000">
 				$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
 					width="1000">
 			</section>
 
 			<section>
-				<h3>Experimental semivariogram</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
-					width="620">
-			</section>
-
-			<section>
 				<h3>Variogram models</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
 					width="800">
 			</section>
 
@@ -3370,14 +3355,26 @@
 
 			<section>
 				<h3>Parameters in a variogram model</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>Spherical model fit</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
 					width="1000">
+			</section>
+
+			<section>
+				<h3>The Ordinary Kriging Interpolated Surface</h3>
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-krige01-1.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Mapa de la varianza de la predicción (SK)</h3>
+				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-krige03-1.png"
+					width="800">
 			</section>
 		</section>
 
