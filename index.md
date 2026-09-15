@@ -1,6 +1,6 @@
 # Análisis Geoespacial
 
-El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos espaciales en un contexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como editores *Jupyter Lab* y *Visual Code*. 
+El curso Análisis Geoespacial está orientado para estudiantes de posgrados que desen adquirir conocimientos sobre sensoramiento remoto y procesamiento de datos espaciales en un contexto ambiental. El curso utiliza herramientas tipo sistemas de información geográfica, como *QGIS* y *ArcGIS*, *Google Earth Engine* (GEE) y programación en lenguajes como *Python* y *Javascript* utilizando como IDEs los editores *Jupyter Lab*, *Visual Code* y *Antigravity*. 
 
 Todos los scripts disponibles en esta guía han sido reciclados por el profesor Edier Aristizábal, y ajustados la mayoría de ellos de acuerdo con las necesidades del curso. Por lo que se hace un esfuerzo en brindar los créditos a los desarrolladores, pero con toda seguridad no es suficiente dicho esfuerzo y muchos de los créditos seguramente no están. Sin embargo no es por omisión voluntaria, sino por el gran número de desarrolladores consultados, combinaciones y ajustes, que en muchos casos se pierde la trayectoria. Pido disculpas a los programadores que sienten que sus créditos debieron ser otorgados en esta guía.
 
@@ -40,7 +40,7 @@ M7-504
 [Taller Mapas interactivos](/Notebooks/Python/08_InteractiveMaps.ipynb)  
 [Taller Leaflet](/Notebooks/Python/09_Leaflet.ipynb)  
 
-### Point pattern analysis
+## Point pattern analysis
 [Taller Análisis de patrones de puntos](/Notebooks/Python/10_PointPatternAnalysis.ipynb)
 [Taller Análisis de Voronoi](/Notebooks/Python/10_VoronoiGrids.ipynb)  
 [Taller Análisis Poisson](/Notebooks/Python/10_GML_Poisson.ipynb)  
@@ -55,26 +55,16 @@ M7-504
 
 Lecture: [Spatial point pattern analysis and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
+## Lattice data analysis (Object-based model)
+
 ### Choroplet maps
 [Taller Mapas Coropletas](/Notebooks/Python/13_Choropleth.ipynb)   
 [Taller datos discretos en R](/Notebooks/R/3_areaData.Rmd)  
 
-### Lattice data analysis (Object-based model)
 [Taller Exploración espacial de datos](/Notebooks/Python/14_SpatialAssociation.ipynb)  
 
 Lecture: [Causal Inference With Spatial Econometric Models](https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/gean.70010)  
 
-### Lattice data analysis (Field model)
-[Taller Geoestadística](/Notebooks/Python/15_Geostatistic.ipynb)  
-[Taller Análisis con datos raster](/Notebooks/Python/16_Raster.ipynb)     
-[Taller Google Earth Engine](/Notebooks/Python/17_GEE.ipynb)  
-[Taller Modelos Gaussianos](/Notebooks/Python/19_GaussianProcess.ipynb)  
-[Taller Kriging en R](/Notebooks/R/15_Kriging.Rmd)  
-[Taller GP en R](/Notebooks/R/19_INLA-GP.Rmd)  
-[Taller GP en R](/Notebooks/R/19_INLA-GP2.Rmd)  
-
-### Network analysis
-[Redes](/Notebooks/Python/18_Network.ipynb) 
 
 ### Spatial model
 [Regresión espacial](/Notebooks/Python/19_SpatialRegression.ipynb)
@@ -87,7 +77,21 @@ Lecture: [Causal Inference With Spatial Econometric Models](https://onlinelibrar
 [Taller SVC en R](/Notebooks/R/20_Bsvc.Rmd)    
 [Taller Análisis LGcox](/Notebooks/Python/19_LGCox.ipynb)    
 [Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP.Rmd)    
-[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP2.Rmd)    
+[Taller Análisis LGcox en R](/Notebooks/R/19_INLA-LGCP2.Rmd) 
+
+## Lattice data analysis (Field model)
+
+[Taller Geoestadística](/Notebooks/Python/15_Geostatistic.ipynb)  
+[Taller Análisis con datos raster](/Notebooks/Python/16_Raster.ipynb)     
+[Taller Google Earth Engine](/Notebooks/Python/17_GEE.ipynb)  
+[Taller Modelos Gaussianos](/Notebooks/Python/19_GaussianProcess.ipynb)  
+[Taller Kriging en R](/Notebooks/R/15_Kriging.Rmd)  
+[Taller GP en R](/Notebooks/R/19_INLA-GP.Rmd)  
+[Taller GP en R](/Notebooks/R/19_INLA-GP2.Rmd)  
+
+
+### Network analysis
+[Redes](/Notebooks/Python/18_Network.ipynb) 
 
 ### Bases de datos espaciales
 [Taller Bases de datos espaciales](/Notebooks/Python/21_SGDB.ipynb) 
@@ -107,13 +111,13 @@ presentaciones con el avance de su trabajo de la siguiente forma:
 * Porcentaje de evaluación: 10%
 * Tiempo: 5 min.
 * Alcance: presentacion del problema de investigación y fuente de información.
-* Fecha: luego de terminar el modulo. Geospatial data
+* Fecha: luego de terminar el modulo herramientas web.
 
 #### Presentaciòn de avances
 * Porcentaje de evaluación: 30%
 * Tiempo: 10 min.
 * Alcance: avances.
-* Fecha: luego de terminar el modulo. Raster analysis
+* Fecha: luego de terminar el modulo de áreas
 
 #### Presentación final
 * Porcentaje de evaluación: 30%
