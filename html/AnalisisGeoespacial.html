@@ -65,6 +65,10 @@
 			padding: 10px 12px;
 			max-height: 330px;
 		}
+		.fmt-split.tall pre code {
+			font-size: 0.36em;
+			max-height: 430px;
+		}
 
 		.fmt-render {
 			background: #f7f9fb;
@@ -1654,6 +1658,70 @@
 				<img src="https://i.pinimg.com/564x/71/95/81/719581743041ece51f82a40e30a611ac.jpg" width="500">
 				<figcaption><a href="https://web-mapping.surge.sh/index.html">Fuente: Introduction to web mapping by
 						Michael Dorman</a></figcaption>
+			</section>
+
+			<section>
+				<h3>TopoJSON</h3>
+				<p class="fmt-meta"><strong>Qué es:</strong> una extensión de GeoJSON (Mike Bostock, del proyecto D3)
+					que codifica <strong>topología</strong>. Los límites compartidos entre entidades vecinas no se
+					repiten: se guardan una sola vez en el arreglo <code>arcs</code> y cada geometría se arma con los
+					<strong>índices</strong> de los arcos que la forman — un índice negativo (<code>-1</code> es el arco
+					<code>0</code> al revés). Además <strong>cuantiza</strong> las coordenadas a una cuadrícula de
+					enteros (<code>transform</code>: <code>scale</code> y <code>translate</code>) y las guarda como
+					<strong>diferencias</strong> respecto al punto anterior; por eso puede pesar hasta un
+					<strong>80% menos</strong> que el mismo dato en GeoJSON.<br>
+					<strong>Por qué importa:</strong> al compartir el arco, los polígonos vecinos encajan sin huecos ni
+					traslapes y se pueden <strong>simplificar de forma consistente</strong>. A cambio hay que
+					reconstruirlo antes de dibujarlo (<code>topojson.feature()</code>): se usa sobre todo en cartografía
+					web con D3. Extensión <code>.topojson</code> o <code>.json</code>.
+				</p>
+				<div class="fmt-split tall">
+					<div>
+						<pre><code class="language-json" data-trim>
+{
+  "type": "Topology",
+  "transform": {
+    "scale": [0.0005, 0.0005],
+    "translate": [-75.60, 6.20]
+  },
+  "arcs": [
+    [[100,0],[0,100]],
+    [[100,100],[-100,0],[0,-100],[100,0]],
+    [[100,100],[100,0],[0,-100],[-100,0]]
+  ],
+  "objects": {
+    "municipios": {
+      "type": "GeometryCollection",
+      "geometries": [
+        {"type": "Polygon", "arcs": [[0, 1]]},
+        {"type": "Polygon", "arcs": [[2, -1]]}
+      ]
+    }
+  }
+}
+						</code></pre>
+						<p class="fmt-caption">El archivo: tres arcos y dos polígonos que los referencian por índice</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0" y="0" width="320" height="210" fill="#ffffff" />
+							<polygon points="40,170 160,170 160,50 40,50" fill="#dfe9f5" stroke="#1a4e80"
+								stroke-width="2.5" />
+							<polygon points="160,170 280,170 280,50 160,50" fill="#e6f0e0" stroke="#4a7a4a"
+								stroke-width="2.5" />
+							<line x1="160" y1="50" x2="160" y2="170" stroke="#c0392b" stroke-width="5" />
+							<text x="92" y="116" font-size="16" fill="#1a4e80">A</text>
+							<text x="216" y="116" font-size="16" fill="#4a7a4a">B</text>
+							<text x="44" y="44" font-size="11" fill="#1a4e80">arco 1</text>
+							<text x="236" y="44" font-size="11" fill="#4a7a4a">arco 2</text>
+							<text x="86" y="192" font-size="11" fill="#c0392b">arco 0: se guarda una sola vez</text>
+							<text x="14" y="16" font-size="11" fill="#555">A = arcos [0, 1]</text>
+							<text x="196" y="16" font-size="11" fill="#555">B = arcos [2, −1]</text>
+						</svg>
+						<p class="fmt-caption">La frontera entre A y B existe una única vez: B la recorre en sentido
+							inverso (<code>-1</code>)</p>
+					</div>
+				</div>
 			</section>
 
 			<section>
