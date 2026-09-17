@@ -65,6 +65,7 @@
 			padding: 10px 12px;
 			max-height: 330px;
 		}
+
 		.fmt-split.tall pre code {
 			font-size: 0.36em;
 			max-height: 430px;
@@ -97,6 +98,7 @@
 			text-align: left;
 			margin: 0 0 4px 0;
 		}
+
 		.fmt-files {
 			font-size: 0.36em;
 			line-height: 1.25;
@@ -127,6 +129,43 @@
 
 		.fmt-files .opt {
 			color: #4a7a4a;
+		}
+
+		.tidy-tbl {
+			width: auto;
+			font-size: 0.42em;
+			margin: 10px auto;
+		}
+
+		.tidy-tbl th,
+		.tidy-tbl td {
+			padding: 4px 10px;
+			text-align: center;
+			white-space: nowrap;
+		}
+
+		.tidy-tbl th.bad {
+			background-color: #f6dede;
+			color: #8c2b2b;
+		}
+
+		.tidy-tbl th.good {
+			background-color: #e0f0e0;
+			color: #2f5f2f;
+		}
+
+		.tidy-tbl td.bad {
+			background-color: #fdf2f2;
+		}
+
+		.tidy-note {
+			font-size: 0.42em;
+			text-align: left;
+			margin: 8px 0 0 0;
+		}
+
+		.tidy-note li {
+			margin-bottom: 5px;
 		}
 	</style>
 
@@ -1329,6 +1368,78 @@
 			</section>
 
 			<section>
+				<img src="https://i.pinimg.com/originals/a8/dd/94/a8dd9402a3c38aa9a5d0704ebffc219a.gif" width="500">
+			</section>
+
+			<section>
+				<img src="https://static.educalingo.com/img/en/800/geoid.jpg" width="650">
+				<p><strong>Geoide</strong>: el geoide es la superficie equipotencial que coincidiría con la superficie
+					media del
+					océano de la Tierra si los océanos y la atmósfera estuvieran en equilibrio. "Figura matemática de la
+					Tierra",
+					una superficie lisa pero altamente irregular que no corresponde a la superficie real de la corteza
+					terrestre.
+				</p>
+			</section>
+
+			<section>
+				<img src="https://upload.wikimedia.org/wikipedia/commons/6/68/Geoid_height_red_blue_averagebw.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=original"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Datum</h3>
+				<p>is to align the geoid with the ellipsoid (or sphere) representation of the earth and to map the
+					earth’s surface features onto this ellipsoid/sphere.
+					The alignment can be <strong>local</strong> where the ellipsoid surface is closely fit to the geoid
+					at a particular location on the earth’s surface
+					or <strong>geocentric</strong> where the ellipsoid is aligned with the center of the earth.</p>
+				<img src="https://mgimond.github.io/Spatial/img/datum.png" width="600">
+			</section>
+
+			<section>
+				<h3>Datum local y geocéntrico</h3>
+				<p></p>
+				<img src="https://mgimond.github.io/Spatial/img/Datum_local.png" width="300">
+				<img src="https://mgimond.github.io/Spatial/img/Datum_geocentric.png" width="300">
+			</section>
+
+			<section>
+				<h3>Altura</h3>
+				<img src="https://www.researchgate.net/profile/Richard-Snay/publication/273133676/figure/fig1/AS:294934641954819@1447329306491/Relationship-between-orthometric-height-ellipsoid-height-and-geoid-height_W640.jpg"
+					width="600">
+			</section>
+
+			<section>
+				<h3>Proyección a coordenadas planas</h3>
+				<img src="https://www.tomasbeuzen.com/python-for-geospatial-analysis/_images/projection.gif"
+					width="800">
+				<figcaption>Fuente: tomado de Github Tomas Beuzen</figcaption>
+			</section>
+
+			<section>
+				<h3>Proyección a coordenadas planas</h3>
+				<img src="https://image.slidesharecdn.com/mapprojectionsandmapscales-140207120532-phpapp01/95/map-projections-and-map-scales-3-638.jpg?cb=1391774763"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Proyección a coordenadas planas</h3>
+				<img src="https://1.bp.blogspot.com/-X9zVlxcbMFs/XxxrIay7trI/AAAAAAAAJSw/MT3gZy0CsxIJ3ZjDKmKDAB2lNE0UladSQCLcBGAsYHQ/s640/Proyeccion%2Bcartogr%25C3%25A1fica.jpg"
+					width="900">
+			</section>
+
+			<section>
+				<h3>European Petroleum Survey Group (EPSG)</h3>
+				<img src="https://i.pinimg.com/1200x/97/53/7b/97537b54e000e4825239aaff200325ec.jpg" width="900">
+				<a href="https://spatialreference.org/ref/epsg/">EPSG</a>
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/1200x/97/53/7b/97537b54e000e4825239aaff200325ec.jpg" width="900">
+			</section>
+
+			<section>
 				<h3>Modelos de datos espaciales</h3>
 				<ul>
 					<li><strong>Datos</strong> se pueden definir como hechos verificables sobre el mundo real.</li>
@@ -1404,7 +1515,7 @@
 					Conceptualmente es una <strong>clase de entidades</strong>: almacena una colección de entidades con
 					el mismo tipo de geometría (punto, línea <em>o</em> polígono), los mismos atributos y una extensión
 					espacial común.<br>
-					Es un <strong>formato binario</strong> —no se puede abrir ni editar con un editor de texto— y, pese
+					Es un <strong>formato binario</strong>y, pese
 					a su nombre, un shapefile «individual» <strong>no es un archivo sino un conjunto</strong>: entre 3 y
 					8 archivos que comparten el mismo nombre y se diferencian por la extensión.</p>
 				<table class="fmt-files">
@@ -1480,8 +1591,7 @@
 					</tbody>
 				</table>
 				<p class="fmt-caption">Los archivos deben copiarse siempre juntos: sin el <code>.shx</code> o el
-					<code>.dbf</code> el shapefile no abre. Limitaciones heredadas: máximo 2 GB por archivo, nombres de
-					campo de hasta 10 caracteres y un solo tipo de geometría por shapefile.
+					<code>.dbf</code> el shapefile no abre.
 				</p>
 			</section>
 
@@ -1498,6 +1608,7 @@
 					contenido de una geodatabase se muestra en la siguiente figura.</p>
 				<img src="https://i.pinimg.com/1200x/d1/a3/bb/d1a3bb9fb2ede8415fe677f00ee3c0ef.jpg" width="1000">
 			</section>
+
 			<section>
 				<h3>GeoPackage</h3>
 				<p>Este es un formato de datos relativamente nuevo que sigue estándares de formato abierto (es
@@ -1510,87 +1621,9 @@
 					información de
 					proyección, etc., están todos almacenados en un solo archivo lo que facilita la portabilidad. Su
 					nombre de archivo generalmente termina en
-					.gpkg. Aplicaciones como QGIS (2.12 en adelante), R y ArcGIS reconocen este formato (ArcGIS
-					versión
-					10.2.2 y superior leerá el archivo desde ArcCatalog pero requiere un script para crear un
-					GeoPackage).</p>
+					.gpkg.</p>
 				<img src="https://i.pinimg.com/736x/3f/f1/60/3ff160815afb1136073a6d292f9669de.jpg" width="600">
 
-			</section>
-
-			<section>
-				<h3>GeoPackage — qué hay dentro del archivo</h3>
-				<p class="fmt-meta">Es un <strong>archivo binario</strong>: una base de datos <strong>SQLite</strong>
-					completa. Sus primeros bytes dicen <code>SQLite format 3</code> y lleva la marca <code>GPKG</code>
-					en el campo <code>application_id</code>, que es lo que permite reconocerlo como GeoPackage. Lo que
-					en el shapefile son archivos sueltos, aquí son <strong>tablas dentro del mismo archivo</strong>.</p>
-				<table class="fmt-files">
-					<thead>
-						<tr>
-							<th class="c">Tabla</th>
-							<th>Qué contiene</th>
-							<th class="c">¿Obligatoria?</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="c"><code>gpkg_spatial_ref_sys</code></td>
-							<td>La definición de los <strong>sistemas de referencia</strong> usados en el archivo
-								(equivale al <code>.prj</code> del shapefile)</td>
-							<td class="c req">Obligatoria</td>
-						</tr>
-						<tr>
-							<td class="c"><code>gpkg_contents</code></td>
-							<td>El <strong>inventario de capas</strong>: nombre, tipo (vectorial o teselas), extensión
-								espacial y CRS de cada una</td>
-							<td class="c req">Obligatoria</td>
-						</tr>
-						<tr>
-							<td class="c"><code>gpkg_geometry_columns</code></td>
-							<td>Qué columna guarda la <strong>geometría</strong> de cada capa, de qué tipo es y en qué
-								CRS está</td>
-							<td class="c req">Obligatoria si hay capas vectoriales</td>
-						</tr>
-						<tr>
-							<td class="c">tabla de cada capa</td>
-							<td>Los <strong>datos</strong>: una fila por entidad, con sus atributos y la geometría
-								guardada en una columna <code>BLOB</code></td>
-							<td class="c req">Obligatoria — es la capa</td>
-						</tr>
-						<tr>
-							<td class="c"><code>gpkg_tile_matrix_set</code><br><code>gpkg_tile_matrix</code></td>
-							<td>Extensión cubierta y <strong>niveles de zoom</strong> de las teselas ráster</td>
-							<td class="c req">Obligatorias si hay ráster</td>
-						</tr>
-						<tr>
-							<td class="c"><code>rtree_&lt;capa&gt;_&lt;geom&gt;</code></td>
-							<td><strong>Índice espacial</strong> R-Tree: acelera las consultas por ubicación
-								(equivale al <code>.sbn</code> / <code>.qix</code>)</td>
-							<td class="c opt">Opcional</td>
-						</tr>
-						<tr>
-							<td class="c"><code>gpkg_extensions</code></td>
-							<td>Declara las <strong>extensiones</strong> que usa el archivo (índices, ráster no
-								teselado, etc.)</td>
-							<td class="c opt">Opcional</td>
-						</tr>
-						<tr>
-							<td class="c"><code>gpkg_metadata</code><br><code>gpkg_metadata_reference</code></td>
-							<td><strong>Metadatos</strong> y a qué capa o columna se refiere cada uno</td>
-							<td class="c opt">Opcional</td>
-						</tr>
-						<tr>
-							<td class="c"><code>.gpkg-wal</code> / <code>.gpkg-shm</code><br><code>.gpkg-journal</code>
-							</td>
-							<td>Únicos archivos que acompañan al <code>.gpkg</code>: temporales de SQLite mientras la
-								capa está en edición</td>
-							<td class="c opt">Temporales — no se distribuyen</td>
-						</tr>
-					</tbody>
-				</table>
-				<p class="fmt-caption">Frente al shapefile: un solo archivo que puede llevar varias capas y varios tipos
-					de geometría, vectorial y ráster a la vez, nombres de campo largos, UTF-8, valores nulos, fechas y
-					un límite de tamaño que en la práctica no se alcanza.</p>
 			</section>
 
 			<section>
@@ -1661,16 +1694,25 @@
 			</section>
 
 			<section>
+				<h1><a href="http://geojson.io/">http://geojson.io/</a></h1>
+			</section>
+
+			<section>
+				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
+				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
+					width="1000">
+			</section>
+
+			<section>
 				<h3>TopoJSON</h3>
-				<p class="fmt-meta"><strong>Qué es:</strong> una extensión de GeoJSON (Mike Bostock, del proyecto D3)
-					que codifica <strong>topología</strong>. Los límites compartidos entre entidades vecinas no se
-					repiten: se guardan una sola vez en el arreglo <code>arcs</code> y cada geometría se arma con los
-					<strong>índices</strong> de los arcos que la forman — un índice negativo (<code>-1</code> es el arco
-					<code>0</code> al revés). Además <strong>cuantiza</strong> las coordenadas a una cuadrícula de
-					enteros (<code>transform</code>: <code>scale</code> y <code>translate</code>) y las guarda como
+				<p class="fmt-meta">Es una extensión de GeoJSON que codifica <strong>topología</strong>. Los límites
+					compartidos entre entidades vecinas no se
+					repiten: se guardan una sola vez en el arreglo <code>arcs</code>. Además <strong>cuantiza</strong>
+					las coordenadas a una cuadrícula de
+					enteros y las guarda como
 					<strong>diferencias</strong> respecto al punto anterior; por eso puede pesar hasta un
 					<strong>80% menos</strong> que el mismo dato en GeoJSON.<br>
-					<strong>Por qué importa:</strong> al compartir el arco, los polígonos vecinos encajan sin huecos ni
+					Al compartir el arco, los polígonos vecinos encajan sin huecos ni
 					traslapes y se pueden <strong>simplificar de forma consistente</strong>. A cambio hay que
 					reconstruirlo antes de dibujarlo (<code>topojson.feature()</code>): se usa sobre todo en cartografía
 					web con D3. Extensión <code>.topojson</code> o <code>.json</code>.
@@ -1700,7 +1742,6 @@
   }
 }
 						</code></pre>
-						<p class="fmt-caption">El archivo: tres arcos y dos polígonos que los referencian por índice</p>
 					</div>
 					<div class="fmt-render">
 						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
@@ -1725,18 +1766,8 @@
 			</section>
 
 			<section>
-				<h1><a href="http://geojson.io/">http://geojson.io/</a></h1>
-			</section>
-
-			<section>
-				<h3><a href="https://mapshaper.org/">Mapshaper</a></h3>
-				<img src="http://www.gisandbeers.com/wp-content/uploads/2018/05/Mapshaper-para-conversi%C3%B3n-de-archivos-GeoJSON-y-Shapefile.jpg"
-					width="1000">
-			</section>
-
-			<section>
 				<h3>KML — Keyhole Markup Language</h3>
-				<p class="fmt-meta"><strong>Qué es:</strong> formato <strong>vectorial en texto plano, basado en
+				<p class="fmt-meta">Es un formato <strong>vectorial en texto plano, basado en
 						XML</strong>, creado por Keyhole/Google y hoy estándar OGC. Es el formato nativo de Google Earth
 					y Google Maps (<code>.kmz</code> es simplemente un KML comprimido en ZIP junto con sus iconos e
 					imágenes).<br>
@@ -1744,8 +1775,7 @@
 					<strong>WGS84 (EPSG:4326)</strong> — no admite otro sistema de referencia — y el orden es
 					<em>longitud, latitud, altura</em>. Guarda la geometría junto con la <strong>simbología</strong>
 					(color, icono, etiqueta) y marcas de tiempo, pero no una tabla de atributos como tal: la información
-					descriptiva va en <code>&lt;name&gt;</code> y <code>&lt;description&gt;</code>. Pensado para
-					<em>visualizar</em>, no para analizar.
+					descriptiva va en <code>&lt;name&gt;</code> y <code>&lt;description&gt;</code>.
 				</p>
 				<div class="fmt-split">
 					<div>
@@ -1764,7 +1794,6 @@
   &lt;/Document&gt;
 &lt;/kml&gt;
 						</code></pre>
-						<p class="fmt-caption">El archivo: etiquetas XML</p>
 					</div>
 					<div class="fmt-render">
 						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
@@ -1785,14 +1814,13 @@
 							<rect x="176" y="62" width="126" height="22" rx="4" fill="#ffffff" stroke="#c0392b" />
 							<text x="182" y="77" font-size="12" fill="#333">Punto de interés</text>
 						</svg>
-						<p class="fmt-caption">Cómo lo dibuja el SIG: un punto sobre el globo, con su etiqueta</p>
 					</div>
 				</div>
 			</section>
 
 			<section>
 				<h3>GML — Geography Markup Language</h3>
-				<p class="fmt-meta"><strong>Qué es:</strong> gramática XML definida por el <strong>OGC</strong> para
+				<p class="fmt-meta">Gramática XML definida por el <strong>OGC</strong> para
 					<strong>modelar, transportar y almacenar</strong> información geográfica. Más que un formato es un
 					lenguaje: es la respuesta que entrega un servicio <strong>WFS</strong> y la base de INSPIRE y de
 					varios catálogos nacionales.<br>
@@ -1840,21 +1868,18 @@
 							<text x="20" y="28" font-size="12" fill="#333">nombre: Vía Chivor</text>
 							<text x="20" y="46" font-size="12" fill="#333">tipo: Secundaria</text>
 						</svg>
-						<p class="fmt-caption">Cómo lo lee el SIG: una línea con su tabla de atributos</p>
 					</div>
 				</div>
 			</section>
 
 			<section>
 				<h3>SVG — Scalable Vector Graphics</h3>
-				<p class="fmt-meta"><strong>Qué es:</strong> formato de <strong>gráficos vectoriales 2D</strong> basado
+				<p class="fmt-meta">Formato de <strong>gráficos vectoriales 2D</strong> basado
 					en XML, estándar del W3C. Cualquier navegador o programa que lea XML lo dibuja; se escala sin perder
 					calidad y se puede estilizar y animar con CSS.<br>
-					<strong>Ojo — no es un formato SIG:</strong> guarda <em>dibujo</em>, no <em>datos
+					No es un formato SIG: guarda <em>dibujo</em>, no <em>datos
 						georreferenciados</em>. No tiene sistema de referencia ni tabla de atributos; sus coordenadas
-					son del <strong>lienzo, en píxeles</strong>, y el eje <strong>Y crece hacia abajo</strong>. Es el
-					formato de <strong>salida</strong> de un mapa (la figura que se exporta desde QGIS o R para un
-					informe o la web), no el de entrada para analizar.
+					son del <strong>lienzo, en píxeles</strong>, y el eje <strong>Y crece hacia abajo</strong>.
 				</p>
 				<div class="fmt-split">
 					<div>
@@ -1883,20 +1908,17 @@
 								<text x="1" y="21" font-size="5">y ↓</text>
 							</g>
 						</svg>
-						<p class="fmt-caption">La representación <em>es</em> el archivo: el navegador lo dibuja tal
-							cual</p>
 					</div>
 				</div>
 			</section>
 
 			<section>
 				<h3>DWG — Drawing (AutoCAD)</h3>
-				<p class="fmt-meta"><strong>Qué es:</strong> formato <strong>binario y propietario</strong> de Autodesk,
+				<p class="fmt-meta">Es un formato <strong>binario y propietario</strong> de Autodesk,
 					el formato interno de AutoCAD. Un DWG es una <strong>base de datos de dibujo 2D/3D</strong>:
 					entidades geométricas (líneas, arcos, polilíneas, sólidos) organizadas en <strong>capas</strong>,
-					más bloques, textos, cotas y los espacios modelo/papel. Su especificación no es pública: los demás
-					programas lo leen por ingeniería inversa, por eso cada versión (R12, 2000, 2007, 2013, 2018…) puede
-					romper la compatibilidad. Su hermano abierto es el <strong>DXF</strong>, el mismo dibujo en
+					más bloques, textos, cotas y los espacios modelo/papel. Su hermano abierto es el
+					<strong>DXF</strong>, el mismo dibujo en
 					<strong>texto plano</strong> — el del ejemplo.<br>
 					<strong>Ojo — es CAD, no SIG:</strong> las coordenadas están en <em>unidades de dibujo</em> sobre un
 					origen local y arbitrario, casi nunca trae CRS, y <strong>no tiene tabla de atributos</strong>: la
@@ -1950,7 +1972,8 @@ EJE_VIA
 								<text x="20" y="190" font-size="10">0,0 local</text>
 							</g>
 						</svg>
-						<p class="fmt-caption">Cómo lo dibuja el CAD: geometría por capas, en unidades de dibujo sobre un
+						<p class="fmt-caption">Cómo lo dibuja el CAD: geometría por capas, en unidades de dibujo sobre
+							un
 							origen propio — sin proyección</p>
 					</div>
 				</div>
@@ -1958,8 +1981,187 @@ EJE_VIA
 
 			<section>
 				<h3>Tidy data</h3>
+				<p class="fmt-meta">Propuesto por Hadley Wickham (2014): una forma estándar de organizar una tabla para
+					que el análisis sea directo. Tres reglas:</p>
 				<img src="https://images.squarespace-cdn.com/content/v1/5b872f96aa49a1a1da364999/1572008171822-KJ0300DR4KCHW8NUUN1N/ke17ZwdGBToddI8pDm48kP0H4u0KUkchoILChBGMIUUUqsxRUqqbr1mOJYKfIPR7LoDQ9mXPOjoJoqy81S2I8N_N4V1vUb5AoIIIbLZhVYy7Mythp_T-mtop-vrsUOmeInPi9iDjx9w8K4ZfjXt2dskF1CFdD1ghxEpYxbqRasKlXJQr8mv4xxZBDj9ez2c1CjLISwBs8eEdxAxTptZAUg/image.png?format=1500w"
-					width="1000">
+					width="600">
+				<p class="fmt-meta">En análisis geoespacial la observación es la <strong>entidad geográfica</strong> —un
+					municipio, una estación, un píxel— y la <strong>geometría es una columna más</strong>.</p>
+				<div class="fmt-split">
+					<div>
+						<table class="tidy-tbl">
+							<thead>
+								<tr>
+									<th class="good">municipio</th>
+									<th class="good">año</th>
+									<th class="good">población</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Chivor</td>
+									<td>2021</td>
+									<td>2 050</td>
+								</tr>
+								<tr>
+									<td>Chivor</td>
+									<td>2022</td>
+									<td>2 090</td>
+								</tr>
+								<tr>
+									<td>Macanal</td>
+									<td>2021</td>
+									<td>4 610</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div>
+						<table class="tidy-tbl">
+							<thead>
+								<tr>
+									<th>municipio</th>
+									<th class="bad">2021</th>
+									<th class="bad">2022</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Chivor</td>
+									<td class="bad">2 050</td>
+									<td class="bad">2 090</td>
+								</tr>
+								<tr>
+									<td>Macanal</td>
+									<td class="bad">4 610</td>
+									<td class="bad">4 655</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>Un ejemplo que <em>no</em> es tidy</h3>
+				<p class="fmt-meta">Precipitación anual registrada en tres estaciones. Es la forma en que suelen llegar
+					los datos de una entidad: cómoda para leerla en pantalla, inservible para analizarla.</p>
+				<table class="tidy-tbl">
+					<thead>
+						<tr>
+							<th>estación</th>
+							<th>municipio</th>
+							<th class="bad">coordenadas</th>
+							<th class="bad">2021</th>
+							<th class="bad">2022</th>
+							<th class="bad">2023</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>E-01</td>
+							<td>Chivor</td>
+							<td class="bad">4.89, -73.36</td>
+							<td class="bad">2 450</td>
+							<td class="bad">2 610</td>
+							<td class="bad">2 380</td>
+						</tr>
+						<tr>
+							<td>E-02</td>
+							<td>Macanal</td>
+							<td class="bad">4.97, -73.32</td>
+							<td class="bad">2 180</td>
+							<td class="bad">2 340</td>
+							<td class="bad">2 090</td>
+						</tr>
+						<tr>
+							<td>E-03</td>
+							<td>Garagoa</td>
+							<td class="bad">5.08, -73.36</td>
+							<td class="bad">1 960</td>
+							<td class="bad">2 120</td>
+							<td class="bad">1 880</td>
+						</tr>
+					</tbody>
+				</table>
+				<ol>
+					<li><code>2021</code>, <code>2022</code> y <code>2023</code> <strong>no son variables</strong>: son
+						valores de la variable <em>año</em>. Cada fila guarda tres observaciones, no una.</li>
+					<li><code>coordenadas</code> mezcla <strong>dos variables</strong> —latitud y longitud— en un solo
+						texto: no se puede operar con ella ni convertirla en geometría.</li>
+					<li>Resultado: no se puede filtrar ni agrupar por año, ni mapear un año concreto, sin reescribir
+						antes la tabla.</li>
+				</ol>
+			</section>
+
+			<section>
+				<h3>La misma tabla, organizada como tidy data</h3>
+				<table class="tidy-tbl">
+					<thead>
+						<tr>
+							<th class="good">estación</th>
+							<th class="good">municipio</th>
+							<th class="good">lat</th>
+							<th class="good">lon</th>
+							<th class="good">año</th>
+							<th class="good">precip_mm</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>E-01</td>
+							<td>Chivor</td>
+							<td>4.89</td>
+							<td>-73.36</td>
+							<td>2021</td>
+							<td>2 450</td>
+						</tr>
+						<tr>
+							<td>E-01</td>
+							<td>Chivor</td>
+							<td>4.89</td>
+							<td>-73.36</td>
+							<td>2022</td>
+							<td>2 610</td>
+						</tr>
+						<tr>
+							<td>E-01</td>
+							<td>Chivor</td>
+							<td>4.89</td>
+							<td>-73.36</td>
+							<td>2023</td>
+							<td>2 380</td>
+						</tr>
+						<tr>
+							<td>E-02</td>
+							<td>Macanal</td>
+							<td>4.97</td>
+							<td>-73.32</td>
+							<td>2021</td>
+							<td>2 180</td>
+						</tr>
+						<tr>
+							<td>E-02</td>
+							<td>Macanal</td>
+							<td>4.97</td>
+							<td>-73.32</td>
+							<td>2022</td>
+							<td>2 340</td>
+						</tr>
+						<tr>
+							<td colspan="6">…</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="tidy-note">Cada fila es ahora <strong>una observación</strong>: una estación en un año. La
+					transformación se hace con <code>pandas.melt()</code> o <code>tidyr::pivot_longer()</code>, y al
+					separar <code>lat</code> y <code>lon</code> ya se puede construir la geometría con
+					<code>gpd.points_from_xy(df.lon, df.lat)</code>. Ahora sí: filtrar por año, agrupar por estación o
+					pintar el mapa de 2023 es una sola línea.<br>
+					<strong>Regla 3:</strong> en rigor esto serían <em>dos</em> tablas —<code>estaciones</code>
+					(estacion, municipio, geometry) y <code>precipitacion</code> (estación, año, precip_mm)— unidas por
+					<code>estacion</code>, para no repetir la geometría en cada fila.
+				</p>
 			</section>
 
 			<section>
@@ -1974,57 +2176,436 @@ EJE_VIA
 			</section>
 
 			<section>
+				<h3>GeoDataframe</h3>
+				<img src="https://i.pinimg.com/1200x/38/84/95/388495c568dc3759e1acb0ad85fc5b81.jpg" width="1000">
+			</section>
+
+			<section>
 				<h1>Modelo basado en campo</h1>
 				<p>En la vista de campo, el mundo consiste en propiedades que varían continuamente a través del
 					espacio
 				</p>
+				<img src="https://i.pinimg.com/736x/6a/82/47/6a824757d391ee9d1895f0431a020a6c.jpg" width="500">
 			</section>
 
 			<section>
 				<h3>Raster</h3>
-				<img src="https://www.esri.com/about/newsroom/wp-content/uploads/2018/07/aufall18_Georefer_1.gif"
-					width="780">
+				<img src="https://i.pinimg.com/1200x/28/9e/38/289e386d4ea388f12851bde2a8d82908.jpg" width="700">
 			</section>
 
 			<section>
-				<h3>Formato de archivo ráster SIG</h3>
-				<h3>txt / ASCII (American Standard Code for Information Interchange)</h3>
-				<p>Documento de texto estándar que contiene texto plano. Puede abrirse y editarse en cualquier
-					editor de
-					texto o
-					procesador de palabras</p>
-				<h3>Imagine</h3>
-				<p>Formato de archivo Imagine de ERDAS. Consiste en un solo archivo .img.
-					A veces va acompañado de un archivo .xml que generalmente almacena información de metadatos
-					sobre la
-					capa ráster.</p>
-				<h3>GeoTiff</h3>
-				<p>Un GeoTIFF es un archivo TIF que termina con la extensión de tres letras .tif igual que otros
-					archivos TIF, pero un
-					GeoTIFF contiene etiquetas adicionales que proporcionan información de proyección para esa
-					imagen
-					según lo especificado
-					por el estándar GeoTIFF</p>
+				<h3>Multibanda</h3>
+				<img src="https://i.pinimg.com/1200x/79/6b/22/796b221e1b41656779e93137deb1e8ef.jpg" width="700">
 			</section>
 
 			<section>
-				<h3>Formato de archivo ráster SIG</h3>
-				<h3>Enhanced Compression Wavelet (ECW)</h3>
-				<p>Enhanced Compressed Wavelet (de ERDAS). Un formato comprimido wavelet, a menudo con pérdida</p>
-				<h3>Network Common Data Form (NetCDF)</h3>
-				<p>Formato de archivo netCDF con las convenciones de metadatos Climate and Forecast (CF) para datos
-					de
-					ciencias de la tierra.
-					Permite el acceso web directo a subconjuntos/agregaciones de mapas a través del protocolo
-					OPeNDAP.
+				<h3>txt / ASCII — ESRI ASCII Grid (<code>.asc</code>)</h3>
+				<p class="fmt-meta">El ráster escrito como <strong>texto plano</strong>: se abre y se edita con
+					cualquier editor. Un encabezado de seis líneas dice dónde está la esquina inferior izquierda
+					(<code>xllcorner</code>, <code>yllcorner</code>), qué tamaño tiene la celda y qué número representa
+					«sin dato»; después vienen los valores de los píxeles, fila por fila, separados por espacios.<br>
+					<strong>Características:</strong> una sola banda, sin CRS embebido (a veces lo acompaña un
+					<code>.prj</code>) y <strong>muy pesado y lento</strong> —un ráster de 10 000 × 10 000 celdas ocupa
+					cientos de MB en texto—. Sirve para intercambiar, revisar o depurar datos, no para producción. La
+					otra variante de texto es <strong>XYZ</strong>: una línea por punto con <code>x y valor</code>.
 				</p>
-				<h3>HDF5</h3>
-				<p>es un formato de archivo de código abierto que soporta datos grandes, complejos y heterogéneos.
-					HDF5
-					utiliza una
-					estructura similar a un "directorio de archivos" que permite organizar
-					los datos dentro del archivo de muchas formas estructuradas diferentes, como se podría hacer con
-					archivos en la computadora
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+ncols         6
+nrows         5
+xllcorner     1035400.0
+yllcorner     1180300.0
+cellsize      30.0
+NODATA_value  -9999
+ 12 14 15    18 21 24
+ 11 13 16    19 22 26
+ 10 13 17 -9999 23 27
+  9 12 16    20 24 28
+  8 11 15    19 23 27
+						</code></pre>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="22" y="16" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="45" y="39" font-size="14" fill="#22424f" text-anchor="middle">12</text>
+							<rect x="68" y="16" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="91" y="39" font-size="14" fill="#22424f" text-anchor="middle">14</text>
+							<rect x="114" y="16" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="137" y="39" font-size="14" fill="#22424f" text-anchor="middle">15</text>
+							<rect x="160" y="16" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="183" y="39" font-size="14" fill="#22424f" text-anchor="middle">18</text>
+							<rect x="206" y="16" width="46" height="36" fill="#5fa2d0" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="229" y="39" font-size="14" fill="#22424f" text-anchor="middle">21</text>
+							<rect x="252" y="16" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="275" y="39" font-size="14" fill="#ffffff" text-anchor="middle">24</text>
+							<rect x="22" y="52" width="46" height="36" fill="#eff6fb" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="45" y="75" font-size="14" fill="#22424f" text-anchor="middle">11</text>
+							<rect x="68" y="52" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="91" y="75" font-size="14" fill="#22424f" text-anchor="middle">13</text>
+							<rect x="114" y="52" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="137" y="75" font-size="14" fill="#22424f" text-anchor="middle">16</text>
+							<rect x="160" y="52" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="183" y="75" font-size="14" fill="#22424f" text-anchor="middle">19</text>
+							<rect x="206" y="52" width="46" height="36" fill="#5fa2d0" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="229" y="75" font-size="14" fill="#22424f" text-anchor="middle">22</text>
+							<rect x="252" y="52" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="275" y="75" font-size="14" fill="#ffffff" text-anchor="middle">26</text>
+							<rect x="22" y="88" width="46" height="36" fill="#eff6fb" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="45" y="111" font-size="14" fill="#22424f" text-anchor="middle">10</text>
+							<rect x="68" y="88" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="91" y="111" font-size="14" fill="#22424f" text-anchor="middle">13</text>
+							<rect x="114" y="88" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="137" y="111" font-size="14" fill="#22424f" text-anchor="middle">17</text>
+							<rect x="160" y="88" width="46" height="36" fill="#d9d9d9" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="183" y="110" font-size="10" fill="#8a8a8a" text-anchor="middle">-9999</text>
+							<rect x="206" y="88" width="46" height="36" fill="#5fa2d0" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="229" y="111" font-size="14" fill="#22424f" text-anchor="middle">23</text>
+							<rect x="252" y="88" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="275" y="111" font-size="14" fill="#ffffff" text-anchor="middle">27</text>
+							<rect x="22" y="124" width="46" height="36" fill="#eff6fb" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="45" y="147" font-size="14" fill="#22424f" text-anchor="middle">9</text>
+							<rect x="68" y="124" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="91" y="147" font-size="14" fill="#22424f" text-anchor="middle">12</text>
+							<rect x="114" y="124" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="137" y="147" font-size="14" fill="#22424f" text-anchor="middle">16</text>
+							<rect x="160" y="124" width="46" height="36" fill="#5fa2d0" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="183" y="147" font-size="14" fill="#22424f" text-anchor="middle">20</text>
+							<rect x="206" y="124" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="229" y="147" font-size="14" fill="#ffffff" text-anchor="middle">24</text>
+							<rect x="252" y="124" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="275" y="147" font-size="14" fill="#ffffff" text-anchor="middle">28</text>
+							<rect x="22" y="160" width="46" height="36" fill="#eff6fb" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="45" y="183" font-size="14" fill="#22424f" text-anchor="middle">8</text>
+							<rect x="68" y="160" width="46" height="36" fill="#eff6fb" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="91" y="183" font-size="14" fill="#22424f" text-anchor="middle">11</text>
+							<rect x="114" y="160" width="46" height="36" fill="#cfe2f2" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="137" y="183" font-size="14" fill="#22424f" text-anchor="middle">15</text>
+							<rect x="160" y="160" width="46" height="36" fill="#9ecae1" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="183" y="183" font-size="14" fill="#22424f" text-anchor="middle">19</text>
+							<rect x="206" y="160" width="46" height="36" fill="#5fa2d0" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="229" y="183" font-size="14" fill="#22424f" text-anchor="middle">23</text>
+							<rect x="252" y="160" width="46" height="36" fill="#2f7ab5" stroke="#ffffff"
+								stroke-width="1.5" />
+							<text x="275" y="183" font-size="14" fill="#ffffff" text-anchor="middle">27</text>
+						</svg>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>ERDAS Imagine (<code>.img</code>)</h3>
+				<p class="fmt-meta">Formato <strong>binario</strong> de ERDAS, construido sobre la arquitectura HFA
+					(<em>Hierarchical File Architecture</em>): un <strong>único archivo</strong> que guarda, además de
+					los píxeles, todos sus metadatos —CRS, número y nombre de las bandas, estadísticas, tabla de
+					atributos del ráster y las <strong>pirámides</strong> (versiones reducidas de la imagen que permiten
+					dibujarla rápido al alejar el zoom)—.<br>
+					<strong>Características:</strong> multibanda, con compresión opcional y sin el límite de 4 GB del
+					TIFF clásico; muy usado en teledetección. Puede ir acompañado de un <code>.xml</code> de metadatos,
+					un <code>.rrd</code> con pirámides externas (versiones antiguas) o un <code>.ige</code> cuando los
+					datos desbordan el archivo principal. GDAL lo lee y escribe con el driver <code>HFA</code>.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+$ gdalinfo cobertura.img
+
+Driver: HFA/Erdas Imagine Images (.img)
+Size is 4200, 3600
+Coordinate System is:
+  MAGNA-SIRGAS / Colombia Bogota zone
+Pixel Size = (30.0, -30.0)
+
+Band 1 Block=64x64 Type=Int16
+  Description = Rojo
+  Overviews: 2100x1800, 1050x900, 525x450
+  Min=0  Max=3211  Mean=812.4
+Band 2 Block=64x64 Type=Int16
+  Description = Infrarrojo cercano
+						</code></pre>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="6" y="6" width="308" height="198" rx="6" fill="#ffffff" stroke="#1a4e80"
+								stroke-width="2" />
+							<text x="16" y="24" font-size="12" fill="#1a4e80">cobertura.img</text>
+							<rect x="16" y="32" width="130" height="24" rx="3" fill="#e8eef5" stroke="#9db6cd" />
+							<text x="22" y="48" font-size="11" fill="#333">CRS · estadísticas</text>
+							<rect x="16" y="62" width="130" height="24" rx="3" fill="#e8eef5" stroke="#9db6cd" />
+							<text x="22" y="78" font-size="11" fill="#333">tabla de atributos</text>
+							<text x="16" y="108" font-size="11" fill="#1a4e80">Banda 1 · Banda 2 · …</text>
+							<rect x="16" y="116" width="76" height="76" fill="#cfe2f2" stroke="#1a4e80" />
+							<text x="22" y="186" font-size="10" fill="#1a4e80">1:1</text>
+							<text x="160" y="24" font-size="12" fill="#c0392b">pirámides (overviews)</text>
+							<rect x="160" y="40" width="64" height="64" fill="#dfe9f5" stroke="#5fa2d0" />
+							<text x="164" y="100" font-size="10" fill="#1a4e80">1:2</text>
+							<rect x="234" y="40" width="40" height="40" fill="#eef3f8" stroke="#5fa2d0" />
+							<text x="238" y="76" font-size="10" fill="#1a4e80">1:4</text>
+							<rect x="284" y="40" width="22" height="22" fill="#f7fafc" stroke="#5fa2d0" />
+							<text x="286" y="76" font-size="10" fill="#1a4e80">1:8</text>
+							<text x="160" y="130" font-size="11" fill="#555">Al alejar el zoom el SIG no lee</text>
+							<text x="160" y="146" font-size="11" fill="#555">la imagen completa: usa la</text>
+							<text x="160" y="162" font-size="11" fill="#555">pirámide del tamaño adecuado.</text>
+						</svg>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>GeoTIFF y Cloud Optimized GeoTIFF (COG)</h3>
+				<p class="fmt-meta">Un <strong>GeoTIFF</strong> es un TIFF corriente al que se le añadieron
+					<strong>etiquetas geográficas</strong>: el punto de amarre en el terreno
+					(<code>ModelTiepointTag</code>), el tamaño del píxel (<code>ModelPixelScaleTag</code>) y el sistema
+					de referencia (<code>GeoKeyDirectoryTag</code>). Es el formato ráster más usado en SIG: abierto,
+					multibanda, con compresión sin pérdida y valor de «sin dato». Su versión <code>BigTIFF</code>
+					supera el límite de 4 GB.<br>
+					El <strong>COG</strong> es el mismo GeoTIFF, pero <strong>ordenado por dentro</strong> para la nube:
+					los píxeles se guardan en <strong>teselas</strong> (512 × 512) en vez de franjas, incluye las
+					<strong>pirámides</strong> dentro del archivo y pone el índice al comienzo. Así un cliente puede
+					pedir por HTTP <em>solo el rango de bytes</em> de la ventana o del nivel de zoom que necesita, sin
+					descargar la imagen completa. Es la base de STAC y de los catálogos abiertos en la nube — y sigue
+					siendo un GeoTIFF válido: cualquier programa lo abre igual.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+$ gdalinfo imagen_cog.tif
+
+Driver: GTiff/GeoTIFF
+Size is 10980, 10980
+Pixel Size = (10.0, -10.0)
+Origin = (399960.0, 700020.0)
+GEOGCS EPSG:32618 (WGS84 / UTM 18N)
+
+Image Structure Metadata:
+  LAYOUT=COG
+  COMPRESSION=DEFLATE
+Band 1 Block=512x512 Type=UInt16
+  Overviews: 5490x5490, 2745x2745, ...
+						</code></pre>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<text x="6" y="14" font-size="11" fill="#8c2b2b">GeoTIFF clásico: franjas por filas</text>
+							<g stroke="#b6c4d2" fill="#eef3f8">
+								<rect x="6" y="22" width="130" height="12" />
+								<rect x="6" y="34" width="130" height="12" />
+								<rect x="6" y="46" width="130" height="12" />
+								<rect x="6" y="58" width="130" height="12" />
+								<rect x="6" y="70" width="130" height="12" />
+								<rect x="6" y="82" width="130" height="12" />
+							</g>
+							<rect x="6" y="22" width="130" height="72" fill="none" stroke="#8c2b2b"
+								stroke-width="1.5" />
+							<text x="6" y="110" font-size="10" fill="#8c2b2b">para una ventana hay que leer</text>
+							<text x="6" y="124" font-size="10" fill="#8c2b2b">casi todo el archivo</text>
+							<text x="170" y="14" font-size="11" fill="#2f5f2f">COG: teselas + pirámides</text>
+							<g stroke="#b6c4d2" fill="#eef3f8">
+								<rect x="170" y="22" width="24" height="24" />
+								<rect x="194" y="22" width="24" height="24" />
+								<rect x="218" y="22" width="24" height="24" />
+								<rect x="242" y="22" width="24" height="24" />
+								<rect x="170" y="46" width="24" height="24" />
+								<rect x="218" y="46" width="24" height="24" />
+								<rect x="242" y="46" width="24" height="24" />
+								<rect x="170" y="70" width="24" height="24" />
+								<rect x="194" y="70" width="24" height="24" />
+								<rect x="218" y="70" width="24" height="24" />
+								<rect x="242" y="70" width="24" height="24" />
+							</g>
+							<rect x="194" y="46" width="24" height="24" fill="#8fc98f" stroke="#2f5f2f"
+								stroke-width="2" />
+							<text x="170" y="110" font-size="10" fill="#2f5f2f">se descarga solo la tesela</text>
+							<text x="170" y="124" font-size="10" fill="#2f5f2f">que cubre la ventana</text>
+							<rect x="6" y="140" width="300" height="60" rx="4" fill="#f3f7fb" stroke="#c8d6e5" />
+							<text x="14" y="158" font-size="11" fill="#333">HTTP GET imagen_cog.tif</text>
+							<text x="14" y="176" font-size="11" fill="#1a4e80">Range: bytes=8402944-8665088</text>
+							<text x="14" y="192" font-size="10" fill="#555">→ 250 KB en lugar de 240 MB</text>
+						</svg>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>HDF5 (<code>.h5</code>) — Hierarchical Data Format</h3>
+				<p class="fmt-meta">Formato binario abierto para datos <strong>grandes, complejos y
+						heterogéneos</strong>.
+					Por dentro funciona como un <strong>sistema de archivos</strong>: <strong>grupos</strong>
+					(las «carpetas»), <strong>datasets</strong> (arreglos de n dimensiones, las «archivos») y
+					<strong>atributos</strong> colgados de cualquiera de los dos. En un mismo <code>.h5</code> caben
+					bandas de distinta resolución, máscaras, tablas y metadatos.<br>
+					<strong>Características:</strong> cada dataset se guarda por <strong>bloques</strong>
+					(<em>chunks</em>) comprimidos, así que se puede leer una ventana sin descomprimir el resto; no tiene
+					límite práctico de tamaño. Es el contenedor sobre el que se construye NetCDF-4 y el formato de los
+					productos satelitales: MODIS, VIIRS, Sentinel-3, ICESat-2, GEDI. Su antecesor HDF4
+					(<code>.hdf</code>) todavía aparece en productos MODIS antiguos. A diferencia de NetCDF, no impone
+					convenciones: <strong>cada producto organiza su árbol como quiere</strong>, y hay que leer la
+					documentación.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+$ h5ls -r producto.h5
+
+/                        Group
+/metadata                Group
+/metadata/crs            Attribute: "EPSG:4326"
+/metadata/fecha          Attribute: "2024-03-18"
+/reflectancia            Group
+/reflectancia/rojo       Dataset {3600, 3600}
+/reflectancia/nir        Dataset {3600, 3600}
+/calidad                 Group
+/calidad/mascara_nube    Dataset {3600, 3600}
+						</code></pre>
+						<p class="fmt-caption">El archivo por dentro: grupos, datasets y atributos</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<text x="6" y="16" font-size="11" fill="#1a4e80">producto.h5</text>
+							<g stroke="#9db6cd" fill="none">
+								<path d="M14 20 V40 H30" />
+								<path d="M14 20 V70 H30" />
+								<path d="M14 20 V118 H30" />
+								<path d="M40 74 V94 H54" />
+								<path d="M40 74 V116 H54" />
+							</g>
+							<rect x="30" y="30" width="96" height="20" rx="3" fill="#e8eef5" stroke="#9db6cd" />
+							<text x="36" y="44" font-size="10" fill="#333">metadata</text>
+							<rect x="30" y="60" width="96" height="20" rx="3" fill="#e8eef5" stroke="#9db6cd" />
+							<text x="36" y="74" font-size="10" fill="#333">reflectancia</text>
+							<rect x="54" y="86" width="86" height="18" rx="3" fill="#dfe9f5" stroke="#5fa2d0" />
+							<text x="59" y="99" font-size="10" fill="#1a4e80">rojo {3600²}</text>
+							<rect x="54" y="108" width="86" height="18" rx="3" fill="#dfe9f5" stroke="#5fa2d0" />
+							<text x="59" y="121" font-size="10" fill="#1a4e80">nir {3600²}</text>
+							<rect x="30" y="134" width="96" height="20" rx="3" fill="#e8eef5" stroke="#9db6cd" />
+							<text x="36" y="148" font-size="10" fill="#333">calidad</text>
+							<text x="176" y="16" font-size="11" fill="#2f5f2f">cada dataset, por bloques</text>
+							<g stroke="#b6c4d2" fill="#eef3f8">
+								<rect x="176" y="26" width="30" height="30" />
+								<rect x="206" y="26" width="30" height="30" />
+								<rect x="236" y="26" width="30" height="30" />
+								<rect x="266" y="26" width="30" height="30" />
+								<rect x="176" y="56" width="30" height="30" />
+								<rect x="236" y="56" width="30" height="30" />
+								<rect x="266" y="56" width="30" height="30" />
+								<rect x="176" y="86" width="30" height="30" />
+								<rect x="206" y="86" width="30" height="30" />
+								<rect x="236" y="86" width="30" height="30" />
+								<rect x="266" y="86" width="30" height="30" />
+							</g>
+							<rect x="206" y="56" width="30" height="30" fill="#8fc98f" stroke="#2f5f2f"
+								stroke-width="2" />
+							<text x="176" y="136" font-size="10" fill="#2f5f2f">se descomprime solo el bloque</text>
+							<text x="176" y="150" font-size="10" fill="#2f5f2f">que contiene la ventana pedida</text>
+							<text x="176" y="176" font-size="10" fill="#555">NetCDF-4 es, por dentro,</text>
+							<text x="176" y="190" font-size="10" fill="#555">un archivo HDF5.</text>
+						</svg>
+						<p class="fmt-caption">Un árbol de grupos y datasets, cada uno troceado en bloques</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>NetCDF (<code>.nc</code>) — Network Common Data Form</h3>
+				<p class="fmt-meta">Formato binario <strong>autodescrito</strong> de UNIDATA, pensado para datos
+					<strong>multidimensionales</strong>: no una imagen, sino un <strong>cubo</strong> con ejes
+					—longitud, latitud, tiempo y, si hace falta, altura o escenario—. El archivo declara sus
+					<em>dimensiones</em>, sus <em>variables</em> y los <em>atributos</em> de cada una (unidades, valor
+					nulo, nombre largo).<br>
+					<strong>Características:</strong>permite leer <strong>subconjuntos</strong>
+					sin abrir todo el archivo, incluso de forma remota con <strong>OPeNDAP</strong>. NetCDF-4 se
+					construye sobre HDF5. Es el formato del clima, el océano y los modelos: ERA5, CHIRPS, IDEAM,
+					CMIP. Se lee con <code>xarray</code>, GDAL o QGIS.
+				</p>
+				<div class="fmt-split tall">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+$ ncdump -h precipitacion.nc
+
+netcdf precipitacion {
+dimensions:
+    lon  = 360 ;
+    lat  = 180 ;
+    time = UNLIMITED ;  // (1200 actualmente)
+variables:
+    float lon(lon) ;
+        lon:units = "degrees_east" ;
+    float lat(lat) ;
+        lat:units = "degrees_north" ;
+    double time(time) ;
+        time:units = "days since 1970-01-01" ;
+    float precip(time, lat, lon) ;
+        precip:units = "mm/day" ;
+        precip:_FillValue = -9999.f ;
+// global attributes:
+        :Conventions = "CF-1.8" ;
+}
+						</code></pre>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<g>
+								<rect x="26" y="96" width="120" height="84" fill="#dfe9f5" stroke="#1a4e80" />
+								<rect x="44" y="78" width="120" height="84" fill="#cfe2f2" stroke="#1a4e80" />
+								<rect x="62" y="60" width="120" height="84" fill="#9ecae1" stroke="#1a4e80" />
+								<rect x="80" y="42" width="120" height="84" fill="#5fa2d0" stroke="#1a4e80" />
+							</g>
+							<text x="86" y="34" font-size="11" fill="#1a4e80">precip(time, lat, lon)</text>
+							<line x1="200" y1="132" x2="252" y2="158" stroke="#555" stroke-width="1.5" />
+							<text x="204" y="176" font-size="11" fill="#555">eje time</text>
+							<text x="206" y="60" font-size="11" fill="#c0392b">un mapa =</text>
+							<text x="206" y="74" font-size="11" fill="#c0392b">una fecha</text>
+							<line x1="120" y1="84" x2="120" y2="150" stroke="#c0392b" stroke-width="2"
+								stroke-dasharray="3 3" />
+							<circle cx="120" cy="84" r="3.5" fill="#c0392b" />
+							<circle cx="120" cy="150" r="3.5" fill="#c0392b" />
+							<text x="6" y="198" font-size="11" fill="#c0392b">una serie de tiempo = un píxel a lo largo
+								del eje</text>
+						</svg>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>Formatos comprimidos con <em>wavelet</em>: ECW, JPEG 2000, MrSID</h3>
+				<p class="fmt-meta"><strong>ECW</strong> (<em>Enhanced Compression Wavelet</em>, de ERDAS/Hexagon)
+					comprime la imagen con una transformada <em>wavelet</em>, normalmente <strong>con pérdida</strong>,
+					alcanzando relaciones de 1:10 a 1:50. Está pensado para <strong>mosaicos de fotografía aérea y
+						satelital muy grandes</strong> que deben visualizarse rápido: la wavelet permite reconstruir la
+					imagen a cualquier escala sin leerla completa, igual que una pirámide pero de forma continua.<br>
+					Su inconveniente es que es <strong>propietario</strong> —escribir ECW requiere licencia— y que la
+					pérdida lo hace inapropiado para análisis cuantitativo: sirve para <em>ver</em>, no para
+					<em>medir</em>. Sus equivalentes son <strong>JPEG 2000</strong> (<code>.jp2</code>, estándar
+					abierto, el que usa Sentinel-2) y <strong>MrSID</strong> (<code>.sid</code>, también propietario).
 				</p>
 			</section>
 
