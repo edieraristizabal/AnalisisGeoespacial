@@ -38,6 +38,92 @@
 			font-weight: bold;
 			color: #1a4e80;
 		}
+
+		/* Formatos de archivo: archivo a la izquierda, representacion a la derecha */
+		.fmt-split {
+			display: flex;
+			align-items: stretch;
+			gap: 18px;
+			text-align: left;
+			margin-top: 10px;
+		}
+
+		.fmt-split>div {
+			flex: 1 1 0;
+			min-width: 0;
+		}
+
+		.fmt-split pre {
+			width: 100%;
+			margin: 0;
+			box-shadow: none;
+		}
+
+		.fmt-split pre code {
+			font-size: 0.4em;
+			line-height: 1.3;
+			padding: 10px 12px;
+			max-height: 330px;
+		}
+
+		.fmt-render {
+			background: #f7f9fb;
+			border: 1px solid #c8d6e5;
+			border-radius: 6px;
+			padding: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+		}
+
+		.fmt-render svg {
+			width: 100%;
+			height: auto;
+		}
+
+		.fmt-caption {
+			font-size: 0.45em;
+			color: #555;
+			text-align: center;
+			margin: 6px 0 0 0;
+		}
+
+		.fmt-meta {
+			font-size: 0.42em;
+			text-align: left;
+			margin: 0 0 4px 0;
+		}
+		.fmt-files {
+			font-size: 0.36em;
+			line-height: 1.25;
+			margin-top: 10px;
+		}
+
+		.fmt-files th,
+		.fmt-files td {
+			padding: 3px 7px;
+			text-align: left;
+			vertical-align: top;
+		}
+
+		.fmt-files th.c,
+		.fmt-files td.c {
+			text-align: center;
+		}
+
+		.fmt-files code {
+			font-size: 1em;
+			color: #1a4e80;
+		}
+
+		.fmt-files .req {
+			color: #b03030;
+			font-weight: bold;
+		}
+
+		.fmt-files .opt {
+			color: #4a7a4a;
+		}
 	</style>
 
 </head>
@@ -1310,25 +1396,89 @@
 
 			<section>
 				<h3>Shapefile</h3>
-				<p>Un shapefile es un formato de datos basado en archivos nativo del software ArcView.
-					Conceptualmente, un shapefile es una clase de entidades–almacena una colección de entidades que
-					tienen el mismo
-					tipo de geometría (punto, línea o polígono), los mismos atributos y una extensión espacial
-					común.
-
-					A pesar de lo que su nombre pueda implicar, un shapefile "individual" está compuesto por al
-					menos
-					tres archivos,
-					y hasta ocho. Cada archivo que compone un "shapefile" tiene un nombre de archivo común pero
-					diferente
-					tipo de extensión.</p>
-				<h3>Arc-Info Interchange (e00) </h3>
-				<p>Un archivo de intercambio ArcInfo, también conocido como tipo de archivo de exportación, este
-					formato
-					se utiliza para permitir
-					la transferencia de una cobertura, grid o TIN, y una tabla INFO asociada entre diferentes
-					máquinas.
-					Este archivo tiene la extensión .e00.</p>
+				<p class="fmt-meta">Formato vectorial nativo de ArcView (Esri, 1998) y todavía el más difundido.
+					Conceptualmente es una <strong>clase de entidades</strong>: almacena una colección de entidades con
+					el mismo tipo de geometría (punto, línea <em>o</em> polígono), los mismos atributos y una extensión
+					espacial común.<br>
+					Es un <strong>formato binario</strong> —no se puede abrir ni editar con un editor de texto— y, pese
+					a su nombre, un shapefile «individual» <strong>no es un archivo sino un conjunto</strong>: entre 3 y
+					8 archivos que comparten el mismo nombre y se diferencian por la extensión.</p>
+				<table class="fmt-files">
+					<thead>
+						<tr>
+							<th class="c">Archivo</th>
+							<th>Qué contiene</th>
+							<th class="c">Tipo</th>
+							<th class="c">¿Obligatorio?</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="c"><code>.shp</code></td>
+							<td><em>shape</em>: la <strong>geometría</strong>, es decir las coordenadas de los vértices
+								de cada entidad</td>
+							<td class="c">Binario</td>
+							<td class="c req">Obligatorio</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.shx</code></td>
+							<td><em>shape index</em>: dónde empieza cada entidad dentro del <code>.shp</code>; permite
+								el acceso directo a una entidad sin leer todo el archivo</td>
+							<td class="c">Binario</td>
+							<td class="c req">Obligatorio</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.dbf</code></td>
+							<td>La <strong>tabla de atributos</strong> en formato dBASE IV: una fila por entidad, en el
+								mismo orden del <code>.shp</code></td>
+							<td class="c">Binario</td>
+							<td class="c req">Obligatorio</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.prj</code></td>
+							<td>El <strong>sistema de referencia (CRS)</strong> escrito en WKT. Sin él el SIG no sabe a
+								qué corresponden las coordenadas</td>
+							<td class="c">Texto</td>
+							<td class="c opt">Opcional — en la práctica, indispensable</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.cpg</code></td>
+							<td>La <strong>codificación</strong> de caracteres del <code>.dbf</code> (p. ej.
+								<code>UTF-8</code>): evita que se dañen tildes y ñ
+							</td>
+							<td class="c">Texto</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.sbn</code> / <code>.sbx</code></td>
+							<td><strong>Índice espacial</strong> de Esri: acelera las consultas por ubicación</td>
+							<td class="c">Binario</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.qix</code></td>
+							<td>Índice espacial abierto que generan QGIS y GDAL (equivalente al <code>.sbn</code>)</td>
+							<td class="c">Binario</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.fix</code></td>
+							<td>Índice de los identificadores de entidad (Esri)</td>
+							<td class="c">Binario</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.shp.xml</code></td>
+							<td><strong>Metadatos</strong>: autor, fecha, linaje, calidad del dato</td>
+							<td class="c">Texto</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="fmt-caption">Los archivos deben copiarse siempre juntos: sin el <code>.shx</code> o el
+					<code>.dbf</code> el shapefile no abre. Limitaciones heredadas: máximo 2 GB por archivo, nombres de
+					campo de hasta 10 caracteres y un solo tipo de geometría por shapefile.
+				</p>
 			</section>
 
 			<section>
@@ -1362,6 +1512,81 @@
 					GeoPackage).</p>
 				<img src="https://i.pinimg.com/736x/3f/f1/60/3ff160815afb1136073a6d292f9669de.jpg" width="600">
 
+			</section>
+
+			<section>
+				<h3>GeoPackage — qué hay dentro del archivo</h3>
+				<p class="fmt-meta">Es un <strong>archivo binario</strong>: una base de datos <strong>SQLite</strong>
+					completa. Sus primeros bytes dicen <code>SQLite format 3</code> y lleva la marca <code>GPKG</code>
+					en el campo <code>application_id</code>, que es lo que permite reconocerlo como GeoPackage. Lo que
+					en el shapefile son archivos sueltos, aquí son <strong>tablas dentro del mismo archivo</strong>.</p>
+				<table class="fmt-files">
+					<thead>
+						<tr>
+							<th class="c">Tabla</th>
+							<th>Qué contiene</th>
+							<th class="c">¿Obligatoria?</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="c"><code>gpkg_spatial_ref_sys</code></td>
+							<td>La definición de los <strong>sistemas de referencia</strong> usados en el archivo
+								(equivale al <code>.prj</code> del shapefile)</td>
+							<td class="c req">Obligatoria</td>
+						</tr>
+						<tr>
+							<td class="c"><code>gpkg_contents</code></td>
+							<td>El <strong>inventario de capas</strong>: nombre, tipo (vectorial o teselas), extensión
+								espacial y CRS de cada una</td>
+							<td class="c req">Obligatoria</td>
+						</tr>
+						<tr>
+							<td class="c"><code>gpkg_geometry_columns</code></td>
+							<td>Qué columna guarda la <strong>geometría</strong> de cada capa, de qué tipo es y en qué
+								CRS está</td>
+							<td class="c req">Obligatoria si hay capas vectoriales</td>
+						</tr>
+						<tr>
+							<td class="c">tabla de cada capa</td>
+							<td>Los <strong>datos</strong>: una fila por entidad, con sus atributos y la geometría
+								guardada en una columna <code>BLOB</code></td>
+							<td class="c req">Obligatoria — es la capa</td>
+						</tr>
+						<tr>
+							<td class="c"><code>gpkg_tile_matrix_set</code><br><code>gpkg_tile_matrix</code></td>
+							<td>Extensión cubierta y <strong>niveles de zoom</strong> de las teselas ráster</td>
+							<td class="c req">Obligatorias si hay ráster</td>
+						</tr>
+						<tr>
+							<td class="c"><code>rtree_&lt;capa&gt;_&lt;geom&gt;</code></td>
+							<td><strong>Índice espacial</strong> R-Tree: acelera las consultas por ubicación
+								(equivale al <code>.sbn</code> / <code>.qix</code>)</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>gpkg_extensions</code></td>
+							<td>Declara las <strong>extensiones</strong> que usa el archivo (índices, ráster no
+								teselado, etc.)</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>gpkg_metadata</code><br><code>gpkg_metadata_reference</code></td>
+							<td><strong>Metadatos</strong> y a qué capa o columna se refiere cada uno</td>
+							<td class="c opt">Opcional</td>
+						</tr>
+						<tr>
+							<td class="c"><code>.gpkg-wal</code> / <code>.gpkg-shm</code><br><code>.gpkg-journal</code>
+							</td>
+							<td>Únicos archivos que acompañan al <code>.gpkg</code>: temporales de SQLite mientras la
+								capa está en edición</td>
+							<td class="c opt">Temporales — no se distribuyen</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="fmt-caption">Frente al shapefile: un solo archivo que puede llevar varias capas y varios tipos
+					de geometría, vectorial y ráster a la vez, nombres de campo largos, UTF-8, valores nulos, fechas y
+					un límite de tamaño que en la práctica no se alcanza.</p>
 			</section>
 
 			<section>
@@ -1442,21 +1667,225 @@
 			</section>
 
 			<section>
-				<h3>Keyhole Markup Language (KML)</h3>
-				<p>Formato de archivo basado en XML, utilizado para visualizar datos espaciales e información de
-					modelado como líneas, formas,
-					imágenes 3D y puntos en Google Earth.</p>
-				<h3>Geography Markup Language (GML)</h3>
-				<p>Se utiliza en el Open GIS Consortium para almacenar datos geográficos en un formato estándar de
-					intercambio.
-					Está basado en XML.</p>
-				<h3>SVG (Scalable Vector Graphics) </h3>
-				<p>Es un formato de imagen vectorial basado en XML para gráficos bidimensionales. Cualquier programa
-					que
-					reconozca XML
-					puede mostrar la imagen SVG.</p>
-				<h3>DWG</h3>
-				<p>DWG es un formato interno de AutoCAD. Un archivo DWG es una base de datos de dibujos 2D o 3D.</p>
+				<h3>KML — Keyhole Markup Language</h3>
+				<p class="fmt-meta"><strong>Qué es:</strong> formato <strong>vectorial en texto plano, basado en
+						XML</strong>, creado por Keyhole/Google y hoy estándar OGC. Es el formato nativo de Google Earth
+					y Google Maps (<code>.kmz</code> es simplemente un KML comprimido en ZIP junto con sus iconos e
+					imágenes).<br>
+					<strong>Características:</strong> siempre en coordenadas geográficas
+					<strong>WGS84 (EPSG:4326)</strong> — no admite otro sistema de referencia — y el orden es
+					<em>longitud, latitud, altura</em>. Guarda la geometría junto con la <strong>simbología</strong>
+					(color, icono, etiqueta) y marcas de tiempo, pero no una tabla de atributos como tal: la información
+					descriptiva va en <code>&lt;name&gt;</code> y <code>&lt;description&gt;</code>. Pensado para
+					<em>visualizar</em>, no para analizar.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-xml" data-trim>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;kml xmlns="http://www.opengis.net/kml/2.2"&gt;
+  &lt;Document&gt;
+    &lt;Placemark&gt;
+      &lt;name&gt;Punto de interés&lt;/name&gt;
+      &lt;description&gt;Estación de monitoreo&lt;/description&gt;
+      &lt;Point&gt;
+        &lt;!-- longitud , latitud , altura --&gt;
+        &lt;coordinates&gt;-75.56,6.25,0&lt;/coordinates&gt;
+      &lt;/Point&gt;
+    &lt;/Placemark&gt;
+  &lt;/Document&gt;
+&lt;/kml&gt;
+						</code></pre>
+						<p class="fmt-caption">El archivo: etiquetas XML</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0" y="0" width="320" height="210" fill="#eef4ea" />
+							<path d="M0 150 C60 130 90 165 140 150 C190 135 240 170 320 145 L320 210 L0 210 Z"
+								fill="#dbe7d2" />
+							<path d="M0 60 C70 75 120 45 180 60 C240 75 280 55 320 65" fill="none" stroke="#b9cfe0"
+								stroke-width="6" />
+							<g stroke="#c9d6c6" stroke-width="1" stroke-dasharray="4 4">
+								<line x1="160" y1="0" x2="160" y2="210" />
+								<line x1="0" y1="105" x2="320" y2="105" />
+							</g>
+							<text x="164" y="204" font-size="11" fill="#5b6b5b">lon −75.56</text>
+							<text x="4" y="100" font-size="11" fill="#5b6b5b">lat 6.25</text>
+							<path d="M160 118 C160 118 146 96 146 86 a14 14 0 1 1 28 0 c0 10 -14 32 -14 32 Z"
+								fill="#c0392b" />
+							<circle cx="160" cy="86" r="5.5" fill="#ffffff" />
+							<rect x="176" y="62" width="126" height="22" rx="4" fill="#ffffff" stroke="#c0392b" />
+							<text x="182" y="77" font-size="12" fill="#333">Punto de interés</text>
+						</svg>
+						<p class="fmt-caption">Cómo lo dibuja el SIG: un punto sobre el globo, con su etiqueta</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>GML — Geography Markup Language</h3>
+				<p class="fmt-meta"><strong>Qué es:</strong> gramática XML definida por el <strong>OGC</strong> para
+					<strong>modelar, transportar y almacenar</strong> información geográfica. Más que un formato es un
+					lenguaje: es la respuesta que entrega un servicio <strong>WFS</strong> y la base de INSPIRE y de
+					varios catálogos nacionales.<br>
+					<strong>Características:</strong> vectorial y <strong>extensible</strong> — cada institución define
+					su propio <em>esquema de aplicación</em> (aquí <code>vias:Via</code>), de modo que geometría y
+					atributos viajan juntos y validados. Admite <strong>cualquier sistema de referencia</strong>,
+					declarado en <code>srsName</code> (¡y con <code>urn:...EPSG::4326</code> el orden es
+					<em>latitud, longitud</em>!). Es muy verboso: pesa mucho más que el mismo dato en GeoJSON.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-xml" data-trim>
+&lt;gml:featureMember&gt;
+  &lt;vias:Via gml:id="v1"&gt;
+    &lt;vias:nombre&gt;Vía Chivor&lt;/vias:nombre&gt;
+    &lt;vias:tipo&gt;Secundaria&lt;/vias:tipo&gt;
+    &lt;vias:geometria&gt;
+      &lt;gml:LineString
+          srsName="urn:ogc:def:crs:EPSG::4326"&gt;
+        &lt;!-- con urn el orden es: lat lon --&gt;
+        &lt;gml:posList&gt;6.25 -75.56  6.27 -75.52
+                     6.31 -75.50&lt;/gml:posList&gt;
+      &lt;/gml:LineString&gt;
+    &lt;/vias:geometria&gt;
+  &lt;/vias:Via&gt;
+&lt;/gml:featureMember&gt;
+						</code></pre>
+						<p class="fmt-caption">El archivo: geometría + atributos + CRS</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0" y="0" width="320" height="210" fill="#eef4ea" />
+							<path d="M0 160 C70 145 120 175 190 158 C250 143 290 165 320 155 L320 210 L0 210 Z"
+								fill="#dbe7d2" />
+							<polyline points="40,150 130,110 250,50" fill="none" stroke="#1a4e80" stroke-width="5"
+								stroke-linecap="round" stroke-linejoin="round" />
+							<g fill="#1a4e80">
+								<circle cx="40" cy="150" r="5" />
+								<circle cx="130" cy="110" r="5" />
+								<circle cx="250" cy="50" r="5" />
+							</g>
+							<text x="46" y="170" font-size="11" fill="#5b6b5b">6.25 / −75.56</text>
+							<text x="196" y="42" font-size="11" fill="#5b6b5b">6.31 / −75.50</text>
+							<rect x="12" y="12" width="176" height="42" rx="4" fill="#ffffff" stroke="#c8d6e5" />
+							<text x="20" y="28" font-size="12" fill="#333">nombre: Vía Chivor</text>
+							<text x="20" y="46" font-size="12" fill="#333">tipo: Secundaria</text>
+						</svg>
+						<p class="fmt-caption">Cómo lo lee el SIG: una línea con su tabla de atributos</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>SVG — Scalable Vector Graphics</h3>
+				<p class="fmt-meta"><strong>Qué es:</strong> formato de <strong>gráficos vectoriales 2D</strong> basado
+					en XML, estándar del W3C. Cualquier navegador o programa que lea XML lo dibuja; se escala sin perder
+					calidad y se puede estilizar y animar con CSS.<br>
+					<strong>Ojo — no es un formato SIG:</strong> guarda <em>dibujo</em>, no <em>datos
+						georreferenciados</em>. No tiene sistema de referencia ni tabla de atributos; sus coordenadas
+					son del <strong>lienzo, en píxeles</strong>, y el eje <strong>Y crece hacia abajo</strong>. Es el
+					formato de <strong>salida</strong> de un mapa (la figura que se exporta desde QGIS o R para un
+					informe o la web), no el de entrada para analizar.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-xml" data-trim>
+&lt;svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 100 60"&gt;
+  &lt;polygon points="10,50 30,12 58,26 88,44"
+           fill="#cfe3f7"
+           stroke="#1a4e80" stroke-width="2"/&gt;
+  &lt;circle cx="30" cy="12" r="4" fill="#c0392b"/&gt;
+  &lt;text x="36" y="16" font-size="8"&gt;Cerro&lt;/text&gt;
+&lt;/svg&gt;
+						</code></pre>
+						<p class="fmt-caption">El archivo: coordenadas del lienzo (px), sin CRS</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+							<polygon points="10,50 30,12 58,26 88,44" fill="#cfe3f7" stroke="#1a4e80"
+								stroke-width="2" />
+							<circle cx="30" cy="12" r="4" fill="#c0392b" />
+							<text x="36" y="16" font-size="8" fill="#333">Cerro</text>
+							<g stroke="#999" stroke-width="0.7" fill="#999">
+								<line x1="3" y1="4" x2="14" y2="4" />
+								<line x1="3" y1="4" x2="3" y2="15" />
+								<text x="16" y="6" font-size="5">x</text>
+								<text x="1" y="21" font-size="5">y ↓</text>
+							</g>
+						</svg>
+						<p class="fmt-caption">La representación <em>es</em> el archivo: el navegador lo dibuja tal
+							cual</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h3>DWG — Drawing (AutoCAD)</h3>
+				<p class="fmt-meta"><strong>Qué es:</strong> formato <strong>binario y propietario</strong> de Autodesk,
+					el formato interno de AutoCAD. Un DWG es una <strong>base de datos de dibujo 2D/3D</strong>:
+					entidades geométricas (líneas, arcos, polilíneas, sólidos) organizadas en <strong>capas</strong>,
+					más bloques, textos, cotas y los espacios modelo/papel. Su especificación no es pública: los demás
+					programas lo leen por ingeniería inversa, por eso cada versión (R12, 2000, 2007, 2013, 2018…) puede
+					romper la compatibilidad. Su hermano abierto es el <strong>DXF</strong>, el mismo dibujo en
+					<strong>texto plano</strong> — el del ejemplo.<br>
+					<strong>Ojo — es CAD, no SIG:</strong> las coordenadas están en <em>unidades de dibujo</em> sobre un
+					origen local y arbitrario, casi nunca trae CRS, y <strong>no tiene tabla de atributos</strong>: la
+					información viaja como textos sueltos, nombres de capa o atributos de bloque. Antes de usarlo hay
+					que <strong>georreferenciarlo</strong> y convertir las capas en entidades.
+				</p>
+				<div class="fmt-split">
+					<div>
+						<pre><code class="language-plaintext" data-trim>
+  0
+LINE
+  8
+EJE_VIA
+ 10
+1035420.0
+ 20
+1180310.0
+ 11
+1035480.0
+ 21
+1180365.0
+						</code></pre>
+						<p class="fmt-caption">El DXF (texto): <code>0</code> = tipo de entidad, <code>8</code> = capa,
+							<code>10/20</code> = X,Y inicial, <code>11/21</code> = X,Y final. En DWG esto mismo está
+							comprimido en binario
+						</p>
+					</div>
+					<div class="fmt-render">
+						<svg viewBox="0 0 320 210" xmlns="http://www.w3.org/2000/svg">
+							<rect x="0" y="0" width="320" height="210" fill="#ffffff" />
+							<g stroke="#e4e9ee" stroke-width="1">
+								<line x1="0" y1="52" x2="320" y2="52" />
+								<line x1="0" y1="104" x2="320" y2="104" />
+								<line x1="0" y1="156" x2="320" y2="156" />
+								<line x1="80" y1="0" x2="80" y2="210" />
+								<line x1="160" y1="0" x2="160" y2="210" />
+								<line x1="240" y1="0" x2="240" y2="210" />
+							</g>
+							<line x1="40" y1="160" x2="270" y2="70" stroke="#1a4e80" stroke-width="3" />
+							<g fill="#c0392b">
+								<circle cx="95" cy="139" r="4" />
+								<circle cx="180" cy="106" r="4" />
+								<circle cx="250" cy="78" r="4" />
+							</g>
+							<text x="44" y="178" font-size="11" fill="#1a4e80">capa EJE_VIA</text>
+							<text x="188" y="126" font-size="11" fill="#c0392b">capa POSTES</text>
+							<g stroke="#888" stroke-width="1.5" fill="#888">
+								<line x1="14" y1="196" x2="44" y2="196" />
+								<line x1="14" y1="196" x2="14" y2="170" />
+								<circle cx="14" cy="196" r="2.5" />
+								<text x="20" y="190" font-size="10">0,0 local</text>
+							</g>
+						</svg>
+						<p class="fmt-caption">Cómo lo dibuja el CAD: geometría por capas, en unidades de dibujo sobre un
+							origen propio — sin proyección</p>
+					</div>
+				</div>
 			</section>
 
 			<section>
