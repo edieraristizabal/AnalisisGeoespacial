@@ -66,6 +66,24 @@
 			max-height: 330px;
 		}
 
+		/* Patron de puntos: codigo a la izquierda, figura(s) a la derecha */
+		.fmt-split.pp pre code {
+			font-size: 0.52em;
+			max-height: 470px;
+		}
+
+		.pp-figs {
+			display: flex;
+			gap: 8px;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.pp-figs img {
+			min-width: 0;
+			max-width: 100%;
+		}
+
 		.fmt-split.tall pre code {
 			font-size: 0.36em;
 			max-height: 430px;
@@ -442,7 +460,7 @@
 
 			<section>
 				<h2>PIP</h2>
-				<img src="https://cdn.activestate.com/wp-content/uploads/2019/12/how-to-install-pip-on-windows.png"
+				<img src="https://i.pinimg.com/originals/b7/39/55/b73955885a1cf4c933d99d7c98be672f.png"
 					width="1000">
 			</section>
 
@@ -2926,11 +2944,105 @@ variables:
 				</ul>
 			</section>
 
+			<section>
+				<h3>Datos: fotografías de Flickr en Tokio</h3>
+				<p style="font-size:22px">Muestra de 10.000 fotografías geolocalizadas: ID de la foto y del usuario,
+					coordenadas (longitud/latitud y x/y proyectadas), fecha y área administrativa.</p>
+				<pre><code class="language-python" data-trim style="white-space:pre-wrap; word-break:break-all; font-size:0.6em">
+import pandas as pd
+import geopandas as gpd
+
+# Fotografías (puntos)
+db = pd.read_csv("https://raw.githubusercontent.com/gdsbook/book/main/data/tokyo/tokyo_clean.csv")
+db.info()
+
+# Límites administrativos (polígonos)
+areas = gpd.read_file("https://darribas.org/gds_course/content/data/tokyo_admin_boundaries.geojson")
+				</code></pre>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Visualización del patrón</h3>
+				<p style="font-size:22px">Diagrama de dispersión con las distribuciones marginales de longitud y latitud.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+import seaborn as sbn
+
+sbn.jointplot(x='longitude', y='latitude',
+              data=db, s=0.5);
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/76/2a/3c/762a3ca3682bab6b774cb80dd7ba4844.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
 
 			<section>
 				<h3>Centrograhy</h3>
-				<img src="https://mgimond.github.io/Spatial/img/centrography.svg" width="700">
+				<img src="https://i.pinimg.com/originals/85/e4/8c/85e48cc287466723ae3444884e3d1ca2.png" width="700">
 				<figcaption>Fuente: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
+			</section>
+
+			<section>
+				<h3>Centrografía: centro medio y mediano</h3>
+				<p style="font-size:22px">La diferencia entre ambos centros refleja la asimetría del patrón.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from pointpats import centrography
+
+mean_center = centrography.mean_center(db[['x', 'y']])
+med_center = centrography.euclidean_median(db[['x', 'y']])
+
+joint_axes = sbn.jointplot(x='x', y='y', data=db, s=0.75)
+joint_axes.ax_joint.scatter(*mean_center, color='red',
+                            marker='x', s=50, label='Mean Center')
+joint_axes.ax_joint.scatter(*med_center, color='limegreen',
+                            marker='o', s=50, label='Median Center')
+ctx.add_basemap(joint_axes.ax_joint,
+                source=ctx.providers.CartoDB.Positron)
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/d4/af/f4/d4aff4475d20276687616c3cf51a5bac.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Centrografía: dispersión</h3>
+				<p style="font-size:22px">Distancia estándar (≈ 8800 m) y elipse de desviación estándar.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from matplotlib.patches import Ellipse
+import numpy as np
+
+centrography.std_distance(db[['x', 'y']])
+major, minor, rotation = centrography.ellipse(db[['x', 'y']])
+
+f, ax = plt.subplots(1, figsize=(9, 9))
+ax.scatter(db['x'], db['y'], s=0.75)
+ellipse = Ellipse(xy=mean_center,
+                  width=major*2, height=minor*2,
+                  angle=np.rad2deg(rotation),
+                  facecolor='none', edgecolor='red',
+                  linestyle='--', label='Std. Ellipse')
+ax.add_patch(ellipse)
+ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/27/68/ab/2768abe819fd0077de854a7163b5bf2b.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -2939,13 +3051,216 @@ variables:
 			</section>
 
 			<section>
+				<h3>Extensión: convex hull y alpha shape</h3>
+				<p style="font-size:22px">Fotografías de un solo usuario. La forma alfa es el polígono más ajustado que contiene todos los puntos.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+import libpysal
+
+user = db.query('user_id == "95795770@N00"')
+coordinates = user[['x', 'y']].values
+
+# Envolvente convexo
+convex_hull_vertices = centrography.hull(coordinates)
+
+# Forma alfa (alpha shape)
+alpha_shape, alpha, circs = libpysal.cg.alpha_shape_auto(
+    coordinates, return_circles=True)
+alpha_shape
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/4b/d9/b6/4bd9b631329d15c6a0047107e201bcd8.png" style="max-height:380px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Efectos de primer y segundo orden</h3>
+				<div class="fmt-split">
+					<div style="font-size:22px">
+						<p style="font-size:22px"><strong>Primer orden:</strong> la intensidad del proceso varía en el espacio por factores
+							externos (elevación, suelo, población). Cada evento depende de su <em>ubicación</em>, no de los
+							demás eventos.</p>
+						<p style="font-size:22px"><strong>Segundo orden:</strong> interacción entre eventos. La presencia de un evento atrae
+							(agrupamiento) o repele (dispersión) a otros eventos cercanos.</p>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/91/b0/c5/91b0c575a915ae89f27a297fb3348f5d.png" style="max-height:380px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/11_intro_spatial.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 11</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Intensidad vs. densidad</h3>
+				<div class="fmt-split">
+					<div style="font-size:22px">
+						<p style="font-size:22px"><strong>Intensidad</strong> \(\lambda(u)\): propiedad <em>teórica</em> del proceso. Es el número
+							esperado de eventos por unidad de área en la ubicación \(u\):</p>
+						<p style="font-size:22px">\[\lambda(u)=\lim_{|du|\to 0}\frac{E[N(du)]}{|du|} \qquad E[N(A)]=\int_A \lambda(u)\,du\]</p>
+						<p style="font-size:22px"><strong>Densidad</strong>: lo <em>observado</em>, una estimación de la intensidad a partir del
+							patrón: global \(\hat{\lambda}=n/a\), por cuadrantes o por kernel.</p>
+						<p style="font-size:20px">En estadística, «densidad» también puede ser
+							\(f(u)=\lambda(u)/\int_W \lambda(v)\,dv\), que integra a 1: indica <em>dónde</em> es más
+							probable un evento, no <em>cuántos</em> se esperan.</p>
+						<p class="highlight" style="font-size:22px">La densidad se observa; la intensidad se infiere.</p>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/ae/86/d1/ae86d16fe7e1947d88108b101a71a5fc.png" style="max-height:360px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Proceso homogéneo (Poisson / CSR)</h3>
+				<div class="fmt-split">
+					<div style="font-size:22px">
+						<ul>
+							<li style="font-size:22px">Intensidad constante en toda la región: \(\lambda(u)=\lambda\).</li>
+							<li style="font-size:22px">El número de eventos en cualquier área \(A\) sigue \(N(A)\sim \text{Poisson}(\lambda\,|A|)\).</li>
+							<li style="font-size:22px">Dado \(n\), los eventos son independientes y uniformes en la región:
+								<strong>aleatoriedad espacial completa (CSR)</strong>.</li>
+							<li style="font-size:22px">Proceso <strong>estacionario</strong>: sus propiedades no cambian al trasladarlo en el espacio.</li>
+							<li style="font-size:22px">Es la hipótesis nula de referencia en el análisis de patrones de puntos.</li>
+						</ul>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/0e/2b/46/0e2b465b1ee4f09d9c29646e554fa97f.png" style="max-height:430px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Proceso no homogéneo</h3>
+				<ul style="font-size:22px">
+					<li style="font-size:22px">La intensidad varía con la ubicación, por ejemplo según una covariable:
+						\(N(A)\sim \text{Poisson}\left(\int_A \lambda(u)\,du\right)\).</li>
+					<li style="font-size:22px">Los eventos siguen siendo <strong>independientes</strong>: la concentración proviene de
+						\(\lambda(u)\), no de la interacción entre eventos.</li>
+					<li style="font-size:22px">Proceso <strong>no estacionario</strong>: muchos métodos de segundo orden (ANN, K, L) asumen
+						estacionariedad.</li>
+				</ul>
+				<div class="pp-figs">
+					<img src="https://i.pinimg.com/originals/b5/fb/09/b5fb0921b3d12fbbee9db6bcf34fae0c.png" style="max-height:260px; margin:0;">
+					<img src="https://i.pinimg.com/originals/41/8a/9a/418a9a2d2755b259a2dff9080ed8aa6f.png" style="max-height:260px; margin:0;">
+				</div>
+				<p style="font-size:20px">Izq.: tiendas Walmart y densidad de población. Der.: simulaciones de un proceso
+					no homogéneo cuya intensidad depende de la población.</p>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Simulación de un patrón aleatorio (CSR)</h3>
+				<p style="font-size:22px">Proceso de Poisson con el mismo número de puntos: en el rectángulo envolvente (izq.) y en la forma alfa (der.).</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from pointpats import random
+
+random_pattern = random.poisson(coordinates,
+                                size=len(coordinates))
+random_pattern_ashape = random.poisson(alpha_shape,
+                                       size=len(coordinates))
+
+f, ax = plt.subplots(1, figsize=(9, 9))
+plt.scatter(*coordinates.T, color='k', marker='.',
+            label='Observed')
+plt.scatter(*random_pattern_ashape.T, color='r',
+            marker='x', label='Random')
+ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/ae/6f/85/ae6f8524e0e0e2e673ae9ce72b7c9770.png" style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/a3/2f/87/a32f871a26fa1e98ac818f1325939712.png" style="max-height:300px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
 				<h3>Quadrant density</h3>
 				<p>This technique requires that the study area be divided into sub-regions (aka quadrats). Then,
 					the point density is computed for each quadrat by dividing the number of points in each quadrat
 					by the quadrat’s area. Quadrats can take on many different shapes such as hexagons and triangles
 				</p>
-				<img src="https://mgimond.github.io/Spatial/14-Point_Patterns_1st_files/figure-html/f11-quad01-1.png"
+				<img src="https://i.pinimg.com/originals/ba/51/24/ba512499e1033a26fea8a96b2a4a5d79.png"
 					width="300">
+			</section>
+
+			<section>
+				<h3>Estadística de cuadrantes</h3>
+				<p style="font-size:22px">Prueba χ² del conteo por cuadrante: observado (p ≈ 3×10⁻³⁷, agrupado) vs. aleatorio (p ≈ 0.94).</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from pointpats import QStatistic
+
+qstat = QStatistic(coordinates, nx=2, ny=2)
+qstat.plot()
+qstat.chi2_pvalue
+
+qstat_null = QStatistic(random_pattern)
+qstat_null.plot()
+qstat_null.chi2_pvalue
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/d8/c5/f3/d8c5f36791f037169da487d54db9327b.png" style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/1e/6d/f3/1e6df35c7b16a4cc106f36e4fac3fe65.png" style="max-height:300px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Densidad en mallas irregulares</h3>
+				<p style="font-size:22px">Fotografías superpuestas sobre las áreas administrativas de Tokio.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+ax = db.plot.scatter("longitude", "latitude", s=0.25,
+                     c="xkcd:bright yellow", alpha=0.5,
+                     figsize=(9, 9))
+areas.plot(ax=ax, facecolor="none",
+           edgecolor="xkcd:pale lavender")
+ax.set_axis_off()
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/4c/e6/41/4ce641d06895b911ed9c1c798667bd3e.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Densidad en mallas regulares: hex-binning</h3>
+				<p style="font-size:22px">Conteo de puntos en una malla de 50 hexágonos por dimensión.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+import contextily as ctx
+import matplotlib.pyplot as plt
+
+f, ax = plt.subplots(1, figsize=(12, 9))
+hb = ax.hexbin(db['x'], db['y'], gridsize=50,
+               linewidths=0, alpha=0.5, cmap='viridis_r')
+ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
+plt.colorbar(hb)
+ax.set_axis_off()
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/6a/53/45/6a53459262aafd353f31419157abc1fd.png" style="max-height:380px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -2960,8 +3275,52 @@ variables:
 
 			<section>
 				<h3>Kernel Density Function</h3>
-				<img src="https://mgimond.github.io/Spatial/14-Point_Patterns_1st_files/figure-html/f11-kernel01-1.png"
+				<img src="https://i.pinimg.com/originals/e1/c7/69/e1c7697cbcf6ab1955e2f6d3f9bb907e.png"
 					width="900">
+			</section>
+
+			<section>
+				<h3>Kernel Density Estimation (KDE)</h3>
+				<p style="font-size:22px">Superficie continua de densidad: la misma estructura del hexbin, pero suavizada.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+f, ax = plt.subplots(1, figsize=(9, 9))
+sbn.kdeplot(x=db['x'], y=db['y'], n_levels=30,
+            fill=True, alpha=0.55, cmap='viridis_r')
+ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
+ax.set_axis_off();
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/ce/ba/55/ceba556f9328295eb66bb2985c42b530.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Modelo paramétrico: Poisson log-lineal</h3>
+				<div class="fmt-split">
+					<div style="font-size:22px">
+						<p style="font-size:22px">\[\log\lambda(u)=\alpha+\beta\,Z(u) \quad\Leftrightarrow\quad \lambda(u)=e^{\alpha}\,e^{\beta Z(u)}\]</p>
+						<ul>
+							<li style="font-size:22px">\(Z(u)\): covariable espacial (ráster), p. ej. densidad de población.</li>
+							<li style="font-size:22px">\(e^{\alpha}\): intensidad base cuando \(Z=0\). \(e^{\beta}\): factor multiplicativo
+								de la intensidad por cada unidad de \(Z\).</li>
+							<li style="font-size:22px">La respuesta es una <strong>intensidad</strong>, no una probabilidad (GLM de Poisson). Se estima por
+								máxima verosimilitud (cuadratura de Berman–Turner).</li>
+							<li style="font-size:22px">Supone eventos independientes: modela solo <strong>efectos de primer orden</strong>.</li>
+						</ul>
+						<p style="font-size:20px; text-align:left">Ejemplo, Starbucks en Massachusetts: \(\alpha=-5.151\Rightarrow e^{\alpha}\approx 0.0058\)
+							cafés/km²; \(\beta=0.00017\Rightarrow e^{\beta}\approx 1.00017\) por hab/km². En R (spatstat):
+							<code>ppm(X ~ Z)</code>.</p>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/c7/f8/f0/c7f8f043d87c7d98f702efcd773a2b56.png" style="max-height:380px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
 			</section>
 
 			<section>
@@ -2990,17 +3349,17 @@ variables:
 				<p>Una extensión de esta idea es graficar los valores de ANN para vecinos de diferente orden, es
 					decir,
 					para el punto más cercano, luego el segundo más cercano, y así sucesivamente.</p>
-				<img src="https://mgimond.github.io/Spatial/15-Point_Patterns_2nd_files/figure-html/f11-ppp-dist-1.png"
+				<img src="https://i.pinimg.com/originals/a1/b7/ab/a1b7ab9aad13f762fded0acf897402a6.png"
 					width="500">
-				<img src="https://mgimond.github.io/Spatial/15-Point_Patterns_2nd_files/figure-html/f11-ANN-plot-1.png"
+				<img src="https://i.pinimg.com/originals/e0/1f/6e/e01f6ec33c7495bca6ea6e050211826e.png"
 					width="400">
 			</section>
 
 			<section>
 				<h3>Análisis de vecino más cercano (NN)</h3>
-				<img src="https://mgimond.github.io/Spatial/15-Point_Patterns_2nd_files/figure-html/f11-diff-patterns-1.png"
+				<img src="https://i.pinimg.com/originals/89/5b/55/895b55b93285b34ee9cc2520dfc59a92.png"
 					width="500">
-				<img src="https://mgimond.github.io/Spatial/15-Point_Patterns_2nd_files/figure-html/f11-diff-ANN-plots-1.png"
+				<img src="https://i.pinimg.com/originals/0e/7f/7d/0e7f7dd972903e3254fac341df921362.png"
 					width="400">
 			</section>
 
@@ -3015,6 +3374,69 @@ variables:
 					de los eventos.</p>
 				<img src="https://www.researchgate.net/profile/Thibault-Lagache/publication/259354916/figure/fig1/AS:297121925353473@1447850795608/Analyzing-spatial-point-patterns-with-Ripleys-K-function-The-normalized-and-centered.png"
 					width="1000">
+			</section>
+
+			<section>
+				<h3>Alfabeto de funciones de Ripley</h3>
+				<p style="font-size:22px">Las funciones de Ripley se basan en la distancia de cada punto a su vecino más cercano.</p>
+				<img src="https://i.pinimg.com/originals/b8/e9/e3/b8e9e326a97640dbc06d9fa8c87ac608.png" style="max-height:440px; margin:0;">
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Función G de Ripley</h3>
+				<p style="font-size:22px">Proporción de puntos cuyo vecino más cercano está a una distancia menor que d. Por encima de la envolvente de simulaciones → patrón agrupado.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from pointpats import distance_statistics
+
+g_test = distance_statistics.g_test(
+    coordinates, support=40, keep_simulations=True)
+
+f, ax = plt.subplots(1, figsize=(6, 3))
+ax.plot(g_test.support, g_test.simulations.T,
+        color='k', alpha=.01)
+ax.plot(g_test.support,
+        np.median(g_test.simulations, axis=0),
+        color='cyan', label='median simulation')
+ax.plot(g_test.support, g_test.statistic,
+        color='red', label='observed')
+ax.legend()
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/28/3f/8a/283f8a8b6a65ea8e11eec2c1d0e31b78.png" style="max-height:260px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Función F de Ripley</h3>
+				<p style="font-size:22px">Distancia desde puntos arbitrarios del área al punto observado más cercano. Por debajo de la envolvente → patrón agrupado.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+f_test = distance_statistics.f_test(
+    coordinates, support=40, keep_simulations=True)
+
+f, ax = plt.subplots(1, figsize=(6, 3))
+ax.plot(f_test.support, f_test.simulations.T,
+        color='k', alpha=.01)
+ax.plot(f_test.support,
+        np.median(f_test.simulations, axis=0),
+        color='cyan', label='median simulation')
+ax.plot(f_test.support, f_test.statistic,
+        color='red', label='observed')
+ax.legend()
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/ba/8a/03/ba8a03e8a1f65aa6d85eee1a4f7570c8.png" style="max-height:260px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 
@@ -3128,6 +3550,35 @@ variables:
 			<section>
 				<h3>DBScan</h3>
 				<img src="https://i.pinimg.com/originals/25/71/92/257192e5bb866ad4ffc28d603a95ea91.gif" width="900">
+			</section>
+
+			<section>
+				<h3>DBSCAN aplicado a las fotografías</h3>
+				<p style="font-size:22px">Puntos agrupados en clústeres (rojo) y ruido (gris).</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from sklearn.cluster import DBSCAN
+
+clusterer = DBSCAN()
+clusterer.fit(db[["x", "y"]])
+lbls = pd.Series(clusterer.labels_, index=db.index)
+
+f, ax = plt.subplots(1, figsize=(9, 9))
+noise = db.loc[lbls == -1, ['x', 'y']]
+ax.scatter(noise['x'], noise['y'], c='grey', s=5, linewidth=0)
+clustered = db.index.difference(noise.index)
+ax.scatter(db.loc[clustered, 'x'], db.loc[clustered, 'y'],
+           c='red', linewidth=0)
+ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
+ax.set_axis_off()
+						</code></pre>
+					</div>
+					<div class="pp-figs">
+						<img src="https://i.pinimg.com/originals/f3/5d/de/f35dde95a31e188deffd8c4f533c7eab.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 		</section>
@@ -3730,7 +4181,7 @@ variables:
 				<p>If there is no relationship between Income and Income_lag, the slope will be close to flat
 					(resulting
 					in a Moran’s I value near 0).</p>
-				<img src="https://mgimond.github.io/Spatial/img/MoranI_scatter_plot.png" width="600">
+				<img src="https://i.pinimg.com/originals/61/25/6a/61256acdeb275da4655a89ee5714514a.png" width="600">
 			</section>
 
 			<section>
@@ -3785,8 +4236,8 @@ variables:
 				<p>Red points and polygons highlight counties with high income values surrounded by high income
 					counties. Blue points and polygons highlight counties with low income values surrounded by low
 					income counties.</p>
-				<img src="https://mgimond.github.io/Spatial/img/HH_LL_noP.png" width="400">
-				<img src="https://mgimond.github.io/Spatial/img/HH_LL_noP_map.png" width="300">
+				<img src="https://i.pinimg.com/originals/fb/68/87/fb6887bd0043548f947f73d471c8fd03.png" width="400">
+				<img src="https://i.pinimg.com/originals/dd/b9/51/ddb9510a501c9d153c9663e86f32d7f0.png" width="300">
 			</section>
 
 			<section>
@@ -4443,7 +4894,7 @@ variables:
 					an
 					area.
 					Each area ends up enclosing a sample point whose value it inherits.</p>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-proximity-1.png"
+				<img src="https://i.pinimg.com/originals/41/eb/4a/41eb4a6c4059901b1bf571b148e63284.png"
 					width="800">
 			</section>
 
@@ -4465,9 +4916,9 @@ variables:
 
 			<section>
 				<h3>Inverse Distance Weighted (IDW) para n= 2 y n=15</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-idw1-1.png"
+				<img src="https://i.pinimg.com/originals/ce/0f/6f/ce0f6fbafb43495191023cdfb8ed032b.png"
 					width="450">
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-idw2-1.png"
+				<img src="https://i.pinimg.com/originals/b3/2d/df/b32ddf3883d1059b1e3594eea2ddfa06.png"
 					width="450">
 
 			</section>
@@ -4498,26 +4949,26 @@ variables:
 					squaring
 					their
 					differences then dividing by 2.</p>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png"
+				<img src="https://i.pinimg.com/originals/93/b5/21/93b5217a5c08d315d15842ad6041a8d7.png"
 					width="1000">
 				$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-1.png"
+				<img src="https://i.pinimg.com/originals/66/4a/de/664ade064a3d6789c24bba4931334372.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png"
+				<img src="https://i.pinimg.com/originals/07/a0/e6/07a0e65ad5baacefc4463538ffbdc1f4.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>Variogram models</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png"
+				<img src="https://i.pinimg.com/originals/48/5f/38/485f3826f3b7fc14c7006bfcbab48eb6.png"
 					width="800">
 			</section>
 
@@ -4528,25 +4979,25 @@ variables:
 
 			<section>
 				<h3>Parameters in a variogram model</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png"
+				<img src="https://i.pinimg.com/originals/9d/b3/35/9db335886d5a7c45f4870b14bc27a785.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>Spherical model fit</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-spherical-model-1.png"
+				<img src="https://i.pinimg.com/originals/96/dc/44/96dc445b7087bcd4ebb55b1e946fdb75.png"
 					width="1000">
 			</section>
 
 			<section>
 				<h3>The Ordinary Kriging Interpolated Surface</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-krige01-1.png"
+				<img src="https://i.pinimg.com/originals/78/95/8f/78958f957d1795f90b587c53bdb284fb.png"
 					width="800">
 			</section>
 
 			<section>
 				<h3>Mapa de la varianza de la predicción (SK)</h3>
-				<img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-krige03-1.png"
+				<img src="https://i.pinimg.com/originals/65/8c/bc/658cbcf1d5eb39f4c1c131e39017e29f.png"
 					width="800">
 			</section>
 		</section>
