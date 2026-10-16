@@ -3448,83 +3448,21 @@ ax.legend()
 			</section>
 
 			<section>
-				<h3>Distance</h3>
-				<img src="https://i.pinimg.com/originals/96/31/74/963174f44981900fdcb1dc5a4632f36e.png" width="400">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/3a/4c/ca/3a4cca6d7b60d2b198578e4cafa63435.jpg" width="800">
-			</section>
-
-			<section>
 				<ul>
+					<li style="color:rgb(15, 15, 15);"><strong>Density-Based Clustering</strong> (DBSCAN): basados en
+						funciones de conectividad y funciones de densidad. Usan solo la localización →
+						<em>puntos sin marcar</em>.</li>
 					<li style="color:rgb(15, 15, 15);"><strong>Hierarchical Clustering:</strong> descomposición
 						jerárquica utilizando algún criterio, pueden ser aglomerativos (bottom-up)
-						o de separación (top-down). No necesitan K al inicio.</li>
-					<li style="color:rgb(15, 15, 15);"><strong>Partitioning Methods (</strong> (k-means, PAM,
-						CLARA): se
-						construye a partir de particiones, las cuales son evaluadas
-						por algún criterio. Necesitan K al inicio.</li>
-					<li style="color:rgb(150, 150, 150);">Density-Based Clustering: basados en funciones de
-						conectividad
-						y funciones de densidad.</li>
+						o de separación (top-down). No necesitan K al inicio → <em>puntos marcados</em>.</li>
+					<li style="color:rgb(15, 15, 15);"><strong>Partitioning Methods</strong> (k-means, PAM,
+						CLARA): se construye a partir de particiones, las cuales son evaluadas
+						por algún criterio. Necesitan K al inicio → <em>puntos marcados</em>.</li>
 					<li style="color:rgb(150, 150, 150);">Model-based Clustering: se utiliza un modelo para agrupar
-						los
-						modelos.</li>
+						los modelos.</li>
 					<li style="color:rgb(150, 150, 150);">Fuzzy Clustering: A partir de lógica difusa se separan o
 						agrupan los clusters.</li>
 				</ul>
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/originals/11/3f/24/113f2409c3e9afcf77bcd645b3c8f8c6.gif" width="1000">
-			</section>
-
-			<section>
-				<h3>Clustering</h3>
-				<img src="https://i.pinimg.com/564x/a9/95/55/a9955553655ce4912fec48f95c4b6065.jpg" width="600">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/55/86/61/558661c78fe7461fe8bccc4b3b87d91d.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/1a/9e/0f/1a9e0f27f121f98a99934576a0b7c3f1.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>Dendrograma</h3>
-				<img src="https://i.pinimg.com/564x/28/88/9e/28889e974bea367efaae6c3776d88c19.jpg" width="1000">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/f0/0d/50/f00d50d6b438178c91f0633e663fff1d.jpg" width="800">
-			</section>
-
-			<section>
-				<h3>K-means</h3>
-				<img src="https://i.pinimg.com/originals/37/1e/88/371e88c867d1015d65cbab831a7542c5.gif" width="600">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/7f/d8/03/7fd8038ad7b82396ec51b37f573ac02f.jpg" width="800">
-			</section>
-
-			<section>
-				<img src="https://i.pinimg.com/564x/07/d9/ca/07d9ca6c0dbab189b0f8437cabbec092.jpg" width="900">
-			</section>
-
-			<section>
-				<img src="https://www.researchgate.net/publication/340705597/figure/fig2/AS:881376379285504@1587147912170/a-Elbow-Curve-for-K-means-Clustering-b-K-Means-clustering-of-the-developers-on-the.png"
-					width="800">
-			</section>
-
-			<section>
-				<h3>Método Silhouette</h3>
-				<img src="https://i.pinimg.com/564x/62/df/4c/62df4c59ad9708c0847529b443812817.jpg" width="1200">
 			</section>
 
 			<section>
@@ -3576,6 +3514,229 @@ ax.set_axis_off()
 					</div>
 					<div class="pp-figs">
 						<img src="https://i.pinimg.com/originals/f3/5d/de/f35dde95a31e188deffd8c4f533c7eab.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Clustering de puntos marcados</h3>
+				<p>Cuando cada punto tiene atributos (marcas), el agrupamiento se hace en el espacio de
+					variables: coordenadas + marcas. Los grupos reúnen puntos <strong>cercanos y similares</strong>.
+					Los métodos jerárquicos y de partición requieren una medida de distancia entre observaciones.</p>
+			</section>
+
+			<section>
+				<h3>Distance</h3>
+				<img src="https://i.pinimg.com/originals/96/31/74/963174f44981900fdcb1dc5a4632f36e.png" width="400">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/3a/4c/ca/3a4cca6d7b60d2b198578e4cafa63435.jpg" width="800">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/originals/11/3f/24/113f2409c3e9afcf77bcd645b3c8f8c6.gif" width="1000">
+			</section>
+
+			<section>
+				<h3>Clustering</h3>
+				<img src="https://i.pinimg.com/564x/a9/95/55/a9955553655ce4912fec48f95c4b6065.jpg" width="600">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/55/86/61/558661c78fe7461fe8bccc4b3b87d91d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/1a/9e/0f/1a9e0f27f121f98a99934576a0b7c3f1.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Dendrograma</h3>
+				<img src="https://i.pinimg.com/564x/28/88/9e/28889e974bea367efaae6c3776d88c19.jpg" width="1000">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/f0/0d/50/f00d50d6b438178c91f0633e663fff1d.jpg" width="800">
+			</section>
+
+			<section>
+				<h3>Clustering jerárquico en Python</h3>
+				<p style="font-size:22px">Anuncios de Airbnb en San Diego: coordenadas + precio, Ward, dendrograma y corte en k = 4.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from scipy.cluster.hierarchy import linkage, dendrogram, fcluster
+from sklearn.preprocessing import StandardScaler
+
+db = gpd.read_file("regression_db.geojson").to_crs(epsg=3857)
+db["x"], db["y"] = db.geometry.x, db.geometry.y
+
+# Coordenadas + marca, estandarizadas
+X = StandardScaler().fit_transform(db[["x", "y", "log_price"]])
+
+# Aglomerativo con criterio de Ward
+Z = linkage(X, method="ward")
+
+f, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+dendrogram(Z, truncate_mode="lastp", p=30, ax=ax1,
+           color_threshold=56, no_labels=True)
+ax1.axhline(y=56, c="red", ls="--")      # altura de corte
+ax1.set_ylabel("Distancia de fusión")
+
+# Cortar el árbol en k grupos y mapear
+db["hc"] = fcluster(Z, t=4, criterion="maxclust")
+ax2.scatter(db["x"], db["y"], c=db["hc"], cmap="tab10", s=4)
+ctx.add_basemap(ax2, source=ctx.providers.Esri.WorldGrayCanvas)
+						</code></pre>
+					</div>
+					<div class="pp-figs" style="flex-direction:column;">
+						<img src="https://i.pinimg.com/originals/0c/e1/bb/0ce1bb2214fc8f72c153dc8f634f7d93.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Evaluación del clustering jerárquico</h3>
+				<p style="font-size:22px">Correlación cofenética (≈1: el árbol preserva bien las distancias) y Silhouette para elegir k (mayor es mejor).</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from scipy.cluster.hierarchy import cophenet
+from scipy.spatial.distance import pdist
+from sklearn.metrics import silhouette_score
+
+# ¿Qué tan bien preserva el dendrograma las distancias originales?
+metodos = ["single", "complete", "average", "ward"]
+coph = [cophenet(linkage(X, method=m), pdist(X))[0]
+        for m in metodos]
+
+# ¿Cuántos grupos? Silhouette según k
+ks = range(2, 9)
+sil = [silhouette_score(X, fcluster(Z, t=k, criterion="maxclust"))
+       for k in ks]
+
+f, (a1, a2) = plt.subplots(1, 2, figsize=(13, 5))
+a1.bar(metodos, coph); a1.set_title("Correlación cofenética")
+a2.plot(ks, sil, "o-"); a2.set_title("Silhouette (Ward)")
+						</code></pre>
+					</div>
+					<div class="pp-figs" style="flex-direction:column;">
+						<img src="https://i.pinimg.com/originals/cf/5b/15/cf5b1511005b03cd9e348b153c3a2dcb.png" style="max-height:420px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>K-means</h3>
+				<img src="https://i.pinimg.com/originals/37/1e/88/371e88c867d1015d65cbab831a7542c5.gif" width="600">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/7f/d8/03/7fd8038ad7b82396ec51b37f573ac02f.jpg" width="800">
+			</section>
+
+			<section>
+				<img src="https://i.pinimg.com/564x/07/d9/ca/07d9ca6c0dbab189b0f8437cabbec092.jpg" width="900">
+			</section>
+
+			<section>
+				<img src="https://www.researchgate.net/publication/340705597/figure/fig2/AS:881376379285504@1587147912170/a-Elbow-Curve-for-K-means-Clustering-b-K-Means-clustering-of-the-developers-on-the.png"
+					width="800">
+			</section>
+
+			<section>
+				<h3>Método Silhouette</h3>
+				<img src="https://i.pinimg.com/564x/62/df/4c/62df4c59ad9708c0847529b443812817.jpg" width="1200">
+			</section>
+
+			<section>
+				<h3>K-means en Python</h3>
+				<p style="font-size:22px">Selección de k con el método del codo y Silhouette; luego ajuste final y mapa de grupos.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+inercia, sil = [], []
+K = range(2, 11)
+for k in K:
+    km = KMeans(n_clusters=k, n_init=10, random_state=42).fit(X)
+    inercia.append(km.inertia_)
+    sil.append(silhouette_score(X, km.labels_))
+
+f, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.5))
+a1.plot(K, inercia, "o-"); a1.set_title("Método del codo")
+a2.plot(K, sil, "o-");     a2.set_title("Silhouette")
+
+km = KMeans(n_clusters=5, n_init=10, random_state=42).fit(X)
+db["km"] = km.labels_
+f, ax = plt.subplots(figsize=(7, 7))
+ax.scatter(db["x"], db["y"], c=db["km"], cmap="tab10", s=4)
+ctx.add_basemap(ax, source=ctx.providers.Esri.WorldGrayCanvas)
+						</code></pre>
+					</div>
+					<div class="pp-figs" style="flex-direction:column;">
+						<img src="https://i.pinimg.com/originals/54/13/67/541367db224bb0c7e03739692c83fe57.png" style="max-height:230px; margin:0;">
+						<img src="https://i.pinimg.com/originals/f1/83/3d/f1833d331b0d5256304c4912620359bd.png" style="max-height:230px; margin:0;">
+					</div>
+				</div>
+				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+			</section>
+
+			<section>
+				<h3>Clustering con restricción espacial</h3>
+				<p>En K-means y en el jerárquico clásico dos puntos lejanos pueden quedar en el mismo grupo si sus
+					marcas son similares. La <strong>regionalización</strong> incorpora la dependencia espacial: solo
+					se permite fusionar observaciones que sean <strong>vecinas</strong>.</p>
+				<ul>
+					<li>La vecindad se define con una matriz de pesos espaciales <em>W</em> (k vecinos más cercanos,
+						distancia umbral, contigüidad).</li>
+					<li>El agrupamiento se hace sobre las marcas, pero restringido a <em>W</em> → grupos
+						<strong>similares y espacialmente contiguos</strong>.</li>
+					<li>Métodos: jerárquico con conectividad (Ward restringido), SKATER, Max-p, AZP.</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Clustering con restricción espacial en Python</h3>
+				<p style="font-size:22px">Ward sobre las marcas restringido a una vecindad KNN, comparado con el agrupamiento sin restricción.</p>
+				<div class="fmt-split pp">
+					<div>
+						<pre><code class="language-python" data-trim>
+from libpysal import weights
+from sklearn.cluster import AgglomerativeClustering
+
+# Matriz de vecindad: 15 vecinos más cercanos
+w = weights.KNN(db[["x", "y"]].values, k=15)
+
+# Agrupamiento solo sobre las marcas
+marcas = ["log_price", "accommodates", "bedrooms", "bathrooms"]
+Xm = StandardScaler().fit_transform(db[marcas])
+
+# Con restricción: solo se fusionan vecinos
+db["sp"] = AgglomerativeClustering(n_clusters=8, linkage="ward",
+              connectivity=w.sparse).fit_predict(Xm)
+# Sin restricción espacial
+db["nsp"] = AgglomerativeClustering(n_clusters=8,
+              linkage="ward").fit_predict(Xm)
+
+f, axs = plt.subplots(1, 2, figsize=(14, 7))
+for ax, c in zip(axs, ["nsp", "sp"]):
+    ax.scatter(db["x"], db["y"], c=db[c], cmap="tab10", s=4)
+    ctx.add_basemap(ax, source=ctx.providers.Esri.WorldGrayCanvas)
+
+# Alternativa: SKATER (spopt.region.Skater) sobre la misma W
+						</code></pre>
+					</div>
+					<div class="pp-figs" style="flex-direction:column;">
+						<img src="https://i.pinimg.com/originals/ed/37/a3/ed37a301cf9bea58463c37654e091fb4.png" style="max-height:420px; margin:0;">
 					</div>
 				</div>
 				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/Libro_AnalisisGeoespacial/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
