@@ -119,6 +119,7 @@ Material fuente que **no** se sube (libros guía, presentaciones originales, doc
 
 - **El Action no ejecuta los notebooks** (`execute_notebooks: "off"`): publica las salidas guardadas en cada `.ipynb`. Si se cambia código, ejecutar el notebook localmente y guardarlo con sus salidas antes del commit.
 - `libro/requirements.txt` contiene solo lo necesario para construir el libro; `libro/requirements-notebooks.txt` (si existe) lista las librerías para ejecutar los notebooks.
+- Si git falla con `bad object refs/desktop.ini` o `failed to perform geometric repack`, es porque Windows/Google Drive creó archivos `desktop.ini` dentro de `.git/`: borrarlos con `find .git -name desktop.ini -delete` y repetir el comando.
 - Compilar localmente: `C:\Users\edier\.jbenv\Scripts\jupyter-book.exe build libro` y abrir `libro/_build/html/index.html`.
 
 ## Notas del repositorio (CLAUDE.md anterior)
@@ -227,6 +228,7 @@ Large geospatial files are excluded from version control: `.tif`, `.shp`, `.shx`
 
 Cada cambio al repositorio se anota aquí, el más reciente primero, con el formato `- **AAAA-MM-DD**: qué se cambió y por qué (archivos principales).` Esta sección es la memoria del curso entre sesiones: leerla antes de empezar a trabajar.
 
+- **2026-10-24**: Interfaz en español: `_layouts/default.html` traducido ("Ver el proyecto en GitHub", "Este proyecto es mantenido por", `lang` = es), reemplaza el texto en inglés del tema minimal de Jekyll (este repositorio ya tenía un layout propio, que se tradujo y se copió a los demás cursos); `language: es` en `libro/_config.yml`. Traducción al español del texto en inglés: 88 bloques de `html/AnalisisGeoespacial.html` (autocorrelación, pesos espaciales, GWR/MGWR, SAR/CAR/ICAR/Leroux, geoestadística, kriging, procesos gaussianos), comentarios de código y celdas de texto de 11 capítulos del libro (`03_PointPattern`, `04_GLMPhyton`, `06_Coropleta`, `13_MGWR`, `15_GP`, `18_DB`, entre otros) y una línea de `index.md`. Se mantienen en su idioma original los títulos de obras, las referencias y los bloques SQL; las salidas de los notebooks no cambian.
 - **2026-10-24**: CLAUDE.md reescrito con resumen del contenido, estructura, flujo de ramas, pendientes y este registro; el contenido del CLAUDE.md anterior se conserva en "Notas del repositorio".
 - **2026-10-24**: Unificación en un solo repositorio: el libro (antes `Libro_AnalisisGeoespacial`) se copió a `libro/` (sin `cache/` ni `.claude/`) con `execute_notebooks: off`; `jupytext` agregado a `libro/requirements.txt` para los capítulos `.Rmd`; cita del libro en `libro/intro.md` actualizada a la URL nueva; workflow `deploy.yml`; `_config.yml` con `baseurl: /AnalisisGeoespacial`; enlaces de `index.md` relativos (antes `/Notebooks/...`) y enlaces al libro en `index.md` y en `html/AnalisisGeoespacial.html` apuntando a `/AnalisisGeoespacial/libro/`.
 - **2026-10-24**: Commit de respaldo de los cambios locales pendientes (53 archivos y 6 nuevos en `Notebooks/Python`) antes de unificar; limpieza de `desktop.ini` dentro de `.git/`.

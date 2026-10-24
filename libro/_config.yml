@@ -43,6 +43,7 @@ html:
 
 sphinx:
   config:
+    language: es
     nb_custom_formats:
         .Rmd:
             - jupytext.reads

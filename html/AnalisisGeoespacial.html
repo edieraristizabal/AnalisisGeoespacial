@@ -249,8 +249,7 @@
 
 		<section>
 			<h2>First Law of Geography</h2>
-			<p style="text-align: center; font-size: 40px;">“Everything is related to everything else, but near things
-				are more related than distant things."</p>
+			<p style="text-align: center; font-size: 40px;">«Todo está relacionado con todo lo demás, pero las cosas cercanas están más relacionadas que las distantes».</p>
 			<p style="text-align: right;"><small>Waldo R. Tobler (1970)</small></p>
 		</section>
 
@@ -1223,8 +1222,7 @@
 				<h3>MAUP</h3>
 				<p>Existen dos tipos de sesgos en el MAUP:</p>
 				<img src="https://gdsl-ul.github.io/san/figs/ch1/maup.png" width="700">
-				<figcaption>Fuente: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a> by
-					Francisco Rowe and Dani Arribas-Bel (2022)</figcaption>
+				<figcaption>Fuente: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a>, de Francisco Rowe y Dani Arribas-Bel (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1256,8 +1254,7 @@
 				<img src="https://mgimond.github.io/Spatial/img/unif_aggr.jpg" width="400">
 				<br>
 				<img src="https://mgimond.github.io/Spatial/img/irr_aggr.jpg" width="400">
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial
-						Analysis</a> by Manuel Gimond (2022)</figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial Analysis</a>, de Manuel Gimond (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1407,11 +1404,7 @@
 
 			<section>
 				<h3>Datum</h3>
-				<p>is to align the geoid with the ellipsoid (or sphere) representation of the earth and to map the
-					earth’s surface features onto this ellipsoid/sphere.
-					The alignment can be <strong>local</strong> where the ellipsoid surface is closely fit to the geoid
-					at a particular location on the earth’s surface
-					or <strong>geocentric</strong> where the ellipsoid is aligned with the center of the earth.</p>
+				<p>es alinear el geoide con la representación elipsoidal (o esférica) de la Tierra y proyectar los rasgos de la superficie terrestre sobre ese elipsoide o esfera. La alineación puede ser <strong>local</strong>, cuando la superficie del elipsoide se ajusta estrechamente al geoide en un lugar particular de la superficie terrestre, o <strong>geocéntrica</strong>, cuando el elipsoide se alinea con el centro de la Tierra.</p>
 				<img src="https://mgimond.github.io/Spatial/img/datum.png" width="600">
 			</section>
 
@@ -2985,7 +2978,7 @@ sbn.jointplot(x='longitude', y='latitude',
 			<section>
 				<h3>Centrograhy</h3>
 				<img src="https://i.pinimg.com/originals/85/e4/8c/85e48cc287466723ae3444884e3d1ca2.png" width="700">
-				<figcaption>Fuente: Intro to GIS and Spatial Analysis by Manuel Gimond (2020)</figcaption>
+				<figcaption>Fuente: Intro to GIS and Spatial Analysis, de Manuel Gimond (2020)</figcaption>
 			</section>
 
 			<section>
@@ -3185,10 +3178,7 @@ ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
 
 			<section>
 				<h3>Quadrant density</h3>
-				<p>This technique requires that the study area be divided into sub-regions (aka quadrats). Then,
-					the point density is computed for each quadrat by dividing the number of points in each quadrat
-					by the quadrat’s area. Quadrats can take on many different shapes such as hexagons and triangles
-				</p>
+				<p>Esta técnica requiere dividir el área de estudio en subregiones (también llamadas cuadrantes). Luego se calcula la densidad de puntos de cada cuadrante dividiendo el número de puntos que contiene por su área. Los cuadrantes pueden tener muchas formas, como hexágonos o triángulos.</p>
 				<img src="https://i.pinimg.com/originals/ba/51/24/ba512499e1033a26fea8a96b2a4a5d79.png"
 					width="300">
 			</section>
@@ -3467,22 +3457,12 @@ ax.legend()
 
 			<section>
 				<h3>DBScan</h3>
-				<p>DBSCAN is a density-based clustering method, which means that points that are closely packed
-					together
-					are assigned into the
-					same cluster and given the same ID. The DBSCAN algorithm has two parameters, which the user
-					needs to
-					specify:</p>
+				<p>DBSCAN es un método de agrupamiento basado en densidad: los puntos que están muy juntos se asignan al mismo clúster y reciben el mismo identificador. El algoritmo DBSCAN tiene dos parámetros que el usuario debe especificar:</p>
 				<lu>
-					<li>ε —The maximal distance between points to be considered within the same cluster</li>
-					<li>minPts —The minimal number of points required to form a cluster</li>
+					<li>ε: distancia máxima entre puntos para considerarlos dentro del mismo clúster</li>
+					<li>minPts: número mínimo de puntos requerido para formar un clúster</li>
 				</lu>
-				<p>In short, all groups of at least minPts points, where each point is within ε or less from at
-					least
-					one other point in the
-					group, are considered to be separate clusters and assigned with unique IDs. All other points are
-					considered “noise”
-					and are not assigned with an ID.</p>
+				<p>En resumen, todos los grupos de al menos minPts puntos, en los que cada punto está a una distancia ε o menor de al menos otro punto del grupo, se consideran clústeres separados y reciben identificadores únicos. Todos los demás puntos se consideran «ruido» y no reciben identificador.</p>
 			</section>
 
 			<section>
@@ -3916,13 +3896,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>GLM de Poisson</h3>
-				<p>A Poisson distribution is a discrete probability distribution, meaning that it gives the
-					probability
-					of a discrete
-					(i.e., countable) outcome. For Poisson distributions, the discrete outcome is the number of
-					times an
-					event occurs,
-					represented by $k$. You can use a Poisson distribution if:</p>
+				<p>La distribución de Poisson es una distribución de probabilidad discreta, es decir, da la probabilidad de un resultado discreto (contable). En la distribución de Poisson, el resultado discreto es el número de veces que ocurre un evento, representado por $k$. Se puede usar una distribución de Poisson si:</p>
 				<ul>
 					<li>Individual events happen at random and independently. That is, the probability of one event
 						doesn’t affect the probability
@@ -4039,21 +4013,14 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Choropleth maps</h1>
-				<p>Choropleth maps are thematic maps in which areas are rendered according to the
-					values of the variable displayed</p>
+				<p>Los mapas de coropletas son mapas temáticos en los que las áreas se representan según los valores de la variable mostrada</p>
 
-				<p>Cloropleth maps are used to obtain a graphical perspective of the spatial
-					distribution of the values of a specific variable across the study area.</p>
-				<p>There are two main categories of variables displayed in
-					choropleth maps:</p>
+				<p>Los mapas de coropletas se usan para obtener una perspectiva gráfica de la distribución espacial de los valores de una variable en el área de estudio.</p>
+				<p>Hay dos categorías principales de variables que se muestran en los mapas de coropletas:</p>
 				<ul>
-					<li><strong>Spatially extensive variables:</strong> each polygon is rendered based on a
-						measured value that holds for the entire polygon. <strong>Ej. </strong>total population</li>
+					<li><strong>Variables espacialmente extensivas:</strong> cada polígono se representa con un valor medido que vale para todo el polígono. <strong>Ej. </strong>población total</li>
 					</br>
-					<li><strong>Spatially intensive variables: </strong>the values of the variable are adjusted for
-						the
-						area or some other
-						variable. <strong>Ej.</strong> population density</li>
+					<li><strong>Variables espacialmente intensivas: </strong>los valores de la variable se ajustan por el área o por otra variable. <strong>Ej.</strong> densidad de población</li>
 				</ul>
 			</section>
 
@@ -4194,57 +4161,40 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Spatial dependence</h3>
-				<p>Formal property that measures the degree to which near and distant things are related</p>
-				<p>Refers to systematic spatial changes that are observed as clusters of similar values or a
-					systematic
-					spatial
-					pattern.</p>
+				<p>Propiedad formal que mide el grado en que las cosas cercanas y distantes están relacionadas</p>
+				<p>Se refiere a cambios espaciales sistemáticos que se observan como agrupamientos de valores similares o como un patrón espacial sistemático.</p>
 			</section>
 
 			<section>
 				<h3>Spatial heterogeneity</h3>
-				<p>Spatial heterogeneity refers to structural relationships that change with the location of the
-					object.
-					These changes can be abrupt (e.g. countryside–town) or continuous.</p>
-				<p>Spatial heterogeneity refers to the uneven distribution of a trait, event, or
-					relationship across a region</p>
+				<p>La heterogeneidad espacial se refiere a relaciones estructurales que cambian con la ubicación del objeto. Estos cambios pueden ser abruptos (por ejemplo, campo y ciudad) o continuos.</p>
+				<p>La heterogeneidad espacial se refiere a la distribución desigual de un rasgo, un evento o una relación en una región</p>
 			</section>
 
 			<section>
 				<h1>Spatial weight matrix (W)</h1>
-				<p>Spatial weights are numbers that reflect some sort of distance, time or cost
-					between a target spatial object and every other object in the dataset or
-					specified neighborhood. Spatial weights quantify the spatial or spatiotemporal
-					relationships among the spatial features of a neighborhood.</p>
+				<p>Los pesos espaciales son números que reflejan algún tipo de distancia, tiempo o costo entre un objeto espacial de interés y cada uno de los demás objetos del conjunto de datos o de un vecindario definido. Los pesos espaciales cuantifican las relaciones espaciales o espaciotemporales entre los elementos de un vecindario.</p>
 				<img src="https://4.bp.blogspot.com/-9DjqtTXrno0/XErTomq2ofI/AAAAAAAACIY/qO9iqrv2SMEb2pw_tazpQCS-cY8JgTTnwCLcBGAs/s400/W.jpg"
 					width="600">
 			</section>
 
 			<section>
 				<h3>Neighborhood</h3>
-				<p>Neighborhood in the spatial analysis context is a geographically localized area
-					to which local spatial analysis and statistics are applied based on the hypothesis
-					that objects within the neighborhood are likely to interact more than those
-					outside it.</p>
+				<p>En el contexto del análisis espacial, el vecindario es un área geográficamente localizada a la que se aplican el análisis y la estadística espacial local, bajo la hipótesis de que los objetos dentro del vecindario probablemente interactúan más entre sí que con los de afuera.</p>
 				<ul>
 					<li><strong>Neighbours by contiguity:</strong> areas that share common boundaries</li>
-					<li><strong>neighbours by distance:</strong> areas will be defined as neighbours if they are
-						within
-						a specified radius</li>
+					<li><strong>vecinos por distancia:</strong> las áreas se definen como vecinas si están dentro de un radio especificado</li>
 				</ul>
 			</section>
 
 			<section>
 				<h1>Spatial Relationships</h1>
 				<h3>Adjacency (Contiguity)</h3>
-				<p>Adjacency can be thought of as the nominal, or binary, equivalent of distance.
-					Two spatial entities are either adjacent or they are not.</p>
+				<p>La adyacencia puede verse como el equivalente nominal, o binario, de la distancia. Dos entidades espaciales son adyacentes o no lo son.</p>
 			</section>
 
 			<section>
-				<p>Contiguity among features means the features have common borders. We have three types of
-					contiguity:
-				</p>
+				<p>La contigüidad entre elementos significa que tienen bordes en común. Hay tres tipos de contigüidad:</p>
 				<ul>
 					<li><strong>Rook Contiguity:</strong> the features share common edges</li>
 					<li><strong>Bishop Contiguity:</strong> the features share common vertices (corners)</li>
@@ -4291,11 +4241,8 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Standarized Spatial Weights</h1>
-				<p>Row standardization is recommended when there is a potential bias in the
-					distribution of spatial objects and their attribute values due to poorly designed
-					sampling procedures.</p>
-				<p>Row standardization should also be used when polygon features refer to
-					administrative boundaries or any type of man-made zones.</p>
+				<p>La estandarización por filas se recomienda cuando hay un posible sesgo en la distribución de los objetos espaciales y de sus atributos debido a procedimientos de muestreo mal diseñados.</p>
+				<p>La estandarización por filas también debe usarse cuando los polígonos corresponden a límites administrativos o a cualquier tipo de zona definida por el ser humano.</p>
 			</section>
 
 			<section>
@@ -4305,8 +4252,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Spatial lag</h1>
-				<p><strong>Spatial lag</strong>is when the dependent variable y in place i is affected by the
-					independent variables in both place i and j.</p>
+				<p><strong>Rezago espacial</strong>: ocurre cuando la variable dependiente y en el lugar i se ve afectada por las variables independientes tanto en el lugar i como en el j.</p>
 				<img src="https://i.pinimg.com/564x/6f/f4/fd/6ff4fd1ca6e10d272de5577a24501710.jpg" width="500">
 				<img src="https://i.pinimg.com/564x/64/64/0f/64640f9ad261567706f9cec72a6d7f50.jpg" width="200">
 			</section>
@@ -4323,25 +4269,18 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Global indicator of Spatial Association (GISA)</h1>
-				<p>The measures (test statistics) related to the existence of spatial autocorrelation in data, that
-					is,
-					focusing on whether there is any spatial autocorrelation
-					in the data</p>
+				<p>Las medidas (estadísticos de prueba) relacionadas con la existencia de autocorrelación espacial en los datos, es decir, que se enfocan en determinar si hay alguna autocorrelación espacial</p>
 			</section>
 
 			<section>
 				<h3>Indice de Moran</h3>
-				<p>The positive value of global
-					Moran implies the existence of a positive autocorrelation, and conversely,
-					the negative value implies the existence of a negative autocorrelation</p>
+				<p>Un valor positivo del índice global de Moran implica una autocorrelación positiva y, al contrario, un valor negativo implica una autocorrelación negativa</p>
 				<img src="https://i.ytimg.com/vi/_0Tzo1qbN-A/maxresdefault.jpg" width="600">
 
 			</section>
 
 			<section>
-				<p>If there is no relationship between Income and Income_lag, the slope will be close to flat
-					(resulting
-					in a Moran’s I value near 0).</p>
+				<p>Si no hay relación entre Income e Income_lag, la pendiente será casi plana (lo que da un valor de I de Moran cercano a 0).</p>
 				<img src="https://i.pinimg.com/originals/61/25/6a/61256acdeb275da4655a89ee5714514a.png" width="600">
 			</section>
 
@@ -4354,9 +4293,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Moran’s I at different lags</h3>
-				<p>Moran’s I at different spatial lags defined by a 50 km width annulus at 50 km distance
-					increments.
-					Red dots indicate Moran I values for which a P-value was 0.05 or less.</p>
+				<p>I de Moran en diferentes rezagos espaciales definidos por anillos de 50 km de ancho con incrementos de distancia de 50 km. Los puntos rojos indican los valores de I de Moran con un valor P de 0,05 o menor.</p>
 				<img src="https://mgimond.github.io/Spatial/img/MoranI_distance_band.png" width="800">
 			</section>
 
@@ -4377,9 +4314,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Local indicators of Spatial Association (LISA)</h1>
-				<p>A local statistic is any descriptive
-					statistic associated with a spatial data set whose value varies from place to
-					place.</p>
+				<p>Un estadístico local es cualquier estadístico descriptivo asociado a un conjunto de datos espaciales cuyo valor varía de un lugar a otro.</p>
 			</section>
 
 			<section>
@@ -4394,9 +4329,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Moran´s I scatter plot</h3>
-				<p>Red points and polygons highlight counties with high income values surrounded by high income
-					counties. Blue points and polygons highlight counties with low income values surrounded by low
-					income counties.</p>
+				<p>Los puntos y polígonos rojos resaltan los condados con ingresos altos rodeados por condados de ingresos altos. Los puntos y polígonos azules resaltan los condados con ingresos bajos rodeados por condados de ingresos bajos.</p>
 				<img src="https://i.pinimg.com/originals/fb/68/87/fb6887bd0043548f947f73d471c8fd03.png" width="400">
 				<img src="https://i.pinimg.com/originals/dd/b9/51/ddb9510a501c9d153c9663e86f32d7f0.png" width="300">
 			</section>
@@ -4456,16 +4389,11 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 				<h3>Ordinary least squares regression (OLS)</h3>
 				<p><strong>Assumptions</strong></p>
 				<ul>
-					<li><strong>Linear relationship</strong> between the dependent and independent variables</li>
-					<li><strong>Multivariate normality</strong>: the residual of the linear model should be normally
-						distributed</li>
-					<li><strong>No multicolinearity</strong> between independent variables, i.e. they should not
-						correlate between each other</li>
-					<li><strong>Homoscedasticity</strong>: the errors/residuals should have constant variance (no
-						trends)</li>
-					<li><strong>No autocorrelation</strong>: residuals (errors) in the model shoul not be
-						correlqated in
-						any way</li>
+					<li><strong>Relación lineal</strong> entre las variables dependiente e independientes</li>
+					<li><strong>Normalidad multivariada</strong>: los residuos del modelo lineal deben tener distribución normal</li>
+					<li><strong>Ausencia de multicolinealidad</strong> entre las variables independientes, es decir, no deben estar correlacionadas entre sí</li>
+					<li><strong>Homocedasticidad</strong>: los errores o residuos deben tener varianza constante (sin tendencias)</li>
+					<li><strong>Ausencia de autocorrelación</strong>: los residuos (errores) del modelo no deben estar correlacionados de ninguna forma</li>
 				</ul>
 			</section>
 
@@ -4586,12 +4514,7 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 				<p>\[\mu_j = iid, N(0,\sigma_0^2)\]</p>
 				<p>\[\epsilon_{ij} = iid, N(0,\sigma^2)\]</p>
-				<p>where $Y_{ij}$ is the dependent variable for individual $i$ in group $j$, $X_1$ is an independent
-					variable,
-					$β_0$ is the overall intercept, $β_1$ is the coefficient for the independent variable, $μ_j$ is
-					the
-					random effect for group $j$,
-					and $ε_{ij}$ is the residual error term for individual $i$ in group $j$.</p>
+				<p>donde $Y_{ij}$ es la variable dependiente del individuo $i$ en el grupo $j$, $X_1$ es una variable independiente, $β_0$ es el intercepto general, $β_1$ es el coeficiente de la variable independiente, $μ_j$ es el efecto aleatorio del grupo $j$ y $ε_{ij}$ es el término de error residual del individuo $i$ en el grupo $j$.</p>
 				<p>\[
 					Cov(Y_{ij},Y_{ji}) = \mu_j\ = \sigma_0^2
 					\]</p>
@@ -4638,58 +4561,24 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 				<h3>Geographycally Weighted Regresion (GWR)</h3>
 				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 (u_i,v_i) + \sum_{k=1}^{m}\hat{\beta}_k
 					(u_i,v_i) X_{ik} +\hat{\epsilon}_i$</div>
-				<p>where $(ui, vi)$ are the spatial coordinates of the observations $i$, and $β_k (ui, vi)$ are the
-					coefficients estimated
-					at those locations.</p>
-				<p>Thus, in contrast to global LRMs, GWR conducts local regression at a series of locations to
-					estimate
-					local coefficients (the geographical part of GWR), using observations weighted by their
-					distances to
-					the location at
-					the center of the moving window/kernel (the weighted part).</p>
+				<p>donde $(ui, vi)$ son las coordenadas espaciales de las observaciones $i$, y $β_k (ui, vi)$ son los coeficientes estimados en esas ubicaciones.</p>
+				<p>Así, a diferencia de los modelos de regresión lineal globales, la GWR realiza regresiones locales en una serie de ubicaciones para estimar coeficientes locales (la parte geográfica de la GWR), usando observaciones ponderadas por su distancia a la ubicación central de la ventana móvil o kernel (la parte ponderada).</p>
 			</section>
 
 			<section>
 				<h3>Parameters</h3>
-				<p><strong>Bandwidth</strong> is the distance band or number of neighbors used for each local
-					regression
-					equation and is perhaps the most important parameter to consider for Geographically Weighted
-					Regression, as it controls the degree of smoothing in the model.</p>
-				<p>It can be based on either <strong>Number of Neighbors</strong> or <strong>Distance Band</strong>.
-					When Number of Neighbors is used, the neighborhood size is a function of a specified number of
-					neighbors, which allows neighborhoods to be smaller where features are dense and larger where
-					features are sparse. When Distance Band is used, the neighborhood size remains constant for each
-					feature in the study area, resulting in more features per neighborhood where features are dense
-					and
-					fewer per neighborhood where they are sparse.</p>
+				<p>El <strong>ancho de banda</strong> es la banda de distancia o el número de vecinos que se usa en cada ecuación de regresión local, y es quizás el parámetro más importante de la regresión geográficamente ponderada, porque controla el grado de suavizado del modelo.</p>
+				<p>Puede basarse en un <strong>número de vecinos</strong> o en una <strong>banda de distancia</strong>. Con un número de vecinos, el tamaño del vecindario depende del número de vecinos especificado, lo que permite vecindarios más pequeños donde los elementos son densos y más grandes donde son escasos. Con una banda de distancia, el tamaño del vecindario es constante para cada elemento del área de estudio, de modo que hay más elementos por vecindario donde son densos y menos donde son escasos.</p>
 			</section>
 
 			<section>
 				<h3>Parameters</h3>
-				<p>The power of GWR is that it applies a geographical weighting to the features used in each of the
-					local regression equations. Features that are farther away from the regression point are given
-					less
-					weight and thus have less influence on the regression results for the target feature; features
-					that
-					are closer have more weight in the regression equation. The weights are determined using a
-					kernel,
-					which is a distance decay function that determines how quickly weights decrease as distances
-					increase. The Geographically Weighted Regression tool provides two kernel options in the Local
-					Weighting Scheme parameter, Gaussian and Bisquare.</p>
+				<p>La fortaleza de la GWR es que aplica una ponderación geográfica a los elementos usados en cada ecuación de regresión local. Los elementos más alejados del punto de regresión reciben menos peso y, por lo tanto, influyen menos en los resultados para el elemento de interés; los más cercanos reciben más peso. Los pesos se determinan con un kernel, una función de decaimiento con la distancia que define qué tan rápido disminuyen los pesos al aumentar la distancia. La herramienta de regresión geográficamente ponderada ofrece dos opciones de kernel en el parámetro de esquema de ponderación local: gaussiano y bicuadrado.</p>
 			</section>
 
 			<section>
 				<h3>Single bandwidth</h3>
-				<p>a single bandwidth is used in GWR under the assumption that the response-to-predictor
-					relationships
-					operate
-					over the same scales for all of the variables contained in the model. This may be unrealistic
-					because some
-					relationships can operate at larger scales and others at smaller ones. A standard GWR will
-					nullify
-					these
-					differences and find a “best-on-average” scale of relationship non-stationarity (geographical
-					variation)</p>
+				<p>en la GWR se usa un solo ancho de banda bajo el supuesto de que las relaciones entre la respuesta y los predictores operan a la misma escala para todas las variables del modelo. Esto puede ser poco realista, porque algunas relaciones pueden operar a escalas mayores y otras a escalas menores. Una GWR estándar anula estas diferencias y encuentra una escala «óptima en promedio» de la no estacionariedad (variación geográfica) de las relaciones</p>
 			</section>
 
 			<section>
@@ -4743,38 +4632,24 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>SAR</h3>
-				<p>SAR models account for spatial dependence by including a spatial lag of the dependent variable,
-					error
-					term or exogenous variables. Essentially, they add an autoregressive component that takes into
-					account
-					the weighted average of neighboring values. SAR models are typically specified in the form:</p>
+				<p>Los modelos SAR incorporan la dependencia espacial incluyendo un rezago espacial de la variable dependiente, del término de error o de las variables exógenas. En esencia, agregan un componente autorregresivo que considera el promedio ponderado de los valores vecinos. Los modelos SAR suelen especificarse de la forma:</p>
 				<p> $y = \rho Wy + X\beta + \epsilon$</p>
 				<li>$y$ (n x 1) is the dependent variable vector.</li>
-				<li>$ρ$ is the spatial autoregressive coefficient, which quantifies the strength of spatial
-					dependence.
-				</li>
-				<li>$W$ (n×n) is the spatial weights matrix, representing the spatial structure or neighboring
-					relationships.</li>
+				<li>$ρ$ es el coeficiente autorregresivo espacial, que cuantifica la intensidad de la dependencia espacial.</li>
+				<li>$W$ (n×n) es la matriz de pesos espaciales, que representa la estructura espacial o las relaciones de vecindad.</li>
 				<li>$Xβ$ (covariates) represents the effects of explanatory variables.</li>
 				<li>$ϵ$ is the error term.</li>
 			</section>
 
 			<section>
 				<h3>Joint Distribution in SAR</h3>
-				<p>The SAR model’s joint distribution of the spatial effects y is derived directly from this
-					equation:
-				</p>
+				<p>La distribución conjunta de los efectos espaciales y del modelo SAR se deriva directamente de esta ecuación:</p>
 				<p>$y=(I−ρW)^{−1}(Xβ+ϵ)$</p>
-				<li>The term $(I - \rho W)^{-1}$ is a global transformation applied to all values simultaneously.
-					This
-					means that every location's value $y_i$ depends, to some degree,
-					on all other values $y_j$ in the dataset, as specified by $W$.</li>
+				<li>El término $(I - \rho W)^{-1}$ es una transformación global que se aplica a todos los valores simultáneamente. Esto significa que el valor $y_i$ de cada ubicación depende, en algún grado, de todos los demás valores $y_j$ del conjunto de datos, según lo especifica $W$.</li>
 				<li>The inverse operation $(I - \rho W)^{-1}$ implies a dense covariance structure because each
 					location
 					indirectly affects every other location.</li>
-				<p>SAR uses a single, global equation involving W to directly specify the joint distribution across
-					all
-					locations.</p>
+				<p>El SAR usa una sola ecuación global con W para especificar directamente la distribución conjunta en todas las ubicaciones.</p>
 			</section>
 
 			<section>
@@ -4790,16 +4665,8 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>SAR</h3>
-				<p>SAR is formulated as a global process, where the spatial relationships affect the entire dataset
-					simultaneously.
-					The SAR model requires matrix inversion, which can be computationally challenging for large
-					datasets.</p>
-				<p>SAR Models interpret the spatial effects by including a lag term of the dependent variable,
-					capturing
-					how the value at one location is influenced by the values of all its
-					neighbors. This kind of specification is more aligned with the concept of <strong>spatial
-						spillover</strong>, meaning that the outcome in one region directly influences the outcomes
-					in neighboring regions.</p>
+				<p>El SAR se formula como un proceso global, en el que las relaciones espaciales afectan simultáneamente a todo el conjunto de datos. El modelo SAR requiere invertir una matriz, lo que puede ser computacionalmente exigente con conjuntos de datos grandes.</p>
+				<p>Los modelos SAR interpretan los efectos espaciales incluyendo un término de rezago de la variable dependiente, que captura cómo el valor en una ubicación está influido por los valores de todos sus vecinos. Este tipo de especificación se asocia más con el concepto de <strong>desbordamiento espacial</strong> (<em>spillover</em>): el resultado en una región influye directamente en los resultados de las regiones vecinas.</p>
 			</section>
 
 			<section>
@@ -4821,32 +4688,17 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>CAR</h3>
-				<p>CAR models are based on a conditional specification of the dependent variable. Unlike SAR, the
-					CAR
-					model is defined using the conditional
-					distribution of a particular value, given the values of its neighbors. CAR models are generally
-					written in the form:</p>
+				<p>Los modelos CAR se basan en una especificación condicional de la variable dependiente. A diferencia del SAR, el modelo CAR se define con la distribución condicional de un valor dado los valores de sus vecinos. Los modelos CAR suelen escribirse de la forma:</p>
 				<p>$y_i=X_iβ+y_i∣y_{-i}+ϵ_i$</p>
 				<p>$y_i∣y_{-i} ∼N(∑_jϕ_{ij}y_j,τ^2)$</p>
-				<li>$y_i∣y_{-i}$ is the conditional distribution at location i, given the values at all other
-					locations.
-				</li>
-				<li>$ϕ_{ij}$ is the relationship between neighboring units, often based on the spatial weights
-					matrix.
-				</li>
+				<li>$y_i∣y_{-i}$ es la distribución condicional en la ubicación i, dados los valores en todas las demás ubicaciones.</li>
+				<li>$ϕ_{ij}$ es la relación entre unidades vecinas, generalmente basada en la matriz de pesos espaciales.</li>
 				<li>$τ^2$ is the conditional variance.</li>
 			</section>
 
 			<section>
 				<h3>CAR</h3>
-				<p>CAR is formulated using local conditional distributions. This approach leads to a specification
-					where
-					the model conditions on neighboring units,
-					making CAR easier to interpret in a local spatial context. The precision matrix (inverse of the
-					covariance matrix) in a CAR model has a sparse structure,
-					which often makes CAR models more computationally efficient, especially for large spatial
-					datasets.
-				</p>
+				<p>El CAR se formula con distribuciones condicionales locales. Esto lleva a una especificación en la que el modelo se condiciona a las unidades vecinas, lo que hace al CAR más fácil de interpretar en un contexto espacial local. La matriz de precisión (inversa de la matriz de covarianza) de un modelo CAR es dispersa, lo que suele hacer a los modelos CAR más eficientes computacionalmente, en especial con conjuntos de datos espaciales grandes.</p>
 			</section>
 
 			<section>
@@ -4887,84 +4739,49 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Conditional probability</h3>
-				<p>A conditional probability is a probability that measures the probability of one event given
-					another
-					event. Intuitively, it is just a proportion of event
-					A’s probability under the occurrence of event B’s.</p>
+				<p>Una probabilidad condicional mide la probabilidad de un evento dado otro evento. Intuitivamente, es la proporción de la probabilidad del evento A cuando ocurre el evento B.</p>
 				<img src="https://i.pinimg.com/736x/09/a5/94/09a59412719c64a4550ac4447b0759b0.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Joint probability</h3>
-				<p>A joint probability is a probability that calculates probabilities (or likelihoods) of two events
-					that co-occur.</p>
+				<p>Una probabilidad conjunta calcula la probabilidad (o verosimilitud) de que dos eventos ocurran simultáneamente.</p>
 				<img src="https://i.pinimg.com/736x/07/e1/09/07e1092f3e46cd0f6129acfd726d5b9d.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Marginal probability</h3>
-				<p>A marginal probability is a probability of a single event occurring. When a single event occurs
-					with
-					other events, we can decompose it by joint probability with each event. </p>
+				<p>Una probabilidad marginal es la probabilidad de que ocurra un solo evento. Cuando ese evento ocurre junto con otros, se puede descomponer mediante la probabilidad conjunta con cada uno de ellos.</p>
 				<img src="https://i.pinimg.com/736x/bc/b4/af/bcb4af5565fc46f1eb067675c0b7e390.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Joint Distribution in CAR</h3>
-				<p>In the CAR model, although we don’t specify the joint distribution directly, we can derive it
-					from
-					the set of conditional distributions using properties of
-					Markov Random Fields.</p>
-				<p>The resulting joint distribution for $u$ in a CAR model is represented by a precision matrix
-					(inverse
-					of the covariance matrix), which is sparse. This sparse
-					structure means that only neighboring locations have direct dependencies, unlike SAR’s dense
-					structure.</p>
-				<p>Mathematically, the joint distribution of $u$ in a CAR model can be expressed as:</p>
+				<p>En el modelo CAR, aunque no se especifica directamente la distribución conjunta, esta se puede derivar del conjunto de distribuciones condicionales usando las propiedades de los campos aleatorios de Markov.</p>
+				<p>La distribución conjunta resultante para $u$ en un modelo CAR se representa con una matriz de precisión (inversa de la matriz de covarianza) dispersa. Esta estructura dispersa significa que solo las ubicaciones vecinas tienen dependencias directas, a diferencia de la estructura densa del SAR.</p>
+				<p>Matemáticamente, la distribución conjunta de $u$ en un modelo CAR puede expresarse como:</p>
 				<p>$P(u) \propto \exp \left( -\frac{1}{2} u^T Q u \right)$</p>
-				<li>Q is the precision matrix, also known as the inverse of the covariance matrix.</li>
+				<li>Q es la matriz de precisión, es decir, la inversa de la matriz de covarianza.</li>
 			</section>
 
 			<section>
 				<h3>Intrinsic CAR models (ICAR)</h3>
-				<p>In ICAR models, the precision matrix Q is often singular (non-invertible), which means that the
-					joint
-					distribution does not have a unique covariance matrix.
-					This results in non-identifiability of the random effects in an absolute sense.</p>
-				<p>To make the model identifiable, ICAR models typically impose a constraint on the spatial random
-					effects, such as a sum-to-zero constraint (e.g., $\sum u_i = 0$).
-					This allows for relative spatial effects, where the values are interpreted relative to the mean
-					of
-					the spatial region rather than as absolute values.</p>
-				<p>Locally Dependent Structure: In ICAR, the random effect at each location depends only on the
-					neighboring locations, not on any fixed “global” effect.
-					This is why ICAR models are often preferred for applications that require purely local
-					dependencies.
-				</p>
+				<p>En los modelos ICAR, la matriz de precisión Q suele ser singular (no invertible), de modo que la distribución conjunta no tiene una matriz de covarianza única. Esto hace que los efectos aleatorios no sean identificables en sentido absoluto.</p>
+				<p>Para que el modelo sea identificable, los modelos ICAR suelen imponer una restricción a los efectos aleatorios espaciales, como que sumen cero (por ejemplo, $\sum u_i = 0$). Esto permite efectos espaciales relativos, en los que los valores se interpretan respecto a la media de la región y no como valores absolutos.</p>
+				<p>Estructura de dependencia local: en el ICAR, el efecto aleatorio en cada ubicación depende solo de las ubicaciones vecinas y no de un efecto «global» fijo. Por eso los modelos ICAR suelen preferirse en aplicaciones que requieren dependencias puramente locales.</p>
 			</section>
 
 			<section>
 				<h3>Leroux CAR</h3>
-				<p>Flexible Precision Matrix: The Leroux CAR model has a precision matrix that can be adjusted to
-					avoid
-					singularity, making it possible to estimate a proper covariance structure.</p>
-				<p>Mixing Parameter: A parameter $\lambda$ (often called the spatial dependence parameter) controls
-					the
-					strength of spatial dependence: (i) If $\lambda = 1$, the model behaves like an
-					ICAR model, with strong spatial dependence. (ii) If $\lambda = 0$, the model assumes
-					independence
-					across locations. (iii) For values between 0 and 1, the model interpolates
-					between independence and spatial dependence, allowing for partial spatial smoothing.</p>
-				<p>Proper Priors: By adjusting $\lambda$, the Leroux CAR can provide a proper (non-singular) prior
-					distribution, which can help in avoiding identifiability issues and allows the covariance
-					structure to be better specified.</p>
+				<p>Matriz de precisión flexible: el modelo CAR de Leroux tiene una matriz de precisión que puede ajustarse para evitar la singularidad, lo que permite estimar una estructura de covarianza propia.</p>
+				<p>Parámetro de mezcla: un parámetro $\lambda$ (a menudo llamado parámetro de dependencia espacial) controla la intensidad de la dependencia espacial: (i) si $\lambda = 1$, el modelo se comporta como un ICAR, con fuerte dependencia espacial; (ii) si $\lambda = 0$, el modelo supone independencia entre ubicaciones; (iii) para valores entre 0 y 1, el modelo interpola entre la independencia y la dependencia espacial, con un suavizado espacial parcial.</p>
+				<p>Distribuciones previas propias: al ajustar $\lambda$, el CAR de Leroux puede dar una distribución previa propia (no singular), lo que ayuda a evitar problemas de identificabilidad y permite especificar mejor la estructura de covarianza.</p>
 				<li>$Qλ=λQ+(1−λ)I$</li>
 			</section>
 
 			<section>
 				<h3>Besag-York-Mollié (BYM) Model</h3>
-				<p>This model combines ICAR for spatial effects and unstructured random effects, allowing for both
-					spatially structured and unstructured variability.</p>
+				<p>Este modelo combina un ICAR para los efectos espaciales con efectos aleatorios no estructurados, lo que permite representar tanto la variabilidad espacialmente estructurada como la no estructurada.</p>
 			</section>
 
 			<section>
@@ -5025,36 +4842,21 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h2>Geostatistics</h2>
-				<p>The type of spatial statistical analysis dealing with
-					continuous field variables is named “geostatistics”</p>
+				<p>El tipo de análisis estadístico espacial que trata variables de campos continuos se llama «geoestadística»</p>
 
-				<p> Geostatistics focus on the description of the spatial variation in a set of observed values and
-					on
-					their prediction at unsampled
-					locations</p>
+				<p>La geoestadística se enfoca en describir la variación espacial de un conjunto de valores observados y en predecirlos en ubicaciones no muestreadas</p>
 			</section>
 
 			<section>
 				<h1>Spatial interpolation</h1>
-				<p>techniques used with points that represent samples of a continuous field are interpolation
-					methods
-				</p>
-				<p>Here, our point data represents sampled observations of an entity that can be measured anywhere
-					within our study area</p>
-				<p>There are many interpolation tools available, but these tools can usually be grouped into two
-					categories: <strong>deterministic</strong> and interpolation methods</p>
+				<p>las técnicas que se usan con puntos que representan muestras de un campo continuo son los métodos de interpolación</p>
+				<p>Aquí, los puntos representan observaciones muestreadas de una entidad que se puede medir en cualquier lugar del área de estudio</p>
+				<p>Hay muchas herramientas de interpolación disponibles, pero suelen agruparse en dos categorías: métodos <strong>determinísticos</strong> y de interpolación</p>
 			</section>
 
 			<section>
 				<h3>Proximity interpolation</h3>
-				<p> It was introduced by Alfred H. Thiessen more than a century ago. The goal is simple: Assign to
-					all
-					unsampled locations the value of the closest sampled location. This generates a tessellated
-					surface
-					whereby lines that split the midpoint between each sampled location are connected thus enclosing
-					an
-					area.
-					Each area ends up enclosing a sample point whose value it inherits.</p>
+				<p>Fue introducido por Alfred H. Thiessen hace más de un siglo. El objetivo es simple: asignar a cada ubicación no muestreada el valor de la ubicación muestreada más cercana. Esto genera una superficie teselada en la que se conectan las líneas que dividen el punto medio entre cada par de ubicaciones muestreadas, encerrando un área. Cada área termina encerrando un punto de muestreo, cuyo valor hereda.</p>
 				<img src="https://i.pinimg.com/originals/41/eb/4a/41eb4a6c4059901b1bf571b148e63284.png"
 					width="800">
 			</section>
@@ -5086,30 +4888,18 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Kriging</h3>
-				<p>Several forms of kriging interpolators exist: ordinary, universal and simple just to name a few.
-					This
-					section will focus on ordinary kriging (OK) interpolation. This form of kriging usually involves
-					four steps:</p>
+				<p>Existen varias formas de kriging: ordinario, universal y simple, por nombrar algunas. Esta sección se enfoca en el kriging ordinario (OK), que suele implicar cuatro pasos:</p>
 				<ul>
-					<li>Removing any spatial trend in the data</li>
-					<li>Computing the experimental variogram, $γ$ , which is a measure of spatial autocorrelation.
-					</li>
-					<li>Defining an experimental variogram model that best characterizes the spatial autocorrelation
-						in
-						the data.</li>
-					<li>Interpolating the surface using the experimental variogram.</li>
-					<li>Adding the kriged interpolated surface to the trend interpolated surface to produce the
-						final
-						output.</li>
+					<li>Remover cualquier tendencia espacial de los datos</li>
+					<li>Calcular el variograma experimental, $γ$, que es una medida de la autocorrelación espacial.</li>
+					<li>Definir el modelo de variograma que mejor caracterice la autocorrelación espacial de los datos.</li>
+					<li>Interpolar la superficie usando el variograma experimental.</li>
+					<li>Sumar la superficie interpolada por kriging a la superficie de tendencia para obtener el resultado final.</li>
 				</ul>
 			</section>
 
 			<section>
-				<p> We are interested in how these attribute values vary as the distance
-					between location point pairs increases. We can compute the difference, $γ$, in values by
-					squaring
-					their
-					differences then dividing by 2.</p>
+				<p>Nos interesa cómo varían los valores del atributo a medida que aumenta la distancia entre pares de puntos. La diferencia, $γ$, se calcula elevando al cuadrado las diferencias de valores y dividiendo por 2.</p>
 				<img src="https://i.pinimg.com/originals/93/b5/21/93b5217a5c08d315d15842ad6041a8d7.png"
 					width="1000">
 				$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
@@ -5173,22 +4963,15 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Spatial Gaussian process (SGP)</h3>
-				<p>A spatial Gaussian process (SGP) refers to a stochastic process frequently employed to model data
-					exhibiting spatial, temporal, or spatiotemporal dependence. A common
-					approach to modeling process $Y(s)$ is by utilizing a spatial linear mixed effects model:</p>
+				<p>Un proceso gaussiano espacial (SGP) es un proceso estocástico que se usa con frecuencia para modelar datos con dependencia espacial, temporal o espaciotemporal. Una forma común de modelar el proceso $Y(s)$ es mediante un modelo lineal espacial de efectos mixtos:</p>
 				<p>$Y(s)=\mu(s)+w(s)+\epsilon(s)$</p>
-				<p>the residual component can be decomposed into two parts: a spatial component ($w(s)$) and a
-					unstructured component ($\epsilon(s)$) $iid$. The spatial component can be
-					modeled as a stationary spatial Gaussian process with zero mean and a covariance function
-					$w(s)~SGP(0,\sum)$.</p>
+				<p>el componente residual se puede descomponer en dos partes: un componente espacial ($w(s)$) y un componente no estructurado ($\epsilon(s)$) $iid$. El componente espacial se puede modelar como un proceso gaussiano espacial estacionario con media cero y función de covarianza $w(s)~SGP(0,\sum)$.</p>
 
 			</section>
 
 			<section>
 				<h3>Distribución Gaussiana multivariada</h3>
-				<p>Multivariate Gaussian distribution is the joint probability of Gaussian distribution with more
-					than
-					two dimensions. It has the probability density function below.</p>
+				<p>La distribución gaussiana multivariada es la probabilidad conjunta de una distribución gaussiana con más de dos dimensiones. Su función de densidad de probabilidad es la siguiente.</p>
 				<img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*ype37VGh84MlQCmnUOK-WA.png"
 					width="500">
 				<img src="https://i.pinimg.com/736x/af/01/16/af011676c68ca665dbb30e00bc740d94.jpg" width="500">

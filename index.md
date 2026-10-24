@@ -53,7 +53,7 @@ M7-504
 [Taller Geovisualización en R](Notebooks/R/1_Visualizacion.Rmd) 
 [Taller Patrones de puntos en R](Notebooks/R/2_pointPattern.Rmd)  
 
-Lecture: [Spatial point pattern analysis and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
+Lectura: [Spatial point pattern analysis and its application in geographical epidemiology](https://fenix.ciencias.ulisboa.pt/downloadFile/281612415665591/point_epidemology.pdf)  
 
 ## Lattice data analysis (Object-based model)
 
