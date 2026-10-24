@@ -1,0 +1,49 @@
+# Book settings
+# Learn more at https://jupyterbook.org/customize/config.html
+
+title: Análisis Geoespacial
+author: Edier V. Aristizábal G.
+email: evaristizabalg@unal.edu.co
+copyright: "2024" 
+logo: logo.png
+
+# Force re-execution of notebooks on each build.
+# See https://jupyterbook.org/content/execute.html
+execute:
+  execute_notebooks: "off"
+  timeout: 300
+
+# Legacy/draft sources superseded by their .ipynb equivalents, not part of the TOC
+exclude_patterns:
+  - CAR.Rmd
+  - Kriging.Rmd
+
+# Define the name of the latex output file for PDF builds
+latex:
+  latex_documents:
+    targetname: book.tex
+
+# Add a bibtex file so that we can create citations
+bibtex_bibfiles:
+  - 100_references.bib
+
+# Information about where the book exists on the web
+repository:
+  url: https://github.com/edieraristizabal/AnalisisGeoespacial  # Online location of your book
+  path_to_book: libro  # Optional path to your book, relative to the repository root
+  branch: main  # Which branch of the repository should be used when creating links (optional)
+
+# Add GitHub buttons to your book
+# See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
+html:
+  baseurl: https://edieraristizabal.github.io/AnalisisGeoespacial/libro/
+  use_issues_button: true
+  use_repository_button: true
+
+
+sphinx:
+  config:
+    nb_custom_formats:
+        .Rmd:
+            - jupytext.reads
+            - fmt: Rmd

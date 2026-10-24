@@ -1,0 +1,58 @@
+# Construye la página del curso (Jekyll) y el libro (Jupyter Book) y publica ambos en gh-pages.
+#   https://edieraristizabal.github.io/AnalisisGeoespacial/        -> página del curso (index.md)
+#   https://edieraristizabal.github.io/AnalisisGeoespacial/html/   -> diapositivas Reveal.js
+#   https://edieraristizabal.github.io/AnalisisGeoespacial/libro/  -> libro
+# Nunca se edita gh-pages a mano: todo se hace en main.
+# Los notebooks NO se ejecutan aquí: el libro usa las salidas guardadas en ellos.
+name: Publicar sitio y libro
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Construir página del curso (Jekyll)
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./
+          destination: ./_site
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: libro/requirements.txt
+
+      - name: Instalar Jupyter Book
+        run: pip install -r libro/requirements.txt
+
+      - name: Construir libro
+        run: jupyter-book build libro
+
+      - name: Unir libro y página
+        run: |
+          sudo mkdir -p _site/libro
+          sudo cp -r libro/_build/html/. _site/libro/
+          sudo touch _site/.nojekyll
+
+      - name: Publicar en gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages
+          force_orphan: true
+          commit_message: "Publicar sitio y libro"

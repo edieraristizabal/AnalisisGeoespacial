@@ -1,0 +1,35 @@
+# Table of contents
+
+format: jb-book
+root: intro
+parts:
+- caption: "Parte I: Intro"
+  chapters:
+    - file: 00_Ambiente
+    - file: 00_Data
+    - file: 01_DatosEspaciales
+    - file: 02_Mapping
+- caption: "Parte II: Puntos"
+  chapters:
+    - file: 03_PointPattern
+- caption: "Parte III: Áreas"
+  chapters:
+    - file: 04_GLMPhyton
+    - file: 06_Coropleta
+    - file: 07_MatrizCorrelacion
+    - file: 08_ClusterEspacial
+    - file: 09_SpatialRegression
+    - file: 10_SAR
+    - file: 11_CAR
+    - file: 12_Jerarquicos
+    - file: 12_CARJerarquicos
+    - file: 13_MGWR
+- caption: "Parte IV: Superficies"
+  chapters:
+    - file: 14_Kriging
+    - file: 15_GP
+    - file: 16_GP
+    - file: 17_LGCP
+    - file: 18_GPBoost
+    - file: 18_DB
+

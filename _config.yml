@@ -1,1 +1,17 @@
 theme: jekyll-theme-minimal
+
+# El sitio vive en /AnalisisGeoespacial: sin esto el CSS y el logo del tema no cargan
+url: https://edieraristizabal.github.io
+baseurl: /AnalisisGeoespacial
+
+# El libro (libro/) se construye aparte con Jupyter Book en el GitHub Action
+exclude:
+  - libro
+  - build
+  - CLAUDE.md
+  - "*.tex"
+  - .github
+  - .claude
+  - html/plugin/menu/README.md
+  - html/plugin/menu/CONTRIBUTING.md
+  - html/node_modules

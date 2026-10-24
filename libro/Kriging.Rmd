@@ -1,0 +1,181 @@
+<p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://r-spatial.org/python/12-Interpolation.html">Spatial Data Science</a>. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p>
+
+# Kriging con R
+
+```{r}
+librerias <- c("sp",
+               "gstat",
+               "scales"
+               )
+
+for (pkg in librerias)
+  {
+  if (!(pkg %in% installed.packages()))
+      install.packages(pkg, repos = "http://cran.r-project.org")
+ 
+  library(pkg, character.only = TRUE)
+}
+```
+
+
+```{r}
+data(meuse)
+class(meuse)
+str(meuse)
+```
+
+```{r}
+coordinates(meuse) <- ~ x + y
+class(meuse)
+```
+
+```{r}
+meuse %>% coordinates %>% head
+```
+
+```{r}
+meuse %>% bbox
+```
+
+```{r}
+meuse_df <- cbind( attr(meuse, "data"), meuse@coords) # just coerce to df
+```
+
+```{r}
+meuse %>% as.data.frame %>% 
+  ggplot(aes(x, y)) + geom_point(aes(size=zinc), color="blue", alpha=3/4) + 
+  ggtitle("Zinc Concentration (ppm)") + coord_equal() + theme_bw()
+```
+
+```{r}
+data(meuse.grid)
+summary(meuse.grid)
+meuse.grid %>% str
+meuse.grid %>% class
+meuse.grid %>% as.data.frame %>% 
+  ggplot(aes(x, y)) + geom_point(size=1) + coord_equal()
+```
+
+```{r}
+meuse %>% as.data.frame %>% 
+  ggplot(aes(x, y)) + geom_point(size=1) + coord_equal()
+```
+
+```{r}
+coordinates(meuse.grid) = ~x+y
+gridded(meuse.grid) = TRUE
+meuse.grid %>% class
+```
+
+```{r}
+meuse.grid %>% as.data.frame %>%
+  ggplot(aes(x, y)) + geom_tile(aes(fill=dist)) + 
+  scale_fill_gradient(low = "red", high="yellow") + coord_equal() + theme_bw() + 
+  ggtitle("Distance to River")
+```
+
+```{r}
+zinc.idw <- idw(zinc~1, meuse, meuse.grid)
+```
+
+```{r}
+zinc.idw %>% as.data.frame %>% 
+  ggplot(aes(x=x, y=y, fill=var1.pred)) + geom_tile() + theme_bw() + 
+  coord_equal() + scale_fill_gradient(low = "red", high="yellow") + 
+  ggtitle("zinc inverse distance weighted interpolations") + 
+  scale_x_continuous(labels=comma) + scale_y_continuous(labels=comma) 
+```
+
+### Semivariograma
+
+```{r}
+# inspect variation of log(zinc) by distance (i.e., from the river)
+lzn.vgm <- variogram(log(zinc)~1, meuse) # calculates sample variogram values
+
+plot(lzn.vgm, plot.numbers = TRUE, xlab = "distance h [m]",
+     ylab = expression(gamma(h)),
+     xlim = c(0, 1.055 * max(lzn.vgm$dist)))
+```
+
+```{r}
+v0 <- variogram(log(zinc)~1, meuse, cutoff = 3000, width = 2000)
+
+plot(v0, plot.numbers = TRUE, xlab = "distance h [m]",
+     ylab = expression(gamma(h)),
+     xlim = c(0, 1.055 * max(v0$dist)))
+```
+
+```{r}
+lzn.fit <- fit.variogram(lzn.vgm, model=vgm(1, "Exp", 900, 1)) # fit model
+plot(lzn.vgm, lzn.fit) # plot the sample values, along with the fit model
+```
+
+```{r}
+lzn.vgm
+```
+
+La primera columna, `np`, indica cuántos pares de puntos estaban dentro de la distancia "dist" (si esos números parecen muchos, recuerda que aunque meuse solo tiene 155 filas, hay 155 \* 154 / 2 = 11,935 pares de puntos; ve la gráfica anterior con los puntos representados). Si graficamos este objeto en sí mismo, solo obtenemos el variograma de muestra, sin ningún ajuste (¡inténtalo!).
+
+Para realizar un ajuste, llamamos a la función `fit.variogram` y le pasamos dos parámetros: un objeto variograma y un modelo al que queremos ajustar los datos. Con el modelo especificado, la función encontrará los parámetros óptimos (en algún sentido) para que ese modelo se ajuste a los datos.
+
+Pero puede que no nos guste ese modelo. Así que podríamos intentar ver cómo varía el log(zinc) con la raíz cuadrada de la distancia. Esta vez, probaremos un modelo exponencial. Por lo demás, todo es prácticamente lo mismo que antes:
+
+```{r}
+# inspect variation of log(zinc) by square root of distance 
+lznr.vgm <- variogram(log(zinc) ~ sqrt(dist), meuse)
+lznr.fit <- fit.variogram(lznr.vgm, model=vgm(1, "Exp", 300, 1))
+plot(lznr.vgm, lznr.fit)
+```
+
+## Kriging
+
+```{r}
+lzn.kriged <- krige(log(zinc) ~ 1, meuse, meuse.grid, model=lzn.fit)
+```
+
+```{r}
+# kriging results in ggplot
+lzn.kriged %>% as.data.frame %>% 
+  ggplot(aes(x=x, y=y)) + geom_tile(aes(fill=var1.pred)) + 
+  coord_equal() + scale_fill_gradient(low = "red", high="yellow") + 
+  scale_x_continuous(labels=comma) + scale_y_continuous(labels=comma) + 
+  theme_bw() 
+```
+
+### Simulación condicionada
+
+```{r}
+lzn.condsim <- krige(log(zinc)~1, meuse, meuse.grid, model=lzn.fit, 
+                     nmax=30, nsim=4)
+```
+
+```{r}
+lzn.condsim %>% as.data.frame %>% 
+  gather(sim, value, sim1:sim4) %>% 
+  ggplot(aes(x=x, y=y)) + geom_tile(aes(fill=value)) + 
+  facet_grid(.~sim) + coord_fixed(ratio = 1) + 
+  scale_x_continuous(labels=comma) + scale_y_continuous(labels=comma) + 
+  scale_fill_gradient(low = "red", high="yellow") + 
+  ggtitle("Conditional simulations") + theme_bw()
+
+```
+
+## Universal kriging
+
+```{r}
+vr <- variogram(log(zinc)~dist, meuse)
+vr.m <- fit.variogram(vr, vgm(1, "Exp", 50000, 1))
+plot(vr, vr.m, plot.numbers = TRUE)
+```
+
+```{r}
+kr <- krige(log(zinc)~dist, meuse, meuse.grid, model=vr.m)
+```
+
+```{r}
+kr %>% as.data.frame %>% 
+  ggplot(aes(x=x, y=y)) + geom_tile(aes(fill=var1.pred)) + 
+  coord_equal() + scale_fill_gradient(low = "red", high="yellow") + 
+  scale_x_continuous(labels=comma) + scale_y_continuous(labels=comma) + 
+  theme_bw() 
+```

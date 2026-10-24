@@ -1,0 +1,6 @@
+To update your online book:
+on the main branch of your repository, re-build your book with:
+
+jupyter-book build "G:/My Drive/CATEDRA/ANALISISGEOESPACIAL/Libro_AnalisisGeoespacial/"
+
+

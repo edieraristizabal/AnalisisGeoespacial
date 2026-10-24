@@ -1,0 +1,598 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Modelos Multinivel
+
+```{r}
+#### Set up a square lattice region
+x.easting <- 1:10
+x.northing <- 1:10
+Grid <- expand.grid(x.easting, x.northing)
+K <- nrow(Grid)
+```
+
+```{r}
+#### set up distance and neighbourhood (W, based on sharing a common border) matrices
+distance <- as.matrix(dist(Grid))
+W <-array(0, c(K,K))
+W[distance==1] <-1 
+```
+
+```{r}
+#### Generate the number of individuals per area and which individuals to which areas
+n <- sample(5:30, K, replace=TRUE)
+n.total <- sum(n)
+ind.area.temp <- rep(1:K, n)
+ind.area <- sample(ind.area.temp, n.total, replace=FALSE)
+```
+
+```{r}
+#### Generate the covariates and response data
+x1 <- rnorm(n.total)
+x2 <- rnorm(n.total)
+phi <- mvrnorm(n=1, mu=rep(0,K), Sigma=0.4 * exp(-0.1 * distance))
+phi.extend <- phi[ind.area]
+logit <- x1 + x2 + phi.extend
+prob <- exp(logit) / (1 + exp(logit))
+trials <- rep(50,n.total)
+Y <- rbinom(n=n.total, size=trials, prob=prob)
+```
+
+```{r}
+#### Run the model
+formula <- Y ~ x1 + x2
+
+#### Toy example for checking
+model <- S.CARmultilevel(formula=formula, family="binomial", ind.area=ind.area,
+                trials=trials, W=W, burnin=10, n.sample=50)
+
+model
+```
+
+```{r}
+#### Set up a square lattice region
+x.easting <- 1:10
+x.northing <- 1:10
+Grid <- expand.grid(x.easting, x.northing)
+K <- nrow(Grid)
+
+#### set up distance and neighbourhood (W, based on sharing a common border) matrices
+distance <- as.matrix(dist(Grid))
+W <-array(0, c(K,K))
+W[distance==1] <-1 	
+	
+#### Generate the covariates and response data
+x1 <- rnorm(K)
+x2 <- rnorm(K)
+theta <- rnorm(K, sd=0.05)
+phi <- mvrnorm(n=1, mu=rep(0,K), Sigma=0.4 * exp(-0.1 * distance))
+logit <- x1 + x2 + theta + phi
+prob <- exp(logit) / (1 + exp(logit))
+trials <- rep(50,K)
+Y <- rbinom(n=K, size=trials, prob=prob)
+
+
+#### Run the BYM model
+formula <- Y ~ x1 + x2
+## Not run: model <- S.CARbym(formula=formula, family="binomial", trials=trials,
+#W=W, burnin=20000, n.sample=100000)
+## End(Not run)
+
+#### Toy example for checking
+model <- S.CARbym(formula=formula, family="binomial", trials=trials,
+W=W, burnin=20, n.sample=50)
+
+model
+```
+
+## Datos areales con INLA (Markov)
+
+Para ilustrar cómo se ajustan los modelos espaciales con INLA, se utilizará el conjunto de datos de leucemia de Nueva York. Éste ha sido ampliamente analizado en la literatura (ver, por ejemplo, Waller y Gotway, 2004) y está disponible en el paquete `DClusterm`. El conjunto de datos registra una serie de casos de leucemia en el norte del estado de Nueva York a nivel de distrito censal. Algunas de las variables en el conjunto de datos son:
+
+-   **Casos:** Número de casos de leucemia en el período 1978-1982.
+-   **POP8:** Población en 1980.
+-   **PCTOWNHOME:** Proporción de personas que son propietarias de su vivienda.
+-   **PCTAGE65P:** Proporción de personas de 65 años o más.
+-   **AVGIDIST:** Distancia inversa promedio al sitio de tricloroetileno (TCE) más cercano.
+
+Tenga en cuenta que el interés se centra en la exposición al TCE, utilizando AVGIDIST como un indicador de exposición. Las variables PCTOWNHOME y PCTAGE65P actuarán como posibles factores de confusión que deben incluirse en el modelo. Sin embargo, no lo haremos aquí porque queremos probar cómo los efectos espaciales latentes capturan la variación espacial residual.
+
+El conjunto de datos se puede cargar de la siguiente manera:
+
+```{r}
+library(spdep)
+library(DClusterm)
+data(NY8)
+```
+
+Dado que el interés se centra en estudiar el riesgo de leucemia en el norte del estado de Nueva York, primero se calcula el número esperado de casos. Esto se hace calculando la tasa de mortalidad general (total de casos dividido por la población total) y multiplicándola por la población:
+
+```{r}
+rate <- sum(NY8$Cases) / sum(NY8$POP8)
+NY8$Expected <- NY8$POP8 * rate
+```
+
+Una vez que se obtiene el número esperado de casos, se puede obtener una estimación aproximada del riesgo con la razón de mortalidad estandarizada (SMR), que se calcula como el número de casos observados dividido por el número de casos esperados.
+
+```{r}
+NY8$SMR <- NY8$Cases / NY8$Expected
+```
+
+En epidemiología, es importante producir mapas para mostrar la distribución espacial del riesgo relativo. En este ejemplo, nos centraremos en la ciudad de Syracuse para reducir el tiempo de cómputo necesario para producir el mapa. Por lo tanto, creamos un índice con las áreas de la ciudad de Syracuse:
+
+```{r}
+# Subset Syracuse city
+syracuse <- which(NY8$AREANAME == "Syracuse city")
+```
+
+Un mapa de enfermedades se puede crear simplemente con la función `spplot` (del paquete `sp`):
+
+```{r}
+library(viridis)
+spplot(NY8[syracuse, ], "SMR", #at = c(0.6, 0.9801, 1.055, 1.087, 1.125, 13),
+   col.regions = rev(magma(16))) #gray.colors(16, 0.9, 0.4))
+```
+
+### Modelos mixtos lineales
+
+El primer modelo que consideraremos es un modelo Gausiano sin efectos aleatorios latentes, ya que proporcionará una línea base para comparar con otros modelos. Para ajustar el modelo con INLA, se utiliza la función `inla`:
+
+```{r}
+library(INLA)
+
+```
+
+```{r}
+m1 <- inla(Cases ~ 1 + AVGIDIST,
+   data = as.data.frame(NY8),
+   family = "Gaussian",verbose=T,
+   E = NY8$Expected, control.predictor = list(compute = TRUE),
+   control.compute = list(dic = TRUE, waic = TRUE))
+
+summary(m1)
+NY8$FIXED.EFF <- m1$summary.fitted[, "mean"]
+```
+
+### Regresión con efectos aleatorios
+
+Se pueden agregar efectos aleatorios latentes al modelo para tener en cuenta la sobredispersión incluyendo efectos aleatorios Gaussianos i.i.d. en el predictor lineal. Para ajustar el modelo con INLA, primero se crea un índice para identificar los efectos aleatorios (ID). Los efectos aleatorios latentes se especifican con la función `f` en INLA:
+
+```{r}
+NY8$ID <- 1:nrow(NY8)
+m2 <- inla(Cases ~ 1 + AVGIDIST + f(ID, model = "iid"),
+  data = as.data.frame(NY8), family = "Gaussian", 
+  E = NY8$Expected,
+  control.predictor = list(compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE))
+
+summary(m2)
+NY8$IID.EFF <- m2$summary.fitted[, "mean"]
+```
+
+```{r}
+spplot(NY8[syracuse, ], c("SMR", "FIXED.EFF", "IID.EFF"),
+  col.regions = rev(magma(16)))
+```
+
+### Modelos espaciales para datos tipo poligonos
+
+Los datos discretos (lattice o poligonos regulares o irregulares) involucran datos medidos en diferentes áreas, por ejemplo, vecindarios, ciudades, provincias, estados, etc. La dependencia espacial aparece porque las áreas vecinas mostrarán valores similares de la variable de interés.
+
+Tenemos observaciones $y = {y_i}_{i=1}^n$ donde n es el número de áreas. A y se le asigna una distribución multivariante que tiene en cuenta la dependencia espacial. Una forma común de describir la proximidad espacial en datos discretos es mediante una matriz de adyacencia W. El elemento $W_{i,j}$ es distinto de cero si las áreas i y j son vecinas. Por lo general, dos áreas son vecinas si comparten un límite común.
+
+La matriz de adyacencia se puede calcular utilizando la función `poly2nb` en el paquete `spdep`. Esta función considerará dos áreas como vecinas si sus bordes se tocan al menos en un punto (es decir, adyacencia de "Queen"):
+
+```{r}
+NY8.nb <- poly2nb(NY8)
+```
+
+Esto devolverá un objeto `nb` con la definición de la estructura del vecindario.
+
+```{r}
+NY8.nb
+```
+
+Además, estos objetos creados con la función `nb` se pueden visualizar gráficamente cuando se conoce información adicional sobre las áreas, como la ubicación de su centro.
+
+```{r}
+plot(NY8) 
+plot(NY8.nb, coordinates(NY8), add = TRUE, pch = ".", col = "gray")
+```
+
+### Modelos de Regresión
+
+A menudo, además de $y_i$, tenemos una serie de covariables $X_i$. Por lo tanto, es posible que deseemos regresionar $y_i$ en $X_i$. Además de las covariables, es posible que queramos tener en cuenta la estructura espacial de los datos. Se pueden utilizar diferentes tipos de modelos de regresión para modelar datos de celosía:
+
+-   Modelos Lineales Generalizados (con efectos aleatorios espaciales)
+-   Modelos de econometría espacial
+-   Modelos Lineales Mixtos
+
+Un enfoque común (para datos Gaussianos) es usar una regresión lineal con efectos aleatorios:
+
+$Y = Xβ + Zu + ε$
+
+El vector de efectos aleatorios $u$ se modela como una distribución Normal multivariante:
+
+$u ∼ N(0, σ_u^2 Σ)$
+
+$Σ$ se define de manera que induzca una mayor correlación con las áreas adyacentes. Z es una matriz de diseño para los efectos aleatorios y $ε_i ∼ N(0, σ^2)$, i = 1, ..., n es un término de error.
+
+Los Modelos Lineales Mixtos Generalizados se pueden definir de manera similar utilizando una probabilidad diferente y vinculando el parámetro apropiado al predictor lineal.
+
+Hay muchas formas diferentes de incluir la dependencia espacial en $Σ$:
+
+-   Autoregresivo simultáneo (SAR):
+
+$Σ^{-1} = [(I - ρW)' (I - ρW)]$
+
+-   Autoregresivo condicional (CAR):
+
+$Σ^{-1} = (I - ρW)$
+
+-   CAR intrínseco (ICAR):
+
+$Σ^{-1} = diag(n_i) - W$
+
+$n_i$ es el número de vecinos del área i. $Σ_{i,j}$ depende de una función de d(i,j). Por ejemplo:
+
+$Σ_{i,j} = exp{-d(i,j) / φ}$
+
+-   "Mezcla" de matrices (modelo de Leroux et al.):
+
+$Σ = [(1 - λ)I_n + λM]^{-1}; λ ∈ (0,1)$
+
+M es la precisión de la especificación ICAR
+
+Las especificaciones CAR e ICAR se han propuesto dentro del campo de la Estadística, mientras que la especificación SAR se acuñó dentro de la Econometría Espacial. Independientemente de su origen, todas las especificaciones aquí presentadas pueden considerarse efectos latentes Gaussianos con una matriz de precisión particular.
+
+### Modelo ICAR
+
+El primer ejemplo se basará en la especificación ICAR. Tenga en cuenta que el efecto latente espacial se define usando la función f. Esto requerirá un índice para identificar los efectos aleatorios en cada área, el tipo de modelo y la matriz de adyacencia. Para ello, se utilizará una matriz dispersa.
+
+```{r}
+# Create sparse adjacency matrix
+NY8.mat <- as(nb2mat(NY8.nb, style = "B"), "Matrix")
+# Fit model
+m.icar <- inla(Cases ~ 1 +  AVGIDIST + 
+    f(ID, model = "besag", graph = NY8.mat),
+  data = as.data.frame(NY8), E = NY8$Expected, family ="Gaussian",
+  control.predictor = list(compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE))
+
+summary(m.icar)
+NY8$ICAR <- m.icar$summary.fitted.values[, "mean"]
+
+```
+
+### Modelo BYM (Besag, York y Mollié)
+
+El modelo de Besag, York y Mollié incluye dos efectos aleatorios latentes: un efecto latente ICAR y un efecto latente Gaussiano i.i.d. No es necesario definir estos dos efectos latentes si se establece el argumento `model` como "bym" cuando se define el efecto aleatorio latente con la función `f`.
+
+```{r}
+m.bym = inla(Cases ~ 1 +  AVGIDIST + 
+    f(ID, model = "bym", graph = NY8.mat),
+  data = as.data.frame(NY8), E = NY8$Expected, family ="Gaussian",
+  control.predictor = list(compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE))
+
+summary(m.bym)
+NY8$BYM <- m.bym$summary.fitted.values[, "mean"]
+```
+
+### Modelo de Leroux et al.
+
+Este modelo se define utilizando una "mezcla" de matrices (modelo de Leroux et al.) para definir la matriz de precisión del efecto latente. Este modelo se implementa utilizando el efecto latente `generic1`, que utiliza la siguiente matriz de precisión:
+
+$Σ^{-1} = 1 / τ (I_n - ρ * λ_max * C); ρ ∈ [0,1)$
+
+En esta ecuación, C es una matriz y λ_max su autovalor máximo.
+
+Para definir el modelo correcto, debemos tomar la matriz C de la siguiente manera:
+
+$C = I_n - M; M = diag(n_i) - W$
+
+Entonces, λ_max = 1 y:
+
+$Σ^{-1} = 1 / τ (I_n - ρ * λ_max * C) = 1 / τ (I_n - ρ * (I_n - M)) = 1 / τ ((1 - ρ)I_n + ρM)$
+
+Para ajustar el modelo, el primer paso es crear la matriz M.
+
+```{r}
+ICARmatrix <- Diagonal(nrow(NY8.mat), apply(NY8.mat, 1, sum)) - NY8.mat
+Cmatrix <- Diagonal(nrow(NY8), 1) -  ICARmatrix
+```
+
+El modelo se ajusta como de costumbre con la función `inla`. Tenga en cuenta que la matriz C se pasa a la función `f` usando el argumento `Cmatrix`:
+
+```{r}
+m.ler = inla(Cases ~ 1 +  AVGIDIST +
+    f(ID, model = "generic1", Cmatrix = Cmatrix),
+  data = as.data.frame(NY8), E = NY8$Expected, family ="Gaussian",
+  control.predictor = list(compute = TRUE),
+  control.compute = list(dic = TRUE, waic = TRUE))
+summary(m.ler)
+NY8$LEROUX <- m.ler$summary.fitted.values[, "mean"]
+
+```
+
+### Spatial Lag Model (SLM)
+
+Este modelo incluye covariables y un proceso autoregresivo en la respuesta. R-INLA incluye un efecto latente experimental llamado `slm` para ajustar el siguiente modelo:
+
+$x = (In - ρW)^{-1} (Xβ + e)$
+
+Los elementos del modelo son:
+
+-   W: Matriz de adyacencia estandarizada por filas.
+-   ρ: Parámetro de autocorrelación espacial.
+-   X: Matriz de covariables, con coeficientes β.
+-   e: Errores i.i.d. Gaussianos con varianza σ\^2.
+
+El efecto latente `slm` es experimental y se puede combinar con otros efectos en el predictor lineal. Para definir un modelo con el efecto latente `slm` se necesitan los siguientes elementos:
+
+-   **X:** Matriz de covariables. Esta matriz contiene los valores de las variables explicativas para cada unidad muestral.
+-   **W:** Matriz de adyacencia estandarizada por filas. Esta matriz describe la estructura espacial del modelo. Un elemento `W_ij` distinto de cero indica que las unidades muestrales `i` y `j` son vecinas, y su valor refleja la fuerza de la vecindad. La estandarización por filas garantiza que la suma de cada fila sea igual a 1.
+-   **Q:** Matriz de precisión de los coeficientes β. Esta matriz define la varianza previa de los coeficientes estimados para las variables explicativas en el modelo.
+-   **Rango de ρ:** Rango del parámetro de autocorrelación espacial `ρ`. Este parámetro controla la fuerza de la dependencia espacial en el modelo. A menudo, el rango de `ρ` se define en base a los autovalores de la matriz de adyacencia `W`.
+
+```{r}
+#X
+mmatrix <- model.matrix(Cases ~ 1 + AVGIDIST, NY8)
+
+#W
+W <- as(nb2mat(NY8.nb, style = "W"), "Matrix")
+
+#Q
+Q.beta = Diagonal(n = ncol(mmatrix), x = 0.001)
+
+#Range of rho
+rho.min<- -1
+rho.max<- 1
+```
+
+Los argumentos del efecto latente `slm` se pasan a través del argumento `args.sm`. En este caso, hemos creado una lista con el mismo nombre para mantener juntos todos los valores requeridos:
+
+```{r}
+#Arguments for 'slm'
+args.slm = list(
+   rho.min = rho.min ,
+   rho.max = rho.max,
+   W = W,
+   X = mmatrix,
+   Q.beta = Q.beta
+)
+```
+
+Además, se deben establecer las funciones a priori para el parámetro de precisión τ y el parámetro de autocorrelación espacial ρ:
+
+```{r}
+#Prior on rho
+hyper.slm = list(
+   prec = list(
+      prior = "loggamma", param = c(0.01, 0.01)),
+      rho = list(initial=0, prior = "logitbeta", param = c(1,1))
+)
+```
+
+La definición de la función a priori utiliza una lista con nombre y diferentes argumentos. El argumento `prior` define la distribución a priori que se usará, y el argumento `param` define los parámetros de dicha distribución.
+
+En este caso:
+
+-   Se asigna una función a priori gamma a la precisión, con parámetros 0.01 y 0.01.
+-   Se asigna una función a priori beta al parámetro de autocorrelación espacial, con parámetros 1 y 1. Esto es equivalente a una distribución uniforme en el intervalo (1, 1).
+
+```{r}
+#SLM model
+m.slm <- inla( Cases ~ -1 +
+     f(ID, model = "slm", args.slm = args.slm, hyper = hyper.slm),
+   data = as.data.frame(NY8), family = "Gaussian",
+   E = NY8$Expected,
+   control.predictor = list(compute = TRUE),
+   control.compute = list(dic = TRUE, waic = TRUE)
+)
+
+summary(m.slm)
+NY8$SLM <- m.slm$summary.fitted.values[, "mean"]
+
+```
+
+Los valores estimados de los coeficientes aparecen como parte de los efectos aleatorios.
+
+```{r}
+round(m.slm$summary.random$ID[47:48,], 4)
+
+```
+
+La autocorrelación espacial se informa en la escala interna (es decir, entre 0 y 1) y necesita ser reescalada.
+
+```{r}
+marg.rho.internal <- m.slm$marginals.hyperpar[["Rho for ID"]]
+marg.rho <- inla.tmarginal( function(x) {
+  rho.min + x * (rho.max - rho.min)
+}, marg.rho.internal)
+
+inla.zmarginal(marg.rho, FALSE)
+```
+
+```{r}
+plot(marg.rho, type = "l", main = "Spatial autocorrelation")
+
+```
+
+### Resultados
+
+```{r}
+spplot(NY8[syracuse, ], 
+  c("FIXED.EFF", "IID.EFF", "ICAR", "BYM", "LEROUX", "SLM"),
+  col.regions = rev(magma(16))
+)
+```
+
+## Modelos espaciales con spaMM
+
+### Modelo no espacial
+
+A continuación se presenta un ejemplo donde incluso si hay un patrón espacial en los datos, esto no significa que deban usarse modelos de regresión espacial. En algunos casos, los patrones espaciales en la variable respuesta son generados por patrones espaciales presentes en las covariables, como el gradiente de temperatura, la elevación, etc. Una vez que tomamos en cuenta el efecto de estas covariables, los patrones espaciales en la variable respuesta desaparecen.
+
+```{r}
+# load libraries
+library(tidyverse)
+library(gridExtra)
+library(NLMR)
+library(DHARMa)
+
+# simulate a random temperature gradient
+temp <- nlm_distancegradient(ncol = 100, nrow = 100, origin = c(1,10,1,10), rescale = TRUE)
+
+# extract the temperature values at 100 random points
+dat <- data.frame(x = runif(100,0,100), y = runif(100,0,100))
+dat$temperature <- raster::extract(temp, dat)
+
+# simulate tree height
+dat$height <- 20 + 35 * dat$temperature + rnorm(100)
+
+# plot spatial pattern in tree height
+ggplot(dat, aes(x = x, y = y, size = height)) +
+  geom_point() +
+  scale_size_continuous(range = c(1,10))
+```
+
+```{r}
+# fit a non-spatial model
+m_non <- lm(height ~ temperature, dat)
+```
+
+```{r}
+# formal test
+sims <- simulateResiduals(m_non)
+testSpatialAutocorrelation(sims, x = dat$x, y = dat$y, plot = FALSE)
+```
+
+### Modelo espacial
+
+```{r}
+library(geoR)
+library(viridis)
+data(ca20)
+# put this in a data frame
+dat <- data.frame(x = ca20$coords[,1], y = ca20$coords[,2], calcium = ca20$data, elevation = ca20$covariate[,1], region = factor(ca20$covariate[,2]))
+
+# plot the data
+ggplot(dat, aes(x=x, y = y, color =calcium, shape = region)) +
+  geom_point() +
+  scale_color_viridis(option = "A")
+```
+
+```{r}
+# fit a no-spatial model
+m_lm <- lm(calcium ~ elevation + region, dat)
+# test for spatial autocorrelation
+sims <- simulateResiduals(m_lm)
+testSpatialAutocorrelation(sims, dat$x, dat$y, plot = FALSE)
+```
+
+```{r}
+library(spaMM)
+# fit the model
+m_spamm <- fitme(calcium ~ elevation + region + Matern(1 | x + y), data = dat, family = "gaussian") # this take a bit of time
+# model summary
+summary(m_spamm)
+```
+
+Hay dos salidas principales de interés aquí: la primera son los **efectos fijos (beta)**, que son los parámetros de regresión estimados (pendientes). Luego, el parámetro de correlación **nu** y **rho** que representan la fuerza y la velocidad de decaimiento del efecto espacial. Podemos convertir esto en el efecto de correlación espacial real al graficar la correlación estimada entre dos ubicaciones en función de su distancia.
+
+Aquí desglosamos un poco más la terminología:
+
+-   **Efectos fijos (beta):** En este contexto, los efectos fijos se refieren a los coeficientes estimados en la regresión lineal. Representan el cambio promedio en la variable respuesta por unidad de cambio en una variable predictora, suponiendo que todas las demás variables permanecen constantes.
+-   **Parámetro de correlación nu (nu):** Nu es un parámetro que controla la fuerza de la autocorrelación espacial. Un valor de nu cercano a 1 indica una autocorrelación espacial fuerte, mientras que un valor cercano a 0 indica una autocorrelación espacial débil o inexistente.
+-   **Parámetro de correlación rho (rho):** Rho es otro parámetro que controla la autocorrelación espacial, pero también afecta la velocidad a la que la correlación decae con la distancia. Un valor de rho positivo indica una autocorrelación espacial positiva (ubicaciones cercanas tienen valores similares), mientras que un valor negativo indica una autocorrelación espacial negativa (ubicaciones cercanas tienen valores diferentes). El valor absoluto de rho determina la rapidez con que la correlación decae con la distancia. Un valor cercano a 1 indica un decaimiento lento, mientras que un valor cercano a 0 indica un decaimiento rápido.
+
+En resumen, el análisis proporciona información sobre la relación entre las variables predictoras y la variable respuesta, teniendo en cuenta la autocorrelación espacial. Los efectos fijos (beta) indican la fuerza de las relaciones lineales, mientras que los parámetros nu y rho cuantifican la autocorrelación espacial y su decaimiento con la distancia. Para visualizar completamente el efecto de correlación espacial, se recomienda graficar la correlación estimada entre dos ubicaciones en función de su distancia.
+
+```{r}
+dd <- dist(dat[,c("x","y")])
+mm <- MaternCorr(dd, nu = 0.43, rho = 0.01)
+plot(as.numeric(dd), as.numeric(mm), xlab = "Distance between pairs of location [in m]", ylab = "Estimated correlation")
+```
+
+```{r}
+sims <- simulateResiduals(m_spamm)
+plot(sims)
+```
+
+```{r}
+# the effect of elevation
+newdat <- expand.grid(x = 5000, y = 5200, elevation = seq(3, 7, length.out = 10), region = factor(1, levels = c(1:3)))
+
+newdat$calcium <- as.numeric(predict(m_spamm, newdat, re.form = NA)) # re.form = NA used to remove spatial effects
+newdat$calcium <- newdat$calcium + mean(c(0,fixef(m_spamm)[3:4])) # to remove region effect
+# get 95% confidence intervals around predictions
+newdat <- cbind(newdat, get_intervals(m_spamm, newdata = newdat, intervals = "fixefVar", re.form = NA) + mean(c(0,fixef(m_spamm)[3:4])))
+
+
+gg1 <- ggplot(dat, aes(x = elevation, y = calcium)) +
+  geom_point() +
+  geom_path(data = newdat) +
+  geom_ribbon(data = newdat, aes(ymin = fixefVar_0.025, ymax = fixefVar_0.975), alpha = 0.2)
+
+# now for region effect
+newdat <- data.frame(x = 5000, y = 5200, elevation = mean(dat$elevation), region = factor(1:3)) # averaging out elevation effect
+newdat$calcium <- as.numeric(predict(m_spamm, newdat, re.form = NA))
+# get 95% CI
+newdat <- cbind(newdat,get_intervals(m_spamm, newdata = newdat, intervals = "fixefVar", re.form = NA))
+
+gg2 <- ggplot(dat, aes(x = region, y = calcium)) +
+  geom_jitter() +
+  geom_point(data = newdat, color = "red", size = 2) +
+  geom_linerange(data = newdat, aes(ymin = fixefVar_0.025, ymax = fixefVar_0.975), color = "red")
+
+# plot together
+grid.arrange(gg1, gg2, ncol = 2)
+```
+
+Ahora podemos predecir el efecto de la elevación y la región sobre la variable respuesta, teniendo en cuenta los efectos espaciales.
+
+Esto significa que podemos utilizar el modelo de regresión espacial para estimar el impacto de la elevación y la región en la variable de respuesta, incluso después de considerar la autocorrelación espacial entre las mediciones. Al controlar los efectos espaciales, podemos aislar el efecto directo de la elevación y la región en la variable que estamos estudiando.
+
+```{r}
+library(fields)
+library(raster)
+# derive a DEM
+elev_m <- Tps(dat[,c("x","y")], dat$elevation)
+```
+
+```{r}
+r <- raster(xmn = 4950, xmx = 5970, ymn = 4800, ymx = 5720, resolution = 10)
+elev <- interpolate(r, elev_m)
+
+# for the region info use the limits given in ca20
+pp <- SpatialPolygons(list(Polygons(list(Polygon(ca20$reg1)), ID = "reg1"),Polygons(list(Polygon(ca20$reg2)), ID = "reg2"), Polygons(list(Polygon(ca20$reg3)), ID = "reg3")))
+region <- rasterize(pp, r)
+
+# predict at any location
+newdat <- expand.grid(x = seq(4960, 5960, length.out = 50), y = seq(4830, 5710, length.out = 50))
+newdat$elevation <- extract(elev, newdat[,1:2])
+newdat$region <- factor(extract(region, newdat[,1:2]))
+# remove NAs
+newdat <- na.omit(newdat)
+# predict
+newdat$calcium <- as.numeric(predict(m_spamm, newdat))
+
+(gg_spamm <- ggplot(newdat,aes(x=x, y=y, fill = calcium)) +
+  geom_raster() +
+  scale_fill_viridis())
+```
