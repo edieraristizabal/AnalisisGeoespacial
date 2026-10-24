@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on [UCLA](https://stats.oarc.ucla.edu/r/dae/poisson-regression/).
+**Créditos**: El contenido de este notebook se basa en [UCLA](https://stats.oarc.ucla.edu/r/dae/poisson-regression/).
 
 ```{r}
 library(spatstat)

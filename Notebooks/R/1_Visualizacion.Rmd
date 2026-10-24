@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**:
+**Créditos**:
 
 ```{r}
 library(remotes) # R Package Installation from Remote Repositories, Including 'GitHub'

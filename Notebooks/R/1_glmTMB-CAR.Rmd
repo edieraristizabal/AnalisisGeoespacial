@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-1-spamm-vs-glmmtmb/) by Lionel Hertzog
+**Créditos**: El contenido de este notebook se basa en [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-1-spamm-vs-glmmtmb/) de Lionel Hertzog
 
 # Spatial Generalised Linear Mixed Models for Areal Unit Data: glmTMB
 

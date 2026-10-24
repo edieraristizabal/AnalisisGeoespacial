@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on [Jim Clark](https://rpubs.com/jimclark/883880), [CARBayes](https://cran.r-project.org/web/packages/CARBayes/vignettes/CARBayes.pdf), and [CRAN](https://search.r-project.org/CRAN/refmans/CARBayes/html/00Index.html)
+**Créditos**: El contenido de este notebook se basa en [Jim Clark](https://rpubs.com/jimclark/883880), [CARBayes](https://cran.r-project.org/web/packages/CARBayes/vignettes/CARBayes.pdf), y [CRAN](https://search.r-project.org/CRAN/refmans/CARBayes/html/00Index.html)
 
 # Spatial Generalised Linear Mixed Models for Areal Unit Data: CARBayes
 

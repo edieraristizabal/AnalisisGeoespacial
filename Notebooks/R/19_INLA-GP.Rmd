@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-2-inla/) by Lionel Hertzog, and [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html)
+**Créditos**: El contenido de este notebook se basa en [datascience+](https://datascienceplus.com/spatial-regression-in-r-part-2-inla/) de Lionel Hertzog, y [Spatial Statistics for Data Science: Theory and Practice with R](https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html)
 
 ## Procesos Gaussianos con INLA
 

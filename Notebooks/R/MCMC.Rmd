@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on van Ravenzwaaij, Cassey & Brown (2018). A simple introduction to Markov Chain Monte-Carlo.
+**Créditos**: El contenido de este notebook se basa en van Ravenzwaaij, Cassey y Brown (2018). A simple introduction to Markov Chain Monte-Carlo.
 
 # --------------------------
 # PARÁMETROS DEL MODELO

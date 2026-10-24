@@ -1,6 +1,6 @@
 **CURSO**: Análisis Geoespacial, Departamento de Geociencias y Medio Ambiente, Universidad Nacional de Colombia - sede Medellín\
 **Profesor**: Edier Aristizábal ([evaristizabalg\@unal.edu.co](mailto:evaristizabalg@unal.edu.co){.email})\
-**Credits**: The content of this notebook is based on [Coding Club](https://codingclubuc3m.rbind.io/post/2019-11-05/) by Virgilio Gómez Rubio
+**Créditos**: El contenido de este notebook se basa en [Coding Club](https://codingclubuc3m.rbind.io/post/2019-11-05/) de Virgilio Gómez Rubio
 
 ## Datos areales con INLA (Markov)
 
