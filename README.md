@@ -8,3 +8,10 @@ El curso Análisis Geoespacial está orientado para estudiantes de posgrados que
 
 <p align="center"><img src="https://ars.els-cdn.com/content/image/1-s2.0-S0375674219304960-gr1.jpg" width="200"/></p>
 
+## Enlaces del curso
+
+- [Página del curso](https://edieraristizabal.github.io/AnalisisGeoespacial/)
+- [Presentación](https://edieraristizabal.github.io/AnalisisGeoespacial/html/AnalisisGeoespacial.html)
+- [Libro del curso](https://edieraristizabal.github.io/AnalisisGeoespacial/libro/)
+
+Prof. Edier V. Aristizábal G., Universidad Nacional de Colombia, sede Medellín. Página personal: [edieraristizabal.github.io](https://edieraristizabal.github.io/)
