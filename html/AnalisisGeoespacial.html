@@ -249,7 +249,8 @@
 
 		<section>
 			<h2>First Law of Geography</h2>
-			<p style="text-align: center; font-size: 40px;">«Todo está relacionado con todo lo demás, pero las cosas cercanas están más relacionadas que las distantes».</p>
+			<p style="text-align: center; font-size: 40px;">«Todo está relacionado con todo lo demás, pero las cosas
+				cercanas están más relacionadas que las distantes».</p>
 			<p style="text-align: right;"><small>Waldo R. Tobler (1970)</small></p>
 		</section>
 
@@ -459,8 +460,7 @@
 
 			<section>
 				<h2>PIP</h2>
-				<img src="https://i.pinimg.com/originals/b7/39/55/b73955885a1cf4c933d99d7c98be672f.png"
-					width="1000">
+				<img src="https://i.pinimg.com/originals/b7/39/55/b73955885a1cf4c933d99d7c98be672f.png" width="1000">
 			</section>
 
 			<section>
@@ -1222,7 +1222,8 @@
 				<h3>MAUP</h3>
 				<p>Existen dos tipos de sesgos en el MAUP:</p>
 				<img src="https://gdsl-ul.github.io/san/figs/ch1/maup.png" width="700">
-				<figcaption>Fuente: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a>, de Francisco Rowe y Dani Arribas-Bel (2022)</figcaption>
+				<figcaption>Fuente: <a href="https://gdsl-ul.github.io/san/">Spatial Modelling for Data Scientist</a>,
+					de Francisco Rowe y Dani Arribas-Bel (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1254,7 +1255,8 @@
 				<img src="https://mgimond.github.io/Spatial/img/unif_aggr.jpg" width="400">
 				<br>
 				<img src="https://mgimond.github.io/Spatial/img/irr_aggr.jpg" width="400">
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial Analysis</a>, de Manuel Gimond (2022)</figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/index.html">Intro to GIS and Spatial
+						Analysis</a>, de Manuel Gimond (2022)</figcaption>
 			</section>
 
 			<section>
@@ -1404,7 +1406,12 @@
 
 			<section>
 				<h3>Datum</h3>
-				<p>es alinear el geoide con la representación elipsoidal (o esférica) de la Tierra y proyectar los rasgos de la superficie terrestre sobre ese elipsoide o esfera. La alineación puede ser <strong>local</strong>, cuando la superficie del elipsoide se ajusta estrechamente al geoide en un lugar particular de la superficie terrestre, o <strong>geocéntrica</strong>, cuando el elipsoide se alinea con el centro de la Tierra.</p>
+				<p>es alinear el geoide con la representación elipsoidal (o esférica) de la Tierra y proyectar los
+					rasgos de la superficie terrestre sobre ese elipsoide o esfera. La alineación puede ser
+					<strong>local</strong>, cuando la superficie del elipsoide se ajusta estrechamente al geoide en un
+					lugar particular de la superficie terrestre, o <strong>geocéntrica</strong>, cuando el elipsoide se
+					alinea con el centro de la Tierra.
+				</p>
 				<img src="https://mgimond.github.io/Spatial/img/datum.png" width="600">
 			</section>
 
@@ -2952,12 +2959,15 @@ db.info()
 # Límites administrativos (polígonos)
 areas = gpd.read_file("https://darribas.org/gds_course/content/data/tokyo_admin_boundaries.geojson")
 				</code></pre>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Visualización del patrón</h3>
-				<p style="font-size:22px">Diagrama de dispersión con las distribuciones marginales de longitud y latitud.</p>
+				<p style="font-size:22px">Diagrama de dispersión con las distribuciones marginales de longitud y
+					latitud.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -2968,10 +2978,13 @@ sbn.jointplot(x='longitude', y='latitude',
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/76/2a/3c/762a3ca3682bab6b774cb80dd7ba4844.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/76/2a/3c/762a3ca3682bab6b774cb80dd7ba4844.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 
@@ -3002,10 +3015,13 @@ ctx.add_basemap(joint_axes.ax_joint,
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/d4/af/f4/d4aff4475d20276687616c3cf51a5bac.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/d4/af/f4/d4aff4475d20276687616c3cf51a5bac.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3032,10 +3048,13 @@ ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/27/68/ab/2768abe819fd0077de854a7163b5bf2b.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/27/68/ab/2768abe819fd0077de854a7163b5bf2b.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3045,7 +3064,8 @@ ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
 
 			<section>
 				<h3>Extensión: convex hull y alpha shape</h3>
-				<p style="font-size:22px">Fotografías de un solo usuario. La forma alfa es el polígono más ajustado que contiene todos los puntos.</p>
+				<p style="font-size:22px">Fotografías de un solo usuario. La forma alfa es el polígono más ajustado que
+					contiene todos los puntos.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3064,48 +3084,62 @@ alpha_shape
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/4b/d9/b6/4bd9b631329d15c6a0047107e201bcd8.png" style="max-height:380px; margin:0;">
+						<img src="https://i.pinimg.com/originals/4b/d9/b6/4bd9b631329d15c6a0047107e201bcd8.png"
+							style="max-height:380px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Efectos de primer y segundo orden</h3>
 				<div class="fmt-split">
 					<div style="font-size:22px">
-						<p style="font-size:22px"><strong>Primer orden:</strong> la intensidad del proceso varía en el espacio por factores
-							externos (elevación, suelo, población). Cada evento depende de su <em>ubicación</em>, no de los
+						<p style="font-size:22px"><strong>Primer orden:</strong> la intensidad del proceso varía en el
+							espacio por factores
+							externos (elevación, suelo, población). Cada evento depende de su <em>ubicación</em>, no de
+							los
 							demás eventos.</p>
-						<p style="font-size:22px"><strong>Segundo orden:</strong> interacción entre eventos. La presencia de un evento atrae
+						<p style="font-size:22px"><strong>Segundo orden:</strong> interacción entre eventos. La
+							presencia de un evento atrae
 							(agrupamiento) o repele (dispersión) a otros eventos cercanos.</p>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/91/b0/c5/91b0c575a915ae89f27a297fb3348f5d.png" style="max-height:380px; margin:0;">
+						<img src="https://i.pinimg.com/originals/91/b0/c5/91b0c575a915ae89f27a297fb3348f5d.png"
+							style="max-height:380px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/11_intro_spatial.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 11</a></figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/11_intro_spatial.html"
+						target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 11</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Intensidad vs. densidad</h3>
 				<div class="fmt-split">
 					<div style="font-size:22px">
-						<p style="font-size:22px"><strong>Intensidad</strong> \(\lambda(u)\): propiedad <em>teórica</em> del proceso. Es el número
+						<p style="font-size:22px"><strong>Intensidad</strong> \(\lambda(u)\): propiedad <em>teórica</em>
+							del proceso. Es el número
 							esperado de eventos por unidad de área en la ubicación \(u\):</p>
-						<p style="font-size:22px">\[\lambda(u)=\lim_{|du|\to 0}\frac{E[N(du)]}{|du|} \qquad E[N(A)]=\int_A \lambda(u)\,du\]</p>
-						<p style="font-size:22px"><strong>Densidad</strong>: lo <em>observado</em>, una estimación de la intensidad a partir del
+						<p style="font-size:22px">\[\lambda(u)=\lim_{|du|\to 0}\frac{E[N(du)]}{|du|} \qquad
+							E[N(A)]=\int_A \lambda(u)\,du\]</p>
+						<p style="font-size:22px"><strong>Densidad</strong>: lo <em>observado</em>, una estimación de la
+							intensidad a partir del
 							patrón: global \(\hat{\lambda}=n/a\), por cuadrantes o por kernel.</p>
 						<p style="font-size:20px">En estadística, «densidad» también puede ser
 							\(f(u)=\lambda(u)/\int_W \lambda(v)\,dv\), que integra a 1: indica <em>dónde</em> es más
 							probable un evento, no <em>cuántos</em> se esperan.</p>
-						<p class="highlight" style="font-size:22px">La densidad se observa; la intensidad se infiere.</p>
+						<p class="highlight" style="font-size:22px">La densidad se observa; la intensidad se infiere.
+						</p>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/ae/86/d1/ae86d16fe7e1947d88108b101a71a5fc.png" style="max-height:360px; margin:0;">
+						<img src="https://i.pinimg.com/originals/ae/86/d1/ae86d16fe7e1947d88108b101a71a5fc.png"
+							style="max-height:360px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond,
+						Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
 			</section>
 
 			<section>
@@ -3113,19 +3147,27 @@ alpha_shape
 				<div class="fmt-split">
 					<div style="font-size:22px">
 						<ul>
-							<li style="font-size:22px">Intensidad constante en toda la región: \(\lambda(u)=\lambda\).</li>
-							<li style="font-size:22px">El número de eventos en cualquier área \(A\) sigue \(N(A)\sim \text{Poisson}(\lambda\,|A|)\).</li>
-							<li style="font-size:22px">Dado \(n\), los eventos son independientes y uniformes en la región:
-								<strong>aleatoriedad espacial completa (CSR)</strong>.</li>
-							<li style="font-size:22px">Proceso <strong>estacionario</strong>: sus propiedades no cambian al trasladarlo en el espacio.</li>
-							<li style="font-size:22px">Es la hipótesis nula de referencia en el análisis de patrones de puntos.</li>
+							<li style="font-size:22px">Intensidad constante en toda la región: \(\lambda(u)=\lambda\).
+							</li>
+							<li style="font-size:22px">El número de eventos en cualquier área \(A\) sigue \(N(A)\sim
+								\text{Poisson}(\lambda\,|A|)\).</li>
+							<li style="font-size:22px">Dado \(n\), los eventos son independientes y uniformes en la
+								región:
+								<strong>aleatoriedad espacial completa (CSR)</strong>.
+							</li>
+							<li style="font-size:22px">Proceso <strong>estacionario</strong>: sus propiedades no cambian
+								al trasladarlo en el espacio.</li>
+							<li style="font-size:22px">Es la hipótesis nula de referencia en el análisis de patrones de
+								puntos.</li>
 						</ul>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/0e/2b/46/0e2b465b1ee4f09d9c29646e554fa97f.png" style="max-height:430px; margin:0;">
+						<img src="https://i.pinimg.com/originals/0e/2b/46/0e2b465b1ee4f09d9c29646e554fa97f.png"
+							style="max-height:430px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond,
+						Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
 			</section>
 
 			<section>
@@ -3133,23 +3175,30 @@ alpha_shape
 				<ul style="font-size:22px">
 					<li style="font-size:22px">La intensidad varía con la ubicación, por ejemplo según una covariable:
 						\(N(A)\sim \text{Poisson}\left(\int_A \lambda(u)\,du\right)\).</li>
-					<li style="font-size:22px">Los eventos siguen siendo <strong>independientes</strong>: la concentración proviene de
+					<li style="font-size:22px">Los eventos siguen siendo <strong>independientes</strong>: la
+						concentración proviene de
 						\(\lambda(u)\), no de la interacción entre eventos.</li>
-					<li style="font-size:22px">Proceso <strong>no estacionario</strong>: muchos métodos de segundo orden (ANN, K, L) asumen
+					<li style="font-size:22px">Proceso <strong>no estacionario</strong>: muchos métodos de segundo orden
+						(ANN, K, L) asumen
 						estacionariedad.</li>
 				</ul>
 				<div class="pp-figs">
-					<img src="https://i.pinimg.com/originals/b5/fb/09/b5fb0921b3d12fbbee9db6bcf34fae0c.png" style="max-height:260px; margin:0;">
-					<img src="https://i.pinimg.com/originals/41/8a/9a/418a9a2d2755b259a2dff9080ed8aa6f.png" style="max-height:260px; margin:0;">
+					<img src="https://i.pinimg.com/originals/b5/fb/09/b5fb0921b3d12fbbee9db6bcf34fae0c.png"
+						style="max-height:260px; margin:0;">
+					<img src="https://i.pinimg.com/originals/41/8a/9a/418a9a2d2755b259a2dff9080ed8aa6f.png"
+						style="max-height:260px; margin:0;">
 				</div>
-				<p style="font-size:20px">Izq.: tiendas Walmart y densidad de población. Der.: simulaciones de un proceso
+				<p style="font-size:20px">Izq.: tiendas Walmart y densidad de población. Der.: simulaciones de un
+					proceso
 					no homogéneo cuya intensidad depende de la población.</p>
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/15_ppa_2nd.html" target="_blank">Gimond,
+						Intro to GIS and Spatial Analysis – cap. 15</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Simulación de un patrón aleatorio (CSR)</h3>
-				<p style="font-size:22px">Proceso de Poisson con el mismo número de puntos: en el rectángulo envolvente (izq.) y en la forma alfa (der.).</p>
+				<p style="font-size:22px">Proceso de Poisson con el mismo número de puntos: en el rectángulo envolvente
+					(izq.) y en la forma alfa (der.).</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3169,23 +3218,29 @@ ctx.add_basemap(ax, source=ctx.providers.CartoDB.Positron)
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/ae/6f/85/ae6f8524e0e0e2e673ae9ce72b7c9770.png" style="max-height:300px; margin:0;">
-						<img src="https://i.pinimg.com/originals/a3/2f/87/a32f871a26fa1e98ac818f1325939712.png" style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/ae/6f/85/ae6f8524e0e0e2e673ae9ce72b7c9770.png"
+							style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/a3/2f/87/a32f871a26fa1e98ac818f1325939712.png"
+							style="max-height:300px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Quadrant density</h3>
-				<p>Esta técnica requiere dividir el área de estudio en subregiones (también llamadas cuadrantes). Luego se calcula la densidad de puntos de cada cuadrante dividiendo el número de puntos que contiene por su área. Los cuadrantes pueden tener muchas formas, como hexágonos o triángulos.</p>
-				<img src="https://i.pinimg.com/originals/ba/51/24/ba512499e1033a26fea8a96b2a4a5d79.png"
-					width="300">
+				<p>Esta técnica requiere dividir el área de estudio en subregiones (también llamadas cuadrantes). Luego
+					se calcula la densidad de puntos de cada cuadrante dividiendo el número de puntos que contiene por
+					su área. Los cuadrantes pueden tener muchas formas, como hexágonos o triángulos.</p>
+				<img src="https://i.pinimg.com/originals/ba/51/24/ba512499e1033a26fea8a96b2a4a5d79.png" width="300">
 			</section>
 
 			<section>
 				<h3>Estadística de cuadrantes</h3>
-				<p style="font-size:22px">Prueba χ² del conteo por cuadrante: observado (p ≈ 3×10⁻³⁷, agrupado) vs. aleatorio (p ≈ 0.94).</p>
+				<p style="font-size:22px">Prueba χ² del conteo por cuadrante: observado (p ≈ 3×10⁻³⁷, agrupado) vs.
+					aleatorio (p ≈ 0.94).</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3201,11 +3256,15 @@ qstat_null.chi2_pvalue
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/d8/c5/f3/d8c5f36791f037169da487d54db9327b.png" style="max-height:300px; margin:0;">
-						<img src="https://i.pinimg.com/originals/1e/6d/f3/1e6df35c7b16a4cc106f36e4fac3fe65.png" style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/d8/c5/f3/d8c5f36791f037169da487d54db9327b.png"
+							style="max-height:300px; margin:0;">
+						<img src="https://i.pinimg.com/originals/1e/6d/f3/1e6df35c7b16a4cc106f36e4fac3fe65.png"
+							style="max-height:300px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3223,10 +3282,13 @@ ax.set_axis_off()
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/4c/e6/41/4ce641d06895b911ed9c1c798667bd3e.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/4c/e6/41/4ce641d06895b911ed9c1c798667bd3e.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3247,10 +3309,13 @@ ax.set_axis_off()
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/6a/53/45/6a53459262aafd353f31419157abc1fd.png" style="max-height:380px; margin:0;">
+						<img src="https://i.pinimg.com/originals/6a/53/45/6a53459262aafd353f31419157abc1fd.png"
+							style="max-height:380px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3265,13 +3330,13 @@ ax.set_axis_off()
 
 			<section>
 				<h3>Kernel Density Function</h3>
-				<img src="https://i.pinimg.com/originals/e1/c7/69/e1c7697cbcf6ab1955e2f6d3f9bb907e.png"
-					width="900">
+				<img src="https://i.pinimg.com/originals/e1/c7/69/e1c7697cbcf6ab1955e2f6d3f9bb907e.png" width="900">
 			</section>
 
 			<section>
 				<h3>Kernel Density Estimation (KDE)</h3>
-				<p style="font-size:22px">Superficie continua de densidad: la misma estructura del hexbin, pero suavizada.</p>
+				<p style="font-size:22px">Superficie continua de densidad: la misma estructura del hexbin, pero
+					suavizada.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3283,34 +3348,47 @@ ax.set_axis_off();
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/ce/ba/55/ceba556f9328295eb66bb2985c42b530.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/ce/ba/55/ceba556f9328295eb66bb2985c42b530.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Modelo paramétrico: Poisson log-lineal</h3>
 				<div class="fmt-split">
 					<div style="font-size:22px">
-						<p style="font-size:22px">\[\log\lambda(u)=\alpha+\beta\,Z(u) \quad\Leftrightarrow\quad \lambda(u)=e^{\alpha}\,e^{\beta Z(u)}\]</p>
+						<p style="font-size:22px">\[\log\lambda(u)=\alpha+\beta\,Z(u) \quad\Leftrightarrow\quad
+							\lambda(u)=e^{\alpha}\,e^{\beta Z(u)}\]</p>
 						<ul>
-							<li style="font-size:22px">\(Z(u)\): covariable espacial (ráster), p. ej. densidad de población.</li>
-							<li style="font-size:22px">\(e^{\alpha}\): intensidad base cuando \(Z=0\). \(e^{\beta}\): factor multiplicativo
+							<li style="font-size:22px">\(Z(u)\): covariable espacial (ráster), p. ej. densidad de
+								población.</li>
+							<li style="font-size:22px">\(e^{\alpha}\): intensidad base cuando \(Z=0\). \(e^{\beta}\):
+								factor multiplicativo
 								de la intensidad por cada unidad de \(Z\).</li>
-							<li style="font-size:22px">La respuesta es una <strong>intensidad</strong>, no una probabilidad (GLM de Poisson). Se estima por
+							<li style="font-size:22px">La respuesta es una <strong>intensidad</strong>, no una
+								probabilidad (GLM de Poisson). Se estima por
 								máxima verosimilitud (cuadratura de Berman–Turner).</li>
-							<li style="font-size:22px">Supone eventos independientes: modela solo <strong>efectos de primer orden</strong>.</li>
+							<li style="font-size:22px">Supone eventos independientes: modela solo <strong>efectos de
+									primer orden</strong>.</li>
 						</ul>
-						<p style="font-size:20px; text-align:left">Ejemplo, Starbucks en Massachusetts: \(\alpha=-5.151\Rightarrow e^{\alpha}\approx 0.0058\)
-							cafés/km²; \(\beta=0.00017\Rightarrow e^{\beta}\approx 1.00017\) por hab/km². En R (spatstat):
-							<code>ppm(X ~ Z)</code>.</p>
+						<p style="font-size:20px; text-align:left">Ejemplo, Starbucks en Massachusetts:
+							\(\alpha=-5.151\Rightarrow e^{\alpha}\approx 0.0058\)
+							cafés/km²; \(\beta=0.00017\Rightarrow e^{\beta}\approx 1.00017\) por hab/km². En R
+							(spatstat):
+							<code>ppm(X ~ Z)</code>.
+						</p>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/c7/f8/f0/c7f8f043d87c7d98f702efcd773a2b56.png" style="max-height:380px; margin:0;">
+						<img src="https://i.pinimg.com/originals/c7/f8/f0/c7f8f043d87c7d98f702efcd773a2b56.png"
+							style="max-height:380px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond, Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
+				<figcaption>Fuente: <a href="https://mgimond.github.io/Spatial/14_ppa_1st.html" target="_blank">Gimond,
+						Intro to GIS and Spatial Analysis – cap. 14</a></figcaption>
 			</section>
 
 			<section>
@@ -3339,18 +3417,14 @@ ax.set_axis_off();
 				<p>Una extensión de esta idea es graficar los valores de ANN para vecinos de diferente orden, es
 					decir,
 					para el punto más cercano, luego el segundo más cercano, y así sucesivamente.</p>
-				<img src="https://i.pinimg.com/originals/a1/b7/ab/a1b7ab9aad13f762fded0acf897402a6.png"
-					width="500">
-				<img src="https://i.pinimg.com/originals/e0/1f/6e/e01f6ec33c7495bca6ea6e050211826e.png"
-					width="400">
+				<img src="https://i.pinimg.com/originals/a1/b7/ab/a1b7ab9aad13f762fded0acf897402a6.png" width="500">
+				<img src="https://i.pinimg.com/originals/e0/1f/6e/e01f6ec33c7495bca6ea6e050211826e.png" width="400">
 			</section>
 
 			<section>
 				<h3>Análisis de vecino más cercano (NN)</h3>
-				<img src="https://i.pinimg.com/originals/89/5b/55/895b55b93285b34ee9cc2520dfc59a92.png"
-					width="500">
-				<img src="https://i.pinimg.com/originals/0e/7f/7d/0e7f7dd972903e3254fac341df921362.png"
-					width="400">
+				<img src="https://i.pinimg.com/originals/89/5b/55/895b55b93285b34ee9cc2520dfc59a92.png" width="500">
+				<img src="https://i.pinimg.com/originals/0e/7f/7d/0e7f7dd972903e3254fac341df921362.png" width="400">
 			</section>
 
 
@@ -3368,14 +3442,19 @@ ax.set_axis_off();
 
 			<section>
 				<h3>Alfabeto de funciones de Ripley</h3>
-				<p style="font-size:22px">Las funciones de Ripley se basan en la distancia de cada punto a su vecino más cercano.</p>
-				<img src="https://i.pinimg.com/originals/b8/e9/e3/b8e9e326a97640dbc06d9fa8c87ac608.png" style="max-height:440px; margin:0;">
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<p style="font-size:22px">Las funciones de Ripley se basan en la distancia de cada punto a su vecino más
+					cercano.</p>
+				<img src="https://i.pinimg.com/originals/b8/e9/e3/b8e9e326a97640dbc06d9fa8c87ac608.png"
+					style="max-height:440px; margin:0;">
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Función G de Ripley</h3>
-				<p style="font-size:22px">Proporción de puntos cuyo vecino más cercano está a una distancia menor que d. Por encima de la envolvente de simulaciones → patrón agrupado.</p>
+				<p style="font-size:22px">Proporción de puntos cuyo vecino más cercano está a una distancia menor que d.
+					Por encima de la envolvente de simulaciones → patrón agrupado.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3396,15 +3475,19 @@ ax.legend()
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/28/3f/8a/283f8a8b6a65ea8e11eec2c1d0e31b78.png" style="max-height:260px; margin:0;">
+						<img src="https://i.pinimg.com/originals/28/3f/8a/283f8a8b6a65ea8e11eec2c1d0e31b78.png"
+							style="max-height:260px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Función F de Ripley</h3>
-				<p style="font-size:22px">Distancia desde puntos arbitrarios del área al punto observado más cercano. Por debajo de la envolvente → patrón agrupado.</p>
+				<p style="font-size:22px">Distancia desde puntos arbitrarios del área al punto observado más cercano.
+					Por debajo de la envolvente → patrón agrupado.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3423,10 +3506,13 @@ ax.legend()
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/ba/8a/03/ba8a03e8a1f65aa6d85eee1a4f7570c8.png" style="max-height:260px; margin:0;">
+						<img src="https://i.pinimg.com/originals/ba/8a/03/ba8a03e8a1f65aa6d85eee1a4f7570c8.png"
+							style="max-height:260px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 
@@ -3441,7 +3527,8 @@ ax.legend()
 				<ul>
 					<li style="color:rgb(15, 15, 15);"><strong>Density-Based Clustering</strong> (DBSCAN): basados en
 						funciones de conectividad y funciones de densidad. Usan solo la localización →
-						<em>puntos sin marcar</em>.</li>
+						<em>puntos sin marcar</em>.
+					</li>
 					<li style="color:rgb(15, 15, 15);"><strong>Hierarchical Clustering:</strong> descomposición
 						jerárquica utilizando algún criterio, pueden ser aglomerativos (bottom-up)
 						o de separación (top-down). No necesitan K al inicio → <em>puntos marcados</em>.</li>
@@ -3457,12 +3544,16 @@ ax.legend()
 
 			<section>
 				<h3>DBScan</h3>
-				<p>DBSCAN es un método de agrupamiento basado en densidad: los puntos que están muy juntos se asignan al mismo clúster y reciben el mismo identificador. El algoritmo DBSCAN tiene dos parámetros que el usuario debe especificar:</p>
+				<p>DBSCAN es un método de agrupamiento basado en densidad: los puntos que están muy juntos se asignan al
+					mismo clúster y reciben el mismo identificador. El algoritmo DBSCAN tiene dos parámetros que el
+					usuario debe especificar:</p>
 				<lu>
 					<li>ε: distancia máxima entre puntos para considerarlos dentro del mismo clúster</li>
 					<li>minPts: número mínimo de puntos requerido para formar un clúster</li>
 				</lu>
-				<p>En resumen, todos los grupos de al menos minPts puntos, en los que cada punto está a una distancia ε o menor de al menos otro punto del grupo, se consideran clústeres separados y reciben identificadores únicos. Todos los demás puntos se consideran «ruido» y no reciben identificador.</p>
+				<p>En resumen, todos los grupos de al menos minPts puntos, en los que cada punto está a una distancia ε
+					o menor de al menos otro punto del grupo, se consideran clústeres separados y reciben
+					identificadores únicos. Todos los demás puntos se consideran «ruido» y no reciben identificador.</p>
 			</section>
 
 			<section>
@@ -3493,10 +3584,13 @@ ax.set_axis_off()
 						</code></pre>
 					</div>
 					<div class="pp-figs">
-						<img src="https://i.pinimg.com/originals/f3/5d/de/f35dde95a31e188deffd8c4f533c7eab.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/f3/5d/de/f35dde95a31e188deffd8c4f533c7eab.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3545,7 +3639,8 @@ ax.set_axis_off()
 
 			<section>
 				<h3>Clustering jerárquico en Python</h3>
-				<p style="font-size:22px">Anuncios de Airbnb en San Diego: coordenadas + precio, Ward, dendrograma y corte en k = 4.</p>
+				<p style="font-size:22px">Anuncios de Airbnb en San Diego: coordenadas + precio, Ward, dendrograma y
+					corte en k = 4.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3574,15 +3669,19 @@ ctx.add_basemap(ax2, source=ctx.providers.Esri.WorldGrayCanvas)
 						</code></pre>
 					</div>
 					<div class="pp-figs" style="flex-direction:column;">
-						<img src="https://i.pinimg.com/originals/0c/e1/bb/0ce1bb2214fc8f72c153dc8f634f7d93.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/0c/e1/bb/0ce1bb2214fc8f72c153dc8f634f7d93.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
 				<h3>Evaluación del clustering jerárquico</h3>
-				<p style="font-size:22px">Correlación cofenética (≈1: el árbol preserva bien las distancias) y Silhouette para elegir k (mayor es mejor).</p>
+				<p style="font-size:22px">Correlación cofenética (≈1: el árbol preserva bien las distancias) y
+					Silhouette para elegir k (mayor es mejor).</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3606,10 +3705,13 @@ a2.plot(ks, sil, "o-"); a2.set_title("Silhouette (Ward)")
 						</code></pre>
 					</div>
 					<div class="pp-figs" style="flex-direction:column;">
-						<img src="https://i.pinimg.com/originals/cf/5b/15/cf5b1511005b03cd9e348b153c3a2dcb.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/cf/5b/15/cf5b1511005b03cd9e348b153c3a2dcb.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3637,7 +3739,8 @@ a2.plot(ks, sil, "o-"); a2.set_title("Silhouette (Ward)")
 
 			<section>
 				<h3>K-means en Python</h3>
-				<p style="font-size:22px">Selección de k con el método del codo y Silhouette; luego ajuste final y mapa de grupos.</p>
+				<p style="font-size:22px">Selección de k con el método del codo y Silhouette; luego ajuste final y mapa
+					de grupos.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3663,11 +3766,15 @@ ctx.add_basemap(ax, source=ctx.providers.Esri.WorldGrayCanvas)
 						</code></pre>
 					</div>
 					<div class="pp-figs" style="flex-direction:column;">
-						<img src="https://i.pinimg.com/originals/54/13/67/541367db224bb0c7e03739692c83fe57.png" style="max-height:230px; margin:0;">
-						<img src="https://i.pinimg.com/originals/f1/83/3d/f1833d331b0d5256304c4912620359bd.png" style="max-height:230px; margin:0;">
+						<img src="https://i.pinimg.com/originals/54/13/67/541367db224bb0c7e03739692c83fe57.png"
+							style="max-height:230px; margin:0;">
+						<img src="https://i.pinimg.com/originals/f1/83/3d/f1833d331b0d5256304c4912620359bd.png"
+							style="max-height:230px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 			<section>
@@ -3679,14 +3786,16 @@ ctx.add_basemap(ax, source=ctx.providers.Esri.WorldGrayCanvas)
 					<li>La vecindad se define con una matriz de pesos espaciales <em>W</em> (k vecinos más cercanos,
 						distancia umbral, contigüidad).</li>
 					<li>El agrupamiento se hace sobre las marcas, pero restringido a <em>W</em> → grupos
-						<strong>similares y espacialmente contiguos</strong>.</li>
+						<strong>similares y espacialmente contiguos</strong>.
+					</li>
 					<li>Métodos: jerárquico con conectividad (Ward restringido), SKATER, Max-p, AZP.</li>
 				</ul>
 			</section>
 
 			<section>
 				<h3>Clustering con restricción espacial en Python</h3>
-				<p style="font-size:22px">Ward sobre las marcas restringido a una vecindad KNN, comparado con el agrupamiento sin restricción.</p>
+				<p style="font-size:22px">Ward sobre las marcas restringido a una vecindad KNN, comparado con el
+					agrupamiento sin restricción.</p>
 				<div class="fmt-split pp">
 					<div>
 						<pre><code class="language-python" data-trim>
@@ -3716,10 +3825,13 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 						</code></pre>
 					</div>
 					<div class="pp-figs" style="flex-direction:column;">
-						<img src="https://i.pinimg.com/originals/ed/37/a3/ed37a301cf9bea58463c37654e091fb4.png" style="max-height:420px; margin:0;">
+						<img src="https://i.pinimg.com/originals/ed/37/a3/ed37a301cf9bea58463c37654e091fb4.png"
+							style="max-height:420px; margin:0;">
 					</div>
 				</div>
-				<figcaption>Código completo: <a href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
+				<figcaption>Código completo: <a
+						href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html"
+						target="_blank">Libro Análisis Geoespacial – Patrón de puntos</a></figcaption>
 			</section>
 
 		</section>
@@ -3896,7 +4008,10 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>GLM de Poisson</h3>
-				<p>La distribución de Poisson es una distribución de probabilidad discreta, es decir, da la probabilidad de un resultado discreto (contable). En la distribución de Poisson, el resultado discreto es el número de veces que ocurre un evento, representado por $k$. Se puede usar una distribución de Poisson si:</p>
+				<p>La distribución de Poisson es una distribución de probabilidad discreta, es decir, da la probabilidad
+					de un resultado discreto (contable). En la distribución de Poisson, el resultado discreto es el
+					número de veces que ocurre un evento, representado por $k$. Se puede usar una distribución de
+					Poisson si:</p>
 				<ul>
 					<li>Individual events happen at random and independently. That is, the probability of one event
 						doesn’t affect the probability
@@ -4013,14 +4128,18 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Choropleth maps</h1>
-				<p>Los mapas de coropletas son mapas temáticos en los que las áreas se representan según los valores de la variable mostrada</p>
+				<p>Los mapas de coropletas son mapas temáticos en los que las áreas se representan según los valores de
+					la variable mostrada</p>
 
-				<p>Los mapas de coropletas se usan para obtener una perspectiva gráfica de la distribución espacial de los valores de una variable en el área de estudio.</p>
+				<p>Los mapas de coropletas se usan para obtener una perspectiva gráfica de la distribución espacial de
+					los valores de una variable en el área de estudio.</p>
 				<p>Hay dos categorías principales de variables que se muestran en los mapas de coropletas:</p>
 				<ul>
-					<li><strong>Variables espacialmente extensivas:</strong> cada polígono se representa con un valor medido que vale para todo el polígono. <strong>Ej. </strong>población total</li>
+					<li><strong>Variables espacialmente extensivas:</strong> cada polígono se representa con un valor
+						medido que vale para todo el polígono. <strong>Ej. </strong>población total</li>
 					</br>
-					<li><strong>Variables espacialmente intensivas: </strong>los valores de la variable se ajustan por el área o por otra variable. <strong>Ej.</strong> densidad de población</li>
+					<li><strong>Variables espacialmente intensivas: </strong>los valores de la variable se ajustan por
+						el área o por otra variable. <strong>Ej.</strong> densidad de población</li>
 				</ul>
 			</section>
 
@@ -4162,39 +4281,50 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 			<section>
 				<h3>Spatial dependence</h3>
 				<p>Propiedad formal que mide el grado en que las cosas cercanas y distantes están relacionadas</p>
-				<p>Se refiere a cambios espaciales sistemáticos que se observan como agrupamientos de valores similares o como un patrón espacial sistemático.</p>
+				<p>Se refiere a cambios espaciales sistemáticos que se observan como agrupamientos de valores similares
+					o como un patrón espacial sistemático.</p>
 			</section>
 
 			<section>
 				<h3>Spatial heterogeneity</h3>
-				<p>La heterogeneidad espacial se refiere a relaciones estructurales que cambian con la ubicación del objeto. Estos cambios pueden ser abruptos (por ejemplo, campo y ciudad) o continuos.</p>
-				<p>La heterogeneidad espacial se refiere a la distribución desigual de un rasgo, un evento o una relación en una región</p>
+				<p>La heterogeneidad espacial se refiere a relaciones estructurales que cambian con la ubicación del
+					objeto. Estos cambios pueden ser abruptos (por ejemplo, campo y ciudad) o continuos.</p>
+				<p>La heterogeneidad espacial se refiere a la distribución desigual de un rasgo, un evento o una
+					relación en una región</p>
 			</section>
 
 			<section>
 				<h1>Spatial weight matrix (W)</h1>
-				<p>Los pesos espaciales son números que reflejan algún tipo de distancia, tiempo o costo entre un objeto espacial de interés y cada uno de los demás objetos del conjunto de datos o de un vecindario definido. Los pesos espaciales cuantifican las relaciones espaciales o espaciotemporales entre los elementos de un vecindario.</p>
+				<p>Los pesos espaciales son números que reflejan algún tipo de distancia, tiempo o costo entre un objeto
+					espacial de interés y cada uno de los demás objetos del conjunto de datos o de un vecindario
+					definido. Los pesos espaciales cuantifican las relaciones espaciales o espaciotemporales entre los
+					elementos de un vecindario.</p>
 				<img src="https://4.bp.blogspot.com/-9DjqtTXrno0/XErTomq2ofI/AAAAAAAACIY/qO9iqrv2SMEb2pw_tazpQCS-cY8JgTTnwCLcBGAs/s400/W.jpg"
 					width="600">
 			</section>
 
 			<section>
 				<h3>Neighborhood</h3>
-				<p>En el contexto del análisis espacial, el vecindario es un área geográficamente localizada a la que se aplican el análisis y la estadística espacial local, bajo la hipótesis de que los objetos dentro del vecindario probablemente interactúan más entre sí que con los de afuera.</p>
+				<p>En el contexto del análisis espacial, el vecindario es un área geográficamente localizada a la que se
+					aplican el análisis y la estadística espacial local, bajo la hipótesis de que los objetos dentro del
+					vecindario probablemente interactúan más entre sí que con los de afuera.</p>
 				<ul>
 					<li><strong>Neighbours by contiguity:</strong> areas that share common boundaries</li>
-					<li><strong>vecinos por distancia:</strong> las áreas se definen como vecinas si están dentro de un radio especificado</li>
+					<li><strong>vecinos por distancia:</strong> las áreas se definen como vecinas si están dentro de un
+						radio especificado</li>
 				</ul>
 			</section>
 
 			<section>
 				<h1>Spatial Relationships</h1>
 				<h3>Adjacency (Contiguity)</h3>
-				<p>La adyacencia puede verse como el equivalente nominal, o binario, de la distancia. Dos entidades espaciales son adyacentes o no lo son.</p>
+				<p>La adyacencia puede verse como el equivalente nominal, o binario, de la distancia. Dos entidades
+					espaciales son adyacentes o no lo son.</p>
 			</section>
 
 			<section>
-				<p>La contigüidad entre elementos significa que tienen bordes en común. Hay tres tipos de contigüidad:</p>
+				<p>La contigüidad entre elementos significa que tienen bordes en común. Hay tres tipos de contigüidad:
+				</p>
 				<ul>
 					<li><strong>Rook Contiguity:</strong> the features share common edges</li>
 					<li><strong>Bishop Contiguity:</strong> the features share common vertices (corners)</li>
@@ -4241,8 +4371,10 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Standarized Spatial Weights</h1>
-				<p>La estandarización por filas se recomienda cuando hay un posible sesgo en la distribución de los objetos espaciales y de sus atributos debido a procedimientos de muestreo mal diseñados.</p>
-				<p>La estandarización por filas también debe usarse cuando los polígonos corresponden a límites administrativos o a cualquier tipo de zona definida por el ser humano.</p>
+				<p>La estandarización por filas se recomienda cuando hay un posible sesgo en la distribución de los
+					objetos espaciales y de sus atributos debido a procedimientos de muestreo mal diseñados.</p>
+				<p>La estandarización por filas también debe usarse cuando los polígonos corresponden a límites
+					administrativos o a cualquier tipo de zona definida por el ser humano.</p>
 			</section>
 
 			<section>
@@ -4252,7 +4384,8 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Spatial lag</h1>
-				<p><strong>Rezago espacial</strong>: ocurre cuando la variable dependiente y en el lugar i se ve afectada por las variables independientes tanto en el lugar i como en el j.</p>
+				<p><strong>Rezago espacial</strong>: ocurre cuando la variable dependiente y en el lugar i se ve
+					afectada por las variables independientes tanto en el lugar i como en el j.</p>
 				<img src="https://i.pinimg.com/564x/6f/f4/fd/6ff4fd1ca6e10d272de5577a24501710.jpg" width="500">
 				<img src="https://i.pinimg.com/564x/64/64/0f/64640f9ad261567706f9cec72a6d7f50.jpg" width="200">
 			</section>
@@ -4269,18 +4402,21 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Global indicator of Spatial Association (GISA)</h1>
-				<p>Las medidas (estadísticos de prueba) relacionadas con la existencia de autocorrelación espacial en los datos, es decir, que se enfocan en determinar si hay alguna autocorrelación espacial</p>
+				<p>Las medidas (estadísticos de prueba) relacionadas con la existencia de autocorrelación espacial en
+					los datos, es decir, que se enfocan en determinar si hay alguna autocorrelación espacial</p>
 			</section>
 
 			<section>
 				<h3>Indice de Moran</h3>
-				<p>Un valor positivo del índice global de Moran implica una autocorrelación positiva y, al contrario, un valor negativo implica una autocorrelación negativa</p>
+				<p>Un valor positivo del índice global de Moran implica una autocorrelación positiva y, al contrario, un
+					valor negativo implica una autocorrelación negativa</p>
 				<img src="https://i.ytimg.com/vi/_0Tzo1qbN-A/maxresdefault.jpg" width="600">
 
 			</section>
 
 			<section>
-				<p>Si no hay relación entre Income e Income_lag, la pendiente será casi plana (lo que da un valor de I de Moran cercano a 0).</p>
+				<p>Si no hay relación entre Income e Income_lag, la pendiente será casi plana (lo que da un valor de I
+					de Moran cercano a 0).</p>
 				<img src="https://i.pinimg.com/originals/61/25/6a/61256acdeb275da4655a89ee5714514a.png" width="600">
 			</section>
 
@@ -4293,7 +4429,9 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Moran’s I at different lags</h3>
-				<p>I de Moran en diferentes rezagos espaciales definidos por anillos de 50 km de ancho con incrementos de distancia de 50 km. Los puntos rojos indican los valores de I de Moran con un valor P de 0,05 o menor.</p>
+				<p>I de Moran en diferentes rezagos espaciales definidos por anillos de 50 km de ancho con incrementos
+					de distancia de 50 km. Los puntos rojos indican los valores de I de Moran con un valor P de 0,05 o
+					menor.</p>
 				<img src="https://mgimond.github.io/Spatial/img/MoranI_distance_band.png" width="800">
 			</section>
 
@@ -4314,7 +4452,8 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h1>Local indicators of Spatial Association (LISA)</h1>
-				<p>Un estadístico local es cualquier estadístico descriptivo asociado a un conjunto de datos espaciales cuyo valor varía de un lugar a otro.</p>
+				<p>Un estadístico local es cualquier estadístico descriptivo asociado a un conjunto de datos espaciales
+					cuyo valor varía de un lugar a otro.</p>
 			</section>
 
 			<section>
@@ -4329,7 +4468,9 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Moran´s I scatter plot</h3>
-				<p>Los puntos y polígonos rojos resaltan los condados con ingresos altos rodeados por condados de ingresos altos. Los puntos y polígonos azules resaltan los condados con ingresos bajos rodeados por condados de ingresos bajos.</p>
+				<p>Los puntos y polígonos rojos resaltan los condados con ingresos altos rodeados por condados de
+					ingresos altos. Los puntos y polígonos azules resaltan los condados con ingresos bajos rodeados por
+					condados de ingresos bajos.</p>
 				<img src="https://i.pinimg.com/originals/fb/68/87/fb6887bd0043548f947f73d471c8fd03.png" width="400">
 				<img src="https://i.pinimg.com/originals/dd/b9/51/ddb9510a501c9d153c9663e86f32d7f0.png" width="300">
 			</section>
@@ -4390,10 +4531,14 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 				<p><strong>Assumptions</strong></p>
 				<ul>
 					<li><strong>Relación lineal</strong> entre las variables dependiente e independientes</li>
-					<li><strong>Normalidad multivariada</strong>: los residuos del modelo lineal deben tener distribución normal</li>
-					<li><strong>Ausencia de multicolinealidad</strong> entre las variables independientes, es decir, no deben estar correlacionadas entre sí</li>
-					<li><strong>Homocedasticidad</strong>: los errores o residuos deben tener varianza constante (sin tendencias)</li>
-					<li><strong>Ausencia de autocorrelación</strong>: los residuos (errores) del modelo no deben estar correlacionados de ninguna forma</li>
+					<li><strong>Normalidad multivariada</strong>: los residuos del modelo lineal deben tener
+						distribución normal</li>
+					<li><strong>Ausencia de multicolinealidad</strong> entre las variables independientes, es decir, no
+						deben estar correlacionadas entre sí</li>
+					<li><strong>Homocedasticidad</strong>: los errores o residuos deben tener varianza constante (sin
+						tendencias)</li>
+					<li><strong>Ausencia de autocorrelación</strong>: los residuos (errores) del modelo no deben estar
+						correlacionados de ninguna forma</li>
 				</ul>
 			</section>
 
@@ -4514,7 +4659,10 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 				<p>\[\mu_j = iid, N(0,\sigma_0^2)\]</p>
 				<p>\[\epsilon_{ij} = iid, N(0,\sigma^2)\]</p>
-				<p>donde $Y_{ij}$ es la variable dependiente del individuo $i$ en el grupo $j$, $X_1$ es una variable independiente, $β_0$ es el intercepto general, $β_1$ es el coeficiente de la variable independiente, $μ_j$ es el efecto aleatorio del grupo $j$ y $ε_{ij}$ es el término de error residual del individuo $i$ en el grupo $j$.</p>
+				<p>donde $Y_{ij}$ es la variable dependiente del individuo $i$ en el grupo $j$, $X_1$ es una variable
+					independiente, $β_0$ es el intercepto general, $β_1$ es el coeficiente de la variable independiente,
+					$μ_j$ es el efecto aleatorio del grupo $j$ y $ε_{ij}$ es el término de error residual del individuo
+					$i$ en el grupo $j$.</p>
 				<p>\[
 					Cov(Y_{ij},Y_{ji}) = \mu_j\ = \sigma_0^2
 					\]</p>
@@ -4561,24 +4709,45 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 				<h3>Geographycally Weighted Regresion (GWR)</h3>
 				<div style="font-size: 20px;">$\hat{Y}_i = \hat{\beta}_0 (u_i,v_i) + \sum_{k=1}^{m}\hat{\beta}_k
 					(u_i,v_i) X_{ik} +\hat{\epsilon}_i$</div>
-				<p>donde $(ui, vi)$ son las coordenadas espaciales de las observaciones $i$, y $β_k (ui, vi)$ son los coeficientes estimados en esas ubicaciones.</p>
-				<p>Así, a diferencia de los modelos de regresión lineal globales, la GWR realiza regresiones locales en una serie de ubicaciones para estimar coeficientes locales (la parte geográfica de la GWR), usando observaciones ponderadas por su distancia a la ubicación central de la ventana móvil o kernel (la parte ponderada).</p>
+				<p>donde $(ui, vi)$ son las coordenadas espaciales de las observaciones $i$, y $β_k (ui, vi)$ son los
+					coeficientes estimados en esas ubicaciones.</p>
+				<p>Así, a diferencia de los modelos de regresión lineal globales, la GWR realiza regresiones locales en
+					una serie de ubicaciones para estimar coeficientes locales (la parte geográfica de la GWR), usando
+					observaciones ponderadas por su distancia a la ubicación central de la ventana móvil o kernel (la
+					parte ponderada).</p>
 			</section>
 
 			<section>
 				<h3>Parameters</h3>
-				<p>El <strong>ancho de banda</strong> es la banda de distancia o el número de vecinos que se usa en cada ecuación de regresión local, y es quizás el parámetro más importante de la regresión geográficamente ponderada, porque controla el grado de suavizado del modelo.</p>
-				<p>Puede basarse en un <strong>número de vecinos</strong> o en una <strong>banda de distancia</strong>. Con un número de vecinos, el tamaño del vecindario depende del número de vecinos especificado, lo que permite vecindarios más pequeños donde los elementos son densos y más grandes donde son escasos. Con una banda de distancia, el tamaño del vecindario es constante para cada elemento del área de estudio, de modo que hay más elementos por vecindario donde son densos y menos donde son escasos.</p>
+				<p>El <strong>ancho de banda</strong> es la banda de distancia o el número de vecinos que se usa en cada
+					ecuación de regresión local, y es quizás el parámetro más importante de la regresión geográficamente
+					ponderada, porque controla el grado de suavizado del modelo.</p>
+				<p>Puede basarse en un <strong>número de vecinos</strong> o en una <strong>banda de distancia</strong>.
+					Con un número de vecinos, el tamaño del vecindario depende del número de vecinos especificado, lo
+					que permite vecindarios más pequeños donde los elementos son densos y más grandes donde son escasos.
+					Con una banda de distancia, el tamaño del vecindario es constante para cada elemento del área de
+					estudio, de modo que hay más elementos por vecindario donde son densos y menos donde son escasos.
+				</p>
 			</section>
 
 			<section>
 				<h3>Parameters</h3>
-				<p>La fortaleza de la GWR es que aplica una ponderación geográfica a los elementos usados en cada ecuación de regresión local. Los elementos más alejados del punto de regresión reciben menos peso y, por lo tanto, influyen menos en los resultados para el elemento de interés; los más cercanos reciben más peso. Los pesos se determinan con un kernel, una función de decaimiento con la distancia que define qué tan rápido disminuyen los pesos al aumentar la distancia. La herramienta de regresión geográficamente ponderada ofrece dos opciones de kernel en el parámetro de esquema de ponderación local: gaussiano y bicuadrado.</p>
+				<p>La fortaleza de la GWR es que aplica una ponderación geográfica a los elementos usados en cada
+					ecuación de regresión local. Los elementos más alejados del punto de regresión reciben menos peso y,
+					por lo tanto, influyen menos en los resultados para el elemento de interés; los más cercanos reciben
+					más peso. Los pesos se determinan con un kernel, una función de decaimiento con la distancia que
+					define qué tan rápido disminuyen los pesos al aumentar la distancia. La herramienta de regresión
+					geográficamente ponderada ofrece dos opciones de kernel en el parámetro de esquema de ponderación
+					local: gaussiano y bicuadrado.</p>
 			</section>
 
 			<section>
 				<h3>Single bandwidth</h3>
-				<p>en la GWR se usa un solo ancho de banda bajo el supuesto de que las relaciones entre la respuesta y los predictores operan a la misma escala para todas las variables del modelo. Esto puede ser poco realista, porque algunas relaciones pueden operar a escalas mayores y otras a escalas menores. Una GWR estándar anula estas diferencias y encuentra una escala «óptima en promedio» de la no estacionariedad (variación geográfica) de las relaciones</p>
+				<p>en la GWR se usa un solo ancho de banda bajo el supuesto de que las relaciones entre la respuesta y
+					los predictores operan a la misma escala para todas las variables del modelo. Esto puede ser poco
+					realista, porque algunas relaciones pueden operar a escalas mayores y otras a escalas menores. Una
+					GWR estándar anula estas diferencias y encuentra una escala «óptima en promedio» de la no
+					estacionariedad (variación geográfica) de las relaciones</p>
 			</section>
 
 			<section>
@@ -4632,52 +4801,75 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Econometría espacial</h3>
-				<p>La <strong>econometría</strong> aplica la estadística a datos económicos y sociales para estimar relaciones entre variables y contrastar hipótesis; su herramienta central es la regresión.</p>
-				<p>La <strong>econometría espacial</strong> es la rama que trata, en los modelos de regresión, la <strong>dependencia espacial</strong> (interacción o autocorrelación) y la <strong>heterogeneidad espacial</strong> (estructura que cambia en el espacio) (Paelinck y Klaassen, 1979; Anselin, 1988).</p>
+				<p>La <strong>econometría</strong> aplica la estadística a datos económicos y sociales para estimar
+					relaciones entre variables y contrastar hipótesis; su herramienta central es la regresión.</p>
+				<p>La <strong>econometría espacial</strong> es la rama que trata, en los modelos de regresión, la
+					<strong>dependencia espacial</strong> (interacción o autocorrelación) y la <strong>heterogeneidad
+						espacial</strong> (estructura que cambia en el espacio) (Paelinck y Klaassen, 1979; Anselin,
+					1988).
+				</p>
 				<p>Anselin (2001) distingue dos tipos de dependencia:</p>
 				<li><strong>Sustantiva</strong>: en $Wy$ o $WX$, representa una interacción real entre unidades.</li>
-				<li><strong>De estorbo</strong> (<em>nuisance</em>): en el error $Wu$, solo corrige la autocorrelación que deja el modelo.</li>
+				<li><strong>De estorbo</strong> (<em>nuisance</em>): en el error $Wu$, solo corrige la autocorrelación
+					que deja el modelo.</li>
 			</section>
 
 			<section>
 				<h3>La familia de modelos SAR</h3>
 				<div style="display:flex; align-items:center; gap:20px">
-					<ul style="font-size:0.5em; flex:1; margin:0">
+					<ul style="font-size:0.8em; flex:1; margin:0">
 						<li><strong>OLS</strong>: $y = X\beta + \varepsilon$</li>
 						<li><strong>SLX</strong> (rezago de X): $y = X\beta + WX\theta + \varepsilon$</li>
 						<li><strong>SAR / SLM</strong> (rezago de y): $y = \rho Wy + X\beta + \varepsilon$</li>
 						<li><strong>SEM</strong> (error espacial): $y = X\beta + u,\; u = \lambda Wu + \varepsilon$</li>
 						<li><strong>SDM</strong> (Durbin espacial): $y = \rho Wy + X\beta + WX\theta + \varepsilon$</li>
-						<li><strong>SDEM</strong> (Durbin del error): $y = X\beta + WX\theta + u,\; u = \lambda Wu + \varepsilon$</li>
-						<li><strong>SAC / SARAR</strong>: $y = \rho Wy + X\beta + u,\; u = \lambda Wu + \varepsilon$</li>
-						<li><strong>GNS</strong> (Manski): $y = \rho Wy + X\beta + WX\theta + u,\; u = \lambda Wu + \varepsilon$</li>
+						<li><strong>SDEM</strong> (Durbin del error): $y = X\beta + WX\theta + u,\; u = \lambda Wu +
+							\varepsilon$</li>
+						<li><strong>SAC / SARAR</strong>: $y = \rho Wy + X\beta + u,\; u = \lambda Wu + \varepsilon$
+						</li>
+						<li><strong>GNS</strong> (Manski): $y = \rho Wy + X\beta + WX\theta + u,\; u = \lambda Wu +
+							\varepsilon$</li>
 					</ul>
-					<img src="https://i.pinimg.com/736x/cb/2a/95/cb2a952590ecbd070d230e82c7bbd107.jpg" style="width:55%; margin:0">
+					<img src="https://i.pinimg.com/736x/cb/2a/95/cb2a952590ecbd070d230e82c7bbd107.jpg"
+						style="width:60%; margin:0">
 				</div>
-				<p style="font-size:0.6em">El GNS es el modelo general; los demás se obtienen al fijar $\rho$, $\theta$ o $\lambda$ en cero (Elhorst, 2010). En la figura, $\gamma$ equivale a $\theta$ y $\mu$ a $u$.</p>
+				<p style="font-size:0.6em">El GNS es el modelo general; los demás se obtienen al fijar $\rho$, $\theta$
+					o $\lambda$ en cero (Elhorst, 2010). En la figura, $\gamma$ equivale a $\theta$ y $\mu$ a $u$.</p>
 			</section>
 
 			<section>
 				<h3>Efecto <em>spillover</em> (desbordamiento)</h3>
-				<p>Hay spillover cuando un cambio en $x_k$ en la unidad $i$ modifica $y$ en otras unidades $j$. En el SDM la matriz de efectos es:</p>
+				<p>Hay spillover cuando un cambio en $x_k$ en la unidad $i$ modifica $y$ en otras unidades $j$. En el
+					SDM la matriz de efectos es:</p>
 				<p>$\dfrac{\partial y}{\partial x_k} = (I-\rho W)^{-1}(I\beta_k + W\theta_k)$</p>
-				<li><strong>Directo</strong>: promedio de la diagonal (incluye la retroalimentación o <em>feedback</em>).</li>
+				<li><strong>Directo</strong>: promedio de la diagonal (incluye la retroalimentación o
+					<em>feedback</em>).
+				</li>
 				<li><strong>Indirecto</strong>: promedio fuera de la diagonal, es el spillover.</li>
 				<li><strong>Total</strong>: directo + indirecto (LeSage y Pace, 2009).</li>
-				<p><strong>Global</strong>: con $Wy$ el efecto llega a todas las unidades por el multiplicador $(I-\rho W)^{-1}$. <strong>Local</strong>: con $WX$ sin $Wy$, solo a los vecinos. Con $Wy$, $\beta$ deja de ser el efecto marginal y se interpretan los efectos directos e indirectos.</p>
+				<p><strong>Global</strong>: con $Wy$ el efecto llega a todas las unidades por el multiplicador $(I-\rho
+					W)^{-1}$. <strong>Local</strong>: con $WX$ sin $Wy$, solo a los vecinos. Con $Wy$, $\beta$ deja de
+					ser el efecto marginal y se interpretan los efectos directos e indirectos.</p>
 			</section>
 
 			<section>
 				<h3>Rezago en y (SAR): spillover global</h3>
-				<p style="font-size:0.7em">$y = \rho Wy + X\beta + \varepsilon \;\Rightarrow\; y = (I-\rho W)^{-1}(X\beta + \varepsilon)$</p>
+				<p style="font-size:0.7em">$y = \rho Wy + X\beta + \varepsilon \;\Rightarrow\; y = (I-\rho
+					W)^{-1}(X\beta + \varepsilon)$</p>
 				<div style="font-size:0.6em">
-				$$\frac{\partial y}{\partial x_k} = (I-\rho W)^{-1}\beta_k = (I + \rho W + \rho^2 W^2 + \rho^3 W^3 + \dots)\,\beta_k =
-				\begin{bmatrix} s_{11} & s_{12} & s_{13} \\ s_{21} & s_{22} & s_{23} \\ s_{31} & s_{32} & s_{33} \end{bmatrix}\beta_k$$
+					$$\frac{\partial y}{\partial x_k} = (I-\rho W)^{-1}\beta_k = (I + \rho W + \rho^2 W^2 + \rho^3 W^3 +
+					\dots)\,\beta_k =
+					\begin{bmatrix} s_{11} & s_{12} & s_{13} \\ s_{21} & s_{22} & s_{23} \\ s_{31} & s_{32} & s_{33}
+					\end{bmatrix}\beta_k$$
 				</div>
-				<ul style="font-size:0.6em">
-					<li>La matriz es <strong>densa</strong>: todos los $s_{ij} \neq 0$. Un cambio en $x_k$ en $i$ llega a los vecinos ($W$), a los vecinos de los vecinos ($W^2$) y así sucesivamente: <strong>spillover global</strong>.</li>
-					<li>Con $\rho > 0$ la diagonal cumple $s_{ii} > 1$: el efecto vuelve a $i$ a través de sus vecinos (<em>feedback</em>), por eso el efecto directo es mayor que $\beta_k$.</li>
-					<li>Con $W$ estandarizada por filas, el efecto total es $\beta_k/(1-\rho)$ y el indirecto es total menos directo.</li>
+				<ul style="font-size:1em">
+					<li>La matriz es <strong>densa</strong>: todos los $s_{ij} \neq 0$. Un cambio en $x_k$ en $i$ llega
+						a los vecinos ($W$), a los vecinos de los vecinos ($W^2$) y así sucesivamente: <strong>spillover
+							global</strong>.</li>
+					<li>Con $\rho > 0$ la diagonal cumple $s_{ii} > 1$: el efecto vuelve a $i$ a través de sus vecinos
+						(<em>feedback</em>), por eso el efecto directo es mayor que $\beta_k$.</li>
+					<li>Con $W$ estandarizada por filas, el efecto total es $\beta_k/(1-\rho)$ y el indirecto es total
+						menos directo.</li>
 				</ul>
 			</section>
 
@@ -4685,27 +4877,36 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 				<h3>Rezago en X (SLX): spillover local</h3>
 				<p style="font-size:0.7em">$y = X\beta + WX\theta + \varepsilon$</p>
 				<div style="font-size:0.6em">
-				$$\frac{\partial y}{\partial x_k} = I\beta_k + W\theta_k =
-				\begin{bmatrix} \beta_k & w_{12}\theta_k & w_{13}\theta_k \\ w_{21}\theta_k & \beta_k & w_{23}\theta_k \\ w_{31}\theta_k & w_{32}\theta_k & \beta_k \end{bmatrix}$$
+					$$\frac{\partial y}{\partial x_k} = I\beta_k + W\theta_k =
+					\begin{bmatrix} \beta_k & w_{12}\theta_k & w_{13}\theta_k \\ w_{21}\theta_k & \beta_k &
+					w_{23}\theta_k \\ w_{31}\theta_k & w_{32}\theta_k & \beta_k \end{bmatrix}$$
 				</div>
-				<ul style="font-size:0.6em">
-					<li>Fuera de la diagonal solo hay valores donde $w_{ij} \neq 0$: el efecto llega a los <strong>vecinos inmediatos</strong> y no se propaga más allá, es un <strong>spillover local</strong>.</li>
-					<li>No hay <em>feedback</em> ($w_{ii} = 0$): el efecto directo es exactamente $\beta_k$ y, con $W$ estandarizada por filas, el indirecto es $\theta_k$.</li>
+				<ul style="font-size:1em">
+					<li>Fuera de la diagonal solo hay valores donde $w_{ij} \neq 0$: el efecto llega a los
+						<strong>vecinos inmediatos</strong> y no se propaga más allá, es un <strong>spillover
+							local</strong>.
+					</li>
+					<li>No hay <em>feedback</em> ($w_{ii} = 0$): el efecto directo es exactamente $\beta_k$ y, con $W$
+						estandarizada por filas, el indirecto es $\theta_k$.</li>
 					<li>Como $WX$ es exógeno, el modelo se estima con OLS.</li>
 				</ul>
 			</section>
 
 			<section>
 				<h3>Rezago en el error (SEM): sin spillover</h3>
-				<p style="font-size:0.7em">$y = X\beta + u, \quad u = \lambda Wu + \varepsilon \;\Rightarrow\; y = X\beta + (I-\lambda W)^{-1}\varepsilon$</p>
+				<p style="font-size:0.7em">$y = X\beta + u, \quad u = \lambda Wu + \varepsilon \;\Rightarrow\; y =
+					X\beta + (I-\lambda W)^{-1}\varepsilon$</p>
 				<div style="font-size:0.6em">
-				$$\frac{\partial y}{\partial x_k} = I\beta_k =
-				\begin{bmatrix} \beta_k & 0 & 0 \\ 0 & \beta_k & 0 \\ 0 & 0 & \beta_k \end{bmatrix}$$
+					$$\frac{\partial y}{\partial x_k} = I\beta_k =
+					\begin{bmatrix} \beta_k & 0 & 0 \\ 0 & \beta_k & 0 \\ 0 & 0 & \beta_k \end{bmatrix}$$
 				</div>
-				<ul style="font-size:0.6em">
-					<li>La matriz es <strong>diagonal</strong>: un cambio en $x_k$ en $i$ solo afecta a $y_i$. El efecto directo es $\beta_k$ y el indirecto es cero, <strong>no hay spillover</strong>.</li>
-					<li>$W$ solo actúa sobre el error: los choques no observados se propagan en el espacio, pero no los efectos de las variables explicativas.</li>
-					<li>La dependencia es de estorbo (<em>nuisance</em>): OLS sigue siendo insesgado, pero ineficiente.</li>
+				<ul style="font-size:1em">
+					<li>La matriz es <strong>diagonal</strong>: un cambio en $x_k$ en $i$ solo afecta a $y_i$. El efecto
+						directo es $\beta_k$ y el indirecto es cero, <strong>no hay spillover</strong>.</li>
+					<li>$W$ solo actúa sobre el error: los choques no observados se propagan en el espacio, pero no los
+						efectos de las variables explicativas.</li>
+					<li>La dependencia es de estorbo (<em>nuisance</em>): OLS sigue siendo insesgado, pero ineficiente.
+					</li>
 				</ul>
 			</section>
 
@@ -4743,7 +4944,8 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 							<td><strong>SEM</strong></td>
 							<td>$Wu$</td>
 							<td>No</td>
-							<td>OLS insesgado pero ineficiente, errores estándar sesgados. ML, GMM (Kelejian y Prucha) o FGLS</td>
+							<td>OLS insesgado pero ineficiente, errores estándar sesgados. ML, GMM (Kelejian y Prucha) o
+								FGLS</td>
 						</tr>
 						<tr>
 							<td><strong>SDM</strong></td>
@@ -4769,30 +4971,9 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 							<td>Sí, global</td>
 							<td>No. ML o bayesiano (débilmente identificado)</td>
 						</tr>
+						<tr></tr>
 					</tbody>
 				</table>
-			</section>
-
-			<section>
-				<h3>SAR</h3>
-				<p>Los modelos SAR incorporan la dependencia espacial incluyendo un rezago espacial de la variable dependiente, del término de error o de las variables exógenas. En esencia, agregan un componente autorregresivo que considera el promedio ponderado de los valores vecinos. Los modelos SAR suelen especificarse de la forma:</p>
-				<p> $y = \rho Wy + X\beta + \epsilon$</p>
-				<li>$y$ (n x 1) is the dependent variable vector.</li>
-				<li>$ρ$ es el coeficiente autorregresivo espacial, que cuantifica la intensidad de la dependencia espacial.</li>
-				<li>$W$ (n×n) es la matriz de pesos espaciales, que representa la estructura espacial o las relaciones de vecindad.</li>
-				<li>$Xβ$ (covariates) represents the effects of explanatory variables.</li>
-				<li>$ϵ$ is the error term.</li>
-			</section>
-
-			<section>
-				<h3>Joint Distribution in SAR</h3>
-				<p>La distribución conjunta de los efectos espaciales y del modelo SAR se deriva directamente de esta ecuación:</p>
-				<p>$y=(I−ρW)^{−1}(Xβ+ϵ)$</p>
-				<li>El término $(I - \rho W)^{-1}$ es una transformación global que se aplica a todos los valores simultáneamente. Esto significa que el valor $y_i$ de cada ubicación depende, en algún grado, de todos los demás valores $y_j$ del conjunto de datos, según lo especifica $W$.</li>
-				<li>The inverse operation $(I - \rho W)^{-1}$ implies a dense covariance structure because each
-					location
-					indirectly affects every other location.</li>
-				<p>El SAR usa una sola ecuación global con W para especificar directamente la distribución conjunta en todas las ubicaciones.</p>
 			</section>
 
 			<section>
@@ -4806,21 +4987,6 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			</section>
 
-			<section>
-				<h3>SAR</h3>
-				<p>El SAR se formula como un proceso global, en el que las relaciones espaciales afectan simultáneamente a todo el conjunto de datos. El modelo SAR requiere invertir una matriz, lo que puede ser computacionalmente exigente con conjuntos de datos grandes.</p>
-				<p>Los modelos SAR interpretan los efectos espaciales incluyendo un término de rezago de la variable dependiente, que captura cómo el valor en una ubicación está influido por los valores de todos sus vecinos. Este tipo de especificación se asocia más con el concepto de <strong>desbordamiento espacial</strong> (<em>spillover</em>): el resultado en una región influye directamente en los resultados de las regiones vecinas.</p>
-			</section>
-
-			<section>
-				<h3>Modelos autoregresivos</h3>
-				<img src="https://i.pinimg.com/736x/cb/2a/95/cb2a952590ecbd070d230e82c7bbd107.jpg" width="600">
-			</section>
-
-			<section>
-				<h3>Modelos autoregresivos</h3>
-				<img src="https://i.pinimg.com/736x/1a/fb/ea/1afbeae274001b5e7f3b6ca1d7e3cebc.jpg" width="500">
-			</section>
 		</section>
 
 		<!--CAR-->
@@ -4831,17 +4997,25 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>CAR</h3>
-				<p>Los modelos CAR se basan en una especificación condicional de la variable dependiente. A diferencia del SAR, el modelo CAR se define con la distribución condicional de un valor dado los valores de sus vecinos. Los modelos CAR suelen escribirse de la forma:</p>
+				<p>Los modelos CAR se basan en una especificación condicional de la variable dependiente. A diferencia
+					del SAR, el modelo CAR se define con la distribución condicional de un valor dado los valores de sus
+					vecinos. Los modelos CAR suelen escribirse de la forma:</p>
 				<p>$y_i=X_iβ+y_i∣y_{-i}+ϵ_i$</p>
 				<p>$y_i∣y_{-i} ∼N(∑_jϕ_{ij}y_j,τ^2)$</p>
-				<li>$y_i∣y_{-i}$ es la distribución condicional en la ubicación i, dados los valores en todas las demás ubicaciones.</li>
-				<li>$ϕ_{ij}$ es la relación entre unidades vecinas, generalmente basada en la matriz de pesos espaciales.</li>
+				<li>$y_i∣y_{-i}$ es la distribución condicional en la ubicación i, dados los valores en todas las demás
+					ubicaciones.</li>
+				<li>$ϕ_{ij}$ es la relación entre unidades vecinas, generalmente basada en la matriz de pesos
+					espaciales.</li>
 				<li>$τ^2$ is the conditional variance.</li>
 			</section>
 
 			<section>
 				<h3>CAR</h3>
-				<p>El CAR se formula con distribuciones condicionales locales. Esto lleva a una especificación en la que el modelo se condiciona a las unidades vecinas, lo que hace al CAR más fácil de interpretar en un contexto espacial local. La matriz de precisión (inversa de la matriz de covarianza) de un modelo CAR es dispersa, lo que suele hacer a los modelos CAR más eficientes computacionalmente, en especial con conjuntos de datos espaciales grandes.</p>
+				<p>El CAR se formula con distribuciones condicionales locales. Esto lleva a una especificación en la que
+					el modelo se condiciona a las unidades vecinas, lo que hace al CAR más fácil de interpretar en un
+					contexto espacial local. La matriz de precisión (inversa de la matriz de covarianza) de un modelo
+					CAR es dispersa, lo que suele hacer a los modelos CAR más eficientes computacionalmente, en especial
+					con conjuntos de datos espaciales grandes.</p>
 			</section>
 
 			<section>
@@ -4882,26 +5056,34 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Conditional probability</h3>
-				<p>Una probabilidad condicional mide la probabilidad de un evento dado otro evento. Intuitivamente, es la proporción de la probabilidad del evento A cuando ocurre el evento B.</p>
+				<p>Una probabilidad condicional mide la probabilidad de un evento dado otro evento. Intuitivamente, es
+					la proporción de la probabilidad del evento A cuando ocurre el evento B.</p>
 				<img src="https://i.pinimg.com/736x/09/a5/94/09a59412719c64a4550ac4447b0759b0.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Joint probability</h3>
-				<p>Una probabilidad conjunta calcula la probabilidad (o verosimilitud) de que dos eventos ocurran simultáneamente.</p>
+				<p>Una probabilidad conjunta calcula la probabilidad (o verosimilitud) de que dos eventos ocurran
+					simultáneamente.</p>
 				<img src="https://i.pinimg.com/736x/07/e1/09/07e1092f3e46cd0f6129acfd726d5b9d.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Marginal probability</h3>
-				<p>Una probabilidad marginal es la probabilidad de que ocurra un solo evento. Cuando ese evento ocurre junto con otros, se puede descomponer mediante la probabilidad conjunta con cada uno de ellos.</p>
+				<p>Una probabilidad marginal es la probabilidad de que ocurra un solo evento. Cuando ese evento ocurre
+					junto con otros, se puede descomponer mediante la probabilidad conjunta con cada uno de ellos.</p>
 				<img src="https://i.pinimg.com/736x/bc/b4/af/bcb4af5565fc46f1eb067675c0b7e390.jpg" width="800">
 			</section>
 
 			<section>
 				<h3>Joint Distribution in CAR</h3>
-				<p>En el modelo CAR, aunque no se especifica directamente la distribución conjunta, esta se puede derivar del conjunto de distribuciones condicionales usando las propiedades de los campos aleatorios de Markov.</p>
-				<p>La distribución conjunta resultante para $u$ en un modelo CAR se representa con una matriz de precisión (inversa de la matriz de covarianza) dispersa. Esta estructura dispersa significa que solo las ubicaciones vecinas tienen dependencias directas, a diferencia de la estructura densa del SAR.</p>
+				<p>En el modelo CAR, aunque no se especifica directamente la distribución conjunta, esta se puede
+					derivar del conjunto de distribuciones condicionales usando las propiedades de los campos aleatorios
+					de Markov.</p>
+				<p>La distribución conjunta resultante para $u$ en un modelo CAR se representa con una matriz de
+					precisión (inversa de la matriz de covarianza) dispersa. Esta estructura dispersa significa que solo
+					las ubicaciones vecinas tienen dependencias directas, a diferencia de la estructura densa del SAR.
+				</p>
 				<p>Matemáticamente, la distribución conjunta de $u$ en un modelo CAR puede expresarse como:</p>
 				<p>$P(u) \propto \exp \left( -\frac{1}{2} u^T Q u \right)$</p>
 				<li>Q es la matriz de precisión, es decir, la inversa de la matriz de covarianza.</li>
@@ -4909,22 +5091,39 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Intrinsic CAR models (ICAR)</h3>
-				<p>En los modelos ICAR, la matriz de precisión Q suele ser singular (no invertible), de modo que la distribución conjunta no tiene una matriz de covarianza única. Esto hace que los efectos aleatorios no sean identificables en sentido absoluto.</p>
-				<p>Para que el modelo sea identificable, los modelos ICAR suelen imponer una restricción a los efectos aleatorios espaciales, como que sumen cero (por ejemplo, $\sum u_i = 0$). Esto permite efectos espaciales relativos, en los que los valores se interpretan respecto a la media de la región y no como valores absolutos.</p>
-				<p>Estructura de dependencia local: en el ICAR, el efecto aleatorio en cada ubicación depende solo de las ubicaciones vecinas y no de un efecto «global» fijo. Por eso los modelos ICAR suelen preferirse en aplicaciones que requieren dependencias puramente locales.</p>
+				<p>En los modelos ICAR, la matriz de precisión Q suele ser singular (no invertible), de modo que la
+					distribución conjunta no tiene una matriz de covarianza única. Esto hace que los efectos aleatorios
+					no sean identificables en sentido absoluto.</p>
+				<p>Para que el modelo sea identificable, los modelos ICAR suelen imponer una restricción a los efectos
+					aleatorios espaciales, como que sumen cero (por ejemplo, $\sum u_i = 0$). Esto permite efectos
+					espaciales relativos, en los que los valores se interpretan respecto a la media de la región y no
+					como valores absolutos.</p>
+				<p>Estructura de dependencia local: en el ICAR, el efecto aleatorio en cada ubicación depende solo de
+					las ubicaciones vecinas y no de un efecto «global» fijo. Por eso los modelos ICAR suelen preferirse
+					en aplicaciones que requieren dependencias puramente locales.</p>
 			</section>
 
 			<section>
 				<h3>Leroux CAR</h3>
-				<p>Matriz de precisión flexible: el modelo CAR de Leroux tiene una matriz de precisión que puede ajustarse para evitar la singularidad, lo que permite estimar una estructura de covarianza propia.</p>
-				<p>Parámetro de mezcla: un parámetro $\lambda$ (a menudo llamado parámetro de dependencia espacial) controla la intensidad de la dependencia espacial: (i) si $\lambda = 1$, el modelo se comporta como un ICAR, con fuerte dependencia espacial; (ii) si $\lambda = 0$, el modelo supone independencia entre ubicaciones; (iii) para valores entre 0 y 1, el modelo interpola entre la independencia y la dependencia espacial, con un suavizado espacial parcial.</p>
-				<p>Distribuciones previas propias: al ajustar $\lambda$, el CAR de Leroux puede dar una distribución previa propia (no singular), lo que ayuda a evitar problemas de identificabilidad y permite especificar mejor la estructura de covarianza.</p>
+				<p>Matriz de precisión flexible: el modelo CAR de Leroux tiene una matriz de precisión que puede
+					ajustarse para evitar la singularidad, lo que permite estimar una estructura de covarianza propia.
+				</p>
+				<p>Parámetro de mezcla: un parámetro $\lambda$ (a menudo llamado parámetro de dependencia espacial)
+					controla la intensidad de la dependencia espacial: (i) si $\lambda = 1$, el modelo se comporta como
+					un ICAR, con fuerte dependencia espacial; (ii) si $\lambda = 0$, el modelo supone independencia
+					entre ubicaciones; (iii) para valores entre 0 y 1, el modelo interpola entre la independencia y la
+					dependencia espacial, con un suavizado espacial parcial.</p>
+				<p>Distribuciones previas propias: al ajustar $\lambda$, el CAR de Leroux puede dar una distribución
+					previa propia (no singular), lo que ayuda a evitar problemas de identificabilidad y permite
+					especificar mejor la estructura de covarianza.</p>
 				<li>$Qλ=λQ+(1−λ)I$</li>
 			</section>
 
 			<section>
 				<h3>Besag-York-Mollié (BYM) Model</h3>
-				<p>Este modelo combina un ICAR para los efectos espaciales con efectos aleatorios no estructurados, lo que permite representar tanto la variabilidad espacialmente estructurada como la no estructurada.</p>
+				<p>Este modelo combina un ICAR para los efectos espaciales con efectos aleatorios no estructurados, lo
+					que permite representar tanto la variabilidad espacialmente estructurada como la no estructurada.
+				</p>
 			</section>
 
 			<section>
@@ -4985,23 +5184,31 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h2>Geostatistics</h2>
-				<p>El tipo de análisis estadístico espacial que trata variables de campos continuos se llama «geoestadística»</p>
+				<p>El tipo de análisis estadístico espacial que trata variables de campos continuos se llama
+					«geoestadística»</p>
 
-				<p>La geoestadística se enfoca en describir la variación espacial de un conjunto de valores observados y en predecirlos en ubicaciones no muestreadas</p>
+				<p>La geoestadística se enfoca en describir la variación espacial de un conjunto de valores observados y
+					en predecirlos en ubicaciones no muestreadas</p>
 			</section>
 
 			<section>
 				<h1>Spatial interpolation</h1>
-				<p>las técnicas que se usan con puntos que representan muestras de un campo continuo son los métodos de interpolación</p>
-				<p>Aquí, los puntos representan observaciones muestreadas de una entidad que se puede medir en cualquier lugar del área de estudio</p>
-				<p>Hay muchas herramientas de interpolación disponibles, pero suelen agruparse en dos categorías: métodos <strong>determinísticos</strong> y de interpolación</p>
+				<p>las técnicas que se usan con puntos que representan muestras de un campo continuo son los métodos de
+					interpolación</p>
+				<p>Aquí, los puntos representan observaciones muestreadas de una entidad que se puede medir en cualquier
+					lugar del área de estudio</p>
+				<p>Hay muchas herramientas de interpolación disponibles, pero suelen agruparse en dos categorías:
+					métodos <strong>determinísticos</strong> y de interpolación</p>
 			</section>
 
 			<section>
 				<h3>Proximity interpolation</h3>
-				<p>Fue introducido por Alfred H. Thiessen hace más de un siglo. El objetivo es simple: asignar a cada ubicación no muestreada el valor de la ubicación muestreada más cercana. Esto genera una superficie teselada en la que se conectan las líneas que dividen el punto medio entre cada par de ubicaciones muestreadas, encerrando un área. Cada área termina encerrando un punto de muestreo, cuyo valor hereda.</p>
-				<img src="https://i.pinimg.com/originals/41/eb/4a/41eb4a6c4059901b1bf571b148e63284.png"
-					width="800">
+				<p>Fue introducido por Alfred H. Thiessen hace más de un siglo. El objetivo es simple: asignar a cada
+					ubicación no muestreada el valor de la ubicación muestreada más cercana. Esto genera una superficie
+					teselada en la que se conectan las líneas que dividen el punto medio entre cada par de ubicaciones
+					muestreadas, encerrando un área. Cada área termina encerrando un punto de muestreo, cuyo valor
+					hereda.</p>
+				<img src="https://i.pinimg.com/originals/41/eb/4a/41eb4a6c4059901b1bf571b148e63284.png" width="800">
 			</section>
 
 			<section>
@@ -5022,48 +5229,47 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Inverse Distance Weighted (IDW) para n= 2 y n=15</h3>
-				<img src="https://i.pinimg.com/originals/ce/0f/6f/ce0f6fbafb43495191023cdfb8ed032b.png"
-					width="450">
-				<img src="https://i.pinimg.com/originals/b3/2d/df/b32ddf3883d1059b1e3594eea2ddfa06.png"
-					width="450">
+				<img src="https://i.pinimg.com/originals/ce/0f/6f/ce0f6fbafb43495191023cdfb8ed032b.png" width="450">
+				<img src="https://i.pinimg.com/originals/b3/2d/df/b32ddf3883d1059b1e3594eea2ddfa06.png" width="450">
 
 			</section>
 
 			<section>
 				<h3>Kriging</h3>
-				<p>Existen varias formas de kriging: ordinario, universal y simple, por nombrar algunas. Esta sección se enfoca en el kriging ordinario (OK), que suele implicar cuatro pasos:</p>
+				<p>Existen varias formas de kriging: ordinario, universal y simple, por nombrar algunas. Esta sección se
+					enfoca en el kriging ordinario (OK), que suele implicar cuatro pasos:</p>
 				<ul>
 					<li>Remover cualquier tendencia espacial de los datos</li>
 					<li>Calcular el variograma experimental, $γ$, que es una medida de la autocorrelación espacial.</li>
-					<li>Definir el modelo de variograma que mejor caracterice la autocorrelación espacial de los datos.</li>
+					<li>Definir el modelo de variograma que mejor caracterice la autocorrelación espacial de los datos.
+					</li>
 					<li>Interpolar la superficie usando el variograma experimental.</li>
-					<li>Sumar la superficie interpolada por kriging a la superficie de tendencia para obtener el resultado final.</li>
+					<li>Sumar la superficie interpolada por kriging a la superficie de tendencia para obtener el
+						resultado final.</li>
 				</ul>
 			</section>
 
 			<section>
-				<p>Nos interesa cómo varían los valores del atributo a medida que aumenta la distancia entre pares de puntos. La diferencia, $γ$, se calcula elevando al cuadrado las diferencias de valores y dividiendo por 2.</p>
-				<img src="https://i.pinimg.com/originals/93/b5/21/93b5217a5c08d315d15842ad6041a8d7.png"
-					width="1000">
+				<p>Nos interesa cómo varían los valores del atributo a medida que aumenta la distancia entre pares de
+					puntos. La diferencia, $γ$, se calcula elevando al cuadrado las diferencias de valores y dividiendo
+					por 2.</p>
+				<img src="https://i.pinimg.com/originals/93/b5/21/93b5217a5c08d315d15842ad6041a8d7.png" width="1000">
 				$\gamma = \frac{(Z_2 - Z_1) ^ 2}{2} = \frac{(-1.2 - (1.6)) ^ 2}{2} = 3.92$
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://i.pinimg.com/originals/66/4a/de/664ade064a3d6789c24bba4931334372.png"
-					width="1000">
+				<img src="https://i.pinimg.com/originals/66/4a/de/664ade064a3d6789c24bba4931334372.png" width="1000">
 			</section>
 
 			<section>
 				<h3>Experimental variogram</h3>
-				<img src="https://i.pinimg.com/originals/07/a0/e6/07a0e65ad5baacefc4463538ffbdc1f4.png"
-					width="1000">
+				<img src="https://i.pinimg.com/originals/07/a0/e6/07a0e65ad5baacefc4463538ffbdc1f4.png" width="1000">
 			</section>
 
 			<section>
 				<h3>Variogram models</h3>
-				<img src="https://i.pinimg.com/originals/48/5f/38/485f3826f3b7fc14c7006bfcbab48eb6.png"
-					width="800">
+				<img src="https://i.pinimg.com/originals/48/5f/38/485f3826f3b7fc14c7006bfcbab48eb6.png" width="800">
 			</section>
 
 			<section>
@@ -5073,26 +5279,22 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Parameters in a variogram model</h3>
-				<img src="https://i.pinimg.com/originals/9d/b3/35/9db335886d5a7c45f4870b14bc27a785.png"
-					width="1000">
+				<img src="https://i.pinimg.com/originals/9d/b3/35/9db335886d5a7c45f4870b14bc27a785.png" width="1000">
 			</section>
 
 			<section>
 				<h3>Spherical model fit</h3>
-				<img src="https://i.pinimg.com/originals/96/dc/44/96dc445b7087bcd4ebb55b1e946fdb75.png"
-					width="1000">
+				<img src="https://i.pinimg.com/originals/96/dc/44/96dc445b7087bcd4ebb55b1e946fdb75.png" width="1000">
 			</section>
 
 			<section>
 				<h3>The Ordinary Kriging Interpolated Surface</h3>
-				<img src="https://i.pinimg.com/originals/78/95/8f/78958f957d1795f90b587c53bdb284fb.png"
-					width="800">
+				<img src="https://i.pinimg.com/originals/78/95/8f/78958f957d1795f90b587c53bdb284fb.png" width="800">
 			</section>
 
 			<section>
 				<h3>Mapa de la varianza de la predicción (SK)</h3>
-				<img src="https://i.pinimg.com/originals/65/8c/bc/658cbcf1d5eb39f4c1c131e39017e29f.png"
-					width="800">
+				<img src="https://i.pinimg.com/originals/65/8c/bc/658cbcf1d5eb39f4c1c131e39017e29f.png" width="800">
 			</section>
 		</section>
 
@@ -5106,15 +5308,21 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 
 			<section>
 				<h3>Spatial Gaussian process (SGP)</h3>
-				<p>Un proceso gaussiano espacial (SGP) es un proceso estocástico que se usa con frecuencia para modelar datos con dependencia espacial, temporal o espaciotemporal. Una forma común de modelar el proceso $Y(s)$ es mediante un modelo lineal espacial de efectos mixtos:</p>
+				<p>Un proceso gaussiano espacial (SGP) es un proceso estocástico que se usa con frecuencia para modelar
+					datos con dependencia espacial, temporal o espaciotemporal. Una forma común de modelar el proceso
+					$Y(s)$ es mediante un modelo lineal espacial de efectos mixtos:</p>
 				<p>$Y(s)=\mu(s)+w(s)+\epsilon(s)$</p>
-				<p>el componente residual se puede descomponer en dos partes: un componente espacial ($w(s)$) y un componente no estructurado ($\epsilon(s)$) $iid$. El componente espacial se puede modelar como un proceso gaussiano espacial estacionario con media cero y función de covarianza $w(s)~SGP(0,\sum)$.</p>
+				<p>el componente residual se puede descomponer en dos partes: un componente espacial ($w(s)$) y un
+					componente no estructurado ($\epsilon(s)$) $iid$. El componente espacial se puede modelar como un
+					proceso gaussiano espacial estacionario con media cero y función de covarianza $w(s)~SGP(0,\sum)$.
+				</p>
 
 			</section>
 
 			<section>
 				<h3>Distribución Gaussiana multivariada</h3>
-				<p>La distribución gaussiana multivariada es la probabilidad conjunta de una distribución gaussiana con más de dos dimensiones. Su función de densidad de probabilidad es la siguiente.</p>
+				<p>La distribución gaussiana multivariada es la probabilidad conjunta de una distribución gaussiana con
+					más de dos dimensiones. Su función de densidad de probabilidad es la siguiente.</p>
 				<img src="https://miro.medium.com/v2/resize:fit:4800/format:webp/1*ype37VGh84MlQCmnUOK-WA.png"
 					width="500">
 				<img src="https://i.pinimg.com/736x/af/01/16/af011676c68ca665dbb30e00bc740d94.jpg" width="500">
