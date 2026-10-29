@@ -4631,6 +4631,149 @@ for ax, c in zip(axs, ["nsp", "sp"]):
 			</section>
 
 			<section>
+				<h3>Econometría espacial</h3>
+				<p>La <strong>econometría</strong> aplica la estadística a datos económicos y sociales para estimar relaciones entre variables y contrastar hipótesis; su herramienta central es la regresión.</p>
+				<p>La <strong>econometría espacial</strong> es la rama que trata, en los modelos de regresión, la <strong>dependencia espacial</strong> (interacción o autocorrelación) y la <strong>heterogeneidad espacial</strong> (estructura que cambia en el espacio) (Paelinck y Klaassen, 1979; Anselin, 1988).</p>
+				<p>Anselin (2001) distingue dos tipos de dependencia:</p>
+				<li><strong>Sustantiva</strong>: en $Wy$ o $WX$, representa una interacción real entre unidades.</li>
+				<li><strong>De estorbo</strong> (<em>nuisance</em>): en el error $Wu$, solo corrige la autocorrelación que deja el modelo.</li>
+			</section>
+
+			<section>
+				<h3>La familia de modelos SAR</h3>
+				<div style="display:flex; align-items:center; gap:20px">
+					<ul style="font-size:0.5em; flex:1; margin:0">
+						<li><strong>OLS</strong>: $y = X\beta + \varepsilon$</li>
+						<li><strong>SLX</strong> (rezago de X): $y = X\beta + WX\theta + \varepsilon$</li>
+						<li><strong>SAR / SLM</strong> (rezago de y): $y = \rho Wy + X\beta + \varepsilon$</li>
+						<li><strong>SEM</strong> (error espacial): $y = X\beta + u,\; u = \lambda Wu + \varepsilon$</li>
+						<li><strong>SDM</strong> (Durbin espacial): $y = \rho Wy + X\beta + WX\theta + \varepsilon$</li>
+						<li><strong>SDEM</strong> (Durbin del error): $y = X\beta + WX\theta + u,\; u = \lambda Wu + \varepsilon$</li>
+						<li><strong>SAC / SARAR</strong>: $y = \rho Wy + X\beta + u,\; u = \lambda Wu + \varepsilon$</li>
+						<li><strong>GNS</strong> (Manski): $y = \rho Wy + X\beta + WX\theta + u,\; u = \lambda Wu + \varepsilon$</li>
+					</ul>
+					<img src="https://i.pinimg.com/736x/cb/2a/95/cb2a952590ecbd070d230e82c7bbd107.jpg" style="width:55%; margin:0">
+				</div>
+				<p style="font-size:0.6em">El GNS es el modelo general; los demás se obtienen al fijar $\rho$, $\theta$ o $\lambda$ en cero (Elhorst, 2010). En la figura, $\gamma$ equivale a $\theta$ y $\mu$ a $u$.</p>
+			</section>
+
+			<section>
+				<h3>Efecto <em>spillover</em> (desbordamiento)</h3>
+				<p>Hay spillover cuando un cambio en $x_k$ en la unidad $i$ modifica $y$ en otras unidades $j$. En el SDM la matriz de efectos es:</p>
+				<p>$\dfrac{\partial y}{\partial x_k} = (I-\rho W)^{-1}(I\beta_k + W\theta_k)$</p>
+				<li><strong>Directo</strong>: promedio de la diagonal (incluye la retroalimentación o <em>feedback</em>).</li>
+				<li><strong>Indirecto</strong>: promedio fuera de la diagonal, es el spillover.</li>
+				<li><strong>Total</strong>: directo + indirecto (LeSage y Pace, 2009).</li>
+				<p><strong>Global</strong>: con $Wy$ el efecto llega a todas las unidades por el multiplicador $(I-\rho W)^{-1}$. <strong>Local</strong>: con $WX$ sin $Wy$, solo a los vecinos. Con $Wy$, $\beta$ deja de ser el efecto marginal y se interpretan los efectos directos e indirectos.</p>
+			</section>
+
+			<section>
+				<h3>Rezago en y (SAR): spillover global</h3>
+				<p style="font-size:0.7em">$y = \rho Wy + X\beta + \varepsilon \;\Rightarrow\; y = (I-\rho W)^{-1}(X\beta + \varepsilon)$</p>
+				<div style="font-size:0.6em">
+				$$\frac{\partial y}{\partial x_k} = (I-\rho W)^{-1}\beta_k = (I + \rho W + \rho^2 W^2 + \rho^3 W^3 + \dots)\,\beta_k =
+				\begin{bmatrix} s_{11} & s_{12} & s_{13} \\ s_{21} & s_{22} & s_{23} \\ s_{31} & s_{32} & s_{33} \end{bmatrix}\beta_k$$
+				</div>
+				<ul style="font-size:0.6em">
+					<li>La matriz es <strong>densa</strong>: todos los $s_{ij} \neq 0$. Un cambio en $x_k$ en $i$ llega a los vecinos ($W$), a los vecinos de los vecinos ($W^2$) y así sucesivamente: <strong>spillover global</strong>.</li>
+					<li>Con $\rho > 0$ la diagonal cumple $s_{ii} > 1$: el efecto vuelve a $i$ a través de sus vecinos (<em>feedback</em>), por eso el efecto directo es mayor que $\beta_k$.</li>
+					<li>Con $W$ estandarizada por filas, el efecto total es $\beta_k/(1-\rho)$ y el indirecto es total menos directo.</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Rezago en X (SLX): spillover local</h3>
+				<p style="font-size:0.7em">$y = X\beta + WX\theta + \varepsilon$</p>
+				<div style="font-size:0.6em">
+				$$\frac{\partial y}{\partial x_k} = I\beta_k + W\theta_k =
+				\begin{bmatrix} \beta_k & w_{12}\theta_k & w_{13}\theta_k \\ w_{21}\theta_k & \beta_k & w_{23}\theta_k \\ w_{31}\theta_k & w_{32}\theta_k & \beta_k \end{bmatrix}$$
+				</div>
+				<ul style="font-size:0.6em">
+					<li>Fuera de la diagonal solo hay valores donde $w_{ij} \neq 0$: el efecto llega a los <strong>vecinos inmediatos</strong> y no se propaga más allá, es un <strong>spillover local</strong>.</li>
+					<li>No hay <em>feedback</em> ($w_{ii} = 0$): el efecto directo es exactamente $\beta_k$ y, con $W$ estandarizada por filas, el indirecto es $\theta_k$.</li>
+					<li>Como $WX$ es exógeno, el modelo se estima con OLS.</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Rezago en el error (SEM): sin spillover</h3>
+				<p style="font-size:0.7em">$y = X\beta + u, \quad u = \lambda Wu + \varepsilon \;\Rightarrow\; y = X\beta + (I-\lambda W)^{-1}\varepsilon$</p>
+				<div style="font-size:0.6em">
+				$$\frac{\partial y}{\partial x_k} = I\beta_k =
+				\begin{bmatrix} \beta_k & 0 & 0 \\ 0 & \beta_k & 0 \\ 0 & 0 & \beta_k \end{bmatrix}$$
+				</div>
+				<ul style="font-size:0.6em">
+					<li>La matriz es <strong>diagonal</strong>: un cambio en $x_k$ en $i$ solo afecta a $y_i$. El efecto directo es $\beta_k$ y el indirecto es cero, <strong>no hay spillover</strong>.</li>
+					<li>$W$ solo actúa sobre el error: los choques no observados se propagan en el espacio, pero no los efectos de las variables explicativas.</li>
+					<li>La dependencia es de estorbo (<em>nuisance</em>): OLS sigue siendo insesgado, pero ineficiente.</li>
+				</ul>
+			</section>
+
+			<section>
+				<h3>Comparación de modelos</h3>
+				<table style="font-size:0.55em">
+					<thead>
+						<tr>
+							<th>Modelo</th>
+							<th>Dónde entra W</th>
+							<th>Spillover</th>
+							<th>¿Sirve OLS? / Estimación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong>OLS</strong></td>
+							<td>No usa W</td>
+							<td>No</td>
+							<td>Sí</td>
+						</tr>
+						<tr>
+							<td><strong>SLX</strong></td>
+							<td>$WX$</td>
+							<td>Sí, local</td>
+							<td>Sí, OLS ($WX$ es exógeno)</td>
+						</tr>
+						<tr>
+							<td><strong>SAR</strong></td>
+							<td>$Wy$</td>
+							<td>Sí, global</td>
+							<td>No: $Wy$ es endógeno y OLS es sesgado e inconsistente. ML, 2SLS/IV, GMM o bayesiano</td>
+						</tr>
+						<tr>
+							<td><strong>SEM</strong></td>
+							<td>$Wu$</td>
+							<td>No</td>
+							<td>OLS insesgado pero ineficiente, errores estándar sesgados. ML, GMM (Kelejian y Prucha) o FGLS</td>
+						</tr>
+						<tr>
+							<td><strong>SDM</strong></td>
+							<td>$Wy$, $WX$</td>
+							<td>Sí, global</td>
+							<td>No. ML, IV o bayesiano</td>
+						</tr>
+						<tr>
+							<td><strong>SDEM</strong></td>
+							<td>$WX$, $Wu$</td>
+							<td>Sí, local</td>
+							<td>OLS ineficiente. ML o GMM</td>
+						</tr>
+						<tr>
+							<td><strong>SAC</strong></td>
+							<td>$Wy$, $Wu$</td>
+							<td>Sí, global</td>
+							<td>No. ML o GS2SLS</td>
+						</tr>
+						<tr>
+							<td><strong>GNS</strong></td>
+							<td>$Wy$, $WX$, $Wu$</td>
+							<td>Sí, global</td>
+							<td>No. ML o bayesiano (débilmente identificado)</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section>
 				<h3>SAR</h3>
 				<p>Los modelos SAR incorporan la dependencia espacial incluyendo un rezago espacial de la variable dependiente, del término de error o de las variables exógenas. En esencia, agregan un componente autorregresivo que considera el promedio ponderado de los valores vecinos. Los modelos SAR suelen especificarse de la forma:</p>
 				<p> $y = \rho Wy + X\beta + \epsilon$</p>
