@@ -1,0 +1,1823 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Kriging con Python &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '14_Kriging';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/14_Kriging.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Procesos Gaussianos con Python" href="15_GP.html" />
+    <link rel="prev" title="Regresión Ponderada Geográficamente (GWR)" href="13_MGWR.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F14_Kriging.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/14_Kriging.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Kriging con Python</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodos-deterministicos">Métodos determinísticos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolacion-por-proximidad">Interpolación por proximidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-distance-weighted-idw">Inverse Distance Weighted (IDW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#triangulacion-de-delaunay">Triangulación de Delaunay</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolacion-de-thiessen-poligonos-de-voronoy">Interpolación de Thiessen (Poligonos de Voronoy)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriging">Kriging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-variogram">Experimental variogram</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-variograma">Modelos de Variograma</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros">Parámetros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-gstat">Scikit-Gstat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pykrige">Pykrige</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-kriging-universal">Ejemplo Kriging universal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herramientas">Herramientas</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://github.com/mmaelicke/scikit-gstat">Scikit GStat</a>, <a href="http://darribas.org/">Dani Arribas-Bel</a> - University of Liverpool y <a href="http://spatial.ucr.edu/peopleRey.html">Sergio Rey</a> - Center for Geospatial Sciences, University of California, Riverside. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="kriging-con-python">
+<h1>Kriging con Python<a class="headerlink" href="#kriging-con-python" title="Link to this heading">#</a></h1>
+<p>El tipo de análisis estadístico espacial que trata con variables de campo continuo se denomina <strong>geoestadística</strong>. La geoestadística se centra en la descripción de la variación espacial en un conjunto de valores observados y en su predicción en ubicaciones no muestreadas. La idea básica de la geoestadística es describir y estimar las correlaciones espaciales en un conjunto de datos puntuales. Aunque la herramienta principal, el variograma, es bastante fácil de implementar y usar, subyacen muchas suposiciones.</p>
+<p>La aplicación típica de la geoestadística es la interpolación. Por lo tanto, aunque se utilicen datos puntuales, un concepto básico es entender estos datos puntuales como una muestra de una variable continua (espacialmente) que puede describirse como un campo aleatorio, o para ser más precisos, como un campo aleatorio gaussiano en muchos casos. La suposición más fundamental en geoestadística es que dos valores xi y xi+h son más similares cuanto más pequeño sea h, que es una distancia de separación en el campo aleatorio. En otras palabras, los puntos de observación cercanos mostrarán mayores covarianzas que los puntos distantes. En caso de que esta suposición conceptual fundamental no se cumpla para una variable específica, la geoestadística no será la herramienta correcta para analizar e interpolar dicha variable.</p>
+<p>A veces, todo lo que tenemos disponible es un conjunto de puntos con mediciones de la variable de interés que no coinciden con los puntos para los que queremos la información. En esta situación, una solución en la que podemos confiar es la <strong>interpolación espacial</strong>. Para un campo geográfico continuo medido en un conjunto de puntos, los métodos de «interpolación espacial» nos proporcionan una forma de estimar el valor que tomaría un campo en sitios donde no hemos realizado mediciones.</p>
+<p>Existen muchas herramientas de interpolación disponibles, pero generalmente estas herramientas se pueden agrupar en dos categorías: métodos determinísticos y métodos de interpolación.</p>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Aplicar métodos de interpolación espacial determinísticos: vecino más cercano, IDW, Voronoi y Delaunay.</p></li>
+<li><p>Calcular e interpretar el variograma experimental como función de la distancia entre puntos.</p></li>
+<li><p>Ajustar modelos teóricos de variograma (esférico, exponencial, gaussiano) a los datos.</p></li>
+<li><p>Implementar Kriging Ordinario con <code class="docutils literal notranslate"><span class="pre">scikit-gstat</span></code> y <code class="docutils literal notranslate"><span class="pre">pykrige</span></code> para predecir valores en ubicaciones no muestreadas.</p></li>
+<li><p>Cuantificar y mapear la incertidumbre de las predicciones espaciales mediante la varianza de Kriging.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">01_DatosEspaciales</span></code> — datos espaciales y raster; nociones de estadística básica (correlación, varianza).</p>
+</section>
+<section id="metodos-deterministicos">
+<h2>Métodos determinísticos<a class="headerlink" href="#metodos-deterministicos" title="Link to this heading">#</a></h2>
+<section id="interpolacion-por-proximidad">
+<h3>Interpolación por proximidad<a class="headerlink" href="#interpolacion-por-proximidad" title="Link to this heading">#</a></h3>
+<p>Fue introducido por Alfred H. Thiessen hace más de un siglo. El objetivo es simple: asignar a todas las ubicaciones no muestreadas el valor de la ubicación muestreada más cercana. Esto genera una superficie teselada donde se conectan líneas que dividen el punto medio entre cada ubicación muestreada, encerrando así un área. Cada área termina rodeando un punto de muestra cuyo valor hereda.</p>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-proximity-1.png" width="1000"></center><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.neighbors</span><span class="w"> </span><span class="kn">import</span> <span class="n">KNeighborsRegressor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airbnbs</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">"https://raw.githubusercontent.com/gdsbook/book/main/data/airbnb/regression_db.geojson"</span><span class="p">)</span>
+<span class="n">airbnbs</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accommodates</th>
+      <th>bathrooms</th>
+      <th>bedrooms</th>
+      <th>beds</th>
+      <th>neighborhood</th>
+      <th>pool</th>
+      <th>d2balboa</th>
+      <th>coastal</th>
+      <th>price</th>
+      <th>log_price</th>
+      <th>id</th>
+      <th>pg_Apartment</th>
+      <th>pg_Condominium</th>
+      <th>pg_House</th>
+      <th>pg_Other</th>
+      <th>pg_Townhouse</th>
+      <th>rt_Entire_home/apt</th>
+      <th>rt_Private_room</th>
+      <th>rt_Shared_room</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>North Hills</td>
+      <td>0</td>
+      <td>2.972077</td>
+      <td>0</td>
+      <td>425.0</td>
+      <td>6.052089</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.12971 32.75399)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>Mission Bay</td>
+      <td>0</td>
+      <td>11.501385</td>
+      <td>1</td>
+      <td>205.0</td>
+      <td>5.323010</td>
+      <td>5570</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.25253 32.78421)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">airbnbs</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" src="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">two_bed_homes</span> <span class="o">=</span> <span class="n">airbnbs</span><span class="p">[</span><span class="n">airbnbs</span><span class="p">[</span><span class="s1">'bedrooms'</span><span class="p">]</span><span class="o">==</span><span class="mi">2</span> <span class="o">&amp;</span> <span class="n">airbnbs</span><span class="p">[</span><span class="s1">'rt_Entire_home/apt'</span><span class="p">]]</span>
+<span class="n">two_bed_homes</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+  <div id="df-87d0c743-a3c2-40e4-86df-4c6703d66357">
+    <div class="colab-df-container">
+      <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accommodates</th>
+      <th>bathrooms</th>
+      <th>bedrooms</th>
+      <th>beds</th>
+      <th>neighborhood</th>
+      <th>pool</th>
+      <th>d2balboa</th>
+      <th>coastal</th>
+      <th>price</th>
+      <th>log_price</th>
+      <th>id</th>
+      <th>pg_Apartment</th>
+      <th>pg_Condominium</th>
+      <th>pg_House</th>
+      <th>pg_Other</th>
+      <th>pg_Townhouse</th>
+      <th>rt_Entire_home/apt</th>
+      <th>rt_Private_room</th>
+      <th>rt_Shared_room</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>25</th>
+      <td>2</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>Pacific Beach</td>
+      <td>1</td>
+      <td>13.517509</td>
+      <td>1</td>
+      <td>60.0</td>
+      <td>4.094345</td>
+      <td>132966</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.25840 32.80855)</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>2</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>Ocean Beach</td>
+      <td>0</td>
+      <td>9.588707</td>
+      <td>1</td>
+      <td>99.0</td>
+      <td>4.595120</td>
+      <td>141523</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.24684 32.75057)</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+      <button class="colab-df-convert" onclick="convertToInteractive('df-87d0c743-a3c2-40e4-86df-4c6703d66357')"
+              title="Convert this dataframe to an interactive table."
+              style="display:none;">
+        
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+       width="24px">
+    <path d="M0 0h24v24H0V0z" fill="none"/>
+    <path d="M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z"/><path d="M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z"/>
+  </svg>
+      </button>
+      
+  <style>
+    .colab-df-container {
+      display:flex;
+      flex-wrap:wrap;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+      <script>
+        const buttonEl =
+          document.querySelector('#df-87d0c743-a3c2-40e4-86df-4c6703d66357 button.colab-df-convert');
+        buttonEl.style.display =
+          google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+        async function convertToInteractive(key) {
+          const element = document.querySelector('#df-87d0c743-a3c2-40e4-86df-4c6703d66357');
+          const dataTable =
+            await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                     [key], {});
+          if (!dataTable) return;
+
+          const docLinkHtml = 'Like what you see? Visit the ' +
+            '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+            + ' to learn more about interactive tables.';
+          element.innerHTML = '';
+          dataTable['output_type'] = 'display_data';
+          await google.colab.output.renderOutput(dataTable, element);
+          const docLink = document.createElement('div');
+          docLink.innerHTML = docLinkHtml;
+          element.appendChild(docLink);
+        }
+      </script>
+    </div>
+  </div>
+  </div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">two_bed_home_locations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">two_bed_homes</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">two_bed_homes</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="n">two_bed_home_locations</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">,:]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-117.25839672,   32.80854653],
+       [-117.24683514,   32.75057048],
+       [-117.15283799,   32.75173354],
+       [-117.25159972,   32.76473873],
+       [-117.24471021,   32.74097711],
+       [-117.2518276 ,   32.93523019],
+       [-117.14405391,   32.70807602],
+       [-117.1434337 ,   32.74946806],
+       [-117.13906285,   32.71533892],
+       [-117.12865252,   32.71993986]])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">airbnbs</span><span class="o">.</span><span class="n">total_bounds</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">ymin</span><span class="p">,</span><span class="n">ymax</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s2">"."</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/09bf7b5e65e065cb0276953d789940730721203a11a17a3cef2d0559e3e9bacb.png" src="_images/09bf7b5e65e065cb0276953d789940730721203a11a17a3cef2d0559e3e9bacb.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_df</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">geometry</span><span class="o">=</span><span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ax</span> <span class="o">=</span> <span class="n">grid_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">markersize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">two_bed_homes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7eff69708390&gt;
+</pre></div>
+</div>
+<img alt="_images/02ff67f2d84e9abc8553894b441d1b2cb1270a996cf8ebbed8e42f6f1e19c087.png" src="_images/02ff67f2d84e9abc8553894b441d1b2cb1270a996cf8ebbed8e42f6f1e19c087.png" />
+</div>
+</div>
+</section>
+<section id="inverse-distance-weighted-idw">
+<h3>Inverse Distance Weighted (IDW)<a class="headerlink" href="#inverse-distance-weighted-idw" title="Link to this heading">#</a></h3>
+<p>La técnica IDW calcula un valor promedio para las ubicaciones no muestreadas utilizando valores de ubicaciones cercanas ponderadas. Los pesos son proporcionales a la proximidad de los puntos muestreados a la ubicación no muestreada y pueden ser especificados por el coeficiente de potencia IDW.</p>
+<p><span class="math notranslate nohighlight">\(\hat{Z_j} = \frac{\sum_i{Z_i/d^n_{ij}}}{\sum_i{1/d^n_{ij}}}\)</span></p>
+<p>Donde <span class="math notranslate nohighlight">\(Z_j\)</span> es la variable de interes a interpolar a partir de los valores de sus vecinos <span class="math notranslate nohighlight">\(Z_i\)</span>, <span class="math notranslate nohighlight">\(d_{ij}\)</span> es la distancia entre el punto <span class="math notranslate nohighlight">\(j\)</span> y cada posición del vecino <span class="math notranslate nohighlight">\(i\)</span> , y <span class="math notranslate nohighlight">\(n\)</span> es un exponente. Cuando <span class="math notranslate nohighlight">\(n=0\)</span> todos los puntos vecinos pesas igual. Cuando <span class="math notranslate nohighlight">\(n\)</span> es grande hace que los puntos cercanos ejerzan una influencia mucho mayor en la ubicación no muestreada que un punto más alejado, lo que resulta en un resultado interpolado que se asemeja a una interpolación de Thiessen.</p>
+<p>A continuación se presenta un ejemplo del Vecino mas cercano (Knn) con IDW usando los 5 vecinos mas cercanos. La función <em>weights</em> que implementa el IDW tiene por defecto un valor de <span class="math notranslate nohighlight">\(n=1\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="s1">'distance'</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">two_bed_home_locations</span><span class="p">,</span> <span class="n">two_bed_homes</span><span class="o">.</span><span class="n">price</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KNeighborsRegressor(weights='distance')
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()))</span>
+<span class="n">predictions</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_df</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;AxesSubplot:&gt;
+</pre></div>
+</div>
+<img alt="_images/6dc72ea043e8ef828c6aa2d9667fabeac7574b273f510324750166369ed052e3.png" src="_images/6dc72ea043e8ef828c6aa2d9667fabeac7574b273f510324750166369ed052e3.png" />
+</div>
+</div>
+<p>Para implementar en esta librería la función <em>weights</em> con IDW utilizando un valor de <span class="math notranslate nohighlight">\(n\)</span> diferente, se debe crear una función de la siguiente manera la interpolación IDW con <span class="math notranslate nohighlight">\(𝑘=5\)</span> vecinos y exponente <span class="math notranslate nohighlight">\(𝑝=2\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">idw_weights</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+    <span class="c1"># evita división por cero si hay distancias nulas</span>
+    <span class="n">distances</span> <span class="o">=</span> <span class="n">distances</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">distances</span><span class="p">[</span><span class="n">distances</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1e-12</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">distances</span><span class="o">**</span><span class="n">p</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsRegressor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">idw_weights</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="triangulacion-de-delaunay">
+<h3>Triangulación de Delaunay<a class="headerlink" href="#triangulacion-de-delaunay" title="Link to this heading">#</a></h3>
+<p>Conecta los puntos que comparten un borde en sus celdas de Voronoi para formar una malla de triángulos que cumple la propiedad del círculo vacío (ningún punto interno al circuncírculo de un triángulo). Para cualquier triángulo hay un círculo único que pasa exactamente por sus tres vértices; se llama circuncírculo y su centro es el punto donde se cortan las mediatrices de los lados. En una triangulación de Delaunay, ningún otro punto de la nube de datos (fuera de esos tres vértices) está dentro de ese circuncírculo.</p>
+<p>Voronoi y Delaunay son duales, donde cada arista Voronoi es perpendicular y pasa por el punto medio de la arista Delaunay que conecta los dos sitios vecinos. Cada vértice Voronoi es el centro del circuncírculo de un triángulo Delaunay; a la inversa, cada triángulo Delaunay está formado por los sitios cuyas celdas convergen en ese vértice.</p>
+<p>La dualidad Voronoi ↔ Delaunay permite pasar fácilmente de un modelo basado en áreas de influencia (Thiessen/Voronoi) a uno basado en conectividad y mallas (Delaunay), ambos fundamentales en interpolación y análisis espacial.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">Delaunay</span>
+<span class="n">tri</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">(</span><span class="n">two_bed_home_locations</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">triplot</span><span class="p">(</span><span class="n">two_bed_home_locations</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">two_bed_home_locations</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">tri</span><span class="o">.</span><span class="n">simplices</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">two_bed_home_locations</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">two_bed_home_locations</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'o'</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x1d70bdfbe80&gt;]
+</pre></div>
+</div>
+<img alt="_images/f76c2aa7d874f3b90936b16e10efb24ead962dc17ac4acdb0eb0268a3b101ebd.png" src="_images/f76c2aa7d874f3b90936b16e10efb24ead962dc17ac4acdb0eb0268a3b101ebd.png" />
+</div>
+</div>
+</section>
+<section id="interpolacion-de-thiessen-poligonos-de-voronoy">
+<h3>Interpolación de Thiessen (Poligonos de Voronoy)<a class="headerlink" href="#interpolacion-de-thiessen-poligonos-de-voronoy" title="Link to this heading">#</a></h3>
+<p>Asigna al punto desconocido el valor de la muestra en cuyo polígono de Voronoi cae. Produce un mapa escalonado (función 0-orden). Los poligonos de Voronoy dividen el plano en celdas: cada punto del espacio pertenece al sitio muestreado más cercano. No depende de valores, solo de posiciones. Los poligonso de Voronoy son la base geométrica tanto de la <em>interpolación de Thiessen</em> (valor constante por celda) como de la versión <em>límite</em> del IDW cuando el exponente <span class="math notranslate nohighlight">\(𝑝\)</span> tiende a infinito.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">Voronoi</span><span class="p">,</span> <span class="n">voronoi_plot_2d</span>
+<span class="n">vor</span> <span class="o">=</span> <span class="n">Voronoi</span><span class="p">(</span><span class="n">two_bed_home_locations</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">voronoi_plot_2d</span><span class="p">(</span><span class="n">vor</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3cea426aeffcd607ef7b6c07018cd9a0e06b0b99946016a1a377341842785e6a.png" src="_images/3cea426aeffcd607ef7b6c07018cd9a0e06b0b99946016a1a377341842785e6a.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="kriging">
+<h2>Kriging<a class="headerlink" href="#kriging" title="Link to this heading">#</a></h2>
+<p>Existen varias formas de interpoladores kriging: ordinario, universal y simple, por nombrar algunos. Esta sección se centrará en la interpolación por kriging ordinario (OK). Esta forma de kriging generalmente involucra cuatro pasos:</p>
+<ul class="simple">
+<li><p>Eliminar cualquier tendencia espacial en los datos.</p></li>
+<li><p>Calcular el variograma experimental, γ, que es una medida de la autocorrelación espacial.</p></li>
+<li><p>Definir un modelo de variograma experimental que mejor caracterice la autocorrelación espacial en los datos.</p></li>
+<li><p>Interpolar la superficie utilizando el variograma experimental.</p></li>
+<li><p>Agregar la superficie interpolada por kriging a la superficie interpolada por tendencia para producir el resultado final.</p></li>
+</ul>
+<p>Nos interesa cómo varían estos valores de atributo a medida que aumenta la distancia entre pares de puntos de ubicación. Podemos calcular la diferencia, <span class="math notranslate nohighlight">\(γ\)</span>, en los valores al cuadrar sus diferencias y luego dividir por 2.</p>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f13-two-sites-1.png" width="1000"></center>
+<p>El variograma relaciona las distancias de separación por pares de las <code class="docutils literal notranslate"><span class="pre">coordenadas</span></code> y las relaciona con la <em>semivarianza</em> de los pares de <code class="docutils literal notranslate"><span class="pre">valores</span></code> correspondientes. El estimador predeterminado utilizado es el estimador de Matheron:</p>
+<div class="math notranslate nohighlight">
+\[ \gamma (h) = \frac{1}{2N(h)} * \sum_{i=1}^{N(h)}(Z(x_i) - Z(x_{i + h}))^2 \]</div>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>						$\gamma = \frac{(Z_2 - Z_1)^2}{2} = \frac{(-1.2 - (1.6))^2}{2} = 3.92$
+</pre></div>
+</div>
+<section id="experimental-variogram">
+<h3>Experimental variogram<a class="headerlink" href="#experimental-variogram" title="Link to this heading">#</a></h3>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-1.png" width="800"></center>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-sample-variogram-1.png" width="800"></center>
+</section>
+<section id="modelos-de-variograma">
+<h3>Modelos de Variograma<a class="headerlink" href="#modelos-de-variograma" title="Link to this heading">#</a></h3>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-variogram-models-1.png" width="800"></center>
+</section>
+<section id="parametros">
+<h3>Parámetros<a class="headerlink" href="#parametros" title="Link to this heading">#</a></h3>
+<center><img src="https://mgimond.github.io/Spatial/16-Spatial-Interpolation_files/figure-html/f14-model-explained-1.png" width="1000"></center></section>
+<section id="scikit-gstat">
+<h3>Scikit-Gstat<a class="headerlink" href="#scikit-gstat" title="Link to this heading">#</a></h3>
+<p><a class="reference external" href="https://scikit-gstat.readthedocs.io/en/latest/userguide/introduction.html">Scikit-gstat</a> es un módulo de análisis de geoestadística con un estilo similar a scipy. Incluye dos clases base: Variogram y OrdinaryKriging. Adicionalmente, se encuentran disponibles diversas clases de variogramas que heredan de Variogram para resolver tareas relacionadas con la dirección o espacio-tiempo. El módulo hace uso de una rica selección de estimadores de semivarianza y funciones de modelos de variogramas, mientras que sigue siendo extensible.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>scikit-gstat
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting scikit-gstat
+  Downloading scikit_gstat-1.0.16-py3-none-any.whl (708 kB)
+                                              0.0/708.3 kB ? eta -:--:--
+                                              10.2/708.3 kB ? eta -:--:--
+                                              10.2/708.3 kB ? eta -:--:--
+     -                                     30.7/708.3 kB 217.9 kB/s eta 0:00:04
+     -                                     30.7/708.3 kB 217.9 kB/s eta 0:00:04
+     -                                     30.7/708.3 kB 217.9 kB/s eta 0:00:04
+     ---                                   61.4/708.3 kB 217.9 kB/s eta 0:00:03
+     ---                                   71.7/708.3 kB 218.6 kB/s eta 0:00:03
+     ----                                  92.2/708.3 kB 275.8 kB/s eta 0:00:03
+     ------                               122.9/708.3 kB 300.4 kB/s eta 0:00:02
+     -------                              153.6/708.3 kB 339.7 kB/s eta 0:00:02
+     ---------                            194.6/708.3 kB 393.0 kB/s eta 0:00:02
+     -----------                          225.3/708.3 kB 416.7 kB/s eta 0:00:02
+     -----------                          225.3/708.3 kB 416.7 kB/s eta 0:00:02
+     -----------                          235.5/708.3 kB 400.1 kB/s eta 0:00:02
+     -------------                        256.0/708.3 kB 393.2 kB/s eta 0:00:02
+     --------------                       276.5/708.3 kB 405.9 kB/s eta 0:00:02
+     --------------                       286.7/708.3 kB 401.9 kB/s eta 0:00:02
+     --------------                       286.7/708.3 kB 401.9 kB/s eta 0:00:02
+     ----------------                     317.4/708.3 kB 385.4 kB/s eta 0:00:02
+     ----------------                     317.4/708.3 kB 385.4 kB/s eta 0:00:02
+     -----------------                    337.9/708.3 kB 367.8 kB/s eta 0:00:02
+     -----------------                    337.9/708.3 kB 367.8 kB/s eta 0:00:02
+     -----------------                    337.9/708.3 kB 367.8 kB/s eta 0:00:02
+     ------------------                   358.4/708.3 kB 332.5 kB/s eta 0:00:02
+     ------------------                   358.4/708.3 kB 332.5 kB/s eta 0:00:02
+     ------------------                   358.4/708.3 kB 332.5 kB/s eta 0:00:02
+     ------------------                   358.4/708.3 kB 332.5 kB/s eta 0:00:02
+     ------------------                   358.4/708.3 kB 332.5 kB/s eta 0:00:02
+     ------------------                   368.6/708.3 kB 290.2 kB/s eta 0:00:02
+     ------------------                   368.6/708.3 kB 290.2 kB/s eta 0:00:02
+     ------------------                   368.6/708.3 kB 290.2 kB/s eta 0:00:02
+     -------------------                  389.1/708.3 kB 275.5 kB/s eta 0:00:02
+     -------------------                  389.1/708.3 kB 275.5 kB/s eta 0:00:02
+     --------------------                 399.4/708.3 kB 262.0 kB/s eta 0:00:02
+     --------------------                 399.4/708.3 kB 262.0 kB/s eta 0:00:02
+     --------------------                 399.4/708.3 kB 262.0 kB/s eta 0:00:02
+     --------------------                 399.4/708.3 kB 262.0 kB/s eta 0:00:02
+     --------------------                 409.6/708.3 kB 241.2 kB/s eta 0:00:02
+     --------------------                 409.6/708.3 kB 241.2 kB/s eta 0:00:02
+     --------------------                 409.6/708.3 kB 241.2 kB/s eta 0:00:02
+     ---------------------                430.1/708.3 kB 231.6 kB/s eta 0:00:02
+     ---------------------                430.1/708.3 kB 231.6 kB/s eta 0:00:02
+     ---------------------                430.1/708.3 kB 231.6 kB/s eta 0:00:02
+     ----------------------               450.6/708.3 kB 227.2 kB/s eta 0:00:02
+     ----------------------               450.6/708.3 kB 227.2 kB/s eta 0:00:02
+     ----------------------               450.6/708.3 kB 227.2 kB/s eta 0:00:02
+     ----------------------               450.6/708.3 kB 227.2 kB/s eta 0:00:02
+     -----------------------              460.8/708.3 kB 215.2 kB/s eta 0:00:02
+     -----------------------              460.8/708.3 kB 215.2 kB/s eta 0:00:02
+     -----------------------              460.8/708.3 kB 215.2 kB/s eta 0:00:02
+     ------------------------             481.3/708.3 kB 212.3 kB/s eta 0:00:02
+     ------------------------             481.3/708.3 kB 212.3 kB/s eta 0:00:02
+     ------------------------             491.5/708.3 kB 205.3 kB/s eta 0:00:02
+     ------------------------             491.5/708.3 kB 205.3 kB/s eta 0:00:02
+     ------------------------             491.5/708.3 kB 205.3 kB/s eta 0:00:02
+     --------------------------           512.0/708.3 kB 203.2 kB/s eta 0:00:01
+     --------------------------           512.0/708.3 kB 203.2 kB/s eta 0:00:01
+     ---------------------------          532.5/708.3 kB 203.8 kB/s eta 0:00:01
+     ---------------------------          532.5/708.3 kB 203.8 kB/s eta 0:00:01
+     ---------------------------          542.7/708.3 kB 200.5 kB/s eta 0:00:01
+     ---------------------------          542.7/708.3 kB 200.5 kB/s eta 0:00:01
+     ---------------------------          542.7/708.3 kB 200.5 kB/s eta 0:00:01
+     ---------------------------          542.7/708.3 kB 200.5 kB/s eta 0:00:01
+     ----------------------------         563.2/708.3 kB 194.4 kB/s eta 0:00:01
+     ----------------------------         563.2/708.3 kB 194.4 kB/s eta 0:00:01
+     ----------------------------         563.2/708.3 kB 194.4 kB/s eta 0:00:01
+     ----------------------------         563.2/708.3 kB 194.4 kB/s eta 0:00:01
+     -----------------------------        573.4/708.3 kB 185.8 kB/s eta 0:00:01
+     -----------------------------        573.4/708.3 kB 185.8 kB/s eta 0:00:01
+     -----------------------------        573.4/708.3 kB 185.8 kB/s eta 0:00:01
+     ------------------------------       593.9/708.3 kB 183.1 kB/s eta 0:00:01
+     ------------------------------       593.9/708.3 kB 183.1 kB/s eta 0:00:01
+     ------------------------------       593.9/708.3 kB 183.1 kB/s eta 0:00:01
+     -------------------------------      614.4/708.3 kB 184.1 kB/s eta 0:00:01
+     -------------------------------      624.6/708.3 kB 183.7 kB/s eta 0:00:01
+     -------------------------------      624.6/708.3 kB 183.7 kB/s eta 0:00:01
+     --------------------------------     645.1/708.3 kB 184.7 kB/s eta 0:00:01
+     --------------------------------     645.1/708.3 kB 184.7 kB/s eta 0:00:01
+     --------------------------------     645.1/708.3 kB 184.7 kB/s eta 0:00:01
+     ---------------------------------    655.4/708.3 kB 181.9 kB/s eta 0:00:01
+     ---------------------------------    655.4/708.3 kB 181.9 kB/s eta 0:00:01
+     ---------------------------------    655.4/708.3 kB 181.9 kB/s eta 0:00:01
+     ----------------------------------   675.8/708.3 kB 181.3 kB/s eta 0:00:01
+     ----------------------------------   675.8/708.3 kB 181.3 kB/s eta 0:00:01
+     ----------------------------------   675.8/708.3 kB 181.3 kB/s eta 0:00:01
+     -----------------------------------  696.3/708.3 kB 177.7 kB/s eta 0:00:01
+     -----------------------------------  696.3/708.3 kB 177.7 kB/s eta 0:00:01
+     -----------------------------------  696.3/708.3 kB 177.7 kB/s eta 0:00:01
+     ------------------------------------ 708.3/708.3 kB 175.9 kB/s eta 0:00:00
+Requirement already satisfied: scipy in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (1.11.3)
+Requirement already satisfied: numpy in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (1.25.1)
+Requirement already satisfied: pandas in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (2.0.3)
+Requirement already satisfied: matplotlib in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (3.7.2)
+Requirement already satisfied: numba in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (0.58.1)
+Requirement already satisfied: scikit-learn in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (1.3.1)
+Requirement already satisfied: imageio in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (2.33.0)
+Requirement already satisfied: tqdm in c:\users\edier\miniconda3\lib\site-packages (from scikit-gstat) (4.65.0)
+Requirement already satisfied: pillow&gt;=8.3.2 in c:\users\edier\miniconda3\lib\site-packages (from imageio-&gt;scikit-gstat) (10.0.0)
+Requirement already satisfied: contourpy&gt;=1.0.1 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (1.1.0)
+Requirement already satisfied: cycler&gt;=0.10 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (0.11.0)
+Requirement already satisfied: fonttools&gt;=4.22.0 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (4.41.0)
+Requirement already satisfied: kiwisolver&gt;=1.0.1 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (1.4.4)
+Requirement already satisfied: packaging&gt;=20.0 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (23.0)
+Requirement already satisfied: pyparsing&lt;3.1,&gt;=2.3.1 in c:\users\edier\miniconda3\lib\site-packages (from matplotlib-&gt;scikit-gstat) (3.0.9)
+Requirement already satisfied: python-dateutil&gt;=2.7 in c:\users\edier\appdata\roaming\python\python311\site-packages (from matplotlib-&gt;scikit-gstat) (2.8.2)
+Requirement already satisfied: llvmlite&lt;0.42,&gt;=0.41.0dev0 in c:\users\edier\miniconda3\lib\site-packages (from numba-&gt;scikit-gstat) (0.41.1)
+Requirement already satisfied: pytz&gt;=2020.1 in c:\users\edier\miniconda3\lib\site-packages (from pandas-&gt;scikit-gstat) (2023.3)
+Requirement already satisfied: tzdata&gt;=2022.1 in c:\users\edier\miniconda3\lib\site-packages (from pandas-&gt;scikit-gstat) (2023.3)
+Requirement already satisfied: joblib&gt;=1.1.1 in c:\users\edier\miniconda3\lib\site-packages (from scikit-learn-&gt;scikit-gstat) (1.3.2)
+Requirement already satisfied: threadpoolctl&gt;=2.0.0 in c:\users\edier\miniconda3\lib\site-packages (from scikit-learn-&gt;scikit-gstat) (3.2.0)
+Requirement already satisfied: colorama in c:\users\edier\miniconda3\lib\site-packages (from tqdm-&gt;scikit-gstat) (0.4.6)
+Requirement already satisfied: six&gt;=1.5 in c:\users\edier\miniconda3\lib\site-packages (from python-dateutil&gt;=2.7-&gt;matplotlib-&gt;scikit-gstat) (1.16.0)
+Installing collected packages: scikit-gstat
+Successfully installed scikit-gstat-1.0.16
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">skgstat</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">skg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">skgstat</span><span class="w"> </span><span class="kn">import</span> <span class="n">Variogram</span><span class="p">,</span> <span class="n">OrdinaryKriging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/mmaelicke/scikit-gstat/master/docs/data/sample_sr.csv'</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>x</th>
+      <th>y</th>
+      <th>z</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>94</td>
+      <td>20</td>
+      <td>-0.394444</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>82</td>
+      <td>37</td>
+      <td>-2.283663</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.colorbar.Colorbar at 0x1d70c839610&gt;
+</pre></div>
+</div>
+<img alt="_images/b148e14aeaa2502366ca4c464a0af9a7caa1181280b1e64cc4c38dd55f778477.png" src="_images/b148e14aeaa2502366ca4c464a0af9a7caa1181280b1e64cc4c38dd55f778477.png" />
+</div>
+</div>
+<p>Ya podemos ver mucho desde aquí:</p>
+<ul class="simple">
+<li><p>Los valores pequeños parecen concentrarse en la esquina superior izquierda y en la esquina inferior derecha.</p></li>
+<li><p>Los valores más grandes están dispuestos como una banda desde la esquina inferior izquierda hasta la esquina superior derecha.</p></li>
+</ul>
+<p>La clase <a class="reference external" href="https://scikit-gstat.readthedocs.io/en/latest/reference/variogram.html">Variogram</a> requiere al menos dos argumentos: las coordenadas y los valores observados en esas ubicaciones. También se debe establecer explícitamente el parámetro <code class="docutils literal notranslate"><span class="pre">normalize</span></code>, ya que en la versión 0.2.8 su valor predeterminado cambia a <code class="docutils literal notranslate"><span class="pre">False</span></code>. Este atributo afecta únicamente el trazado, no los valores del variograma. Además, el número de bins se establece en 20, ya que tenemos bastantes observaciones y el valor predeterminado de 10 es innecesariamente pequeño. El parámetro <code class="docutils literal notranslate"><span class="pre">maxlag</span></code> establece la distancia máxima para el último bin. Sabemos por el gráfico anterior que valores mayores a 60 unidades no son realmente significativos. Para más detalles, por favor consulta la <a class="reference external" href="https://mmaelicke.github.io/scikit-gstat/userguide/variogram.html#experimental-variograms">Guía del Usuario</a> y el <a class="reference external" href="https://mmaelicke.github.io/scikit-gstat/">Libro</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span> <span class="o">=</span> <span class="n">Variogram</span><span class="p">(</span><span class="n">data</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="s2">"entropy"</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s2">"spherical"</span><span class="p">,</span> <span class="n">maxlag</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">n_lags</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">V</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\usuario\miniconda3\envs\geospatial\lib\site-packages\skgstat\plotting\variogram_plot.py:123: UserWarning: Matplotlib is currently using module://ipykernel.pylab.backend_inline, which is a non-GUI backend, so cannot show the figure.
+  fig.show()
+</pre></div>
+</div>
+<img alt="_images/776cad9fb63bc08d36d0828649d872098b45ce48746f929d97dcfb9a8ba1c0a4.png" src="_images/776cad9fb63bc08d36d0828649d872098b45ce48746f929d97dcfb9a8ba1c0a4.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{'model': 'spherical', 'estimator': 'matheron', 'dist_func': 'euclidean', 'normalized_effective_range': 2281.7783283856843, 'normalized_sill': 1.8366472766475495, 'normalized_nugget': 0, 'effective_range': 38.02963880642807, 'sill': 1.2512444944568355, 'nugget': 0, 'params': {'estimator': 'matheron', 'model': 'spherical', 'dist_func': 'euclidean', 'bin_func': 'even', 'normalize': False, 'fit_method': 'trf', 'fit_sigma': None, 'use_nugget': False, 'maxlag': 60, 'n_lags': 20, 'verbose': False}, 'kwargs': {}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">V</span><span class="o">.</span><span class="n">distance_difference_plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\usuario\miniconda3\envs\geospatial\lib\site-packages\skgstat\plotting\variogram_dd_plot.py:49: UserWarning: Matplotlib is currently using module://ipykernel.pylab.backend_inline, which is a non-GUI backend, so cannot show the figure.
+  fig.show()
+</pre></div>
+</div>
+<img alt="_images/67af085e71497acd1d56fcc831ec646dcdf08ed1f0561180370a153a51e8679e.png" src="_images/67af085e71497acd1d56fcc831ec646dcdf08ed1f0561180370a153a51e8679e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># apply binning</span>
+<span class="nb">bin</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">skg</span><span class="o">.</span><span class="n">binning</span><span class="o">.</span><span class="n">even_width_lags</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># get the histogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">V</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([ 96., 191., 285., 378., 466., 516., 625., 610., 619., 714., 705.,
+        717., 802., 756., 752., 793., 837., 761., 836., 760.]),
+ array([ 1.  ,  3.95,  6.9 ,  9.85, 12.8 , 15.75, 18.7 , 21.65, 24.6 ,
+        27.55, 30.5 , 33.45, 36.4 , 39.35, 42.3 , 45.25, 48.2 , 51.15,
+        54.1 , 57.05, 60.  ]),
+ &lt;BarContainer object of 20 artists&gt;)
+</pre></div>
+</div>
+<img alt="_images/395303a801da39f4793e41458d92653443766d4afc671e23e433a7b9ea699f23.png" src="_images/395303a801da39f4793e41458d92653443766d4afc671e23e433a7b9ea699f23.png" />
+</div>
+</div>
+<p>El subgráfico superior muestra el histograma del conteo de pares de puntos en cada clase de retraso (lag). Se pueden observar varias cosas aquí:</p>
+<p>Como era de esperarse, existe una clara dependencia espacial, ya que la semivarianza aumenta con la distancia (puntos azules).
+El modelo de variograma esférico predeterminado está bien ajustado a los datos experimentales.
+La forma de la dependencia no se captura del todo bien, pero es suficientemente aceptable para este ejemplo.</p>
+<p>El valor de meseta (sill) del variograma debería corresponder con la varianza del campo. El campo es desconocido, pero podemos comparar la meseta con la varianza de la muestra:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">z</span><span class="o">.</span><span class="n">var</span><span class="p">())</span> <span class="c1">#sample variance</span>
+<span class="n">V</span><span class="o">.</span><span class="n">describe</span><span class="p">()[</span><span class="s1">'sill'</span><span class="p">]</span> <span class="c1"># Variogram sill</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.104387967773688
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1.2553698540989082
+</pre></div>
+</div>
+</div>
+</div>
+<p>La clase <code class="docutils literal notranslate"><span class="pre">Kriging</span></code> ahora usará el Variograma de arriba para estimar los pesos de Kriging para cada celda de la cuadrícula. Esto se realiza resolviendo un sistema de ecuaciones lineales. Para una ubicación no observada <span class="math notranslate nohighlight">\(s_0\)</span>, podemos usar las distancias a 5 puntos de observación y construir el sistema de la siguiente manera:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{pmatrix}
+\gamma(s_1, s_1) &amp; \gamma(s_1, s_2) &amp; \gamma(s_1, s_3) &amp; \gamma(s_1, s_4) &amp; \gamma(s_1, s_5) &amp; 1\\
+\gamma(s_2, s_1) &amp; \gamma(s_2, s_2) &amp; \gamma(s_2, s_3) &amp; \gamma(s_2, s_4) &amp; \gamma(s_2, s_5) &amp; 1\\
+\gamma(s_3, s_1) &amp; \gamma(s_3, s_2) &amp; \gamma(s_3, s_3) &amp; \gamma(s_3, s_4) &amp; \gamma(s_3, s_5) &amp; 1\\
+\gamma(s_4, s_1) &amp; \gamma(s_4, s_2) &amp; \gamma(s_4, s_3) &amp; \gamma(s_4, s_4) &amp; \gamma(s_4, s_5) &amp; 1\\
+\gamma(s_5, s_1) &amp; \gamma(s_5, s_2) &amp; \gamma(s_5, s_3) &amp; \gamma(s_5, s_4) &amp; \gamma(s_5, s_5) &amp; 1\\
+1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 0 \\
+\end{pmatrix} *
+\begin{bmatrix}
+\lambda_1 \\
+\lambda_2 \\
+\lambda_3 \\
+\lambda_4 \\
+\lambda_5 \\
+\mu \\
+\end{bmatrix} =
+\begin{pmatrix}
+\gamma(s_0, s_1) \\
+\gamma(s_0, s_2) \\
+\gamma(s_0, s_3) \\
+\gamma(s_0, s_4) \\
+\gamma(s_0, s_5) \\
+1 \\
+\end{pmatrix}
+\end{split}\]</div>
+<p>En consecuencia, la clase <code class="docutils literal notranslate"><span class="pre">OrdinaryKriging</span></code> necesita un objeto <code class="docutils literal notranslate"><span class="pre">Variogram</span></code> como atributo obligatorio. Dos atributos opcionales muy importantes son <code class="docutils literal notranslate"><span class="pre">min_points</span></code> y <code class="docutils literal notranslate"><span class="pre">max_points</span></code>, los cuales limitan el tamaño del sistema de ecuaciones de Kriging. Como tenemos 200 observaciones, podemos requerir al menos 5 vecinos dentro del rango. Más de 15 solo ralentizaría innecesariamente la computación. El atributo <code class="docutils literal notranslate"><span class="pre">mode='exact'</span></code> indicará a la clase que construya y resuelva el sistema anterior para cada ubicación.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ok</span> <span class="o">=</span> <span class="n">OrdinaryKriging</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">min_points</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_points</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'exact'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>El método <code class="docutils literal notranslate"><span class="pre">transform</span></code> aplicará la interpolación para los arreglos de coordenadas pasados. Requiere cada dimensión como un solo arreglo 1D. Podemos fácilmente construir una malla (meshgrid) de 100x100 coordenadas y pasarlas al interpolador. Para recibir un resultado en 2D, simplemente podemos reestructurar el resultado. El error de Kriging estará disponible como el atributo <code class="docutils literal notranslate"><span class="pre">sigma</span></code> del interpolador.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># build the target grid</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">99</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">99</span><span class="p">:</span><span class="mi">100</span><span class="n">j</span><span class="p">]</span>
+<span class="n">field</span> <span class="o">=</span> <span class="n">ok</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">ok</span><span class="o">.</span><span class="n">sigma</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="n">art</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'lower'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'plasma'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Interpolation'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">'+k'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">art</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">art</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">s2</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'lower'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'YlGn_r'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Kriging Error'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">art</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">'+w'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">100</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/3a149214ae49762f0eb748b7d9a6f981dfaba922406259387c9890aa40c559f3.png" src="_images/3a149214ae49762f0eb748b7d9a6f981dfaba922406259387c9890aa40c559f3.png" />
+</div>
+</div>
+</section>
+<section id="pykrige">
+<h3>Pykrige<a class="headerlink" href="#pykrige" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>pykrige
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Collecting pykrige
+  Downloading PyKrige-1.7.1-cp311-cp311-win_amd64.whl (183 kB)
+                                              0.0/183.9 kB ? eta -:--:--
+     --                                       10.2/183.9 kB ? eta -:--:--
+     --                                       10.2/183.9 kB ? eta -:--:--
+     --                                       10.2/183.9 kB ? eta -:--:--
+     --                                       10.2/183.9 kB ? eta -:--:--
+     --                                       10.2/183.9 kB ? eta -:--:--
+     ------                                 30.7/183.9 kB 93.5 kB/s eta 0:00:02
+     --------                              41.0/183.9 kB 115.9 kB/s eta 0:00:02
+     ------------                          61.4/183.9 kB 164.1 kB/s eta 0:00:01
+     ----------------------               112.6/183.9 kB 273.1 kB/s eta 0:00:01
+     ------------------------             122.9/183.9 kB 266.9 kB/s eta 0:00:01
+     ------------------------------       153.6/183.9 kB 305.7 kB/s eta 0:00:01
+     ------------------------------------ 183.9/183.9 kB 327.1 kB/s eta 0:00:00
+Requirement already satisfied: numpy&lt;2,&gt;=1.14.5 in c:\users\edier\miniconda3\lib\site-packages (from pykrige) (1.25.1)
+Requirement already satisfied: scipy&lt;2,&gt;=1.1.0 in c:\users\edier\miniconda3\lib\site-packages (from pykrige) (1.11.3)
+Installing collected packages: pykrige
+Successfully installed pykrige-1.7.1
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Generate synthetic data: 50 points</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># Para reproducibilidad</span>
+<span class="n">x_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">y_coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x_coords</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">y_coords</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># Plotting the synthetic data</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Value'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'X Coordinate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Y Coordinate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Synthetic Spatial Data'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/8191a7120b4f968a10caba80b46011bf2a107ec15b51c61e2da9f4c504e99b4e.png" src="_images/8191a7120b4f968a10caba80b46011bf2a107ec15b51c61e2da9f4c504e99b4e.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pykrige.ok</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrdinaryKriging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pykrige.kriging_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_asc_grid</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pykrige.kriging_tools</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">kt</span>
+
+<span class="c1"># Create the Ordinary Kriging object</span>
+<span class="n">OK</span> <span class="o">=</span> <span class="n">OrdinaryKriging</span><span class="p">(</span>
+    <span class="n">x_coords</span><span class="p">,</span>
+    <span class="n">y_coords</span><span class="p">,</span>
+    <span class="n">values</span><span class="p">,</span>
+    <span class="n">variogram_model</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">enable_plotting</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Generate a grid</span>
+<span class="n">gridx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">gridy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Perform kriging</span>
+<span class="n">z</span><span class="p">,</span> <span class="n">ss</span> <span class="o">=</span> <span class="n">OK</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">'grid'</span><span class="p">,</span> <span class="n">gridx</span><span class="p">,</span> <span class="n">gridy</span><span class="p">)</span>
+
+<span class="c1"># z is the interpolated values</span>
+<span class="c1"># ss is the squared error</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">'lower'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>  <span class="c1"># original data points</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">'Interpolated Value'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Kriging Interpolation of Synthetic Data'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'X Coordinate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Y Coordinate'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/5ae1cc8320b11f1988e577682302fe9ec973c8dda78ed2e8a1f1150a602352fd.png" src="_images/5ae1cc8320b11f1988e577682302fe9ec973c8dda78ed2e8a1f1150a602352fd.png" />
+</div>
+</div>
+</section>
+<section id="ejemplo-kriging-universal">
+<h3>Ejemplo Kriging universal<a class="headerlink" href="#ejemplo-kriging-universal" title="Link to this heading">#</a></h3>
+<p>El Kriging Universal se utiliza cuando se sospecha que existe una tendencia espacial en los datos, es decir, que la media de la variable no es constante en todo el dominio de estudio. En contraste con el Kriging Ordinario, que asume una media constante, el Kriging Universal permite modelar esta tendencia espacial y obtener mejores predicciones en presencia de variaciones en la media. En kriging universal (o regression-kriging/kriging con deriva externa) la predicción en un punto nuevo <span class="math notranslate nohighlight">\(𝑠_0\)</span> se descompone en dos piezas:</p>
+<p>donde <span class="math notranslate nohighlight">\(𝑒(𝑠_𝑖)=𝑍(𝑠_𝑖)−𝑚(𝑠_𝑖)\)</span></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 1. Toy data: coordinates (x,y), covariate (elevation) and target variable (temperature)</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">"x"</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+    <span class="s2">"y"</span><span class="p">:</span>   <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="s2">"elev"</span><span class="p">:[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">105</span><span class="p">],</span>
+    <span class="s2">"temp"</span><span class="p">:[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">12.0</span><span class="p">,</span> <span class="mf">13.0</span><span class="p">]</span>
+<span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">"A"</span><span class="p">,</span><span class="s2">"B"</span><span class="p">,</span><span class="s2">"C"</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Observations"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># target location</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">elev0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">115</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target point P = (</span><span class="si">{</span><span class="n">x0</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">y0</span><span class="si">}</span><span class="s2">), elevation = </span><span class="si">{</span><span class="n">elev0</span><span class="si">}</span><span class="s2"> m</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 2. Trend (drift): linear regression temp ~ elev</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"elev"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"temp"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">beta1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">bias</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="n">beta0</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">beta1</span><span class="o">*</span><span class="n">e</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trend model  m(s) = β0 + β1*elev</span><span class="se">\n</span><span class="s2">β0 = </span><span class="si">{</span><span class="n">beta0</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, β1 = </span><span class="si">{</span><span class="n">beta1</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">beta0</span> <span class="o">+</span> <span class="n">beta1</span><span class="o">*</span><span class="n">e</span>            <span class="c1"># trend at sample points</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">z</span> <span class="o">-</span> <span class="n">m</span>                    <span class="c1"># residuals</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Trend at sample points  m_i:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Residuals e_i = z_i - m_i:"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">res</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># trend at target</span>
+<span class="n">m0</span> <span class="o">=</span> <span class="n">beta0</span> <span class="o">+</span> <span class="n">beta1</span><span class="o">*</span><span class="n">elev0</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trend at target m0 = </span><span class="si">{</span><span class="n">m0</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 3. Empirical semivariogram of residuals</span>
+<span class="c1">#    γ_ij = 0.5*(e_i - e_j)^2</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">data</span><span class="p">[[</span><span class="s2">"x"</span><span class="p">,</span><span class="s2">"y"</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">gamma_ij</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_ij</span>  <span class="o">=</span> <span class="p">[]</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">coords</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">res</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">dist_ij</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="n">gamma_ij</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+
+<span class="n">df_emp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"pair"</span><span class="p">:</span><span class="n">pairs</span><span class="p">,</span> <span class="s2">"dist"</span><span class="p">:</span><span class="n">dist_ij</span><span class="p">,</span> <span class="s2">"gamma"</span><span class="p">:</span><span class="n">gamma_ij</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Empirical semi‑variogram (residuals):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_emp</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 4. Fit a very simple variogram model: linear γ(h)=a*h</span>
+<span class="c1">#    a = average(γ/h) over all pairs</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gamma_ij</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dist_ij</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Linear model  γ(h) = a·h  with  a = </span><span class="si">{</span><span class="n">a</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gamma_linear</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">h</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 5. Build Universal Kriging system</span>
+<span class="c1">#    [ Γ   F ][λ] = [γ0]</span>
+<span class="c1">#    [ Fᵀ  0 ][μ]   [f0]</span>
+<span class="c1"># -----------------------------</span>
+<span class="c1"># Γ matrix</span>
+<span class="n">Gamma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">coords</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="n">Gamma</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">gamma_linear</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>  <span class="c1"># γ(h)</span>
+        
+<span class="c1"># F matrix (intercept + covariate)</span>
+<span class="n">F</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">e</span><span class="p">))</span>
+
+<span class="c1"># right‑hand side</span>
+<span class="n">gamma0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">gamma_linear</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span><span class="n">y0</span><span class="p">]</span><span class="o">-</span><span class="n">coords</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)])</span>
+<span class="n">f0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">elev0</span><span class="p">])</span>
+
+<span class="c1"># assemble system</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">block</span><span class="p">([[</span><span class="n">Gamma</span><span class="p">,</span> <span class="n">F</span><span class="p">],</span>
+              <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">gamma0</span><span class="p">,</span> <span class="n">f0</span><span class="p">])</span>
+
+<span class="c1"># solve</span>
+<span class="n">solution</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">lam</span> <span class="o">=</span> <span class="n">solution</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>      <span class="c1"># kriging weights</span>
+<span class="n">mu</span>  <span class="o">=</span> <span class="n">solution</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span>      <span class="c1"># Lagrange multipliers</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Kriging system solution"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"λ (weights):"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"μ (multipliers):"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># -----------------------------</span>
+<span class="c1"># 6. Prediction and variance</span>
+<span class="c1"># -----------------------------</span>
+<span class="n">Zhat</span> <span class="o">=</span> <span class="n">m0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>         <span class="c1"># universal kriging estimator</span>
+<span class="n">sigma2_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">gamma0</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">f0</span><span class="p">)</span>  <span class="c1"># kriging variance</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Predicted temperature at P: Ẑ = </span><span class="si">{</span><span class="n">Zhat</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> °C"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Kriging variance at P    : σ²_k = </span><span class="si">{</span><span class="n">sigma2_k</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Paso</p></th>
+<th class="head"><p>¿Qué hicimos?</p></th>
+<th class="head"><p>Resultado clave</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>1. Datos</strong></p></td>
+<td><p>3 puntos con <span class="math notranslate nohighlight">\(x,y\)</span>, elevación y temperatura</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>2. Tendencia (drift)</strong></p></td>
+<td><p>Ajustamos <span class="math notranslate nohighlight">\(m(\mathbf{s})=\beta_0+\beta_1\,\text{elev}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat\beta_0=-9.33,\;\hat\beta_1=0.20\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>3. Residuos</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(e_i = Z_i - \hat m_i\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\([-0.67,\,-0.67,\,1.33]\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>4. Semivariograma empírico</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat\gamma_{ij}=0.5\,(e_i-e_j)^2\)</span></p></td>
+<td><p>ver tabla “Empirical semi-variogram”</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>5. Modelo de variograma</strong></p></td>
+<td><p>Ajuste lineal <span class="math notranslate nohighlight">\(\gamma(h)=a\,h\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(a\approx1.14\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>6. Sistema de kriging universal</strong></p></td>
+<td><p>construimos la matriz <span class="math notranslate nohighlight">\([\Gamma\;F;F^\top\;0]\)</span> y la resolvemos</p></td>
+<td><p>pesos <span class="math notranslate nohighlight">\(\lambda=[-0.79,\,1.21,\,0.59]\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><strong>7. Predicción</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat Z(P)=\hat m_0+\sum \lambda_i e_i\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\hat Z=14.17^{\circ}\text{C}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>8. Varianza</strong></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_k^2=\lambda^\top\gamma_0+\mu^\top f_0\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\sigma_k^2=2.57\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Comparación de métodos de interpolación:</strong> Usando los datos de precipitación del dataset, aplica cuatro métodos de interpolación: Vecino más cercano, IDW (p=2), Triangulación de Delaunay y Kriging Ordinario. Para evaluar cada método, usa validación cruzada leave-one-out y reporta el RMSE. ¿Cuál método produce el menor error?</p></li>
+<li><p><strong>Ajuste del variograma:</strong> Para el mismo dataset de precipitación, calcula el variograma experimental y ajusta tres modelos teóricos: Esférico, Exponencial y Gaussiano. Compara el ajuste visual de cada modelo. ¿Cómo cambian las predicciones de Kriging según el modelo de variograma elegido?</p></li>
+<li><p><strong>Interpolación con incertidumbre:</strong> Con el Kriging Ordinario, además de los valores predichos, extrae la varianza de predicción (kriging variance). Mapea tanto la predicción como la incertidumbre. ¿En qué zonas es mayor la incertidumbre y por qué? ¿Cómo podría usarse este mapa de incertidumbre en la toma de decisiones?</p></li>
+<li><p><strong>Universal Kriging:</strong> Ajusta un Universal Kriging incorporando la elevación como tendencia de primer orden (drift). Compara las predicciones con el Kriging Ordinario. En zonas de alta montaña, ¿mejora significativamente el ajuste al incluir la tendencia altitudinal?</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://scikit-gstat.readthedocs.io/">scikit-gstat Documentation</a></p></li>
+<li><p><a class="reference external" href="https://geostat-framework.readthedocs.io/projects/pykrige/">pykrige Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/spatial.html">SciPy Spatial — Voronoi, Delaunay</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Cressie, N. (1993). <em>Statistics for Spatial Data</em> (rev. ed.). Wiley.</p></li>
+<li><p>Goovaerts, P. (1997). <em>Geostatistics for Natural Resources Evaluation</em>. Oxford University Press.</p></li>
+<li><p>Matheron, G. (1963). Principles of geostatistics. <em>Economic Geology</em>, 58(8), 1246–1266.</p></li>
+<li><p>Webster, R. &amp; Oliver, M. A. (2007). <em>Geostatistics for Environmental Scientists</em> (2nd ed.). Wiley.</p></li>
+<li><p>Pebesma, E. J. (2004). Multivariable geostatistics in S: The gstat package. <em>Computers &amp; Geosciences</em>, 30(7), 683–691.</p></li>
+</ul>
+</section>
+<section id="herramientas">
+<h3>Herramientas<a class="headerlink" href="#herramientas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.gslib.com/">GSLIB — Geostatistical Library</a></p></li>
+<li><p><a class="reference external" href="https://www.ai-geostats.org/">Variogram Tutorial — AI Geostats</a></p></li>
+<li><p><a class="reference external" href="https://gatorglaciology.github.io/gstatsimbook/intro.html">GStatSim — Geostatistical Simulation in Python</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="13_MGWR.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Regresión Ponderada Geográficamente (GWR)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="15_GP.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Procesos Gaussianos con Python</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metodos-deterministicos">Métodos determinísticos</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolacion-por-proximidad">Interpolación por proximidad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-distance-weighted-idw">Inverse Distance Weighted (IDW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#triangulacion-de-delaunay">Triangulación de Delaunay</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpolacion-de-thiessen-poligonos-de-voronoy">Interpolación de Thiessen (Poligonos de Voronoy)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kriging">Kriging</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#experimental-variogram">Experimental variogram</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-variograma">Modelos de Variograma</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parametros">Parámetros</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-gstat">Scikit-Gstat</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pykrige">Pykrige</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-kriging-universal">Ejemplo Kriging universal</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herramientas">Herramientas</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

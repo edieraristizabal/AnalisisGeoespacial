@@ -1,0 +1,1895 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modelos de regresión para dependencia espacial tipo SAR &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '10_SAR';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/10_SAR.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Modelos de regresión para dependencia espacial tipo CAR" href="11_CAR.html" />
+    <link rel="prev" title="Regresión Espacial" href="09_SpatialRegression.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F10_SAR.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/10_SAR.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modelos de regresión para dependencia espacial tipo SAR</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-exogena-entre-las-variables-predictoras">Efectos de autocorrelación exógena entre las variables predictoras</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-endogena-con-el-error-espacial">Efectos de autocorrelación endógena con el error espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-endogena-con-la-variable-dependiente">Efectos de autocorrelación endógena con la variable dependiente</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-python">Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>Python</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-regresion-espacial-sar-en-r">Modelos de regresión espacial SAR en R</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slx-spatially-lagged-x-model">SLX (Spatially Lagged X) Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-error-model-sem">Spatial Error Model (SEM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-lag-model-sar">Spatial Lag Model (SAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-durbin-model-sdm">Spatial Durbin Model (SDM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-durbin-error-model-sdem">Spatial Durbin Error Model (SDEM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sac-model">SAC model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mansky-sarar-gns-model">Mansky (SARAR/GNS) Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-r">Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>R</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tutoriales">Tutoriales</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="http://darribas.org/">Dani Arribas-Bel</a> - University of Liverpool y <a href="http://spatial.ucr.edu/peopleRey.html">Sergio Rey</a> - Center for Geospatial Sciences, University of California, Riverside. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="modelos-de-regresion-para-dependencia-espacial-tipo-sar">
+<h1>Modelos de regresión para dependencia espacial tipo SAR<a class="headerlink" href="#modelos-de-regresion-para-dependencia-espacial-tipo-sar" title="Link to this heading">#</a></h1>
+<p>La heterogeneidad espacial se trata de efectos de fenómenos que están <strong>explícitamente vinculados</strong>
+a la geografía y que, por lo tanto, causan variación espacial y agrupamiento. Esto
+abarca muchos de los tipos de efectos espaciales en los que podemos estar interesados cuando ajustamos
+regresiones lineales. Sin embargo, en otros casos, nuestro enfoque está en el efecto de la <strong>configuración espacial</strong>
+de las observaciones, y en qué medida eso afecta al resultado que estamos considerando. Por ejemplo, podríamos pensar que el precio de una casa no
+solo depende de si es un adosado o un apartamento, sino también de si está rodeada de muchos más adosados que rascacielos con más
+apartamentos. Esto, podríamos hipotetizar, podría estar relacionado con la diferente «apariencia» que tiene un
+vecindario con edificios históricos de baja altura en comparación con uno con
+rascacielos modernos. En la medida en que estas dos configuraciones espaciales diferentes
+entren de manera diferente en el proceso de determinación del precio de la casa, estaremos
+interesados en capturar no solo las características de una casa, sino también de
+las que la rodean.
+Este tipo de efecto espacial es fundamentalmente diferente
+de la heterogeneidad espacial en que no está relacionado con características inherentes de la geografía sino que se relaciona
+con las características de las observaciones en nuestro conjunto de datos y, especialmente, con su disposición espacial. Llamamos a este fenómeno por el cual los valores de las observaciones están relacionados
+entre sí a través de la distancia <strong>dependencia espacial</strong>.</p>
+<p>Para incorporar la dependencia espacial en los modelos, se puede utilizar los llamados Modelos Autoregresivos Simultáneos (Whittle 1954), los cuales permiten modelar la dependencia espacial a través de la inclusión de una matriz de vecindad. Esta matriz define la estructura de los vecinos de cada unidad de mapeo, ya sea en función de la distancia entre unidades o a partir de relaciones de contigüidad (Anselin 1996, Elhorst 2014).</p>
+<p>Los modelos SAR son ampliamente utilizados en econometría y geografía, así como en otros campos que requieren un análisis espacial riguroso, como la epidemiología y la planificación urbana (Elhorst 2022, Rey et al. 2023, Jaya 2021, ver Hoef et al.2018). Sin embargo, la aplicación de algunos de estos modelos requiere de técnicas especiales, ya que la estructura de dependencia espacial puede introducir complicaciones que no están presentes en los modelos estadísticos clásicos (Anselin 1990).</p>
+<p>Los modelos de autoregresión espacial son un tipo de modelo estadístico utilizado para capturar y modelar la dependencia espacial entre unidades de análisis geográficas (Whittle 1954, Getis 2009, Stakhovych 2009, Ripley 1988). En lugar de asumir que las observaciones son independientes entre sí, estos modelos reconocen que las unidades cercanas en el espacio tienden a presentar valores similares (Anselin 1988`).</p>
+<p>Estos modelos son ampliamente utilizados en análisis espaciales debido a su capacidad para incluir explícitamente la estructura de dependencia entre las unidades vecinas a través de matrices de vecindad (Lesage 2011, Kelejian 2007). Esta matriz introduce el componente espacial, permitiendo que el valor de la variable respuesta en cada unidad de análisis se vea influido por los valores de las unidades vecinas. Esto permite modelar explícitamente el efecto que tienen los vecinos en la variable de interés.</p>
+<p>Sin embargo, los modelos de autoregresión espacial también presentan algunas limitaciones (Lesage 2011, Anselin 2022). La estimación de los parámetros en los modelos de autoregresión espacial puede ser compleja, especialmente cuando se trabaja con grandes conjuntos de datos y matrices de vecindad densas. Adicionalmente, la definición de la matriz de vecindad es fundamental, y una elección incorrecta puede llevar a resultados sesgados o poco representativos.</p>
+<p>La ecuación básica de un modelo de autoregresión simultaneo se puede representar de la siguiente manera (Cliff 1981, Kelejian 2007, Lesage 2009):</p>
+<div class="math notranslate nohighlight">
+\[Y = \rho W Y + X \beta + \epsilon\]</div>
+<p>donde el término <span class="math notranslate nohighlight">\(\rho\)</span> introduce el componente espacial, permitiendo que el valor de la variable respuesta Y en cada unidad de análisis esté influido por los valores de las unidades vecinas, ponderados por la matriz de vecindad (W). <span class="math notranslate nohighlight">\(\beta\)</span> es el vector de coeficientes de regresión asociados a las variables predictoras (X). Estos coeficientes reflejan la influencia de cada variable en la variable respuesta Y. <span class="math notranslate nohighlight">\(\epsilon\)</span> es el término de error aleatorio distribuido de manera independiente e idéntica con media cero, que recoge la variabilidad no explicada por el modelo.</p>
+<p>En los modelos de autoregresión simultaneo (SAR) de forma estricta la dependencia espacial está asociada a la variable respuesta <span class="math notranslate nohighlight">\(Y\)</span>, lo que implica una relación simultánea que involucra todas las observaciones. Esto requiere una operación como la inversa de <span class="math notranslate nohighlight">\((1-\rho W)\)</span> para despejar los valores de <span class="math notranslate nohighlight">\(Y\)</span>. Sin embargo, la mayoría de los autores amplían este grupo a modelos espaciales con tres tipos de efectos de dependencia: (i) autocorrelación endógena en la variable respuesta (SAR), (ii) autocorrelación exógena en los predictores y (iii) autocorrelación en los términos de error. El modelo espacial general (GNS, por sus siglas en inglés), también conocido como modelo espacial SARAR(1,1) o modelo espacial de Cliff-Ord, abarca estos tres tipos de dependencias de la siguiente forma (Lesage 2009, Kelejian 2007, Cliff 1981):</p>
+<div class="math notranslate nohighlight">
+\[y = \textbf{X} \beta + \textbf{W} \textbf{X} y + \rho \textbf{W} y + \lambda \textbf{W} \mu + \epsilon\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\lambda\)</span> es el coeficiente en una estructura autoregresiva espacial para el error <span class="math notranslate nohighlight">\(\mu\)</span>. Es decir, que el término <span class="math notranslate nohighlight">\(W_y\)</span> captura los efectos de interacción endógena entre la variable respuesta,  <span class="math notranslate nohighlight">\(WX_y\)</span> modela los efectos de interacción exógena entre los predictores; mientras que el término <span class="math notranslate nohighlight">\(W_u\)</span> se ocupa de los efectos de interacción entre los residuales.</p>
+<p>De acuerdo como se incluyan o eliminen los términos se pueden obtener diferentes especificaciones (Elhorst2013). La más común es el modelo con Autoregresión Espacial (SAR), donde <span class="math notranslate nohighlight">\(\lambda=0\)</span>, y por lo tanto solo incluye la variable dependiente con autoregresión espacial, <span class="math notranslate nohighlight">\(\rho Wy\)</span>. En el caso donde <span class="math notranslate nohighlight">\(\rho=0\)</span>, el modelo de Error Espacial (SEM) retiene los términos de error <span class="math notranslate nohighlight">\(\lambda W \mu\)</span>, mientras que el modelo con Autoregresión Espacial en X (SLX) comprende la autoregresión espacial de los predictores, <span class="math notranslate nohighlight">\(W X y\)</span>. Otras variantes corresponden al modelo Combinado Autoregresivo de Kelejan-Prucha (SAC), que incluye autocorrelación en <span class="math notranslate nohighlight">\(\rho W y\)</span> y <span class="math notranslate nohighlight">\(\lambda W \mu\)</span>; el modelo de Durbin Espacial (SDM), que combina una variable dependiente autoregresiva <span class="math notranslate nohighlight">\(\rho W y\)</span> y predictores con autoregresión espacial <span class="math notranslate nohighlight">\(W X y\)</span>; y el modelo de Error de Durbin Espacial (SDEM), que incluye un término de error espacial <span class="math notranslate nohighlight">\(\lambda W \mu\)</span> combinado con predictores con autoregresión espacial <span class="math notranslate nohighlight">\(W X y\)</span> (Elhorst 2013, Anselin 2022).</p>
+<center><img src="https://i.pinimg.com/736x/cb/2a/95/cb2a952590ecbd070d230e82c7bbd107.jpg" width="800"></center>
+<p>Un primer paso esencial en el uso de modelos espaciales es estimar cualquier posible estructura espacial en los datos de entrada o en el residuo de los modelos. Dos pruebas comunes para detectar efectos espaciales son el gráfico de dispersión de Moran (Anselin 1988) y la prueba del Multiplicador de Lagrange (LM) (Anselin 1996). El gráfico de dispersión de Moran ilustra la relación entre cada observación y el promedio de sus vecinos, y ayuda a identificar conglomerados locales y valores atípicos espaciales. El gráfico categoriza las asociaciones espaciales en cuatro tipos: valores altos rodeados de vecinos con valores altos (Q1), valores bajos rodeados de valores bajos (Q3), Bajo-Alto (Q2) y Alto-Bajo (Q3), que indican conglomerados o valores atípicos relativos a la media general. El estadístico <span class="math notranslate nohighlight">\(I\)</span> de Moran es la pendiente de un ajuste lineal al gráfico de dispersión, y mide la dependencia espacial general:</p>
+<div class="math notranslate nohighlight">
+\[MI = n \frac{\sum_{i=1}^n \sum_{j=1}^n w_{ij} (y_i-\bar{y}) (y_j-\bar{y})} {\sum_{i=1}^n \sum_{j=1}^n w_{ij} \sum_{i=1}^n (y_i-\bar{y})^2} 
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(n\)</span> es el número de observaciones, <span class="math notranslate nohighlight">\(y_i\)</span> es el valor estandarizado de la variable respuesta en la ubicación <span class="math notranslate nohighlight">\(i\)</span>. El Índice de Moran (MI)  varía de <span class="math notranslate nohighlight">\(-\)</span>1 a <span class="math notranslate nohighlight">\(+\)</span>1, donde cero indica ausencia de autocorrelación espacial, +1 indica una agrupación perfecta de valores similares, y -1 indica dispersión.</p>
+<p>La prueba del Multiplicador de Lagrange (LM) se utiliza para decidir sobre un modelo de regresión espacial adecuado y evaluar la autocorrelación espacial tanto en la variable respuesta como en sus residuales (Anselin 1988). La prueba LM compara modelos restringidos (mínimos cuadrados ordinarios sin términos espaciales) con modelos no restringidos (que incluyen términos espaciales). El término espacial puede ser una variable dependiente autoregresiva espacialmente o un término de error autoregresivo espacialmente. El estadístico LM se calcula como la diferencia entre los logaritmos de verosimilitud de los modelos restringido y no restringido, siguiendo una distribución <span class="math notranslate nohighlight">\(\chi^2\)</span> con un grado de libertad bajo la hipótesis nula de no dependencia espacial. Si el estadístico de la prueba excede el valor crítico, se rechaza la hipótesis nula de independencia espacial.</p>
+<section id="efectos-de-autocorrelacion-exogena-entre-las-variables-predictoras">
+<h2>Efectos de autocorrelación exógena entre las variables predictoras<a class="headerlink" href="#efectos-de-autocorrelacion-exogena-entre-las-variables-predictoras" title="Link to this heading">#</a></h2>
+<p>Volviendo al ejemplo del precio de las casas con el que hemos estado trabajando. Hasta ahora, hemos hipotetizado que el precio de una casa alquilada en San Diego a través de AirBnb puede ser explicado utilizando información sobre sus propias características así como algunas relacionadas con su ubicación, como el vecindario o la distancia al parque principal de la ciudad. Sin embargo, también es razonable pensar que los posibles inquilinos se preocupan por el área más grande alrededor de una casa, no solo por la casa en sí, y estarían dispuestos a pagar más por una casa que esté rodeada de ciertos tipos de casas, y menos si está ubicada en medio de otros tipos. ¿Cómo podríamos probar esta idea?</p>
+<p>La forma más directa de introducir dependencia espacial en una regresión es considerando no solo una variable explicativa dada, sino también su rezago espacial. En nuestro caso de ejemplo, además de incluir un indicador para el tipo de casa, también podemos incluir el rezago espacial de cada tipo de casa. Esta adición implica que también estamos incluyendo como factor explicativo del precio de una casa dado la proporción de casas vecinas de cada tipo. Matemáticamente, esto implica estimar el siguiente modelo:</p>
+<div class="math notranslate nohighlight">
+\[
+\log(P_i) = \alpha + \sum^{p}_{k=1}X_{ij}\beta_j + \sum^{p}_{k=1}\left(\sum^{N}_{j=1}w_{ij}x_{jk}\right)\gamma_k + \epsilon_i
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\sum_{j=1}^N w_{ij}x_{jk}\)</span> representa el rezago espacial de la <span class="math notranslate nohighlight">\(k\)</span>-ésima variable explicativa. Esto se puede expresar en <em>forma matricial</em> utilizando la matriz de pesos espaciales, <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>, como:</p>
+<div class="math notranslate nohighlight">
+\[
+\log(P_i) = \alpha + \mathbf{X}\beta + \mathbf{WX}\gamma + \epsilon
+\]</div>
+<p>Esto divide el modelo para enfocarse en dos efectos principales: <span class="math notranslate nohighlight">\(\beta\)</span> y <span class="math notranslate nohighlight">\(\gamma\)</span>. El efecto <span class="math notranslate nohighlight">\(\beta\)</span> describe el cambio en <span class="math notranslate nohighlight">\(y_i\)</span> cuando <span class="math notranslate nohighlight">\(X_{ik}\)</span> cambia en uno. Dado que usamos el precio logarítmico para una variable <span class="math notranslate nohighlight">\(y\)</span>, nuestros coeficientes <span class="math notranslate nohighlight">\(\beta\)</span> aún se interpretan como <em>elasticidades</em>, lo que significa que un cambio de unidad en la variable <span class="math notranslate nohighlight">\(x_i\)</span> resulta en un cambio porcentual <span class="math notranslate nohighlight">\(\beta\)</span> en el precio <span class="math notranslate nohighlight">\(y_i\)</span>. El subíndice para el sitio <span class="math notranslate nohighlight">\(i\)</span> es importante aquí: dado que estamos tratando con una matriz <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>, es útil ser claro sobre dónde ocurre el cambio.</p>
+<p>De hecho, esto es importante para el efecto <span class="math notranslate nohighlight">\(\gamma\)</span>, que representa un efecto <em>indirecto</em> de un cambio en <span class="math notranslate nohighlight">\(X_i\)</span>. Esto se puede conceptualizar de dos maneras. Primero, se podría pensar en <span class="math notranslate nohighlight">\(\gamma\)</span> simplemente como <em>el efecto de un cambio de unidad en sus alrededores promedio.</em> Esto es útil y simple. Pero, esta interpretación ignora dónde puede ocurrir este cambio. En realidad, un cambio en una variable en el sitio <span class="math notranslate nohighlight">\(i\)</span> resultará en un <em>derrame</em> a sus alrededores: cuando <span class="math notranslate nohighlight">\(x_i\)</span> cambia, también cambia el <em>rezago espacial</em> de cualquier sitio cerca de <span class="math notranslate nohighlight">\(i\)</span>. La precisión de esto dependerá de la estructura de <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>, y puede ser diferente para cada sitio. Por ejemplo, piense en un sitio «focal» muy conectado en una matriz de pesos estandarizada por filas. Este sitio focal no se verá muy afectado si un vecino cambia por una unidad, ya que cada sitio solo contribuye en pequeña medida al rezago en el sitio focal. Alternativamente, considere un sitio con solo un vecino: su rezago cambiará <em>exactamente</em> en la cantidad que cambie su único vecino. Por lo tanto, para descubrir el efecto indirecto exacto de un cambio <span class="math notranslate nohighlight">\(y\)</span> causado por el cambio en un sitio específico <span class="math notranslate nohighlight">\(x_i\)</span>, debería calcular el <em>cambio en el rezago espacial</em>, y luego usar eso como su <em>cambio</em> en <span class="math notranslate nohighlight">\(X\)</span>.</p>
+<p>En Python, podemos calcular el rezago espacial de cada variable cuyo nombre comience por <code class="docutils literal notranslate"><span class="pre">pg_</span></code> primero creando una lista con todos esos nombres, y luego aplicando <code class="docutils literal notranslate"><span class="pre">lag_spatial</span></code> de `PyS.</p>
+</section>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Ajustar los modelos de la familia SAR (SLX, SEM, SAR-Lag) en Python con <code class="docutils literal notranslate"><span class="pre">spreg</span></code> y en R con <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>.</p></li>
+<li><p>Interpretar el parámetro de dependencia espacial (ρ en SAR-Lag, λ en SEM).</p></li>
+<li><p>Diferenciar entre los modelos SLX, SEM, SAR-Lag, Mansky, SAC y SDM.</p></li>
+<li><p>Comparar modelos SAR mediante AIC, pseudo-R² de Nagelkerke y test de razón de verosimilitud.</p></li>
+<li><p>Aplicar los modelos SAR al caso de estudio de cuencas colombianas.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">09_SpatialRegression</span></code> — conceptos de regresión espacial; conocimiento básico de R y <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">spreg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">libpysal</span><span class="w"> </span><span class="kn">import</span> <span class="n">weights</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">esda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.formula.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sbn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/gdsbook/book/main/data/airbnb/regression_db.geojson'</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class 'geopandas.geodataframe.GeoDataFrame'&gt;
+RangeIndex: 6110 entries, 0 to 6109
+Data columns (total 20 columns):
+ #   Column              Non-Null Count  Dtype   
+---  ------              --------------  -----   
+ 0   accommodates        6110 non-null   int64   
+ 1   bathrooms           6110 non-null   float64 
+ 2   bedrooms            6110 non-null   float64 
+ 3   beds                6110 non-null   float64 
+ 4   neighborhood        6110 non-null   object  
+ 5   pool                6110 non-null   int64   
+ 6   d2balboa            6110 non-null   float64 
+ 7   coastal             6110 non-null   int64   
+ 8   price               6110 non-null   float64 
+ 9   log_price           6110 non-null   float64 
+ 10  id                  6110 non-null   int64   
+ 11  pg_Apartment        6110 non-null   int64   
+ 12  pg_Condominium      6110 non-null   int64   
+ 13  pg_House            6110 non-null   int64   
+ 14  pg_Other            6110 non-null   int64   
+ 15  pg_Townhouse        6110 non-null   int64   
+ 16  rt_Entire_home/apt  6110 non-null   int64   
+ 17  rt_Private_room     6110 non-null   int64   
+ 18  rt_Shared_room      6110 non-null   int64   
+ 19  geometry            6110 non-null   geometry
+dtypes: float64(6), geometry(1), int64(12), object(1)
+memory usage: 954.8+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" src="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accommodates</th>
+      <th>bathrooms</th>
+      <th>bedrooms</th>
+      <th>beds</th>
+      <th>neighborhood</th>
+      <th>pool</th>
+      <th>d2balboa</th>
+      <th>coastal</th>
+      <th>price</th>
+      <th>log_price</th>
+      <th>id</th>
+      <th>pg_Apartment</th>
+      <th>pg_Condominium</th>
+      <th>pg_House</th>
+      <th>pg_Other</th>
+      <th>pg_Townhouse</th>
+      <th>rt_Entire_home/apt</th>
+      <th>rt_Private_room</th>
+      <th>rt_Shared_room</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>North Hills</td>
+      <td>0</td>
+      <td>2.972077</td>
+      <td>0</td>
+      <td>425.0</td>
+      <td>6.052089</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.12971 32.75399)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>Mission Bay</td>
+      <td>0</td>
+      <td>11.501385</td>
+      <td>1</td>
+      <td>205.0</td>
+      <td>5.323010</td>
+      <td>5570</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.25253 32.78421)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Estas son las variables explicativas que utilizaremos a lo largo de este ejemplo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'accommodates'</span><span class="p">,</span> <span class="s1">'bathrooms'</span><span class="p">,</span> <span class="s1">'bedrooms'</span><span class="p">,</span> <span class="s1">'beds'</span><span class="p">,</span> <span class="s1">'rt_Private_room'</span><span class="p">,</span> <span class="s1">'rt_Shared_room'</span><span class="p">,</span> <span class="s1">'pg_Condominium'</span><span class="p">,</span> <span class="s1">'pg_House'</span><span class="p">,</span> <span class="s1">'pg_Other'</span><span class="p">,</span> <span class="s1">'pg_Townhouse'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">"http://data.insideairbnb.com/united-states/ca/san-diego/2016-07-07/visualisations/neighbourhoods.geojson"</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>  <span class="c1"># Lanza una excepción para errores HTTP</span>
+
+    <span class="c1"># Lee el contenido descargado como un archivo en memoria</span>
+    <span class="k">with</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">neighborhoods</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error al descargar el archivo: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error al leer el archivo GPKG: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">KNN</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wx</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'pg'</span><span class="p">)</span>\
+        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">weights</span><span class="o">.</span><span class="n">spatial_lag</span><span class="o">.</span><span class="n">lag_spatial</span><span class="p">(</span><span class="n">knn</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>\
+        <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">'w_'</span><span class="o">+</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'w_pg_Apartment'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Una vez calculado, podemos ejecutar el modelo utilizando la estimación de MCO (Mínimos Cuadrados Ordinarios) porque, en este contexto, los rezagos espaciales incluidos no violan ninguna de las suposiciones en las que se basa el MCO (son básicamente variables exógenas adicionales):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">slx_exog</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="n">variable_names</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wx</span><span class="p">)</span>
+<span class="n">m5</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'log_price'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+                  <span class="n">slx_exog</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                  <span class="n">name_y</span><span class="o">=</span><span class="s1">'l_price'</span><span class="p">,</span> 
+               <span class="n">name_x</span><span class="o">=</span><span class="n">slx_exog</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m5</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REGRESSION RESULTS
+------------------
+
+SUMMARY OF OUTPUT: ORDINARY LEAST SQUARES
+-----------------------------------------
+Data set            :     unknown
+Weights matrix      :        None
+Dependent Variable  :     l_price                Number of Observations:        6110
+Mean dependent var  :      4.9958                Number of Variables   :          15
+S.D. dependent var  :      0.8072                Degrees of Freedom    :        6095
+R-squared           :      0.6800
+Adjusted R-squared  :      0.6792
+Sum squared residual:     1273.93                F-statistic           :    924.9423
+Sigma-square        :       0.209                Prob(F-statistic)     :           0
+S.E. of regression  :       0.457                Log likelihood        :   -3880.030
+Sigma-square ML     :       0.208                Akaike info criterion :    7790.061
+S.E of regression ML:      0.4566                Schwarz criterion     :    7890.826
+
+------------------------------------------------------------------------------------
+            Variable     Coefficient       Std.Error     t-Statistic     Probability
+------------------------------------------------------------------------------------
+            CONSTANT         4.32058         0.02350       183.87270         0.00000
+        accommodates         0.08100         0.00500        16.18439         0.00000
+           bathrooms         0.18934         0.01081        17.52240         0.00000
+            bedrooms         0.16360         0.01098        14.90471         0.00000
+                beds        -0.04515         0.00682        -6.61594         0.00000
+     rt_Private_room        -0.52938         0.01573       -33.65244         0.00000
+      rt_Shared_room        -1.28926         0.03814       -33.79951         0.00000
+      pg_Condominium         0.10635         0.02218         4.79520         0.00000
+            pg_House         0.03278         0.01570         2.08855         0.03679
+            pg_Other         0.08619         0.02398         3.59446         0.00033
+        pg_Townhouse        -0.02771         0.03385        -0.81870         0.41299
+    w_pg_Condominium         0.59284         0.06896         8.59667         0.00000
+          w_pg_House        -0.07745         0.03188        -2.42908         0.01517
+          w_pg_Other         0.48510         0.05515         8.79671         0.00000
+      w_pg_Townhouse        -0.27245         0.12234        -2.22701         0.02598
+------------------------------------------------------------------------------------
+
+REGRESSION DIAGNOSTICS
+MULTICOLLINEARITY CONDITION NUMBER           14.277
+
+TEST ON NORMALITY OF ERRORS
+TEST                             DF        VALUE           PROB
+Jarque-Bera                       2        2458.006           0.0000
+
+DIAGNOSTICS FOR HETEROSKEDASTICITY
+RANDOM COEFFICIENTS
+TEST                             DF        VALUE           PROB
+Breusch-Pagan test               14         393.052           0.0000
+Koenker-Bassett test             14         169.585           0.0000
+================================ END OF REPORT =====================================
+</pre></div>
+</div>
+</div>
+</div>
+<p>La forma de interpretar la tabla de resultados es similar a la de cualquier otra regresión no espacial. Las variables que incluimos en la regresión original muestran un comportamiento similar, aunque con pequeños cambios en tamaño, y también pueden interpretarse de manera similar. El rezago espacial de cada tipo de propiedad (<code class="docutils literal notranslate"><span class="pre">w_pg_XXX</span></code>) es la nueva adición. Observamos que, excepto en el caso de las casas adosadas (igual que con la variable binaria, <code class="docutils literal notranslate"><span class="pre">pg_Townhouse</span></code>), todas son significativas, lo que sugiere que nuestra hipótesis inicial sobre el papel de las casas circundantes podría estar funcionando aquí.</p>
+<p>Como ilustración, veamos algunos de los efectos directos/indirectos.
+El efecto directo de la variable <code class="docutils literal notranslate"><span class="pre">pg_Condominium</span></code> significa que los condominios suelen ser un 11% más caros (<span class="math notranslate nohighlight">\(\beta_{pg\_Condominium}=0.1063\)</span>) que el tipo de propiedad de referencia, los apartamentos. Más relevante para esta sección, cualquier casa dada rodeada de condominios <em>también</em> recibe un precio premium. Pero, como <span class="math notranslate nohighlight">\(pg_Condominium\)</span> es una variable dummy, el rezago espacial en el sitio <span class="math notranslate nohighlight">\(i\)</span> representa el <em>porcentaje</em> de propiedades cerca de <span class="math notranslate nohighlight">\(i\)</span> que son condominios, que está entre <span class="math notranslate nohighlight">\(0\)</span> y <span class="math notranslate nohighlight">\(1\)</span>.
+Entonces, un cambio <em>unitario</em> en esta variable significa que aumentaría el porcentaje de condominios en un 100%. Por lo tanto, un aumento de <span class="math notranslate nohighlight">\(0.1\)</span> en <code class="docutils literal notranslate"><span class="pre">w_pg_Condominium</span></code> (un cambio de diez puntos porcentuales) resultaría en un aumento del 5.92% en el precio de la casa (<span class="math notranslate nohighlight">\(\beta_{w_pg\_Condominium} = 0.6\)</span>).
+Se pueden derivar interpretaciones similares para todos los demás variables con rezago espacial para derivar el efecto <em>indirecto</em> de un cambio en el rezago espacial.</p>
+<p>Sin embargo, para calcular el cambio indirecto para un sitio dado <span class="math notranslate nohighlight">\(i\)</span>, es posible que necesite examinar los valores predichos para <span class="math notranslate nohighlight">\(y_i\)</span>. En este ejemplo, dado que estamos utilizando una matriz de pesos estandarizada por filas con veinte vecinos más cercanos, el impacto de cambiar <span class="math notranslate nohighlight">\(x_i\)</span> es el mismo para todos sus vecinos y para cualquier sitio <span class="math notranslate nohighlight">\(i\)</span>. Por lo tanto, el efecto siempre es <span class="math notranslate nohighlight">\(\frac{\gamma}{20}\)</span>, o aproximadamente <span class="math notranslate nohighlight">\(0.0296\)</span>. Sin embargo, esto no sería lo mismo para muchos otros tipos de pesos (como <code class="docutils literal notranslate"><span class="pre">Kernel</span></code>, <code class="docutils literal notranslate"><span class="pre">Queen</span></code>, <code class="docutils literal notranslate"><span class="pre">Rook</span></code>, <code class="docutils literal notranslate"><span class="pre">DistanceBand</span></code> o <code class="docutils literal notranslate"><span class="pre">Voronoi</span></code>), por lo que demostraremos cómo construir el efecto indirecto para un <span class="math notranslate nohighlight">\(i\)</span> específico:</p>
+<p>Primero, los valores predichos para <span class="math notranslate nohighlight">\(y_i\)</span> se almacenan en el atributo <code class="docutils literal notranslate"><span class="pre">predy</span></code> de cualquier modelo:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m5</span><span class="o">.</span><span class="n">predy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[5.43610121],
+       [5.38596868],
+       [4.25377454],
+       ...,
+       [4.29145318],
+       [4.89174746],
+       [4.85867698]])
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para construir nuevas predicciones, necesitamos seguir la ecuación mencionada anteriormente.</p>
+<p>Mostrando este proceso a continuación, primero cambiemos una propiedad para que sea un condominio. Consideremos la tercera observación, que es el primer apartamento en los datos:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accommodates                                                     2
+bathrooms                                                 1.000000
+bedrooms                                                  1.000000
+beds                                                      1.000000
+neighborhood                                           North Hills
+pool                                                             0
+d2balboa                                                  2.493893
+coastal                                                          0
+price                                                    99.000000
+log_price                                                 4.595120
+id                                                            9553
+pg_Apartment                                                     1
+pg_Condominium                                                   0
+pg_House                                                         0
+pg_Other                                                         0
+pg_Townhouse                                                     0
+rt_Entire_home/apt                                               0
+rt_Private_room                                                  1
+rt_Shared_room                                                   0
+geometry              POINT (-117.1412083878189 32.75326632438691)
+Name: 2, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Este es un apartamento. Hagamos una copia de nuestros datos y cambiemos este apartamento por un condominio:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db_scenario</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">db_scenario</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="s1">'pg_Apartment'</span><span class="p">,</span> <span class="s1">'pg_Condominium'</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># Apartment = 0 y condo = 1</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Hemos realizado el cambio con éxito:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db_scenario</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>accommodates                                                     2
+bathrooms                                                        1
+bedrooms                                                         1
+beds                                                             1
+neighborhood                                           North Hills
+pool                                                             0
+d2balboa                                                   2.49389
+coastal                                                          0
+price                                                           99
+log_price                                                  4.59512
+id                                                            9553
+pg_Apartment                                                     0
+pg_Condominium                                                   1
+pg_House                                                         0
+pg_Other                                                         0
+pg_Townhouse                                                     0
+rt_Entire_home/apt                                               0
+rt_Private_room                                                  1
+rt_Shared_room                                                   0
+geometry              POINT (-117.1412083878189 32.75326632438691)
+residual                                                  0.287341
+Name: 2, dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora, también necesitamos actualizar las variables de rezago espacial:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wx_scenario</span> <span class="o">=</span> <span class="n">db_scenario</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">'pg'</span><span class="p">)</span>\
+                         <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">y</span><span class="p">:</span> <span class="n">weights</span><span class="o">.</span><span class="n">spatial_lag</span><span class="o">.</span><span class="n">lag_spatial</span><span class="p">(</span><span class="n">knn</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>\
+                         <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="s1">'w_'</span><span class="o">+</span><span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">'w_pg_Apartment'</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Y construir una nueva matriz exógena <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, incluyendo una constante 1 como la columna principal</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">slx_exog_scenario</span> <span class="o">=</span> <span class="n">db_scenario</span><span class="p">[</span><span class="n">variable_names</span><span class="p">]</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">wx_scenario</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora, nuestra nueva predicción (en el escenario donde hemos cambiado el sitio <code class="docutils literal notranslate"><span class="pre">2</span></code> de un apartamento a un condominio) es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred_scenario</span> <span class="o">=</span> <span class="n">m5</span><span class="o">.</span><span class="n">betas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">slx_exog_scenario</span> <span class="o">@</span> <span class="n">m5</span><span class="o">.</span><span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esta predicción será exactamente la misma para todos los sitios, excepto el sitio <code class="docutils literal notranslate"><span class="pre">2</span></code> y sus vecinos. Entonces, los <em>vecinos</em> del sitio <code class="docutils literal notranslate"><span class="pre">2</span></code> son:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span><span class="o">.</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[772,
+ 2212,
+ 139,
+ 4653,
+ 2786,
+ 1218,
+ 138,
+ 808,
+ 1480,
+ 4241,
+ 1631,
+ 3617,
+ 2612,
+ 1162,
+ 135,
+ 23,
+ 5528,
+ 3591,
+ 407,
+ 6088]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Y el efecto de cambiar el sitio <code class="docutils literal notranslate"><span class="pre">2</span></code> a un condominio se asocia con los siguientes cambios en <span class="math notranslate nohighlight">\(y_i\)</span>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">y_pred_scenario</span> <span class="o">-</span> <span class="n">m5</span><span class="o">.</span><span class="n">predy</span><span class="p">)</span><span class="o">.</span><span class="n">loc</span><span class="p">[[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">knn</span><span class="o">.</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>0.106349</td>
+    </tr>
+    <tr>
+      <th>772</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>2212</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>139</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>4653</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>2786</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>1218</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>138</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>808</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>1480</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>4241</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>1631</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>3617</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>2612</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>1162</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>135</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>5528</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>3591</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>407</th>
+      <td>0.029642</td>
+    </tr>
+    <tr>
+      <th>6088</th>
+      <td>0.029642</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Vemos que la primera fila, que representa el efecto directo, es igual exactamente a la estimación para <code class="docutils literal notranslate"><span class="pre">pg_Condominium</span></code>. Sin embargo, para los otros efectos, solo hemos cambiado <code class="docutils literal notranslate"><span class="pre">w_pg_Condominium</span></code> en <span class="math notranslate nohighlight">\(0.05\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scenario_near_2</span> <span class="o">=</span> <span class="n">slx_exog_scenario</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">knn</span><span class="o">.</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="s1">'w_pg_Condominium'</span><span class="p">]]</span>
+<span class="n">orig_near_2</span> <span class="o">=</span> <span class="n">slx_exog</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">knn</span><span class="o">.</span><span class="n">neighbors</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="s1">'w_pg_Condominium'</span><span class="p">]]</span>
+<span class="n">scenario_near_2</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">orig_near_2</span><span class="p">,</span> <span class="n">lsuffix</span><span class="o">=</span><span class="s1">'_scenario'</span><span class="p">,</span> <span class="n">rsuffix</span><span class="o">=</span> <span class="s1">'_original'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>w_pg_Condominium_scenario</th>
+      <th>w_pg_Condominium_original</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>772</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>2212</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>139</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>4653</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>2786</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>1218</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>138</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>808</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>1480</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>4241</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>1631</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>3617</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>2612</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>1162</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>135</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <th>5528</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>3591</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>407</th>
+      <td>0.05</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <th>6088</th>
+      <td>0.10</td>
+      <td>0.05</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Introducir un retraso espacial de una variable explicativa, como acabamos de ver, es la forma más sencilla de incorporar la noción de dependencia espacial en un marco de regresión lineal. No requiere cambios adicionales, puede estimarse con OLS y la interpretación es bastante similar a la de interpretar variables no espaciales, siempre que se requieran cambios agregados.</p>
+<p>Sin embargo, el campo de la econometría espacial es mucho más amplio y ha producido en las últimas décadas muchas técnicas para tratar los efectos espaciales y la dependencia espacial de diferentes maneras. Aunque esto puede ser una simplificación excesiva, se puede decir que la mayoría de esos esfuerzos para el caso de una sola sección transversal se centran en dos variaciones principales: el modelo de retraso espacial y el modelo de error espacial. Ambos son similares al caso que hemos visto en que se basan en la introducción de un retraso espacial, pero difieren en el componente del modelo que modifican y afectan.</p>
+</section>
+<section id="efectos-de-autocorrelacion-endogena-con-el-error-espacial">
+<h2>Efectos de autocorrelación endógena con el error espacial<a class="headerlink" href="#efectos-de-autocorrelacion-endogena-con-el-error-espacial" title="Link to this heading">#</a></h2>
+<p>El modelo de error espacial incluye un retraso espacial en el término de error de la ecuación:</p>
+<div class="math notranslate nohighlight">
+\[
+\log{P_i} = \alpha + \sum_k \beta_k X_{ki} + u_i
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+u_i = \lambda u_{lag-i} + \epsilon_i
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(u_{lag-i} = \sum_j w_{i,j} u_j\)</span>.
+Aunque parece similar, esta especificación viola las suposiciones sobre el término de error en un modelo OLS clásico. Por lo tanto, se requieren métodos de estimación alternativos. <code class="docutils literal notranslate"><span class="pre">PySAL</span></code> incorpora funcionalidad para estimar varios de los métodos más avanzados desarrollados por la literatura sobre econometría espacial. Por ejemplo, podemos usar un método general de momentos que tenga en cuenta la heterogeneidad (Arraiz et al., 2010):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m6</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">GM_Error_Het</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'log_price'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">db</span><span class="p">[</span><span class="n">variable_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                           <span class="n">w</span><span class="o">=</span><span class="n">knn</span><span class="p">,</span> <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_price'</span><span class="p">,</span> <span class="n">name_x</span><span class="o">=</span><span class="n">variable_names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m6</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REGRESSION
+----------
+SUMMARY OF OUTPUT: SPATIALLY WEIGHTED LEAST SQUARES (HET)
+---------------------------------------------------------
+Data set            :     unknown
+Weights matrix      :     unknown
+Dependent Variable  :   log_price                Number of Observations:        6110
+Mean dependent var  :      4.9958                Number of Variables   :          11
+S.D. dependent var  :      0.8072                Degrees of Freedom    :        6099
+Pseudo R-squared    :      0.6655
+N. of iterations    :           1                Step1c computed       :          No
+
+------------------------------------------------------------------------------------
+            Variable     Coefficient       Std.Error     z-Statistic     Probability
+------------------------------------------------------------------------------------
+            CONSTANT       4.4262033       0.0217088     203.8898738       0.0000000
+        accommodates       0.0695536       0.0063268      10.9934495       0.0000000
+           bathrooms       0.1614101       0.0151312      10.6673765       0.0000000
+            bedrooms       0.1739251       0.0146697      11.8560847       0.0000000
+                beds      -0.0377710       0.0088293      -4.2779023       0.0000189
+     rt_Private_room      -0.4947947       0.0163843     -30.1993140       0.0000000
+      rt_Shared_room      -1.1613985       0.0515304     -22.5381175       0.0000000
+      pg_Condominium       0.1003761       0.0213148       4.7092198       0.0000025
+            pg_House       0.0308334       0.0147100       2.0960849       0.0360747
+            pg_Other       0.0861768       0.0254942       3.3802547       0.0007242
+        pg_Townhouse      -0.0074515       0.0292873      -0.2544285       0.7991646
+              lambda       0.6448728       0.0186626      34.5543739       0.0000000
+------------------------------------------------------------------------------------
+================================ END OF REPORT =====================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="efectos-de-autocorrelacion-endogena-con-la-variable-dependiente">
+<h2>Efectos de autocorrelación endógena con la variable dependiente<a class="headerlink" href="#efectos-de-autocorrelacion-endogena-con-la-variable-dependiente" title="Link to this heading">#</a></h2>
+<p>El modelo de retraso espacial introduce un retraso espacial de la variable <em>dependiente</em>. En el ejemplo que hemos cubierto, esto se traduciría en:</p>
+<div class="math notranslate nohighlight">
+\[
+\log{P_i} = \alpha + \rho \log{P_{lag-i}} + \sum_k \beta_k X_{ki} + \epsilon_i
+\]</div>
+<p>Aunque puede no parecer muy diferente de la ecuación anterior, este modelo viola la suposición de exogeneidad, crucial para que funcione OLS.
+En pocas palabras, esto ocurre cuando <span class="math notranslate nohighlight">\(P_i\)</span> existe en ambos «lados» del signo igual.
+En teoría, dado que <span class="math notranslate nohighlight">\(P_i\)</span> se incluye en el cálculo de <span class="math notranslate nohighlight">\(P_{lag-i}\)</span>, se viola la exogeneidad.
+Al igual que en el caso del error espacial, se han propuesto varias técnicas para superar esta limitación y <code class="docutils literal notranslate"><span class="pre">PySAL</span></code> implementa varias de ellas. En el ejemplo a continuación, utilizamos una estimación de mínimos cuadrados en dos etapas Anselin (1988), donde el retraso espacial de todas las variables explicativas se utiliza como instrumento para el retraso endógeno:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m7</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">GM_Lag</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'log_price'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">db</span><span class="p">[</span><span class="n">variable_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                     <span class="n">w</span><span class="o">=</span><span class="n">knn</span><span class="p">,</span> <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_price'</span><span class="p">,</span> <span class="n">name_x</span><span class="o">=</span><span class="n">variable_names</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m7</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REGRESSION
+----------
+SUMMARY OF OUTPUT: SPATIAL TWO STAGE LEAST SQUARES
+--------------------------------------------------
+Data set            :     unknown
+Weights matrix      :     unknown
+Dependent Variable  :   log_price                Number of Observations:        6110
+Mean dependent var  :      4.9958                Number of Variables   :          12
+S.D. dependent var  :      0.8072                Degrees of Freedom    :        6098
+Pseudo R-squared    :      0.7057
+Spatial Pseudo R-squared:  0.6883
+
+------------------------------------------------------------------------------------
+            Variable     Coefficient       Std.Error     z-Statistic     Probability
+------------------------------------------------------------------------------------
+            CONSTANT       2.7440254       0.0727290      37.7294400       0.0000000
+        accommodates       0.0697596       0.0048157      14.4859187       0.0000000
+           bathrooms       0.1626725       0.0104007      15.6405467       0.0000000
+            bedrooms       0.1604137       0.0104823      15.3033012       0.0000000
+                beds      -0.0365065       0.0065336      -5.5874750       0.0000000
+     rt_Private_room      -0.4981415       0.0151396     -32.9031780       0.0000000
+      rt_Shared_room      -1.1157392       0.0365563     -30.5210777       0.0000000
+      pg_Condominium       0.1072995       0.0209048       5.1327614       0.0000003
+            pg_House      -0.0004017       0.0136828      -0.0293598       0.9765777
+            pg_Other       0.1207503       0.0214771       5.6222929       0.0000000
+        pg_Townhouse      -0.0185543       0.0322730      -0.5749190       0.5653461
+         W_log_price       0.3416482       0.0147787      23.1175620       0.0000000
+------------------------------------------------------------------------------------
+Instrumented: W_log_price
+Instruments: W_accommodates, W_bathrooms, W_bedrooms, W_beds,
+             W_pg_Condominium, W_pg_House, W_pg_Other, W_pg_Townhouse,
+             W_rt_Private_room, W_rt_Shared_room
+================================ END OF REPORT =====================================
+</pre></div>
+</div>
+</div>
+</div>
+<section id="ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-python">
+<h3>Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>Python</em><a class="headerlink" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-python" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">libpysal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">libpysal.weights</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">spreg</span>
+
+<span class="c1"># Cargar datos</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">"https://github.com/edieraristizabal/ModeloMultinivel/raw/refs/heads/main/DATA/df_catchments_spatial.gpkg"</span><span class="p">)</span>
+
+<span class="c1"># Calcular la densidad de movimientos en masa y aplicar la transformación log + 1</span>
+<span class="n">gdf</span><span class="p">[</span><span class="s1">'density_lands_rec'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">'lands_rec'</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">'area'</span><span class="p">])</span>
+<span class="n">gdf</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">'density_lands_rec'</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Definir las variables dependiente e independientes</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">independent_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'rainfallAnnual_mean'</span><span class="p">,</span> <span class="s1">'elev_mean'</span><span class="p">,</span> <span class="s1">'rel_mean'</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">independent_vars</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Escalar las variables independientes</span>
+<span class="n">st</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">X_scaled</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X_scaled_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_scaled</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">independent_vars</span><span class="p">)</span>
+
+<span class="c1"># Crear la matriz de pesos espaciales por contigüidad tipo Queen</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">Queen</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+
+<span class="c1"># Calcular la autocorrelación exógena de las variables independientes escaladas</span>
+<span class="n">wx_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">independent_vars</span><span class="p">:</span>
+    <span class="n">wx_dict</span><span class="p">[</span><span class="sa">f</span><span class="s1">'w_</span><span class="si">{</span><span class="n">var</span><span class="si">}</span><span class="s1">'</span><span class="p">]</span> <span class="o">=</span> <span class="n">libpysal</span><span class="o">.</span><span class="n">weights</span><span class="o">.</span><span class="n">spatial_lag</span><span class="o">.</span><span class="n">lag_spatial</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">X_scaled_df</span><span class="p">[</span><span class="n">var</span><span class="p">])</span>
+
+<span class="n">wx_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">wx_dict</span><span class="p">)</span>
+
+<span class="c1"># Combinar las variables independientes originales escaladas con sus versiones espacialmente rezagadas</span>
+<span class="n">slx_exog</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">X_scaled_df</span><span class="p">,</span> <span class="n">wx_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Ajustar el modelo OLS con las variables exógenas espacialmente rezagadas (SLX)</span>
+<span class="n">ols_model_slx</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">'y'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                          <span class="n">slx_exog</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                          <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_density_lands_rec'</span><span class="p">,</span>
+                          <span class="n">name_x</span><span class="o">=</span><span class="n">slx_exog</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                          <span class="n">name_w</span><span class="o">=</span><span class="s1">'queen_contiguity'</span><span class="p">)</span>
+
+<span class="c1"># Imprimir el resumen del modelo OLS con SLX</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ols_model_slx</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ajustar el modelo de error espacial (GM_Error_Het)</span>
+<span class="n">spatial_error_model</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">GM_Error_Het</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X_scaled</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span>
+                                      <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_density_lands_rec'</span><span class="p">,</span>
+                                      <span class="n">name_x</span><span class="o">=</span><span class="n">independent_vars</span><span class="p">,</span>
+                                      <span class="n">name_w</span><span class="o">=</span><span class="s1">'queen_contiguity'</span><span class="p">)</span>
+
+<span class="c1"># Imprimir el resumen del modelo de error espacial</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spatial_error_model</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ajustar el modelo de retardo espacial (GM_Lag)</span>
+<span class="n">spatial_lag_model</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">GM_Lag</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">X_scaled</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="n">w</span><span class="p">,</span>
+                                <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_density_lands_rec'</span><span class="p">,</span>
+                                <span class="n">name_x</span><span class="o">=</span><span class="n">independent_vars</span><span class="p">,</span>
+                                <span class="n">name_w</span><span class="o">=</span><span class="s1">'queen_contiguity'</span><span class="p">)</span>
+
+<span class="c1"># Imprimir el resumen del modelo de retardo espacial</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">spatial_lag_model</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="modelos-de-regresion-espacial-sar-en-r">
+<h2>Modelos de regresión espacial SAR en R<a class="headerlink" href="#modelos-de-regresion-espacial-sar-en-r" title="Link to this heading">#</a></h2>
+<p>Aunque la librería <em>Pysal</em> en <em>Python</em> ofrece una gran variedad de herramientas para datos espaciales, el lenguaje R ofrece librerías mas versátiles para implementar modelos espaciales. La librería <em>spatialreg</em> permite estimar modelos de regresión espacial, en particular los modelos SAR. Esta librería se desarrolló a partir de <em>spdep</em> y proporciona herramientas para la estimación por máxima verosimilitud y el cálculo de impactos espaciales. la función <code class="docutils literal notranslate"><span class="pre">lagsarlm()</span></code> estima modelos SAR y SDM, <code class="docutils literal notranslate"><span class="pre">errorsarlm()</span></code> estima modelos SEM y SDEM, <code class="docutils literal notranslate"><span class="pre">lagsarlm(...,</span> <span class="pre">type</span> <span class="pre">=</span> <span class="pre">&quot;mixed&quot;)</span></code> estima modelos SARAR o GNS, <code class="docutils literal notranslate"><span class="pre">impacts()</span></code> calcula los efectos directos, indirectos (spillover) y totales.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cargar librerías</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span><span class="w">         </span><span class="c1"># Para trabajar con datos espaciales (simple features)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span><span class="w">      </span><span class="c1"># Para matrices de vecindad y tests de dependencia espacial</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spatialreg</span><span class="p">)</span><span class="w"> </span><span class="c1"># Para los modelos de regresión espacial</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span><span class="w">      </span><span class="c1"># Para manipulación de datos (similar a pandas)</span>
+</pre></div>
+</div>
+<p>En R, podemos cargar el GeoJSON directamente con sf</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Cargar los datos ---</span>
+<span class="n">db_sf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">st_read</span><span class="p">(</span><span class="s">'https://raw.githubusercontent.com/gdsbook/book/main/data/airbnb/regression_db.geojson'</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Convertir a un data.frame para los modelos de regresión si es necesario, aunque spatialreg puede trabajar directamente con sf objetos a veces. Es buena práctica para asegurarte de que las columnas estén en el formato correcto.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">db_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="n">db_sf</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">select</span><span class="p">(</span><span class="o">-</span><span class="n">geometry</span><span class="p">)</span><span class="w"> </span><span class="c1"># Eliminar la columna de geometría para el data.frame, ya que las coordenadas se obtienen por separado</span>
+</pre></div>
+</div>
+<p>Definir las variables dependiente e independientes, hay que asegurarse de que los nombres de las columnas coincidan con tu data.frame. “log_price” ya es la variable dependiente transformada.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Las variables independientes son las mismas del ejemplo de Python.</span>
+<span class="n">variable_names_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">'accommodates'</span><span class="p">,</span><span class="w"> </span><span class="s">'bathrooms'</span><span class="p">,</span><span class="w"> </span><span class="s">'bedrooms'</span><span class="p">,</span><span class="w"> </span><span class="s">'beds'</span><span class="p">,</span><span class="s">'rt_Private_room'</span><span class="p">,</span><span class="w"> </span><span class="s">'rt_Shared_room'</span><span class="p">,</span><span class="w"> </span><span class="s">'pg_Condominium'</span><span class="p">,</span><span class="w"> </span><span class="s">'pg_House'</span><span class="p">,</span><span class="w"> </span><span class="s">'pg_Other'</span><span class="p">,</span><span class="w"> </span><span class="s">'pg_Townhouse'</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Crear la fórmula para el modelo</span>
+<span class="n">formula_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">"log_price ~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">variable_names_r</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">" + "</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>En R, la matriz de vecindad se construye a partir de las coordenadas. Se obtienen los centroides de cada polígono/punto para calcular las distancias</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Cálculo de la matriz de vecindad (Spatial Weights Matrix) ---</span>
+<span class="n">db_coords</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">st_coordinates</span><span class="p">(</span><span class="nf">st_centroid</span><span class="p">(</span><span class="n">db_sf</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Calcular la matriz de vecindad K-nearest neighbors (k=5). knearneigh: calcula los k vecinos más cercanos para cada observación. knn2nb: convierte el resultado de knearneigh en un objeto de clase “nb” (neighborhood).</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">db_nb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">knn2nb</span><span class="p">(</span><span class="nf">knearneigh</span><span class="p">(</span><span class="n">db_coords</span><span class="p">,</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Convertir la matriz de vecindad a un objeto de tipo “listw” (list of weights), que es el formato que esperan las funciones de modelos espaciales en R. style=»W» indica estandarización por filas (row-standardized), similar a “r” en pysal.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">db_listw</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nb2listw</span><span class="p">(</span><span class="n">db_nb</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"W"</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="slx-spatially-lagged-x-model">
+<h3>SLX (Spatially Lagged X) Model<a class="headerlink" href="#slx-spatially-lagged-x-model" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- SLX Spatially Lagged X Model ---</span>
+<span class="c1"># La fórmula ya incluye las variables originales, y lmSLX se encarga de crear las rezagadas.</span>
+<span class="n">m5_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lmSLX</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- SLX Model (m5) Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">m5_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spatial-error-model-sem">
+<h3>Spatial Error Model (SEM)<a class="headerlink" href="#spatial-error-model-sem" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Spatial Error Model ---</span>
+<span class="c1"># En R, se utiliza errorsarlm con el parámetro etype="error" (que es el predeterminado)</span>
+<span class="n">m6_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">errorsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Spatial Error Model (m6) Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">m6_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spatial-lag-model-sar">
+<h3>Spatial Lag Model (SAR)<a class="headerlink" href="#spatial-lag-model-sar" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Spatial Lag Model ---</span>
+<span class="c1"># En R, se utiliza lagsarlm</span>
+<span class="n">m7_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Spatial Lag Model (m7) Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">m7_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spatial-durbin-model-sdm">
+<h3>Spatial Durbin Model (SDM)<a class="headerlink" href="#spatial-durbin-model-sdm" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Spatial Durbin Lag Model ---</span>
+<span class="c1"># En R, lagsarlm con type = "mixed"</span>
+<span class="n">col.fit4_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"mixed"</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Spatial Durbin Model (SDM) Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">col.fit4_r</span><span class="p">))</span><span class="w"> </span><span class="c1"># El argumento Nagelkerke=T no es una opción directa de summary</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="spatial-durbin-error-model-sdem">
+<h3>Spatial Durbin Error Model (SDEM)<a class="headerlink" href="#spatial-durbin-error-model-sdem" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Spatial Durbin Error Model ---</span>
+<span class="c1"># En R, errorsarlm con etype = "emixed"</span>
+<span class="n">col.fit6_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">errorsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">etype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"emixed"</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Spatial Durbin Error Model (SDEM) Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">col.fit6_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sac-model">
+<h3>SAC model<a class="headerlink" href="#sac-model" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># type="sac" es el modelo SAC estándar (lag + error) sin rezago de X</span>
+<span class="n">col.fit8_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sacsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"sac"</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- SAC/SARAR Model (type='sac') Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">col.fit8_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="mansky-sarar-gns-model">
+<h3>Mansky (SARAR/GNS) Model<a class="headerlink" href="#mansky-sarar-gns-model" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Mansky Model / SARAR ---</span>
+<span class="c1"># En R, sacsarlm</span>
+<span class="c1"># type="sacmixed" incluye el rezago de X (SDM + error)</span>
+<span class="n">col.fit7_r</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sacsarlm</span><span class="p">(</span><span class="n">formula_r</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_df</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"sacmixed"</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Mansky (SAC/SARAR/GNS) Model (type='sacmixed') Summary ---\n"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">col.fit7_r</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>En un modelo OLS tradicional, la interpretación de un coeficiente es sencilla: si X aumenta en una unidad, Y cambia en β unidades, manteniendo todo lo demás constante.</p>
+<p>Sin embargo, en modelos espaciales como el Spatial Lag Model o el Spatial Durbin Model, un cambio en una variable explicativa (X) en una ubicación no solo afecta a esa ubicación directamente, sino que también se «propaga» a las ubicaciones vecinas (y a sus vecinos, y así sucesivamente) debido a la interdependencia espacial capturada por el término ρWY. Esto se conoce como efectos de derrame (spillover effects).</p>
+<p>La función <code class="docutils literal notranslate"><span class="pre">impacts()</span></code> de la librería spatialreg te ayuda a descomponer el efecto total de un cambio en una variable explicativa en tres componentes:</p>
+<ul class="simple">
+<li><p>Efecto Directo (Direct Impact): Es el impacto de un cambio en una variable explicativa X en la misma ubicación i. No es simplemente el coeficiente β del modelo, ya que el efecto se retroalimenta a través del término WY.</p></li>
+<li><p>Efecto Indirecto (Indirect Impact) o Efecto Derrame (Spillover Effect): Es el impacto de un cambio en una variable explicativa X en una ubicación i sobre la variable dependiente en otras ubicaciones j (los vecinos de i y más allá). Este captura cómo los cambios se propagan a través de la red espacial.</p></li>
+<li><p>Efecto Total (Total Impact): Es la suma del efecto directo y el efecto indirecto. Representa el impacto acumulado de un cambio en X en una ubicación sobre todas las ubicaciones en el sistema.</p></li>
+</ul>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Calcular y mostrar los impactos para el Spatial Lag Model (m7_r) ---</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Impactos para el Spatial Lag Model (m7_r) ---\n"</span><span class="p">)</span>
+<span class="n">impacts_m7</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">impacts</span><span class="p">(</span><span class="n">m7_r</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">)</span><span class="w"> </span><span class="c1"># R=100 es para el número de simulaciones para obtener intervalos de confianza</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">impacts_m7</span><span class="p">,</span><span class="w"> </span><span class="n">zstats</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span><span class="w"> </span><span class="c1"># zstats=TRUE muestra los valores Z y p-values</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># --- Calcular y mostrar los impactos para el Spatial Durbin Model (col.fit4_r) ---</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n--- Impactos para el Spatial Durbin Model (col.fit4_r) ---\n"</span><span class="p">)</span>
+<span class="n">impacts_sdm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">impacts</span><span class="p">(</span><span class="n">col.fit4_r</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">db_listw</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">100</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="nf">summary</span><span class="p">(</span><span class="n">impacts_sdm</span><span class="p">,</span><span class="w"> </span><span class="n">zstats</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">"\n"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="s">"="</span><span class="p">,</span><span class="w"> </span><span class="m">50</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">""</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"\n"</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">impacts_m7</span><span class="o">$</span><span class="n">res</span><span class="o">$</span><span class="n">direct</span>
+<span class="n">impacts_m7</span><span class="o">$</span><span class="n">res</span><span class="o">$</span><span class="n">indirect</span>
+<span class="n">impacts_m7</span><span class="o">$</span><span class="n">res</span><span class="o">$</span><span class="n">total</span>
+</pre></div>
+</div>
+</section>
+<section id="ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-r">
+<h3>Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>R</em><a class="headerlink" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-r" title="Link to this heading">#</a></h3>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spatialreg</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">rgdal</span><span class="p">)</span><span class="w"> </span><span class="c1"># Or sf for more modern spatial data handling</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+
+<span class="c1"># URL of the GeoPackage file on GitHub</span>
+<span class="n">gpkg_url</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">"https://github.com/edieraristizabal/ModeloMultinivel/raw/refs/heads/main/DATA/df_catchments_spatial.gpkg"</span>
+
+<span class="c1"># Create a temporary file name</span>
+<span class="n">temp_file</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">tempfile</span><span class="p">(</span><span class="n">fileext</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">".gpkg"</span><span class="p">)</span>
+
+<span class="c1"># Download the file from the URL to the temporary location</span>
+<span class="nf">download.file</span><span class="p">(</span><span class="n">gpkg_url</span><span class="p">,</span><span class="w"> </span><span class="n">destfile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_file</span><span class="p">,</span><span class="w"> </span><span class="n">mode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"wb"</span><span class="p">)</span>
+
+<span class="c1"># Load the GeoPackage into R from the temporary file</span>
+<span class="c1"># Assuming your layer name is "df_catchments_spatial"</span>
+<span class="c1"># You might need to adjust the layer name if it's different</span>
+<span class="n">gdf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">readOGR</span><span class="p">(</span><span class="n">dsn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp_file</span><span class="p">,</span><span class="w"> </span><span class="n">layer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"df_catchments_spatial"</span><span class="p">)</span>
+
+<span class="c1"># Remove the temporary file</span>
+<span class="nf">unlink</span><span class="p">(</span><span class="n">temp_file</span><span class="p">)</span>
+
+<span class="c1"># Calculate the density of landslides and apply the log + 1 transformation</span>
+<span class="n">gdf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">gdf</span><span class="w"> </span><span class="o">%&gt;%</span>
+<span class="w">  </span><span class="nf">mutate</span><span class="p">(</span><span class="n">density_lands_rec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">area</span><span class="p">,</span>
+<span class="w">         </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">density_lands_rec</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">1</span><span class="p">))</span>
+
+<span class="c1"># Define the dependent and independent variables</span>
+<span class="n">dependent_var</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="s">"y"</span>
+<span class="n">independent_vars</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">"rainfallAnnual_mean"</span><span class="p">,</span><span class="w"> </span><span class="s">"elev_mean"</span><span class="p">,</span><span class="w"> </span><span class="s">"rel_mean"</span><span class="p">)</span>
+
+<span class="c1"># Create the Queen contiguity weights matrix</span>
+<span class="n">queen_nb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">poly2nb</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+<span class="n">queen_lw</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nb2listw</span><span class="p">(</span><span class="n">queen_nb</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"W"</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># 1. Spatial Autoregressive Model (SAR)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="n">sar_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">dependent_var</span><span class="p">,</span><span class="w"> </span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">))),</span>
+<span class="w">                      </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"lag"</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sar_model</span><span class="p">)</span>
+
+<span class="c1"># Effects for SAR model</span>
+<span class="n">sar_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">impacts</span><span class="p">(</span><span class="n">sar_model</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sar_effects</span><span class="p">,</span><span class="w"> </span><span class="n">zstats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">short</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Moran's I for residuals of SAR model</span>
+<span class="n">sar_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">sar_model</span><span class="p">)</span>
+<span class="n">moran_sar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">sar_residuals</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">moran_sar</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># 2. Spatial Durbin Model (SDM)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Create the formula for the SDM model including spatial lags of independent variables</span>
+<span class="n">sdm_formula</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">dependent_var</span><span class="p">,</span><span class="w"> </span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="nf">paste0</span><span class="p">(</span><span class="s">"lag("</span><span class="p">,</span><span class="w"> </span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="s">", by = gdf@data$OBJECTID)"</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">),</span><span class="w"> </span><span class="s">"+"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">)))</span>
+<span class="n">sdm_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdm_formula</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"mixed"</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sdm_model</span><span class="p">)</span>
+
+<span class="c1"># Effects for SDM model</span>
+<span class="n">sdm_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">impacts</span><span class="p">(</span><span class="n">sdm_model</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">200</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">trace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sdm_effects</span><span class="p">,</span><span class="w"> </span><span class="n">zstats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">short</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Moran's I for residuals of SDM model</span>
+<span class="n">sdm_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">sdm_model</span><span class="p">)</span>
+<span class="n">moran_sdm</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">sdm_residuals</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">moran_sdm</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># 3. Spatial Error Model (SEM)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="n">sem_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">errorsarlm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">dependent_var</span><span class="p">,</span><span class="w"> </span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">))),</span>
+<span class="w">                        </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sem_model</span><span class="p">)</span>
+
+<span class="c1"># Moran's I for residuals of SEM model</span>
+<span class="n">sem_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">sem_model</span><span class="p">)</span>
+<span class="n">moran_sem</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">sem_residuals</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">moran_sem</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># 4. Spatial Durbin Error Model (SDEM)</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># Create the formula for the SDEM model including spatial lags of independent variables in the error term</span>
+<span class="n">sdem_formula</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">dependent_var</span><span class="p">,</span><span class="w"> </span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">)))</span>
+<span class="n">sdem_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">errorsarlm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdem_formula</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">etype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"emixed"</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">xlag</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="nf">paste0</span><span class="p">(</span><span class="s">"lag("</span><span class="p">,</span><span class="w"> </span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="s">", by = gdf@data$OBJECTID)"</span><span class="p">),</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">))))</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sdem_model</span><span class="p">)</span>
+
+<span class="c1"># Moran's I for residuals of SDEM model</span>
+<span class="n">sdem_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">sdem_model</span><span class="p">)</span>
+<span class="n">moran_sdem</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">sdem_residuals</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">moran_sdem</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="c1"># 5. SARAR or General Nesting Spatial (GNS) Model</span>
+<span class="c1">#-------------------------------------------------------------------------------</span>
+<span class="n">sarar_model</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.formula</span><span class="p">(</span><span class="nf">paste</span><span class="p">(</span><span class="n">dependent_var</span><span class="p">,</span><span class="w"> </span><span class="s">"~"</span><span class="p">,</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">independent_vars</span><span class="p">,</span><span class="w"> </span><span class="n">collapse</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"+"</span><span class="p">))),</span>
+<span class="w">                        </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gdf</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"mixed"</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">sarar_model</span><span class="p">)</span>
+
+<span class="c1"># Moran's I for residuals of SARAR model</span>
+<span class="n">sarar_residuals</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">residuals</span><span class="p">(</span><span class="n">sarar_model</span><span class="p">)</span>
+<span class="n">moran_sarar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">sarar_residuals</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">queen_lw</span><span class="p">,</span><span class="w"> </span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">zero.policy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">moran_sarar</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Comparación SAR vs. OLS:</strong> Para el dataset de cuencas, ajusta un OLS y un SAR-Lag con las mismas covariables. Compara: (a) los coeficientes (¿cambian en magnitud o signo?), (b) el AIC, y (c) el Moran I de los residuos. ¿Qué modelo es preferible y por qué?</p></li>
+<li><p><strong>Efectos directos e indirectos:</strong> En un modelo SAR-Lag, el efecto total de una covariable se descompone en efecto directo (sobre la propia unidad) e indirecto (spillover hacia vecinas). Usando las funciones de <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> en R (<code class="docutils literal notranslate"><span class="pre">impacts()</span></code>), calcula los impactos directos, indirectos y totales de <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> en el modelo SAR-Lag. ¿Qué fracción del efecto total es spillover?</p></li>
+<li><p><strong>Modelo SEM con diferentes matrices:</strong> Ajusta el modelo SEM (error espacial) con tres matrices de pesos distintas: Queen, Rook y KNN(k=4). Compara el valor de <span class="math notranslate nohighlight">\(\lambda\)</span> estimado y el AIC entre las tres especificaciones. ¿Es el modelo sensible a la definición de vecindad?</p></li>
+<li><p><strong>Interpretación del modelo SLX:</strong> En el modelo SLX, los coeficientes de las variables rezagadas <span class="math notranslate nohighlight">\(\mathbf{W}\mathbf{x}_k\)</span> representan el efecto de las covariables de las vecinas. Si el coeficiente del rezago de <code class="docutils literal notranslate"><span class="pre">RainfallDaysmean</span></code> es positivo y significativo, ¿qué proceso físico podría explicar que la precipitación de las subcuencas vecinas influya en la ocurrencia de deslizamientos locales?</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cran.r-project.org/web/packages/spatialreg/">spatialreg (R) — CRAN</a></p></li>
+<li><p><a class="reference external" href="https://cran.r-project.org/web/packages/spdep/">spdep (R) — CRAN</a></p></li>
+<li><p><a class="reference external" href="https://pysal.org/spreg/">PySAL spreg</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>LeSage, J. &amp; Pace, R. K. (2009). <em>Introduction to Spatial Econometrics</em>. CRC Press.</p></li>
+<li><p>Elhorst, J. P. (2010). Applied spatial econometrics: Raising the bar. <em>Spatial Economic Analysis</em>, 5(1), 9–28.</p></li>
+<li><p>Anselin, L. et al. (2006). An introduction to spatial regression analysis in R. Unpublished manuscript.</p></li>
+<li><p>Bivand, R. &amp; Piras, G. (2015). Comparing implementations of estimation methods for spatial econometrics. <em>Journal of Statistical Software</em>, 63(18).</p></li>
+</ul>
+</section>
+<section id="tutoriales">
+<h3>Tutoriales<a class="headerlink" href="#tutoriales" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://cran.r-project.org/web/views/Spatial.html">Spatial Econometrics — R. Bivand (CRAN)</a></p></li>
+<li><p><a class="reference external" href="https://pysal.org/notebooks/model/spreg/OLS-spreg.html">PySAL Spatial Lag Notebooks</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "carto"
+        },
+        kernelOptions: {
+            name: "carto",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'carto'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="09_SpatialRegression.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Regresión Espacial</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="11_CAR.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Modelos de regresión para dependencia espacial tipo CAR</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-exogena-entre-las-variables-predictoras">Efectos de autocorrelación exógena entre las variables predictoras</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-endogena-con-el-error-espacial">Efectos de autocorrelación endógena con el error espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-de-autocorrelacion-endogena-con-la-variable-dependiente">Efectos de autocorrelación endógena con la variable dependiente</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-python">Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>Python</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-de-regresion-espacial-sar-en-r">Modelos de regresión espacial SAR en R</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#slx-spatially-lagged-x-model">SLX (Spatially Lagged X) Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-error-model-sem">Spatial Error Model (SEM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-lag-model-sar">Spatial Lag Model (SAR)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-durbin-model-sdm">Spatial Durbin Model (SDM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-durbin-error-model-sdem">Spatial Durbin Error Model (SDEM)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sac-model">SAC model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mansky-sarar-gns-model">Mansky (SARAR/GNS) Model</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-datos-de-cuencas-de-la-implementacion-de-modelos-sar-en-r">Ejemplo con datos de cuencas de la implementación de modelos SAR en <em>R</em></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tutoriales">Tutoriales</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

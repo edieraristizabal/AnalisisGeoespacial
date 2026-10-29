@@ -1,0 +1,1450 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Patrón de puntos &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '03_PointPattern';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/03_PointPattern.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Modelos Lineales Generalizados (GML)" href="04_GLMPhyton.html" />
+    <link rel="prev" title="El arte de hacer mapas" href="02_Mapping.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F03_PointPattern.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/03_PointPattern.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Patrón de puntos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion">Visualización</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mallas-irregulares">Mallas irregulares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mallas-regulares-hex-binning">Mallas regulares: Hex-binning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimacion-de-densidad-de-kernel-kde">Estimación de Densidad de Kernel (KDE)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centrografia">Centrografía</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dispersion">Dispersión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extension">Extensión</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aleatoriedad-y-agrupamiento">Aleatoriedad y agrupamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estadisticas-de-cuadrantes">Estadísticas de cuadrantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alfabeto-de-funciones-de-ripley">Alfabeto de funciones de Ripley</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-de-agrupamientos-clusters">Identificación de agrupamientos (clusters)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agrupamiento-dbscan">Agrupamiento DBSCAN</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-interactivos">Recursos interactivos</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://en.wikipedia.org/wiki/Cartography">Wikipedia</a>, pero especialmente de los cursos y libros publicados abierta y libremente por <a href="http://darribas.org/">Dani Arribas-Bel</a> - University of Liverpool y <a href="http://spatial.ucr.edu/peopleRey.html">Sergio Rey</a> - Center for Geospatial Sciences, University of California, Riverside. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="patron-de-puntos">
+<h1>Patrón de puntos<a class="headerlink" href="#patron-de-puntos" title="Link to this heading">#</a></h1>
+<p>Los <strong>puntos</strong> son entidades espaciales que pueden entenderse de dos maneras fundamentalmente diferentes:</p>
+<ul class="simple">
+<li><p>Por un lado, los puntos pueden considerarse como objetos fijos en el dominio del espacio, es decir, su ubicación se toma como dada (<em>exógena</em>). En esta interpretación, la ubicación de un punto observado se considera secundaria en comparación con el valor observado en el punto. Piensa en esto como medir el número de autos que atraviesan una intersección de carreteras; la ubicación es fija y los datos de interés provienen de la medición realizada en esa ubicación. El análisis de este tipo de datos puntuales es muy similar al de otros tipos de datos espaciales discretos, como polígonos y líneas.</p></li>
+<li><p>Por otro lado, una observación que ocurre en un punto también puede verse como un sitio de medición de un proceso geográficamente continuo subyacente. En este caso, la medición teóricamente podría realizarse en cualquier lugar, pero solo se llevó a cabo en ciertos sitios. Piensa en esto como medir la longitud de las alas de los pájaros: la ubicación en la que se mide refleja el proceso geográfico subyacente del movimiento y forrajeo de los pájaros, y la longitud de sus alas puede reflejar un proceso ecológico subyacente que varía según el pájaro. Este enfoque implica que tanto la ubicación como la medición importan. Esta es la perspectiva que adoptaremos en este capítulo.</p></li>
+</ul>
+<p>Cuando los puntos se ven como eventos que podrían ocurrir en varios lugares pero solo suceden en algunos, a una colección de tales eventos se le llama un <strong>patrón de puntos</strong>. En este caso, la ubicación de los puntos es uno de los aspectos clave de interés para el análisis. Un buen ejemplo de un patrón de puntos son las fotos georreferenciadas: técnicamente podrían tomarse en muchos lugares, pero generalmente encontramos que las fotos tienden a concentrarse solo en unos pocos de ellos. Los patrones de puntos pueden estar <strong>marcados</strong>, si se proporcionan más atributos junto con la ubicación, o <strong>no marcados</strong>, si solo se proporcionan las coordenadas de donde ocurrió el evento. Continuando con el ejemplo de las fotos, un patrón no marcado sería si solo se utiliza la ubicación donde se tomaron las fotos para el análisis, mientras que hablaríamos de un patrón de puntos marcado si se proporcionan otros atributos, como el tiempo, el modelo de cámara o una «puntuación de calidad de imagen» junto con la ubicación.</p>
+<p>En Geoestadística o datos discretos cuando se está estudiando la calidad del suelo en una región agrícola, sabes de antemano cuáles son las ubicaciones donde realizarás las mediciones, o los polígonos (lotes) que analizarás. Aquí, el dominio es fijo porque las ubicaciones están predefinidas y están relacionadas con un espacio continuo o discretamente definido. Mietras que en patrones de puntos estás estudiando por ejemplo la distribución espacial de deslizamientos después de una tormenta. Los deslizamientos pueden ocurrir en cualquier parte de una región, y su ubicación no es fija, sino que depende de factores estocásticos como la lluvia y las condiciones del terreno. Aquí el dominio no es fijo porque los puntos (eventos) no son determinados de antemano, sino que ocurren según un proceso aleatorio.</p>
+<p>Este concepto, aparentemente simple, puede ser dificil de entender y diferenciar de los análisis geoestadísticos o análisis areales. El siguiente ejemplo se encuentra en el libro de Schabenberger &amp; Gotway (2005). Considera que estás vaciando arena de un balde sobre un escritorio, y llamemos <span class="math notranslate nohighlight">\(Z(s)\)</span> a la profundidad de la arena vertida en la ubicación s. El conjunto <span class="math notranslate nohighlight">\(D\)</span> representa todas las posibles ubicaciones en este experimento, es decir, toda la superficie del escritorio. Luego de medir la profundidad de la arena en algunos puntos del escritorio, se regresa la arena al balde y se vuelve a verter. Este proceso produce otra realización del proceso aleatorio {<span class="math notranslate nohighlight">\(Z(s)\)</span> : <span class="math notranslate nohighlight">\(s\)</span> <span class="math notranslate nohighlight">\(∈\)</span> <span class="math notranslate nohighlight">\(D\)</span> <span class="math notranslate nohighlight">\(⊂\)</span> <span class="math notranslate nohighlight">\(R^2\)</span>}. Ahora tenemos dos realizaciones de un proceso geoestadístico; la superficie (dominio) no ha cambiado entre el primer y el segundo vertido, a menos que alguien haya movido el escritorio. El objetivo del análisis estadístico con estos datos es extraer información sobre el atributo <span class="math notranslate nohighlight">\(Z\)</span>, como por ejemplo, construir un mapa de elevación de la arena sobre el escritorio. El objetivo no es estudiar el escritorio, ya que el dominio es conocido y permanece invariable.</p>
+<p>Ahora bien, ¿podemos imaginar un dominio aleatorio en este ejemplo? Es decir, un conjunto de puntos que cambia con cada realización del proceso aleatorio. Supongamos que <span class="math notranslate nohighlight">\(Z(s)\)</span> representa la profundidad de la arena en la ubicación <span class="math notranslate nohighlight">\(s\)</span>, y aplicamos una transformación mediante un indicador de la siguiente forma:</p>
+<p>I(s) = 1 si Z(s) &gt; c
+I(s) = 0 en otro caso.</p>
+<p>Si <span class="math notranslate nohighlight">\(Z(s)\)</span> es un dato geoestadístico, entonces el indicador <span class="math notranslate nohighlight">\(I(s)\)</span> también lo es. Este indicador toma el valor de 1 siempre que la profundidad de la arena exceda un umbral <span class="math notranslate nohighlight">\(c\)</span>. Ahora, eliminamos todas las ubicaciones en <span class="math notranslate nohighlight">\(D\)</span> donde <span class="math notranslate nohighlight">\(I(s) = 0\)</span> y definimos el conjunto restante de puntos como <span class="math notranslate nohighlight">\(D*\)</span>. A medida que repetimos el proceso de verter la arena, se obtiene una realización distinta del conjunto aleatorio <span class="math notranslate nohighlight">\(D*\)</span>. Tanto el número de puntos del conjunto realizado como su configuración espacial ahora son el resultado de un proceso aleatorio. El atributo «observado» en cada punto de <span class="math notranslate nohighlight">\(D*\)</span> es más bien poco interesante, <span class="math notranslate nohighlight">\(I(s) ≡ 1\)</span>, si <span class="math notranslate nohighlight">\(s\)</span> <span class="math notranslate nohighlight">\(∈\)</span> <span class="math notranslate nohighlight">\(D*\)</span>. En este caso, el foco del análisis estadístico es el conjunto <span class="math notranslate nohighlight">\(D*\)</span> en sí mismo; es decir, estudiamos las propiedades del dominio aleatorio. Este análisis corresponde al campo del análisis de patrones puntuales. La colección de puntos <span class="math notranslate nohighlight">\(I(s)\)</span>, <span class="math notranslate nohighlight">\(s\)</span> <span class="math notranslate nohighlight">\(∈\)</span> <span class="math notranslate nohighlight">\(D*\)</span>, se conoce como un patrón de puntos.</p>
+<p>Un ejemplo probablemente más sencillo es suponer que estás observando un bosque desde arriba, como si estuvieras viendo un mapa aéreo. Cada árbol en el bosque se puede representar por un punto en ese mapa. Estos puntos representan las posiciones de los árboles, y su disposición sobre el terreno es lo que llamamos un «patrón de puntos». Dependiendo del tipo de bosque, la distribución de los árboles puede ser más o menos uniforme: en un bosque plantado, los árboles tienden a estar ordenados en filas y columnas (es un patrón regular), mientras que en un bosque natural, los árboles se distribuyen de manera aparentemente aleatoria (un patrón aleatorio). Ahora imagina que los árboles están creciendo de manera desigual. Quizás, algunos árboles crecen mejor en ciertas áreas del bosque donde hay más agua, o donde la luz del sol llega de manera más intensa. Al medir la altura de cada árbol, notarás que en algunos lugares del bosque los árboles son más altos y en otros lugares son más bajos. Esta variabilidad nos ayuda a entender la distribución espacial de algún atributo, en este caso, la altura de los árboles. Para analizar mejor estos patrones, podrías definir una regla, por ejemplo: «Considero solamente los árboles cuya altura sea mayor a 5 m.» Siguiendo esta regla, miras nuevamente el bosque y decides que sólo vas a marcar aquellos árboles que cumplen con esa condición (altura &gt; 5 metros). Así, el conjunto de puntos (árboles) que seleccionas constituye un «nuevo patrón de puntos». Este proceso de selección puede hacerse varias veces, con el resultado de que cada vez, dependiendo de factores como la cantidad de agua o nutrientes en el suelo, el patrón de árboles más altos (mayores a 5 m) puede cambiar. Los lugares donde quedan los árboles seleccionados van variando de un intento a otro, mostrando un patrón de puntos que cambia con cada realización. En este sentido, el patrón de puntos es aleatorio porque los lugares seleccionados son diferentes cada vez.</p>
+<p>Este tipo de análisis se denomina <em>análisis de patrones de puntos</em> y se utiliza para estudiar la distribución de los elementos en el espacio. No nos interesa solamente dónde están los árboles, sino también cómo cambian sus posiciones o si existen agrupamientos en algunas áreas del bosque que puedan explicarse por factores ambientales. En la práctica, el análisis de patrones de puntos es muy útil en distintas áreas de investigación: por ejemplo, para estudiar la ubicación de terremotos a lo largo de una falla geológica, la distribución de especies animales en un parque, o incluso la aparición de casos de enfermedades en una ciudad. Este análisis nos permite entender si los eventos (como terremotos, árboles, o enfermedades) ocurren de forma completamente aleatoria o si hay alguna estructura o patrón detrás de su ocurrencia.</p>
+<p>El <strong>análisis de patrones de puntos</strong> se ocupa de la visualización, descripción, caracterización estadística y modelado de patrones de puntos, tratando de comprender el proceso generador que da lugar y explica los datos observados. Las preguntas comunes en este campo incluyen:</p>
+<ul class="simple">
+<li><p><em>¿Cómo se ve el patrón?</em></p></li>
+<li><p><em>¿Cuál es la naturaleza de la distribución de los puntos?</em></p></li>
+<li><p><em>¿Existe alguna estructura en la forma en que se disponen las ubicaciones en el espacio? Es decir, ¿los eventos están agrupados o están dispersos?</em></p></li>
+<li><p><em>¿Por qué ocurren los eventos en esos lugares y no en otros?</em></p></li>
+</ul>
+<p>Estas son las preguntas más comunes en el análisis de patrones de puntos.</p>
+<p>En este punto, es útil recordar una distinción importante entre <strong>proceso</strong> y <strong>patrón</strong>. El primero se refiere al mecanismo subyacente que está en funcionamiento para generar el resultado que observamos. Debido a su naturaleza abstracta, no lo vemos directamente. Sin embargo, en muchos contextos, el foco principal del análisis es aprender sobre <em>qué</em> determina un fenómeno dado y <em>cómo</em> se combinan esos factores para generarlo. En este contexto, el «proceso» está asociado con el <em>cómo</em>. Por otro lado, el «patrón» se refiere al resultado de ese proceso. En algunos casos, es la única evidencia del proceso que podemos observar y, por lo tanto, el único insumo con el que contamos para reconstruirlo. Aunque observable directamente y, quizás, más fácil de abordar, el patrón es solo un reflejo del proceso. El verdadero desafío no es caracterizar el primero, sino usarlo para deducir el segundo.</p>
+<p>En este capítulo, proporcionamos una introducción a los patrones de puntos a través de fotos georreferenciadas de Flickr en Tokio. Trataremos los fenómenos representados en los datos como eventos: las fotos podrían tomarse en cualquier lugar de Tokio, pero solo se capturan en ciertas ubicaciones. Ten en cuenta que esta comprensión de las fotos de Tokio no es inmutable: uno podría concebir casos en los que tiene sentido considerar esas ubicaciones como dadas y analizar sus propiedades ignorando su aspecto de «evento». Sin embargo, en este contexto, nos centraremos en aquellas preguntas que se relacionan con la ubicación y la forma colectiva de las ubicaciones. El uso de estas herramientas nos permitirá transformar una larga lista de coordenadas XY ininteligibles en fenómenos tangibles con una estructura espacial característica, y responder preguntas sobre el centro, la dispersión y la agrupación de atracciones en Tokio para los usuarios de Flickr.</p>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Distinguir entre patrones de puntos marcados y no marcados, y entre proceso y patrón.</p></li>
+<li><p>Aplicar técnicas de centrografía (centro medio, distancia estándar, elipse de desviación) para describir la distribución espacial.</p></li>
+<li><p>Calcular e interpretar estimaciones de densidad de kernel (KDE) con distintos anchos de banda.</p></li>
+<li><p>Implementar y leer las funciones de Ripley G y F para inferir la naturaleza del proceso (agrupado, aleatorio, regular).</p></li>
+<li><p>Identificar clusters espaciales mediante el algoritmo DBSCAN con <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">01_DatosEspaciales</span></code> — GeoDataFrames; nociones de estadística descriptiva.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read remote file</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">"https://raw.githubusercontent.com/gdsbook/book/main/data/tokyo/tokyo_clean.csv"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>La tabla contiene la siguiente información sobre la muestra de 10,000 fotografías: el ID del usuario que tomó la foto; la ubicación expresada en columnas de latitud y longitud; una versión transformada de esas coordenadas expresadas en Pseudo Mercator; la marca de tiempo cuando se tomó la foto; y la URL donde se almacena en línea la fotografía a la que se refiere.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 10000 entries, 0 to 9999
+Data columns (total 7 columns):
+ #   Column                Non-Null Count  Dtype  
+---  ------                --------------  -----  
+ 0   user_id               10000 non-null  object 
+ 1   longitude             10000 non-null  float64
+ 2   latitude              10000 non-null  float64
+ 3   date_taken            10000 non-null  object 
+ 4   photo/video_page_url  10000 non-null  object 
+ 5   x                     10000 non-null  float64
+ 6   y                     10000 non-null  float64
+dtypes: float64(4), object(3)
+memory usage: 547.0+ KB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizacion">
+<h2>Visualización<a class="headerlink" href="#visualizacion" title="Link to this heading">#</a></h2>
+<p>El primer paso para tener una idea de cómo se ve la dimensión espacial de este conjunto de datos es graficarlo. En su nivel más básico, podemos generar un diagrama de dispersión con <code class="docutils literal notranslate"><span class="pre">seaborn</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate scatter plot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sbn</span>
+<span class="n">sbn</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'longitude'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'latitude'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">db</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.5</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b2d2d693f80f2396c11766b287f5a59e139932802b1d724a4185c998f4509744.png" src="_images/b2d2d693f80f2396c11766b287f5a59e139932802b1d724a4185c998f4509744.png" />
+</div>
+</div>
+<p>Este es un buen comienzo: podemos ver que los puntos tienden a concentrarse en el centro del área cubierta de una manera que (aparentemente) no es aleatoria. Además, dentro del patrón general, también parece haber más grupos localizados. Sin embargo, el gráfico anterior tiene dos inconvenientes clave: uno, carece de contexto geográfico; y dos, hay áreas donde la densidad de puntos es tan grande que es difícil distinguir algo más allá de una mancha azul.</p>
+<p>El enfoque presentado anteriormente funciona hasta un cierto número de puntos a graficar; ajustar la transparencia y el tamaño de los puntos solo nos lleva hasta cierto punto, y en algún momento, necesitamos cambiar el enfoque. Después de aprender sobre la visualización de datos en mallas (polígonos), una opción es «convertir» puntos en polígonos y aplicar técnicas como el mapeo coroplético para visualizar su distribución espacial. Para hacerlo, superpondremos una capa de polígonos sobre el patrón de puntos, <em>asignando</em> los puntos a los polígonos al asignar a cada punto el polígono en el que se encuentra, y crearemos un coropleta de los conteos por polígono.</p>
+<p>Este enfoque es intuitivo pero, por supuesto, plantea la siguiente pregunta: <em>¿qué polígonos usamos para agregar los puntos?</em> Idealmente, queremos una delimitación que coincida lo más posible con el proceso generador de puntos y que divida el espacio en áreas con una intensidad interna de puntos similar. Sin embargo, ese no suele ser el caso, sobre todo porque una de las principales razones por las que normalmente queremos visualizar el patrón de puntos es aprender sobre dicho proceso generador, por lo que, típicamente, no sabríamos de antemano si un conjunto de polígonos coincide con este. Si no podemos contar con el conjunto ideal de polígonos desde el principio, podemos adoptar dos enfoques más realistas: usar un conjunto de áreas irregulares preexistentes o crear un conjunto artificial de polígonos regulares. Exploremos ambos.</p>
+<section id="mallas-irregulares">
+<h3>Mallas irregulares<a class="headerlink" href="#mallas-irregulares" title="Link to this heading">#</a></h3>
+<p>Para ejemplificar este enfoque, utilizaremos las áreas administrativas que hemos cargado anteriormente. Vamos a agregarlas a la figura anterior para obtener un mejor contexto.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="n">areas</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s2">"https://darribas.org/gds_course/content/data/tokyo_admin_boundaries.geojson"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">areas</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/712073bf80b76d2b360fe693565d53600a6c7430a68776b517e9bc15a12df7fc.png" src="_images/712073bf80b76d2b360fe693565d53600a6c7430a68776b517e9bc15a12df7fc.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">areas</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
+Name: WGS 84
+Axis Info [ellipsoidal]:
+- Lat[north]: Geodetic latitude (degree)
+- Lon[east]: Geodetic longitude (degree)
+Area of Use:
+- undefined
+Datum: World Geodetic System 1984
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot photographs with smaller, more translucent dots</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">"longitude"</span><span class="p">,</span><span class="s2">"latitude"</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s2">"xkcd:bright yellow"</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="c1"># Add administrative boundaries</span>
+<span class="n">areas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s2">"xkcd:pale lavender"</span><span class="p">)</span>
+<span class="c1"># remove axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/e9b226638eb59a5da33f6e0e67f0f17c08873256def97e7ca5d7781da27c4e55.png" src="_images/e9b226638eb59a5da33f6e0e67f0f17c08873256def97e7ca5d7781da27c4e55.png" />
+</div>
+</div>
+<p>Ahora necesitamos saber cuántas fotografías contiene cada área. Nuestra tabla de fotografías ya contiene el ID del área, por lo que todo lo que necesitamos hacer aquí es contar por área y adjuntar el conteo a la tabla <code class="docutils literal notranslate"><span class="pre">areas</span></code>. Para esto, podemos utilizar el operador <code class="docutils literal notranslate"><span class="pre">groupby</span></code>, que toma todas las fotos de la tabla y las «agrupa» «por» su ID administrativo. Una vez agrupadas, aplicamos el método <code class="docutils literal notranslate"><span class="pre">size</span></code>, que cuenta cuántos elementos tiene cada grupo y devuelve una columna indexada por el código LSOA con todos los conteos como valores. Finalmente, asignamos los conteos a una columna recién creada en la tabla <code class="docutils literal notranslate"><span class="pre">areas</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 10000 entries, 0 to 9999
+Data columns (total 7 columns):
+ #   Column                Non-Null Count  Dtype  
+---  ------                --------------  -----  
+ 0   user_id               10000 non-null  object 
+ 1   longitude             10000 non-null  float64
+ 2   latitude              10000 non-null  float64
+ 3   date_taken            10000 non-null  object 
+ 4   photo/video_page_url  10000 non-null  object 
+ 5   x                     10000 non-null  float64
+ 6   y                     10000 non-null  float64
+dtypes: float64(4), object(3)
+memory usage: 547.0+ KB
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mallas-regulares-hex-binning">
+<h3>Mallas regulares: Hex-binning<a class="headerlink" href="#mallas-regulares-hex-binning" title="Link to this heading">#</a></h3>
+<p>A veces no tenemos ninguna capa de polígonos para usar o las que tenemos no son particularmente adecuadas para agregar puntos en ellas. En estos casos, una alternativa sensata es crear una topología artificial de polígonos que podamos utilizar para agregar puntos. Hay varias formas de hacer esto, pero la más común es crear una cuadrícula de hexágonos. Esto proporciona una topología regular (cada polígono tiene el mismo tamaño y forma) que, a diferencia de los círculos, agota todo el espacio sin superposiciones y tiene más bordes que los cuadrados, lo que alivia los problemas de borde.</p>
+<p>Python tiene una forma simplificada de crear esta capa de hexágonos <em>y</em> agregar puntos en ella de una sola vez gracias al método <code class="docutils literal notranslate"><span class="pre">hexbin</span></code>, que está disponible en cada objeto de eje (por ejemplo, <code class="docutils literal notranslate"><span class="pre">ax</span></code>). Primero veamos cómo podrías crear un mapa solo de la capa de hexágonos:</p>
+<p>Una solución para evitar el desorden se relaciona con lo que mencionamos anteriormente como el paso de «tablas a superficies». Ahora podemos reformular este enfoque como un histograma <em>espacial</em> o <em>bidimensional</em>. Aquí, generamos una cuadrícula regular (ya sea cuadrada o hexagonal), contamos cuántos puntos caen dentro de cada celda de la cuadrícula y la presentamos como lo haríamos con cualquier otro coropleta. Esto es atractivo porque es simple, intuitivo y, si la cuadrícula es lo suficientemente fina, elimina algunas de las distorsiones de área que los coropletas pueden inducir. Para esta ilustración, usemos el agrupamiento hexagonal (a veces llamado hexbin) porque tiene propiedades ligeramente mejores que las cuadrículas cuadradas, como menos distorsión de forma y una conectividad más regular entre las celdas. Crear un histograma bidimensional con hexbin es sencillo en Python utilizando la función <code class="docutils literal notranslate"><span class="pre">hexbin</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">contextily</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ctx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="c1"># Set up figure and axis</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="c1"># Generar y agregar un hexbin con 50 hexágonos en cada dimensión, sin bordes, semitransparente y con el mapa de color viridis invertido</span>
+<span class="n">hb</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">hexbin</span><span class="p">(</span>
+    <span class="n">db</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> 
+    <span class="n">db</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span>
+    <span class="n">gridsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> 
+    <span class="n">linewidths</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+    <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis_r'</span>
+<span class="p">)</span>
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+<span class="c1"># Add colorbar</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">hb</span><span class="p">)</span>
+<span class="c1"># Remove axes</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/fcde63182c03c3c31a5693bb24068fa4d8f21ae59d2e74048f5d940cca2fd43a.png" src="_images/fcde63182c03c3c31a5693bb24068fa4d8f21ae59d2e74048f5d940cca2fd43a.png" />
+</div>
+</div>
+<p>Ahora es claro que la mayoría de las fotografías se relacionan con áreas mucho más localizadas y que el mapa anterior estaba ocultando esto. Observa cómo solo hace falta configurar la figura y llamar a <code class="docutils literal notranslate"><span class="pre">hexbin</span></code> directamente usando el conjunto de columnas de coordenadas (<code class="docutils literal notranslate"><span class="pre">db[&quot;longitude&quot;]</span></code> y <code class="docutils literal notranslate"><span class="pre">db[&quot;latitude&quot;]</span></code>). Los argumentos adicionales que incluimos son el número de hexágonos por eje (<code class="docutils literal notranslate"><span class="pre">gridsize</span></code>, 50 para una capa de 50 por 50), y la transparencia que queremos (80%). Además, incluimos una barra de color para tener una idea de cómo se mapean los conteos a los colores. Ten en cuenta que necesitamos pasar el nombre del objeto que incluye el <code class="docutils literal notranslate"><span class="pre">hexbin</span></code> (<code class="docutils literal notranslate"><span class="pre">hb</span></code> en nuestro caso), pero recuerda que esto es opcional, no siempre necesitas crear uno.</p>
+</section>
+<section id="estimacion-de-densidad-de-kernel-kde">
+<h3>Estimación de Densidad de Kernel (KDE)<a class="headerlink" href="#estimacion-de-densidad-de-kernel-kde" title="Link to this heading">#</a></h3>
+<p>El uso de un agrupamiento hexagonal puede ser una solución rápida cuando no tenemos una buena capa de polígonos para superponer los puntos directamente, y algunas de sus propiedades, como el tamaño igual de cada polígono, pueden ayudar a aliviar algunos de los problemas con una topología irregular «mala» (una que no se ajusta al proceso generador de puntos subyacente). Sin embargo, no resuelve el problema de la unidad de área modificable (M.A.U.P.). Al final del día, seguimos imponiendo líneas de límite arbitrarias y agregando datos en función de ellas, por lo que la posibilidad de desajuste con la distribución subyacente del patrón de puntos es muy real.</p>
+<p>Una forma de evitar este problema es evitar la agregación en otra geografía por completo. En su lugar, podemos intentar estimar la distribución de probabilidad <em>continua</em> observada. El método más comúnmente utilizado para esto es el llamado <em>estimador de densidad de kernel</em> (KDE). La idea detrás de los KDE es contar el número de puntos de una manera <em>continua</em>. En lugar de usar un conteo discreto, donde se incluye un punto en el conteo si está dentro de ciertos límites y se ignora de lo contrario, los KDE usan funciones (kernels) que incluyen puntos pero les asignan diferentes pesos a cada uno dependiendo de qué tan lejos está la ubicación en la que estamos contando el punto.</p>
+<p>El algoritmo real para estimar una densidad de kernel no es trivial, pero su aplicación en Python se simplifica bastante con el uso de Seaborn. Sin embargo, los KDE son bastante intensivos en términos computacionales. Cuando tienes un patrón de puntos grande como en el ejemplo de <code class="docutils literal notranslate"><span class="pre">tokyo</span></code> (10,000 puntos), su cálculo puede tomar un poco de tiempo. Para solucionar este problema, creamos un subconjunto aleatorio, que conserva la estructura general del patrón, pero con muchos menos puntos. Tomemos un subconjunto de 1,000 puntos aleatorios de nuestra tabla original:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up figure and axis</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">sbn</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span><span class="n">y</span><span class="o">=</span><span class="n">db</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span><span class="n">n_levels</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span><span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis_r'</span><span class="p">)</span>
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span><span class="p">)</span>
+<span class="c1"># Remove axes</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/94968b571c03d12998ed76574cdc0fdd1ef7be8173a6a6ed98ceba5d29924115.png" src="_images/94968b571c03d12998ed76574cdc0fdd1ef7be8173a6a6ed98ceba5d29924115.png" />
+</div>
+</div>
+<p>El resultado es una salida más suave que captura la misma estructura del hexbin, pero que «suaviza» las transiciones entre diferentes áreas. Esto proporciona una mejor generalización de la probabilidad teórica de que una foto <em>podría</em> ocurrir en cualquier punto dado. Esto es útil en algunos casos, pero principalmente es útil para evitar las restricciones impuestas por una cuadrícula regular de hexágonos o cuadrados.</p>
+<p>Seaborn simplifica enormemente el proceso y lo reduce a una sola línea. El método <code class="docutils literal notranslate"><span class="pre">sns.kdeplot</span></code> (que también podemos usar para crear un KDE de una sola variable) toma las coordenadas X e Y de los puntos como los únicos atributos obligatorios. Además, especificamos el número de niveles que queremos que tenga el degradado de color (<code class="docutils literal notranslate"><span class="pre">n_levels</span></code>), si queremos colorear el espacio entre cada nivel (<code class="docutils literal notranslate"><span class="pre">shade</span></code>, sí), y el colormap de nuestra elección.</p>
+</section>
+</section>
+<section id="centrografia">
+<h2>Centrografía<a class="headerlink" href="#centrografia" title="Link to this heading">#</a></h2>
+<p>La centrografía es el análisis de la centralidad en un patrón de puntos. Por «centralidad», nos referimos a la ubicación general y dispersión del patrón. Si el hexbin anterior puede verse como un «histograma espacial», la centrografía es el equivalente en patrones de puntos de las medidas de tendencia central, como la media. Estas medidas son útiles porque nos permiten resumir distribuciones espaciales en conjuntos más pequeños de información (por ejemplo, un solo punto). Se utilizan muchos índices diferentes en la centrografía para proporcionar una indicación de «dónde» se encuentra un patrón de puntos, qué tan agrupado está el patrón alrededor de su centro, o qué tan irregular es su forma.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pointpats</span><span class="w"> </span><span class="kn">import</span> <span class="n">centrography</span>
+<span class="n">mean_center</span> <span class="o">=</span> <span class="n">centrography</span><span class="o">.</span><span class="n">mean_center</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">]])</span>
+<span class="n">med_center</span> <span class="o">=</span> <span class="n">centrography</span><span class="o">.</span><span class="n">euclidean_median</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate scatter plot</span>
+<span class="n">joint_axes</span> <span class="o">=</span> <span class="n">sbn</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'y'</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">db</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">height</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="c1"># Add mean point and marginal lines</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">mean_center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Mean Center'</span><span class="p">)</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_marg_x</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mean_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_marg_y</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">mean_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="c1"># Add median point and marginal lines</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">med_center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'limegreen'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Median Center'</span><span class="p">)</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_marg_x</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">med_center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'limegreen'</span><span class="p">)</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_marg_y</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">med_center</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'limegreen'</span><span class="p">)</span>
+<span class="c1"># Legend</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span><span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_joint</span><span class="p">,</span><span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span><span class="p">)</span>
+<span class="c1"># Clean axes</span>
+<span class="n">joint_axes</span><span class="o">.</span><span class="n">ax_joint</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a859830dcc4019cafcb84525e4c67fa3d2981ba81e99ae754702a8cf56bc0f50.png" src="_images/a859830dcc4019cafcb84525e4c67fa3d2981ba81e99ae754702a8cf56bc0f50.png" />
+</div>
+</div>
+<p>La discrepancia entre los dos centros se debe a la asimetría; hay muchos «grupos» de fotos en el oeste y sur de Tokio, mientras que el norte y el este de Tokio están densamente poblados, pero la densidad disminuye muy rápidamente. Por lo tanto, los grupos de fotos más alejados tiran del centro medio hacia el oeste y sur, en relación con el centro mediano.</p>
+<section id="dispersion">
+<h3>Dispersión<a class="headerlink" href="#dispersion" title="Link to this heading">#</a></h3>
+<p>Una medida de dispersión que es común en la centrografía es la <em>distancia estándar</em>. Esta medida proporciona la distancia promedio desde el centro de la nube de puntos (como se mide desde el centro de masa). Esto también es simple de calcular utilizando <code class="docutils literal notranslate"><span class="pre">pointpats</span></code>, con la función <code class="docutils literal notranslate"><span class="pre">std_distance</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">centrography</span><span class="o">.</span><span class="n">std_distance</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span><span class="s1">'y'</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8778.218564382098
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esto significa que, en promedio, las fotos se toman a unos 8800 metros del centro medio.</p>
+<p>Otra visualización útil es la <em>elipse de desviación estándar</em>, o <em>elipse estándar</em>. Esta es una elipse trazada a partir de los datos que refleja tanto su centro como su dispersión. Para visualizar esto, primero calculamos los ejes y la rotación utilizando la función <code class="docutils literal notranslate"><span class="pre">ellipse</span></code> en <code class="docutils literal notranslate"><span class="pre">pointpats</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">major</span><span class="p">,</span> <span class="n">minor</span><span class="p">,</span> <span class="n">rotation</span> <span class="o">=</span> <span class="n">centrography</span><span class="o">.</span><span class="n">ellipse</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span><span class="s1">'y'</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ellipse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Set up figure and axis</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="c1"># Plot photograph points</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">db</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">db</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">mean_center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Mean Center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">med_center</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'limegreen'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Median Center'</span><span class="p">)</span>
+
+<span class="c1"># Construct the standard ellipse using matplotlib</span>
+<span class="n">ellipse</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">(</span><span class="n">xy</span><span class="o">=</span><span class="n">mean_center</span><span class="p">,</span> <span class="c1"># centrar la elipse en nuestro centro medio</span>
+                  <span class="n">width</span><span class="o">=</span><span class="n">major</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="c1"># centrography.ellipse solo da la mitad del eje</span>
+                  <span class="n">height</span><span class="o">=</span><span class="n">minor</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> 
+                  <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">(</span><span class="n">rotation</span><span class="p">),</span> <span class="c1"># Aquí los ángulos están en grados, no en radianes</span>
+                  <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> 
+                  <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span>
+                  <span class="n">label</span><span class="o">=</span><span class="s1">'Std. Ellipse'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">ellipse</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="c1"># Display</span>
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b83d3d54d9c81b009153963a2eedc6b4926a5b368f6eb6ef2a8f74f5e1c4ca4e.png" src="_images/b83d3d54d9c81b009153963a2eedc6b4926a5b368f6eb6ef2a8f74f5e1c4ca4e.png" />
+</div>
+</div>
+</section>
+<section id="extension">
+<h3>Extensión<a class="headerlink" href="#extension" title="Link to this heading">#</a></h3>
+<p>La última colección de medidas de centrografía que discutiremos caracteriza la extensión de una nube de puntos. Cuatro formas son útiles y reflejan distintos niveles de cómo «ajustan» el patrón.</p>
+<p>A continuación, repasaremos cómo construir cada ejemplo y visualizarlos al final. Para que sea más claro, usaremos las fotos de Flickr del usuario más prolífico en el conjunto de datos (ID: <code class="docutils literal notranslate"><span class="pre">95795770</span></code>) para mostrar lo diferentes que pueden ser estos resultados.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">user</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s1">'user_id == "95795770@N00"'</span><span class="p">)</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">user</span><span class="p">[[</span><span class="s1">'x'</span><span class="p">,</span><span class="s1">'y'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Primero, calcularemos el <strong>envolvente convexo</strong> (<em>convex hull</em>), que es la forma <em>convexa</em> más ajustada que encierra las fotos del usuario. Por <em>convexa</em>, nos referimos a que la forma nunca «retrocede» sobre sí misma; no tiene depresiones, valles, crestas o agujeros. Todos sus ángulos interiores son menores de 180 grados. Esto se calcula usando el método <code class="docutils literal notranslate"><span class="pre">centrography.hull</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">convex_hull_vertices</span> <span class="o">=</span> <span class="n">centrography</span><span class="o">.</span><span class="n">hull</span><span class="p">(</span><span class="n">coordinates</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>En segundo lugar, calcularemos la <strong>forma alfa</strong> (<em>alpha shape</em>), que puede entenderse como una versión más «ajustada» del envolvente convexo. Una forma de pensar en el envolvente convexo es que es el espacio que queda cuando se rueda una bola o círculo <strong>realmente</strong> grande alrededor de la forma. La bola es tan grande en relación con la forma que su radio es en realidad infinito, ¡y las líneas que forman el envolvente convexo son líneas rectas!</p>
+<p>En contraste, puedes pensar en la forma alfa como el espacio formado al rodar bolas <em>pequeñas</em> alrededor de la forma. Dado que la bola es más pequeña, rueda hacia las hendiduras y valles creados entre los puntos. A medida que esa bola se hace más grande, la forma alfa se convierte en el envolvente convexo. Pero, para bolas pequeñas, la forma puede volverse muy ajustada. De hecho, si el alfa es demasiado pequeño, «resbala» entre los puntos, lo que da como resultado <em>más de un envolvente</em>. Por lo tanto, el paquete <code class="docutils literal notranslate"><span class="pre">pysal</span></code> tiene una función <code class="docutils literal notranslate"><span class="pre">alpha_shape_auto</span></code> para encontrar la forma alfa <em>única</em> más pequeña, para que no tengas que adivinar qué tan grande debe ser la bola.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">libpysal</span>
+<span class="n">alpha_shape</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">circs</span> <span class="o">=</span> <span class="n">libpysal</span><span class="o">.</span><span class="n">cg</span><span class="o">.</span><span class="n">alpha_shape_auto</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">return_circles</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">alpha_shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/be74c2fba6229ec004c5e6e4c4341edff2afe3902ad6ec4a26d4136294f3c73b.svg" src="_images/be74c2fba6229ec004c5e6e4c4341edff2afe3902ad6ec4a26d4136294f3c73b.svg" />
+</div>
+</div>
+<p>Para ilustrar, la figura a continuación muestra la forma alfa única más ajustada en verde y los puntos originales en negro. Los círculos de «delimitación» mostrados en la figura tienen un radio de <span class="math notranslate nohighlight">\(8652\)</span> metros. Los círculos están trazados donde nuestro disco de «delimitación» toca dos o tres de los puntos en la nube de puntos. Puedes ver que los círculos «recortan» el envolvente convexo, mostrado en líneas azules discontinuas, hasta que tocan dos (o tres) puntos. Si fueran más ajustados, el círculo desconectaría uno de los puntos en el límite de la forma alfa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">descartes</span><span class="w"> </span><span class="kn">import</span> <span class="n">PolygonPatch</span> <span class="c1">#para graficar fácilmente la forma alfa</span>
+<span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+
+<span class="c1"># Plot a green alpha shape</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+    <span class="n">PolygonPatch</span><span class="p">(</span>
+        <span class="n">alpha_shape</span><span class="p">,</span> 
+        <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> 
+        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'green'</span><span class="p">,</span> 
+        <span class="n">alpha</span><span class="o">=</span><span class="mf">.2</span><span class="p">,</span> 
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">'Tighest single alpha shape'</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Incluir en negro los puntos de nuestro usuario más prolífico</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="o">*</span><span class="n">coordinates</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Source Points'</span>
+<span class="p">)</span>
+
+<span class="c1"># dibujar los círculos que forman el borde de la forma alfa</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">circle</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">circs</span><span class="p">):</span>
+    <span class="c1"># etiquetar solo el primer círculo de cada tipo</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s1">'Bounding Circles'</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">(</span>
+            <span class="n">circle</span><span class="p">,</span> 
+            <span class="n">radius</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> 
+            <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> 
+            <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> 
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># add a blue convex hull</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">Polygon</span><span class="p">(</span>
+        <span class="n">convex_hull_vertices</span><span class="p">,</span> 
+        <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+        <span class="n">edgecolor</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> 
+        <span class="n">facecolor</span><span class="o">=</span><span class="s1">'none'</span><span class="p">,</span> 
+        <span class="n">linestyle</span><span class="o">=</span><span class="s1">':'</span><span class="p">,</span> 
+        <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">'Convex Hull'</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="aleatoriedad-y-agrupamiento">
+<h2>Aleatoriedad y agrupamiento<a class="headerlink" href="#aleatoriedad-y-agrupamiento" title="Link to this heading">#</a></h2>
+<p>Más allá de las preguntas sobre centralidad y extensión, las estadísticas espaciales sobre patrones de puntos a menudo se preocupan por qué tan <em>uniforme</em> es la distribución de puntos. Con esto nos referimos a si los puntos tienden a agruparse entre sí o a dispersarse uniformemente por el área de estudio. Preguntas como esta se refieren a la <em>intensidad</em> o <em>dispersión</em> del patrón de puntos en general. En el lenguaje técnico de los últimos dos capítulos, este enfoque se asemeja a los objetivos que examinamos cuando introdujimos la <a class="reference internal" href="#06_spatial_autocorrelation"><span class="xref myst">autocorrelación espacial global</span></a>: ¿cuál es el grado general de <em>agrupamiento</em> que observamos en el patrón? Las estadísticas espaciales han dedicado mucho esfuerzo a comprender este tipo de agrupamiento. Esta sección cubrirá métodos útiles para identificar el agrupamiento en patrones de puntos.</p>
+<p>El primer conjunto de técnicas, las estadísticas de <strong>cuadrante</strong>, reciben su nombre por su enfoque de dividir los datos en áreas pequeñas (cuadrantes). Una vez creados, estos «recipientes» se utilizan para examinar la uniformidad de los conteos entre ellos. El segundo conjunto de técnicas se deriva de Ripley (1988) e involucra la medición de la distancia entre puntos en un patrón de puntos.</p>
+<p>Para fines de ilustración, también es útil proporcionar un patrón derivado de un proceso <em>completamente aleatorio en el espacio</em>. Es decir, la ubicación y el número de puntos es totalmente aleatorio; no hay ni agrupamiento ni dispersión. En el análisis de patrones de puntos, esto se conoce como un <em>proceso de puntos de Poisson</em>.</p>
+<p>Para simular estos procesos a partir de un conjunto de puntos dado, puedes usar el módulo <code class="docutils literal notranslate"><span class="pre">pointpats.random</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pointpats</span><span class="w"> </span><span class="kn">import</span> <span class="n">distance_statistics</span><span class="p">,</span> <span class="n">QStatistic</span><span class="p">,</span> <span class="n">random</span><span class="p">,</span> <span class="n">PointPattern</span>
+<span class="n">random_pattern</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Observed photographs'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">random_pattern</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Random'</span><span class="p">)</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'center left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/48e4e3a56e60f4f3a126bd4098b37b5fc0c24a35db863d765e3ec130ddb2ea1b.png" src="_images/48e4e3a56e60f4f3a126bd4098b37b5fc0c24a35db863d765e3ec130ddb2ea1b.png" />
+</div>
+</div>
+<p>Como puedes ver, la simulación (por defecto) funciona con el cuadro delimitador del patrón de puntos de entrada. Para simular a partir de áreas más restringidas formadas por el patrón de puntos, ¡pasa esos envolventes al simulador! Por ejemplo, para generar un patrón aleatorio dentro de las formas alfa:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_pattern_ashape</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">alpha_shape</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">coordinates</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Observed'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">random_pattern_ashape</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Random'</span><span class="p">)</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'center left'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/0888e73d0df58f61d815c140e5b3f5003feae2595dfaca41a832b35338fbd9fd.png" src="_images/0888e73d0df58f61d815c140e5b3f5003feae2595dfaca41a832b35338fbd9fd.png" />
+</div>
+</div>
+<section id="estadisticas-de-cuadrantes">
+<h3>Estadísticas de cuadrantes<a class="headerlink" href="#estadisticas-de-cuadrantes" title="Link to this heading">#</a></h3>
+<p>Las estadísticas de cuadrantes examinan la distribución espacial de puntos en un área en términos del conteo de observaciones que caen dentro de una celda dada. Al examinar si las observaciones están distribuidas <em>uniformemente</em> en las celdas, el enfoque de cuadrantes busca estimar si los puntos están dispersos o si están agrupados en unas pocas celdas. Estrictamente hablando, las estadísticas de cuadrantes examinan la <em>uniformidad</em> de la distribución sobre las celdas utilizando una prueba estadística <span class="math notranslate nohighlight">\(\chi^2\)</span>, común en el análisis de tablas de contingencia.</p>
+<p>En el paquete <code class="docutils literal notranslate"><span class="pre">pointpats</span></code>, puedes visualizar los resultados usando el siguiente método <code class="docutils literal notranslate"><span class="pre">QStatistic.plot()</span></code>. Esto muestra la cuadrícula utilizada para contar los eventos, así como el patrón subyacente:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qstat</span> <span class="o">=</span> <span class="n">QStatistic</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">nx</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">qstat</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={'center': 'Quadrat Count'}&gt;
+</pre></div>
+</div>
+<img alt="_images/920ef3ea45038b86ee53e7d84d83305753a9b928bf25088cbf63c3d80b607198.png" src="_images/920ef3ea45038b86ee53e7d84d83305753a9b928bf25088cbf63c3d80b607198.png" />
+</div>
+</div>
+<p>En este caso, para la configuración predeterminada de una cuadrícula de tres por tres que abarca el patrón de puntos, vemos que la celda central tiene más de 350 observaciones, pero las celdas circundantes tienen muchas menos fotografías de Flickr. Esto significa que la prueba de chi-cuadrado (que compara cuán probable es esta distribución si los conteos en las celdas fueran uniformes) será estadísticamente significativa, con un valor p muy pequeño:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qstat</span><span class="o">.</span><span class="n">chi2_pvalue</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3.1046953044368864e-37
+</pre></div>
+</div>
+</div>
+</div>
+<p>En contraste, nuestro proceso de puntos totalmente aleatorio tendrá casi la misma cantidad de puntos en cada celda:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qstat_null</span> <span class="o">=</span> <span class="n">QStatistic</span><span class="p">(</span><span class="n">random_pattern</span><span class="p">)</span>
+<span class="n">qstat_null</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={'center': 'Quadrat Count'}&gt;
+</pre></div>
+</div>
+<img alt="_images/f79dd499ab3c899abebc00f84f5839f2fda7a1a3cc51f9024576994b0f2c04bd.png" src="_images/f79dd499ab3c899abebc00f84f5839f2fda7a1a3cc51f9024576994b0f2c04bd.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">qstat_null</span><span class="o">.</span><span class="n">chi2_pvalue</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.9389143237146387
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="alfabeto-de-funciones-de-ripley">
+<h3>Alfabeto de funciones de Ripley<a class="headerlink" href="#alfabeto-de-funciones-de-ripley" title="Link to this heading">#</a></h3>
+<p>El segundo grupo de estadísticas espaciales que consideramos se centra en las distribuciones de dos cantidades en un patrón de puntos: las distancias al vecino más cercano y lo que denominamos «gaps» en el patrón. Estas derivan del trabajo seminal de <code class="docutils literal notranslate"><span class="pre">Ripley</span> <span class="pre">(1991)</span></code> sobre cómo caracterizar el agrupamiento o la co-ubicación en patrones de puntos. Cada una de estas funciones caracteriza un aspecto del patrón de puntos a medida que aumentamos el rango de distancia desde cada punto para calcularlas.</p>
+<p>La primera función, <span class="math notranslate nohighlight">\(G\)</span> de Ripley, se enfoca en la distribución de las distancias al vecino más cercano. Es decir, la función <span class="math notranslate nohighlight">\(G\)</span> resume las distancias entre cada punto en el patrón y su vecino más cercano. En el gráfico a continuación, esta lógica del vecino más cercano se visualiza con los puntos rojos que son una vista detallada del patrón de puntos y las flechas negras que indican el vecino más cercano de cada punto. Observa que a veces dos puntos son <em>mutuamente</em> vecinos más cercanos (por lo que tienen flechas en ambas direcciones), pero algunos no lo son.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># este código debería ocultarse en el libro y mostrar solo la gráfica</span>
+<span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">random_pattern</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">random_pattern</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>
+              <span class="n">zorder</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Points'</span><span class="p">)</span>
+<span class="n">nn_ixs</span><span class="p">,</span> <span class="n">nn_ds</span> <span class="o">=</span> <span class="n">PointPattern</span><span class="p">(</span><span class="n">random_pattern</span><span class="p">)</span><span class="o">.</span><span class="n">knn</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">first</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">for</span> <span class="n">coord</span><span class="p">,</span> <span class="n">nn_ix</span><span class="p">,</span> <span class="n">nn_d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">random_pattern</span><span class="p">,</span> <span class="n">nn_ixs</span><span class="p">,</span> <span class="n">nn_ds</span><span class="p">):</span>
+    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">random_pattern</span><span class="p">[</span><span class="n">nn_ix</span><span class="p">]</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span> <span class="o">-</span> <span class="n">coord</span>
+    <span class="n">arrow</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="o">*</span><span class="n">coord</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">,</span> 
+                <span class="n">length_includes_head</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
+                <span class="n">overhang</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mi">300</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">head_width</span><span class="o">=</span><span class="mi">300</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">50</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span>
+                <span class="n">head_starts_at_zero</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">first</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="mf">1e100</span><span class="p">,</span> <span class="mf">1e101</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> 
+                 <span class="n">marker</span><span class="o">=</span><span class="s1">'&lt;'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                 <span class="n">label</span><span class="o">=</span><span class="s1">'Nearest Neighbor to Point'</span><span class="p">)</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="mf">1.554e7</span><span class="p">,</span> <span class="mf">1.556e7</span><span class="p">,</span> <span class="mi">4240000</span><span class="p">,</span> <span class="mi">4260000</span><span class="p">])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">f</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span> <span class="o">=</span> <span class="p">(</span><span class="mf">.5</span><span class="p">,</span><span class="o">-</span><span class="mf">.06</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/6e4193ffe79e84f41605bcf8d26fb2c95a9310a918e65e7330f2eb0abd5ba68c.png" src="_images/6e4193ffe79e84f41605bcf8d26fb2c95a9310a918e65e7330f2eb0abd5ba68c.png" />
+</div>
+</div>
+<p>Ripley’s <span class="math notranslate nohighlight">\(G\)</span> lleva un registro de la proporción de puntos cuyo vecino más cercano se encuentra dentro de un umbral de distancia dado y traza ese porcentaje acumulado contra los radios de distancia crecientes. La distribución de este porcentaje acumulado tiene una forma distintiva bajo procesos completamente aleatorios en el espacio. La intuición detrás de Ripley’s <span class="math notranslate nohighlight">\(G\)</span> es la siguiente: podemos aprender qué tan similar es nuestro patrón a uno aleatorio en el espacio calculando la distribución acumulada de las distancias al vecino más cercano sobre umbrales de distancia crecientes y comparándola con la de un conjunto de patrones simulados que siguen un proceso espacialmente aleatorio conocido. Generalmente, se utiliza un proceso de puntos de Poisson espacial como distribución de referencia.</p>
+<p>Para hacer esto en el paquete <code class="docutils literal notranslate"><span class="pre">pointpats</span></code>, podemos utilizar la función <code class="docutils literal notranslate"><span class="pre">g_test</span></code>, que calcula tanto la función <code class="docutils literal notranslate"><span class="pre">G</span></code> para los datos empíricos <em>como</em> estas réplicas hipotéticas bajo un proceso completamente aleatorio en el espacio.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g_test</span> <span class="o">=</span> <span class="n">distance_statistics</span><span class="o">.</span><span class="n">g_test</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">keep_simulations</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Pensando en estas distribuciones de distancias, un patrón «agrupado» debe tener más puntos cerca unos de otros en comparación con un patrón «disperso»; y un patrón completamente aleatorio debería tener algo intermedio. Por lo tanto, si la función <span class="math notranslate nohighlight">\(G\)</span> aumenta <em>rápidamente</em> con la distancia, probablemente tenemos un patrón agrupado. Si aumenta <em>lentamente</em> con la distancia, tenemos un patrón disperso. Algo intermedio será difícil de distinguir del puro azar.</p>
+<p>Podemos visualizar esto a continuación. A la izquierda, trazamos la función <span class="math notranslate nohighlight">\(G(d)\)</span>, con la distancia al punto (<span class="math notranslate nohighlight">\(d\)</span>) en el eje horizontal y la fracción de distancias al vecino más cercano menores que <span class="math notranslate nohighlight">\(d\)</span> en el eje derecho. En rojo, se muestra la distribución acumulada empírica de las distancias al vecino más cercano. En azul, se muestran las simulaciones (como el patrón <code class="docutils literal notranslate"><span class="pre">random</span></code> mostrado en la sección anterior). La línea azul brillante representa el promedio de todas las simulaciones, y la banda azul oscuro/negro a su alrededor representa el 95% de las simulaciones.</p>
+<p>En este gráfico, vemos que la función empírica roja aumenta mucho más rápido que los patrones simulados completamente aleatorios en el espacio. Esto significa que el patrón observado de las fotografías de Flickr de este usuario está <em>más cerca</em> de sus vecinos más cercanos de lo que se esperaría en un patrón completamente aleatorio. El patrón está <em>agrupado</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width_ratios</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+<span class="c1"># dibujar todas las simulaciones con líneas muy finas</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">g_test</span><span class="o">.</span><span class="n">simulations</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.01</span><span class="p">)</span>
+<span class="c1"># y mostrar el promedio de las simulaciones</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">g_test</span><span class="o">.</span><span class="n">simulations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'cyan'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'median simulation'</span><span class="p">)</span>
+
+
+<span class="c1"># and the observed pattern's G function</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">g_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">g_test</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'observed'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+
+<span class="c1"># clean up labels and axes</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'distance'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'</span><span class="si">% o</span><span class="s1">f nearest neighbor</span><span class="se">\n</span><span class="s1">distances shorter'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Ripley's $G(d)$ function"</span><span class="p">)</span>
+
+<span class="c1"># dibujar el patrón en el siguiente panel</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="c1"># y limpiar también las etiquetas y los ejes allí</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Pattern'</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/ace0428a2428e62af89900a0aa6142054d09cfba8e75f52ae33038eb9f75540b.png" src="_images/ace0428a2428e62af89900a0aa6142054d09cfba8e75f52ae33038eb9f75540b.png" />
+</div>
+</div>
+<p>La segunda función que introducimos es Ripley’s <span class="math notranslate nohighlight">\(F\)</span>. Mientras que la función <span class="math notranslate nohighlight">\(G\)</span> analiza la distancia <em>entre</em> los puntos en el patrón, la función <em>F</em> trabaja analizando la distancia <em>hacia</em> los puntos en el patrón desde ubicaciones en el espacio vacío. Por eso la función <span class="math notranslate nohighlight">\(F\)</span> se llama la «función de espacio vacío», ya que caracteriza la distancia típica desde puntos arbitrarios en el espacio vacío hasta el patrón de puntos. Más explícitamente, la función <span class="math notranslate nohighlight">\(F\)</span> acumula, para un rango de distancias creciente, el porcentaje de puntos que se pueden encontrar dentro de ese rango a partir de un patrón de puntos aleatorio generado dentro de la extensión del patrón observado. Si el patrón tiene grandes huecos o áreas vacías, la función <span class="math notranslate nohighlight">\(F\)</span> aumentará lentamente. Pero, si el patrón está muy disperso, la función <span class="math notranslate nohighlight">\(F\)</span> aumentará rápidamente. La forma de esta distribución acumulada luego se compara con aquellas construidas calculando la misma distribución acumulada entre el patrón aleatorio y otro patrón aleatorio adicional generado en cada paso de la simulación.</p>
+<p>Podemos utilizar herramientas similares para investigar la función <span class="math notranslate nohighlight">\(F\)</span>, ya que es matemáticamente muy similar a la función <span class="math notranslate nohighlight">\(G\)</span>. Esto se implementa de manera idéntica usando la función <code class="docutils literal notranslate"><span class="pre">f_test</span></code> en <code class="docutils literal notranslate"><span class="pre">pointpats</span></code>. Dado que la función <span class="math notranslate nohighlight">\(F\)</span> estimada para el patrón observado aumenta <em>mucho</em> más lentamente que las funciones <span class="math notranslate nohighlight">\(F\)</span> para los patrones simulados, podemos estar seguros de que hay muchos huecos en nuestro patrón; es decir, el patrón está <em>agrupado</em>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f_test</span> <span class="o">=</span> <span class="n">distance_statistics</span><span class="o">.</span><span class="n">f_test</span><span class="p">(</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">support</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">keep_simulations</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">gridspec_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">width_ratios</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">)))</span>
+
+<span class="c1"># dibujar todas las simulaciones con líneas muy finas</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">f_test</span><span class="o">.</span><span class="n">simulations</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.01</span><span class="p">)</span>
+<span class="c1"># y mostrar el promedio de las simulaciones</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">f_test</span><span class="o">.</span><span class="n">simulations</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="s1">'cyan'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'median simulation'</span><span class="p">)</span>
+
+
+<span class="c1"># and the observed pattern's F function</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">f_test</span><span class="o">.</span><span class="n">support</span><span class="p">,</span> <span class="n">f_test</span><span class="o">.</span><span class="n">statistic</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">'observed'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+
+<span class="c1"># clean up labels and axes</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'distance'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'</span><span class="si">% o</span><span class="s1">f nearest point in pattern</span><span class="se">\n</span><span class="s1">distances shorter'</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2000</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Ripley's $F(d)$ function"</span><span class="p">)</span>
+
+<span class="c1"># dibujar el patrón en el siguiente panel</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="n">coordinates</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+<span class="c1"># y limpiar también las etiquetas y los ejes allí</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([])</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Pattern'</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/04c1e55bc9bbf199c2e8a98b6a8dccb9a77983c0e7cb31864656e002344754c6.png" src="_images/04c1e55bc9bbf199c2e8a98b6a8dccb9a77983c0e7cb31864656e002344754c6.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="identificacion-de-agrupamientos-clusters">
+<h2>Identificación de agrupamientos (clusters)<a class="headerlink" href="#identificacion-de-agrupamientos-clusters" title="Link to this heading">#</a></h2>
+<p>Las dos secciones anteriores sobre el análisis espacial exploratorio de patrones de puntos proporcionan métodos para caracterizar si los patrones de puntos están dispersos o agrupados en el espacio. Otra forma de ver el contenido de esas secciones es que nos ayudan a explorar el grado general de <em>agrupamiento</em>. Sin embargo, saber que un patrón de puntos está agrupado no necesariamente nos dice dónde se encuentra ese (conjunto de) agrupamiento(s). Para hacer esto, necesitamos cambiar a un método capaz de identificar áreas con alta densidad de puntos dentro de nuestro patrón. En otras palabras, en esta sección nos centramos en la existencia y ubicación de los <em>agrupamientos</em>. Esta distinción entre <em>agrupamiento</em> y <em>agrupamientos</em> de puntos es análoga a la discutida en el contexto de la autocorrelación espacial. La noción es la misma, las diferencias en las técnicas que examinamos en cada parte del libro están relacionadas con la naturaleza única de los puntos a la que nos referimos al principio del cuaderno. Recuerda que, mientras que los métodos que exploramos en los cuadernos anteriores toman la ubicación de los objetos espaciales (puntos, líneas, polígonos) como dadas y se enfocan en comprender las configuraciones de valores dentro de esas ubicaciones; los métodos discutidos en este capítulo entienden los puntos como eventos que ocurren en ubicaciones particulares pero que podrían ocurrir en un conjunto mucho más amplio de lugares. Tener en cuenta esta relevancia subyacente de la ubicación del objeto en sí es lo que hace que las técnicas en este cuaderno sean distintas.</p>
+<section id="agrupamiento-dbscan">
+<h3>Agrupamiento DBSCAN<a class="headerlink" href="#agrupamiento-dbscan" title="Link to this heading">#</a></h3>
+<p>DBSCAN (Agrupamiento Basado en Densidad de Aplicaciones) es un método de agrupamiento basado en la densidad, lo que significa que los puntos que están estrechamente agrupados se asignan al mismo grupo y se les da el mismo ID. El algoritmo DBSCAN tiene dos parámetros que el usuario necesita especificar:</p>
+<ul class="simple">
+<li><p>ε — La distancia máxima entre puntos para ser considerados dentro del mismo grupo.</p></li>
+<li><p>minPts — El número mínimo de puntos necesarios para formar un grupo.</p></li>
+</ul>
+<p>En resumen, todos los grupos de al menos minPts puntos, donde cada punto está a una distancia ε o menos de al menos otro punto en el grupo, se consideran grupos separados y se les asignan IDs únicos. Todos los demás puntos se consideran «ruido» y no se les asigna un ID.</p>
+<p>DBSCAN es un algoritmo ampliamente utilizado que se originó en el área de descubrimiento de conocimiento y aprendizaje automático, y desde entonces se ha extendido a muchas áreas, incluida el análisis de puntos espaciales. En parte, su popularidad radica en su simplicidad intelectual y viabilidad computacional. De alguna manera, podemos pensar en DBSCAN como un equivalente para patrones de puntos de las estadísticas locales. Sin embargo, difieren en aspectos fundamentales. A diferencia de las estadísticas locales que hemos visto anteriormente, DBSCAN no se basa en un marco inferencial, sino que es un algoritmo determinista. Esto implica que, a diferencia de las medidas vistas antes, no podremos estimar una medida del grado en que los grupos encontrados son compatibles con casos de aleatoriedad espacial.</p>
+<p>Desde el punto de vista de DBSCAN, un grupo es una concentración de al menos <code class="docutils literal notranslate"><span class="pre">m</span></code> puntos, cada uno de ellos dentro de una distancia de <code class="docutils literal notranslate"><span class="pre">r</span></code> de al menos otro punto en el grupo. Siguiendo esta definición, el algoritmo clasifica cada punto en nuestro patrón en tres categorías:</p>
+<ul class="simple">
+<li><p><em>Ruido</em>, para aquellos puntos fuera de un grupo.</p></li>
+<li><p><em>Núcleos</em>, para aquellos puntos dentro de un grupo con al menos <code class="docutils literal notranslate"><span class="pre">m</span></code> puntos en el grupo dentro de la distancia <code class="docutils literal notranslate"><span class="pre">r</span></code>.</p></li>
+<li><p><em>Bordes</em>, para puntos dentro de un grupo con menos de <code class="docutils literal notranslate"><span class="pre">m</span></code> puntos en el grupo dentro de la distancia <code class="docutils literal notranslate"><span class="pre">r</span></code>.</p></li>
+</ul>
+<p>La flexibilidad (pero también algunas de las limitaciones) del algoritmo reside en que tanto <code class="docutils literal notranslate"><span class="pre">m</span></code> como <code class="docutils literal notranslate"><span class="pre">r</span></code> deben ser predefinidos por el usuario antes de ejecutar DBSCAN. Este es un punto crítico, ya que su valor puede influir significativamente en el resultado final. Antes de explorar esto con mayor profundidad, hagamos una primera ejecución del cálculo de <code class="docutils literal notranslate"><span class="pre">DBSCAN</span></code> en Python:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">DBSCAN</span>
+<span class="c1"># Define DBSCAN</span>
+<span class="n">clusterer</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">()</span>
+<span class="c1"># Fit to our data</span>
+<span class="n">clusterer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><style>#sk-container-id-1 {color: black;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>DBSCAN()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br />On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">DBSCAN</label><div class="sk-toggleable__content"><pre>DBSCAN()</pre></div></div></div></div></div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">lbls</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">clusterer</span><span class="o">.</span><span class="n">labels_</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup figure and axis</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="c1"># Seleccionar los puntos que no pertenecen a ningún clúster (ruido)</span>
+<span class="n">noise</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">lbls</span><span class="o">==-</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="s1">'x'</span><span class="p">,</span> <span class="s1">'y'</span><span class="p">]]</span>
+<span class="c1"># Plot noise in grey</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">noise</span><span class="p">[</span><span class="s1">'x'</span><span class="p">],</span> <span class="n">noise</span><span class="p">[</span><span class="s1">'y'</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Dibujar en rojo todos los puntos que no son ruido</span>
+<span class="c1"># NOTA: esto se hace con indexación avanzada: se toma</span>
+<span class="c1">#      el índice de todos los puntos (tw) y se le resta</span>
+<span class="c1">#      el índice de los que son ruido</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">db</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">noise</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="s1">'x'</span><span class="p">],</span> \
+           <span class="n">db</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">db</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">noise</span><span class="o">.</span><span class="n">index</span><span class="p">),</span> <span class="s1">'y'</span><span class="p">],</span> \
+          <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Add basemap</span>
+<span class="n">ctx</span><span class="o">.</span><span class="n">add_basemap</span><span class="p">(</span>
+    <span class="n">ax</span><span class="p">,</span> 
+    <span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">providers</span><span class="o">.</span><span class="n">CartoDB</span><span class="o">.</span><span class="n">Positron</span>
+<span class="p">)</span>
+<span class="c1"># Remove axes</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_axis_off</span><span class="p">()</span>
+<span class="c1"># Display the figure</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/d4fae3fa19b935a53876f54e9015c07739a839528c5d87f5350040b559814c3f.png" src="_images/d4fae3fa19b935a53876f54e9015c07739a839528c5d87f5350040b559814c3f.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Centrografía:</strong> Usando el dataset de deslizamientos del área de estudio (puntos centroides de las subcuencas ponderados por número de deslizamientos), calcula: (a) el centro medio, (b) la distancia estándar y (c) la elipse de desviación estándar. Mapea estos elementos sobre el área de estudio e interpreta la distribución espacial.</p></li>
+<li><p><strong>KDE con distintos anchos de banda:</strong> Aplica la estimación de densidad de kernel (KDE) al mismo dataset con tres anchos de banda diferentes (pequeño, mediano, grande). ¿Cómo cambia la interpretación de los «hotspots» de deslizamientos con cada ancho de banda? ¿Cuál sería el más apropiado y por qué?</p></li>
+<li><p><strong>Funciones G y F:</strong> Para un subconjunto de 100 puntos del dataset, calcula las funciones G y F. Grafica las curvas observadas frente a las esperadas bajo un proceso de Poisson homogéneo. ¿Qué indican estas curvas sobre la naturaleza del proceso (agrupado, aleatorio o regular)?</p></li>
+<li><p><strong>DBSCAN:</strong> Aplica el algoritmo DBSCAN al dataset de centroides de subcuencas con al menos tres combinaciones de parámetros (<code class="docutils literal notranslate"><span class="pre">eps</span></code>, <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>). Para cada combinación, reporta: número de clusters encontrados, porcentaje de puntos clasificados como ruido, y un mapa de los clusters. ¿Qué combinación de parámetros produce la segmentación más interpretable geomorfológicamente?</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pysal.org/pointpats/">pointpats — PySAL Point Pattern Analysis</a></p></li>
+<li><p><a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html">scikit-learn — DBSCAN</a></p></li>
+<li><p><a class="reference external" href="https://pysal.org/libpysal/">libpysal — Spatial Weights</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Diggle, P. J. (2003). <em>Statistical Analysis of Spatial Point Patterns</em> (2nd ed.). Arnold.</p></li>
+<li><p>Ripley, B. D. (1976). The second-order analysis of stationary point processes. <em>Journal of Applied Probability</em>, 13(2), 255–266.</p></li>
+<li><p>Ester, M. et al. (1996). A density-based algorithm for discovering clusters in large spatial databases with noise. <em>KDD-96 Proceedings</em>, 226–231.</p></li>
+<li><p>Schabenberger, O. &amp; Gotway, C. A. (2005). <em>Statistical Methods for Spatial Data Analysis</em>. CRC Press.</p></li>
+</ul>
+</section>
+<section id="recursos-interactivos">
+<h3>Recursos interactivos<a class="headerlink" href="#recursos-interactivos" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pysal.org/">PySAL — Geographic Data Analysis Library</a></p></li>
+<li><p><a class="reference external" href="https://asdar-book.org/">Spatial Data Science: Patterns and Context — R. Bivand</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="02_Mapping.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">El arte de hacer mapas</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="04_GLMPhyton.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Modelos Lineales Generalizados (GML)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizacion">Visualización</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mallas-irregulares">Mallas irregulares</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mallas-regulares-hex-binning">Mallas regulares: Hex-binning</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimacion-de-densidad-de-kernel-kde">Estimación de Densidad de Kernel (KDE)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#centrografia">Centrografía</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dispersion">Dispersión</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extension">Extensión</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aleatoriedad-y-agrupamiento">Aleatoriedad y agrupamiento</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estadisticas-de-cuadrantes">Estadísticas de cuadrantes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alfabeto-de-funciones-de-ripley">Alfabeto de funciones de Ripley</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identificacion-de-agrupamientos-clusters">Identificación de agrupamientos (clusters)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#agrupamiento-dbscan">Agrupamiento DBSCAN</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-interactivos">Recursos interactivos</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

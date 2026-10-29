@@ -1,0 +1,22 @@
+name: carto
+channels:
+  - conda-forge
+  - defaults
+  - plotly
+dependencies:
+  - jupyterlab
+  - matplotlib
+  - pandas
+  - numpy
+  - geopandas
+  - pykrige
+  - rasterio
+  - statsmodels
+  - xarray
+  - pysal
+  - contextily
+  - osmnx
+  - skgstat
+  - earthengine-api
+  - seaborn
+  - 

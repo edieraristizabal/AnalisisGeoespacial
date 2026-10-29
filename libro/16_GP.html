@@ -1,0 +1,1481 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Procesos Gaussianos con INLA: el enfoque de malla (SPDE) &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '16_GP';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/16_GP.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="El Proceso de Cox Log-Gaussiano (LGCP)" href="17_LGCP.html" />
+    <link rel="prev" title="Procesos Gaussianos con Python" href="15_GP.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F16_GP.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/16_GP.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#del-proceso-gaussiano-exacto-a-la-aproximacion-por-malla">Del Proceso Gaussiano exacto a la aproximación por malla</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-modelo-geoestadistico">El modelo geoestadístico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efecto-espacial-en-inla-con-ecuaciones-diferenciales-parciales-estocasticas-edpe">Efecto espacial en INLA con ecuaciones diferenciales parciales estocásticas (EDPE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definiendo-priores-para-el-efecto-espacial-en-inla-alcance-y-variacion">Definiendo Priores para el Efecto Espacial en INLA: Alcance y Variación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-del-efecto-espacial-parametro">Alcance del Efecto Espacial (parámetro κ)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variacion-del-efecto-espacial-parametro">Variación del Efecto Espacial (parámetro δ)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-clave-esta-en-la-proyeccion-de-los-efectos">La clave está en la proyección de los efectos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediccion-en-modelos-espaciales-inla">Predicción en Modelos Espaciales INLA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#puntos-clave-de-la-prediccion-en-inla">Puntos clave de la predicción en INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obteniendo-predicciones-espaciales-con-covariables-en-inla">Obteniendo predicciones espaciales con covariables en INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutando-el-modelo-inla-para-prediccion-espacial">Ejecutando el modelo INLA para predicción espacial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examinando-las-predicciones-del-modelo-inla">Examinando las predicciones del modelo INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizando-las-predicciones-de-efectos-fijos-en-inla">Visualizando las predicciones de efectos fijos en INLA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-inla">Ejemplo con INLA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gp-exacto-vs-gp-por-malla-spde-cuando-usar-cada-uno">GP exacto vs. GP por malla (SPDE): ¿cuándo usar cada uno?</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://datascienceplus.com/spatial-regression-in-r-part-2-inla/">Lionel Hertzog</a>, <a href="https://www.paulamoraga.com/book-spatial/sec-geostatisticaldataSPDE.html">Spatial Statistics for Data Science: Theory and Practice with R</a>. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p>
+<section class="tex2jax_ignore mathjax_ignore" id="procesos-gaussianos-con-inla-el-enfoque-de-malla-spde">
+<h1>Procesos Gaussianos con INLA: el enfoque de malla (SPDE)<a class="headerlink" href="#procesos-gaussianos-con-inla-el-enfoque-de-malla-spde" title="Link to this heading">#</a></h1>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Entender por qué el cálculo exacto de un Proceso Gaussiano (kernel denso + Cholesky, visto en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>) no escala a datasets geoespaciales grandes.</p></li>
+<li><p>Comprender la idea central del enfoque SPDE: aproximar un campo Gaussiano continuo mediante una malla triangulada finita (un Campo Aleatorio de Markov Gaussiano, GMRF).</p></li>
+<li><p>Construir una malla, una matriz de proyección y un modelo SPDE con el paquete <code class="docutils literal notranslate"><span class="pre">INLA</span></code> en R.</p></li>
+<li><p>Ajustar un modelo geoestadístico con covariables y efecto espacial latente, y generar predicciones con incertidumbre en ubicaciones no muestreadas.</p></li>
+<li><p>Reconocer cuándo conviene usar el enfoque exacto (<code class="docutils literal notranslate"><span class="pre">15_GP</span></code>) frente al enfoque por malla (SPDE/INLA) de este notebook.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> — Procesos Gaussianos, kernel, descomposición de Cholesky; <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code> — variogramas y Kriging.</p>
+</section>
+<section id="del-proceso-gaussiano-exacto-a-la-aproximacion-por-malla">
+<h2>Del Proceso Gaussiano exacto a la aproximación por malla<a class="headerlink" href="#del-proceso-gaussiano-exacto-a-la-aproximacion-por-malla" title="Link to this heading">#</a></h2>
+<p>En <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> construimos un Proceso Gaussiano de forma «exacta»: evaluamos el kernel entre <strong>todos los pares de observaciones</strong> para llenar una matriz de covarianza densa <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> de <span class="math notranslate nohighlight">\(n \times n\)</span>, y usamos la descomposición de Cholesky para invertirla, muestrear de ella y calcular la verosimilitud. Esa ruta es matemáticamente exacta, pero su costo computacional crece como <span class="math notranslate nohighlight">\(O(n^3)\)</span> en tiempo y <span class="math notranslate nohighlight">\(O(n^2)\)</span> en memoria. Con unos pocos cientos o miles de puntos es perfectamente manejable; con los tamaños típicos de un dataset geoespacial real (decenas o cientos de miles de estaciones, píxeles o eventos) se vuelve inviable.</p>
+<p>Este notebook presenta la <strong>alternativa computacional</strong> para el mismo objeto matemático —un campo espacial Gaussiano con covarianza Matérn— que sí escala: el enfoque <strong>SPDE</strong> (Stochastic Partial Differential Equation) implementado en el paquete <code class="docutils literal notranslate"><span class="pre">INLA</span></code>. La idea central, desarrollada por Lindgren, Rue y Lindström (2011), es que <strong>el problema continuo se lleva a una malla</strong>:</p>
+<ol class="arabic simple">
+<li><p>En vez de indexar el GP en cualquier punto del espacio continuo <span class="math notranslate nohighlight">\(s \in \mathbb{R}^2\)</span>, se construye una <strong>malla triangulada</strong> que cubre la región de estudio con un número finito de vértices (<span class="math notranslate nohighlight">\(n_{\text{malla}}\)</span>).</p></li>
+<li><p>El campo Gaussiano continuo <span class="math notranslate nohighlight">\(x(s)\)</span> se aproxima como una combinación de funciones base lineales por partes definidas sobre esos triángulos: <span class="math notranslate nohighlight">\(x(s) = \sum_{k=1}^{n_{\text{malla}}} \psi_k(s)\, x_k\)</span>, donde solo los <span class="math notranslate nohighlight">\(n_{\text{malla}}\)</span> pesos <span class="math notranslate nohighlight">\(x_k\)</span> en los vértices son aleatorios.</p></li>
+<li><p>Gracias a que el operador de la SPDE es <em>local</em> (relaciona cada vértice solo con sus vecinos triangulares inmediatos), la matriz de precisión resultante <span class="math notranslate nohighlight">\(\mathbf{Q} = \Sigma^{-1}\)</span> es <strong>dispersa</strong> (<em>sparse</em>) en vez de densa. Eso es justo lo opuesto a <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> en el enfoque exacto: en vez de una matriz llena de covarianzas entre todos los pares de puntos, tenemos una matriz casi vacía donde cada vértice «habla» solo con sus vecinos inmediatos de la malla.</p></li>
+<li><p>Operar con matrices dispersas es enormemente más barato: factorizar <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> toma típicamente <span class="math notranslate nohighlight">\(O(n_{\text{malla}}^{3/2})\)</span> en 2D en vez de <span class="math notranslate nohighlight">\(O(n^3)\)</span>, lo que permite ajustar modelos con decenas de miles de observaciones en segundos.</p></li>
+</ol>
+<p>En otras palabras: donde <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> conecta <strong>todos los pares de puntos entre sí</strong> (la «sábana elástica» completa), el enfoque SPDE solo conecta <strong>vértices vecinos de una malla</strong> —y deja que la interpolación lineal sobre los triángulos reconstruya la superficie continua entre ellos. Es la misma familia de modelos (un GP con covarianza Matérn), resuelta con una estrategia computacional distinta y mucho más escalable.</p>
+</section>
+<section id="el-modelo-geoestadistico">
+<h2>El modelo geoestadístico<a class="headerlink" href="#el-modelo-geoestadistico" title="Link to this heading">#</a></h2>
+<p>La geoestadística basada en modelos emplea modelos estadísticos para capturar la estructura de correlación espacial en los datos, lo que permite realizar inferencias estadísticas rigurosas y producir predicciones espaciales junto con medidas de incertidumbre (Diggle, Tawn y Moyeed 1998). Asumiendo datos gaussianos observados en un conjunto de <span class="math notranslate nohighlight">\(n\)</span> ubicaciones, <span class="math notranslate nohighlight">\({Y₁, …, Yₙ}\)</span>, consideramos el siguiente modelo para obtener predicciones en ubicaciones no muestreadas:</p>
+<p><span class="math notranslate nohighlight">\(Yᵢ | S(sᵢ) ∼ N(μ + S(sᵢ), τ²), i = 1, …, n.\)</span></p>
+<p>Aquí, <span class="math notranslate nohighlight">\(μ\)</span> es un efecto medio constante, y <span class="math notranslate nohighlight">\(S(⋅)\)</span> es el campo gaussiano espacial de media cero que, en la sección anterior, describimos cómo aproximar sobre una malla. Este modelo puede extenderse a situaciones en las que la variación estocástica no sea gaussiana, así como para incluir covariables y otros efectos aleatorios.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(geoR)
+library(ggplot2)
+library(tidyverse)
+library(INLA)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># the ca20 dataset
+# load the example dataset,
+# calcium content in soil samples in Brazil
+data(ca20)
+# put this in a data frame
+dat &lt;- data.frame(x = ca20$coords[,1],y = ca20$coords[,2],calcium = ca20$data, 
+                  elevation = ca20$covariate[,1], 
+                  region = factor(ca20$covariate[,2]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># meshes in 2D space can be created as follow:
+mesh &lt;- inla.mesh.2d(loc = dat[,c("x", "y")], max.edge = c(50, 5000))
+</pre></div>
+</div>
+</div>
+</div>
+<p>La función <code class="docutils literal notranslate"><span class="pre">inla.mesh.2d</span></code> del paquete INLA se utiliza para crear una malla para el modelado espacial. Esta malla aproxima el efecto espacial en sus datos y juega un papel crucial en la captura de la dependencia espacial.</p>
+<p>Aquí un desglose de los puntos clave:</p>
+<ul class="simple">
+<li><p><strong>Función:</strong> <code class="docutils literal notranslate"><span class="pre">inla.mesh.2d</span></code></p></li>
+<li><p><strong>Propósito:</strong> Crea una malla bidimensional para el análisis espacial en modelos INLA.</p></li>
+<li><p><strong>Argumentos:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">loc</span></code>: Esto especifica la ubicación de sus muestras. Suele ser un marco de datos con columnas para latitud y longitud (u otras coordenadas espaciales).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max.edge</span></code>: Controla la precisión de la malla. Define la distancia máxima permitida entre dos nodos conectados en la malla. Un valor más bajo (por ejemplo, 50 metros) crea una malla más fina con más detalles, pero requiere más recursos computacionales. Por el contrario, un valor más alto (por ejemplo, 5000 metros) crea una malla más gruesa que es computacionalmente más rápida pero puede pasar por alto variaciones espaciales más finas.</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Compromiso entre precisión y cómputo:</strong></p>
+<p>Existe una compensación entre la precisión de la malla y el tiempo de cómputo. Una malla más precisa (<code class="docutils literal notranslate"><span class="pre">max.edge</span></code> más pequeño) conduce a una predicción más suave que captura patrones espaciales sutiles, pero tarda más en calcularse. Una malla más gruesa (<code class="docutils literal notranslate"><span class="pre">max.edge</span></code> más grande) es computacionalmente más rápida pero puede pasar por alto detalles espaciales importantes.</p>
+<p><strong>Exploración interactiva con meshbuilder:</strong></p>
+<p>El paquete INLA también proporciona la función <code class="docutils literal notranslate"><span class="pre">meshbuilder</span></code> para la exploración interactiva de la creación de mallas. Esto le permite visualizar diferentes opciones de malla basadas en su configuración <code class="docutils literal notranslate"><span class="pre">max.edge</span></code> y elegir la que mejor equilibre la precisión y la viabilidad computacional para su análisis específico.</p>
+<p>En resumen, <code class="docutils literal notranslate"><span class="pre">inla.mesh.2d</span></code> es una herramienta esencial para crear mallas en el modelado espacial de INLA. Al considerar cuidadosamente la compensación entre precisión y cómputo, y potencialmente usar <code class="docutils literal notranslate"><span class="pre">meshbuilder</span></code> para la exploración, puede crear una malla adecuada para capturar los efectos espaciales en sus datos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Amat &lt;- inla.spde.make.A(mesh, loc = as.matrix(dat[,c("x", "y")]))
+</pre></div>
+</div>
+</div>
+</div>
+<section id="efecto-espacial-en-inla-con-ecuaciones-diferenciales-parciales-estocasticas-edpe">
+<h3>Efecto espacial en INLA con ecuaciones diferenciales parciales estocásticas (EDPE)<a class="headerlink" href="#efecto-espacial-en-inla-con-ecuaciones-diferenciales-parciales-estocasticas-edpe" title="Link to this heading">#</a></h3>
+<p>INLA estima el efecto espacial utilizando una herramienta matemática compleja llamada ecuación diferencial parcial estocástica (EDPE). La idea básica es que podemos estimar un efecto espacial continuo utilizando un conjunto de puntos discretos (los nodos definidos en la malla) y funciones base, similar a las splines de regresión. Esto facilita mucho la estimación de los campos espaciales.</p>
+<p>El enfoque de la ecuación diferencial parcial estocástica (SPDE) implementado en el paquete R-INLA proporciona una forma flexible y computacionalmente eficiente de modelar datos geoestadísticos y realizar predicciones en ubicaciones no muestreadas (Lindgren y Rue 2015). Suponemos que, subyacente a los datos observados, hay una variable continua en el espacio que puede modelarse utilizando un campo aleatorio gaussiano (GRF) con una función de covarianza de Matérn, que se define como:</p>
+<p><span class="math notranslate nohighlight">\(Cov(x(sᵢ), x(sⱼ)) = (σ² / 2^(ν - 1)Γ(ν))(κ ||sᵢ - sⱼ||)^ν Kν(κ ||sᵢ - sⱼ||).\)</span></p>
+<p>Aquí, <span class="math notranslate nohighlight">\(σ²\)</span> denota la varianza marginal del campo espacial. <span class="math notranslate nohighlight">\(Kν(⋅)\)</span> se refiere a la función de Bessel modificada de segunda especie y orden <span class="math notranslate nohighlight">\(ν &gt; 0\)</span>. El valor entero de <span class="math notranslate nohighlight">\(ν\)</span> determina la suavidad del campo y típicamente se fija, ya que es difícil de estimar en aplicaciones. <span class="math notranslate nohighlight">\(κ &gt; 0\)</span> está relacionado con el rango <span class="math notranslate nohighlight">\(ρ\)</span>, que representa la distancia a la cual la correlación entre dos puntos se vuelve aproximadamente 0. Específicamente, <span class="math notranslate nohighlight">\(ρ = √(8ν) / κ\)</span>, y a esta distancia la correlación espacial es cercana a 0.1 (Cameletti et al. 2013).</p>
+<p>Como se muestra en Whittle (1963), un GRF con una matriz de covarianza de Matérn puede representarse como la solución de la siguiente SPDE en dominio continuo:</p>
+<p><span class="math notranslate nohighlight">\((κ² − Δ)^(α/2)(τx(s)) = W(s).\)</span></p>
+<p>Aquí, <span class="math notranslate nohighlight">\(x(s)\)</span> representa un GRF, y <span class="math notranslate nohighlight">\(W(s)\)</span> es un proceso de ruido blanco espacial gaussiano. El parámetro <span class="math notranslate nohighlight">\(α\)</span> controla la suavidad exhibida por el GRF, <span class="math notranslate nohighlight">\(τ\)</span> controla su varianza, y <span class="math notranslate nohighlight">\(κ &gt; 0\)</span> es un parámetro de escala. El laplaciano <span class="math notranslate nohighlight">\(Δ\)</span> se define como <span class="math notranslate nohighlight">\(∑(dᵢ = 1 ∂² / ∂x²ᵢ)\)</span>, donde <span class="math notranslate nohighlight">\(d\)</span> es la dimensión del dominio espacial.</p>
+<p>Los parámetros de la función de covarianza de Matérn y la SPDE están relacionados de la siguiente manera. El parámetro de suavidad <span class="math notranslate nohighlight">\(ν\)</span> de la función de covarianza de Matérn se expresa como <span class="math notranslate nohighlight">\(ν = α − d/2\)</span>, y la varianza marginal <span class="math notranslate nohighlight">\(σ²\)</span> está relacionada con la SPDE mediante:</p>
+<p><span class="math notranslate nohighlight">\(σ² = (Γ(ν) / Γ(α))(4π)^(d/2)κ^(−2ν)τ².\)</span></p>
+<p>En el caso donde <span class="math notranslate nohighlight">\(d = 2\)</span> y <span class="math notranslate nohighlight">\(ν = 1/2\)</span>, lo que corresponde a la función de covarianza exponencial, el parámetro <span class="math notranslate nohighlight">\(α = ν + d/2 = 1/2 + 1 = 3/2\)</span>. En el paquete R-INLA, el valor predeterminado es <span class="math notranslate nohighlight">\(α = 2\)</span>, aunque también están disponibles opciones dentro del rango <span class="math notranslate nohighlight">\(0 ≤ α &lt; 2\)</span>.</p>
+<p>El método de elementos finitos puede usarse para encontrar una solución aproximada a la SPDE. Este método implica dividir el dominio espacial en un conjunto de triángulos no superpuestos, creando una malla triangulada con <span class="math notranslate nohighlight">\(n\)</span> nodos y <span class="math notranslate nohighlight">\(n\)</span> funciones base. Las funciones base, denotadas como <span class="math notranslate nohighlight">\(ψₖ(⋅\)</span>)$, son funciones lineales por partes en cada triángulo. Toman el valor de 1 en el vértice <span class="math notranslate nohighlight">\(k\)</span>, y 0 en todos los demás vértices.</p>
+<p>Luego, el campo gaussiano indexado de manera continua <span class="math notranslate nohighlight">\(x\)</span> se representa como un campo aleatorio de Markov gaussiano indexado de manera discreta (GMRF) mediante una suma de funciones base definidas en la malla triangulada:</p>
+<p><span class="math notranslate nohighlight">\(x(s) = ∑(nₖ = 1) ψₖ(s)xₖ,\)</span></p>
+<p>donde <span class="math notranslate nohighlight">\(n\)</span> es el número de vértices de la triangulación, <span class="math notranslate nohighlight">\(ψₖ(⋅)\)</span> representa las funciones base lineales por partes, y <span class="math notranslate nohighlight">\({xₖ}\)</span> denotan pesos distribuidos de forma gaussiana con media cero.</p>
+<p>La distribución conjunta del vector de pesos se asigna a una distribución gaussiana representada como <span class="math notranslate nohighlight">\(x = (x₁, …, xₙ) ∼ N(0, Q^−1(τ, κ))\)</span></p>
+<p>Esta distribución aproxima la solución <span class="math notranslate nohighlight">\(x(s)\)</span> de la SPDE en los nodos de la malla. Las funciones base transforman la aproximación <span class="math notranslate nohighlight">\(x(s)\)</span> desde los nodos de la malla a las otras ubicaciones espaciales de interés.</p>
+<p>Ahora bien, la parte complicada de configurar la EDPE es definir los previos para:</p>
+<ul class="simple">
+<li><p><strong>Alcance del efecto espacial (parámetro κ):</strong> Este parámetro representa la distancia a partir de la cual dos puntos se pueden considerar espacialmente independientes. En otras palabras, ¿a qué distancia deben estar dos ubicaciones para que su efecto espacial sea prácticamente nulo? Un κ alto indica un efecto espacial de largo alcance (las ubicaciones distantes se influencian entre sí), mientras que un κ bajo indica un efecto de corto alcance (la influencia espacial se limita a las ubicaciones cercanas).</p></li>
+<li><p><strong>Variación del efecto espacial (parámetro δ):</strong> Este parámetro representa la variabilidad del campo espacial de un punto a otro. Un δ alto indica un campo espacial con mucha variación (los valores del efecto espacial cambian drásticamente a lo largo del espacio), mientras que un δ bajo indica un campo espacial con poca variación (los valores del efecto espacial son relativamente similares en todo el espacio).</p></li>
+</ul>
+<p>Encontrar los valores óptimos para κ y δ es crucial para capturar adecuadamente el efecto espacial en su modelo. INLA permite especificar valores iniciales para estos parámetros, y luego estima sus valores finales durante el proceso de ajuste del modelo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spde &lt;- inla.spde2.pcmatern(mesh, 
+                            prior.range = c(500, 0.5),
+                            prior.sigma = c(2, 0.05))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="definiendo-priores-para-el-efecto-espacial-en-inla-alcance-y-variacion">
+<h3>Definiendo Priores para el Efecto Espacial en INLA: Alcance y Variación<a class="headerlink" href="#definiendo-priores-para-el-efecto-espacial-en-inla-alcance-y-variacion" title="Link to this heading">#</a></h3>
+<p>Establecer valores iniciales (priores) para el alcance y la variación del efecto espacial en INLA (representados por los parámetros κ y δ respectivamente) puede ser una tarea delicada, ya que estos valores tienen un gran impacto en el modelo ajustado. Afortunadamente, como el ajuste de modelos en INLA es relativamente rápido, es fácil realizar un análisis de sensibilidad para comprender qué configuraciones funcionan mejor.</p>
+</section>
+<section id="alcance-del-efecto-espacial-parametro">
+<h3>Alcance del Efecto Espacial (parámetro κ)<a class="headerlink" href="#alcance-del-efecto-espacial-parametro" title="Link to this heading">#</a></h3>
+<p>El prior para el alcance del efecto espacial corresponde con la siguiente fórmula:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>P(κ &lt; κ₀) = p₀
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>κ: Representa el alcance del efecto espacial (distancia a partir de la cual se considera que dos puntos son independientes).</p></li>
+<li><p>κ₀: Valor inicial específico del alcance.</p></li>
+<li><p>p₀: Probabilidad asociada al valor inicial κ₀.</p></li>
+</ul>
+<p>Por ejemplo, si definimos:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="p">(</span><span class="n">κ</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+<p>Significa que estamos estableciendo una probabilidad del 50% de que el alcance real del efecto espacial sea menor a 500 metros. En otras palabras, hay una posibilidad del 50% de que dos ubicaciones separadas por más de 500 metros tengan efectos espaciales independientes. A mayor valor de κ, mayor alcance del efecto espacial (las ubicaciones distantes se influencian entre sí).</p>
+</section>
+<section id="variacion-del-efecto-espacial-parametro">
+<h3>Variación del Efecto Espacial (parámetro δ)<a class="headerlink" href="#variacion-del-efecto-espacial-parametro" title="Link to this heading">#</a></h3>
+<p>De manera similar, el prior para la variación del efecto espacial se establece mediante la siguiente fórmula:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>P(δ &gt; δ₀) = p₀
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>δ: Representa la variación del efecto espacial (cuánto cambia el efecto de un punto a otro).</p></li>
+<li><p>δ₀: Valor inicial específico de la variación.</p></li>
+<li><p>p₀: Probabilidad asociada al valor inicial δ₀.</p></li>
+</ul>
+<p>Por ejemplo:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">P</span><span class="p">(</span><span class="n">δ</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.05</span>
+</pre></div>
+</div>
+<p>Indica que asignamos una probabilidad del 5% a la posibilidad de que la variación del efecto espacial sea mayor a 2. En otras palabras, hay una probabilidad del 95% de que la variación sea menor o igual a 2, lo que sugiere un campo espacial con una variación relativamente baja (los valores del efecto cambian poco en el espacio).</p>
+<p><strong>Recomendaciones:</strong></p>
+<ul class="simple">
+<li><p>Experimentar con diferentes valores de κ₀, δ₀ y p₀ para observar cómo afectan el modelo ajustado.</p></li>
+<li><p>Consultar fuentes adicionales para encontrar configuraciones apropiadas según el tipo de análisis que se esté realizando.</p></li>
+<li><p>Se recomienda establecer valores iniciales relativamente fuertes para δ (p₀ cercano a 0 y alejado de 0.5). Priores demasiado vagos (p₀ cercano a 0.5) pueden causar problemas en el modelo, especialmente en modelos complejos.</p></li>
+</ul>
+<p>Tenga en cuenta que INLA permite especificar estos valores iniciales y luego estima los valores finales durante el proceso de ajuste del modelo. El análisis de sensibilidad y la referencia a otras fuentes te ayudarán a encontrar una buena configuración inicial para tus modelos espaciales en INLA.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># create the data stack
+dat_stack &lt;- inla.stack(data = list(calcium = dat$calcium), # the response variable
+                        A = list(Amat, 1, 1, 1), # the projection matrix
+                        effects = list(i = 1:spde$n.spde, # the spatial effect
+                                       Intercept = rep(1, nrow(dat)), 
+                                       elevation = dat$elevation,
+                                       region = factor(dat$region)))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="la-clave-esta-en-la-proyeccion-de-los-efectos">
+<h3>La clave está en la proyección de los efectos<a class="headerlink" href="#la-clave-esta-en-la-proyeccion-de-los-efectos" title="Link to this heading">#</a></h3>
+<p>El punto clave aquí es el argumento <code class="docutils literal notranslate"><span class="pre">A</span></code> donde especificamos la proyección de los diferentes efectos. El efecto espacial se denomina <code class="docutils literal notranslate"><span class="pre">i</span></code> (aunque podemos nombrarlo como queramos) y está indexado por el número de nodos de la malla. Recordemos que cuanto más fina sea la malla, más precisa será la estimación del efecto espacial. Este efecto espacial <code class="docutils literal notranslate"><span class="pre">i</span></code> está vinculado a los datos a través de la matriz de proyección <code class="docutils literal notranslate"><span class="pre">A_mat</span></code>.</p>
+<p>Los demás efectos se vinculan directamente a los datos, por lo que no necesitan matrices de proyección.</p>
+<p>Aquí desglosamos un poco más la terminología:</p>
+<ul class="simple">
+<li><p><strong>Efecto espacial (<code class="docutils literal notranslate"><span class="pre">i</span></code>)</strong>: Representa la variación espacial que se estima a través de la EDPE. Se modela utilizando los nodos de la malla y las funciones base.</p></li>
+<li><p><strong>Matriz de proyección (<code class="docutils literal notranslate"><span class="pre">A_mat</span></code>)</strong>: Esta matriz vincula el efecto espacial estimado en cada nodo de la malla con las observaciones puntuales. Básicamente, indica cómo contribuye el efecto espacial en cada nodo al valor de la variable respuesta en cada ubicación observada.</p></li>
+<li><p><strong>Efectos directos</strong>: Estos efectos son covariables que se incluyen en el modelo además del efecto espacial. A diferencia del efecto espacial, se relacionan directamente con las observaciones puntuales sin necesidad de una matriz de proyección.</p></li>
+</ul>
+</section>
+</section>
+<section id="prediccion-en-modelos-espaciales-inla">
+<h2>Predicción en Modelos Espaciales INLA<a class="headerlink" href="#prediccion-en-modelos-espaciales-inla" title="Link to this heading">#</a></h2>
+<p>En INLA, por lo general, es más sencillo obtener predicciones del modelo pasando directamente los nuevos datos que se quieren utilizar para predecir al ajuste del modelo. En otras palabras, necesitamos definir estos nuevos datos <strong>antes</strong> de ajustar el modelo.</p>
+<p>Aquí vamos a ver cómo predecir el efecto de la elevación y la región sobre la variable respuesta, teniendo en cuenta el efecto espacial:</p>
+<ol class="arabic simple">
+<li><p><strong>Datos para la predicción:</strong></p>
+<ul class="simple">
+<li><p>Comenzaremos por definir un nuevo conjunto de datos que solo contenga las variables de elevación y región para las ubicaciones donde queremos predecir la variable respuesta.</p></li>
+<li><p>Este nuevo conjunto de datos debe tener el mismo formato que las variables de elevación y región utilizadas en el modelo original.</p></li>
+<li><p>Es importante asegurarse de que las ubicaciones para las que se desea predecir estén dentro del rango del área de estudio cubierta por el modelo original.</p></li>
+</ul>
+</li>
+<li><p><strong>Ajuste del modelo:</strong></p>
+<ul class="simple">
+<li><p>Durante el ajuste del modelo en INLA, se incluirá este nuevo conjunto de datos junto con los datos originales utilizados para entrenar el modelo.</p></li>
+<li><p>INLA utilizará los valores de elevación y región en los nuevos datos para predecir los valores de la variable respuesta en esas ubicaciones específicas.</p></li>
+</ul>
+</li>
+</ol>
+<p>Al incluir los nuevos datos en el ajuste del modelo, INLA tendrá en cuenta tanto el efecto directo de la elevación y la región como el efecto espacial estimado en el modelo original. Esto permite obtener predicciones más precisas que consideren la dependencia espacial y las relaciones con las covariables de interés.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># a newdata to get the predictions
+modmat &lt;- expand.grid(elevation = seq(min(dat$elevation), 
+                                      max(dat$elevation), 
+                                      length.out = 10),
+                      region = unique(dat$region))
+
+# the stack for these predictions
+pred_stack_fixef &lt;- inla.stack(data = list(calcium = NA),
+                               A = list(1, 1, 1),
+                               effects = list(Intercept = rep(1, nrow(modmat)),
+                                              elevation = modmat$elevation,
+                                              region = factor(modmat$region)),
+                               tag = "prd_fixef")
+</pre></div>
+</div>
+</div>
+</div>
+<section id="puntos-clave-de-la-prediccion-en-inla">
+<h3>Puntos clave de la predicción en INLA<a class="headerlink" href="#puntos-clave-de-la-prediccion-en-inla" title="Link to this heading">#</a></h3>
+<p>Aquí hay un desglose de los puntos clave de la predicción en el modelo INLA que se acaba de describir:</p>
+<ul class="simple">
+<li><p><strong>Datos para la predicción</strong>:</p>
+<ul>
+<li><p>Se define un nuevo conjunto de datos que solo incluye las variables de elevación y región para las ubicaciones donde se desean las predicciones.</p></li>
+<li><p>El modelo utilizará estos valores para predecir la variable respuesta en esas ubicaciones específicas.</p></li>
+<li><p>Un aspecto crucial es que se establece <code class="docutils literal notranslate"><span class="pre">calcium=NA</span></code> en este conjunto de datos. Esto indica a INLA que estime los valores de calcio (<code class="docutils literal notranslate"><span class="pre">calcium</span></code>) basándose en los efectos (incluido el espacial) y los parámetros del modelo.</p></li>
+<li><p>La etiqueta <code class="docutils literal notranslate"><span class="pre">prd_fixef</span></code> en el stack permite posteriormente extraer fácilmente los valores predichos.</p></li>
+</ul>
+</li>
+<li><p><strong>Predicción espacial</strong>:</p>
+<ul>
+<li><p>Debido al modelado espacial, las predicciones también se pueden realizar a lo largo del espacio.</p></li>
+<li><p>Una opción sería predecir solo en base al campo espacial, pero lo más interesante es tener en cuenta también las covariables (elevación y región) para obtener predicciones espaciales más precisas.</p></li>
+<li><p>Obtener el stack de predicción para este escenario es un poco más complejo. Se necesitan valores de elevación y región no solo en las ubicaciones observadas, sino en todo el espacio de estudio.</p></li>
+</ul>
+</li>
+<li><p><strong>Pasos adicionales</strong>:</p>
+<ul>
+<li><p>Se requieren algunos pasos previos a INLA que pueden parecer complicados.</p></li>
+<li><p>El objetivo final es crear rásteres con información de elevación y región a partir de los datos disponibles. Estos rásteres se utilizarán luego para predecir la variable respuesta en todo el espacio de estudio.</p></li>
+</ul>
+</li>
+</ul>
+<p>En resumen, la predicción en INLA para modelos espaciales implica definir datos para predicciones puntuales y, si se desea, generar predicciones espaciales teniendo en cuenta los efectos espaciales y las covariables. Los pasos adicionales previos a INLA pueden incluir la creación de rásteres a partir de los datos para cubrir todo el espacio de estudio.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(raster)
+library(fields) # for Tps
+
+## first we define an empty raster to hold the coordinates of the predictions
+r &lt;- raster(xmn = min(dat$x), xmx = max(dat$x),
+            ymn = min(dat$y), ymx = max(dat$y),
+            resolution = 25)
+
+## the we use thin-plate spline to derive elevation across the data
+elev_m &lt;- Tps(dat[,c("x","y")], dat$elevation)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## put this into a raster
+elev &lt;- interpolate(r, elev_m)
+
+## for the region info we create a SpatialPolygons 
+## based on the coordinates given in the ca20 object
+pp &lt;- SpatialPolygons(list(Polygons(list(Polygon(ca20[[5]])), ID = "reg1"),
+                           Polygons(list(Polygon(ca20[[6]])), ID = "reg2"),
+                           Polygons(list(Polygon(ca20[[7]])), ID = "reg3")))
+# turn the SpatialPolygon into a raster object
+region &lt;- rasterize(pp, r)
+
+# the new data frame with coordinates from the raster
+# plus elevation and region information
+newdat &lt;- as.data.frame(xyFromCell(r, cell = 1:ncell(r)))
+newdat$elevation &lt;- values(elev)
+newdat$region &lt;- factor(values(region))
+# remove NAs
+newdat &lt;- na.omit(newdat)
+
+# create a new projection matrix for the points
+Apred &lt;- inla.spde.make.A(mesh,
+                          loc = as.matrix(newdat[,c("x", "y")]))
+
+# put this in a new stack
+pred_stack_alleff &lt;- inla.stack(data = list(calcium = NA),
+                               A = list(Apred, 1, 1, 1),
+                               effects = list(i = 1:spde$n.spde,
+                                              Intercept = rep(1, nrow(newdat)),
+                                              elevation = newdat$elevation,
+                                              region = factor(newdat$region)),
+                               tag = "prd_alleff")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="obteniendo-predicciones-espaciales-con-covariables-en-inla">
+<h3>Obteniendo predicciones espaciales con covariables en INLA<a class="headerlink" href="#obteniendo-predicciones-espaciales-con-covariables-en-inla" title="Link to this heading">#</a></h3>
+<p>Aquí detallamos el proceso para obtener predicciones espaciales teniendo en cuenta las covariables (elevación y región) en un modelo INLA:</p>
+<ol class="arabic simple">
+<li><p><strong>Información espacial de rásteres:</strong></p>
+<ul class="simple">
+<li><p>Se parte de un ráster que representa la región de interés. Este ráster debe contener información sobre las variables de elevación y región.</p></li>
+</ul>
+</li>
+<li><p><strong>Datos para la predicción (newdat):</strong></p>
+<ul class="simple">
+<li><p>Se crea un nuevo objeto de datos (<code class="docutils literal notranslate"><span class="pre">newdat</span></code>) que contiene los valores de elevación y región extraídos del ráster para las ubicaciones donde se desean las predicciones.</p></li>
+<li><p>Es importante asegurarse de que la extensión del ráster cubra el área de interés para las predicciones.</p></li>
+<li><p>Al igual que en el caso anterior, se establece <code class="docutils literal notranslate"><span class="pre">calcium=NA</span></code> en este conjunto de datos para indicar que INLA debe estimar los valores de la variable respuesta (calcio) a partir de los efectos y parámetros del modelo.</p></li>
+</ul>
+</li>
+<li><p><strong>Matriz de proyección:</strong></p>
+<ul class="simple">
+<li><p>Se define una nueva matriz de proyección que refleje cómo contribuyen el efecto espacial estimado (campo espacial), la elevación y la región a las predicciones en cada ubicación.</p></li>
+<li><p>Esta matriz de proyección es más compleja que la utilizada para predicciones puntuales porque tiene que tener en cuenta todos los efectos que se utilizan para la predicción.</p></li>
+</ul>
+</li>
+<li><p><strong>Nueva pila (stack) de predicción:</strong></p>
+<ul class="simple">
+<li><p>Se crea una nueva pila de predicción en INLA que incluya:</p>
+<ul>
+<li><p>El objeto <code class="docutils literal notranslate"><span class="pre">newdat</span></code> que contiene los valores de elevación y región para las predicciones.</p></li>
+<li><p>La matriz de proyección recién definida.</p></li>
+<li><p>Una etiqueta única para identificar esta pila de predicción (por ejemplo, «prediccion_espacial»).</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># put all the stacks together
+all_stack &lt;- inla.stack(dat_stack, pred_stack_fixef,
+                      pred_stack_alleff)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># fit the model
+m_inla &lt;- inla(calcium ~ -1 + Intercept + elevation + region + f(i, model = spde),
+            data = inla.stack.data(all_stack),
+            control.predictor = list(A = inla.stack.A(all_stack), compute = TRUE),
+            quantiles = NULL)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="ejecutando-el-modelo-inla-para-prediccion-espacial">
+<h3>Ejecutando el modelo INLA para predicción espacial<a class="headerlink" href="#ejecutando-el-modelo-inla-para-prediccion-espacial" title="Link to this heading">#</a></h3>
+<p>Se estima que la ejecución del modelo dure alrededor de 30 segundos. Aquí desglosamos los pasos principales del código que acabaste de mencionar:</p>
+<p><strong>1. Ajuste del modelo:</strong></p>
+<ul class="simple">
+<li><p><strong>fórmula del modelo:</strong> El primer argumento define la fórmula del modelo. Se utiliza <code class="docutils literal notranslate"><span class="pre">-1</span></code> para eliminar la intercepción interna y ajustarla por separado.</p></li>
+<li><p><strong>efecto espacial aleatorio (f()):</strong> La función <code class="docutils literal notranslate"><span class="pre">f()</span></code> se utiliza para especificar un efecto aleatorio (<code class="docutils literal notranslate"><span class="pre">i</span></code>) que sigue el modelo de EDPE definido anteriormente.</p></li>
+<li><p><strong>datos y matriz de proyección:</strong> Se pasan los datos de predicción (<code class="docutils literal notranslate"><span class="pre">newdat</span></code>) y la matriz de proyección recién creada.</p></li>
+<li><p><strong>estimación de valores (compute=TRUE):</strong> Se configura <code class="docutils literal notranslate"><span class="pre">compute=TRUE</span></code> para indicar a INLA que estime los valores de la variable respuesta (calcio) que se proporcionaron como <code class="docutils literal notranslate"><span class="pre">NA</span></code> en <code class="docutils literal notranslate"><span class="pre">newdat</span></code>.</p></li>
+</ul>
+<p><strong>2. Resumen del modelo:</strong></p>
+<p>Una vez ajustado el modelo, se puede obtener su resumen utilizando las funciones de INLA para ver información como:</p>
+<ul class="simple">
+<li><p>Efectos fijos (coeficientes estimados para elevación y región)</p></li>
+<li><p>Parámetros de correlación espacial (nu y rho)</p></li>
+<li><p>Valores p y otros indicadores de significación estadística</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>summary(m_inla)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="examinando-las-predicciones-del-modelo-inla">
+<h3>Examinando las predicciones del modelo INLA<a class="headerlink" href="#examinando-las-predicciones-del-modelo-inla" title="Link to this heading">#</a></h3>
+<p>Una vez ajustado el modelo INLA para las predicciones espaciales, podemos analizar los resultados de diferentes maneras:</p>
+<p><strong>1. Predicciones basadas solo en efectos fijos:</strong></p>
+<p>Ahora que lo mencionas, podemos comenzar por observar las predicciones que solo tienen en cuenta los efectos fijos (elevación y región). Esto implica promediar las variaciones espaciales para ver el impacto general de estas covariables en la variable respuesta:</p>
+<ul class="simple">
+<li><p>INLA proporciona funciones para extraer las predicciones basadas únicamente en los efectos fijos.</p></li>
+<li><p>Al analizar estas predicciones, podemos evaluar cómo cambian los valores predichos en función de la elevación y la región, promediando el efecto espacial.</p></li>
+</ul>
+<p><strong>2. Predicciones espaciales completas:</strong></p>
+<p>Además de los efectos fijos, las predicciones espaciales completas también incorporan el efecto espacial estimado en el modelo.</p>
+<ul class="simple">
+<li><p>INLA permite extraer las predicciones espaciales totales, que reflejan la variación de la variable respuesta en todo el espacio de estudio.</p></li>
+<li><p>Estas predicciones considerarán tanto la influencia de las covariables (elevación y región) como la dependencia espacial.</p></li>
+</ul>
+<p><strong>3. Visualización de las predicciones:</strong></p>
+<p>Una vez extraídas las predicciones, ya sean de efectos fijos o espaciales completas, podemos visualizarlas para comprender mejor los patrones espaciales y la relación con las covariables:</p>
+<ul class="simple">
+<li><p>Podemos utilizar herramientas de representación geográfica (por ejemplo, mapas) para mostrar las predicciones espaciales en el contexto del área de estudio.</p></li>
+<li><p>La visualización de las predicciones en relación con los valores observados de la variable respuesta permite evaluar la precisión del modelo.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>## first we create an index to easily find these 
+## prediction within the fitted model
+id_fixef &lt;- inla.stack.index(all_stack, "prd_fixef")$data
+
+## add to modmat the prediction and their sd
+modmat$calcium &lt;- m_inla$summary.fitted.values[id_fixef, "mean"]
+modmat$sd &lt;- m_inla$summary.fitted.values[id_fixef, "sd"]
+
+## a plot with the original data
+ggplot(dat, aes(x = elevation, y = calcium)) +
+  geom_ribbon(data = modmat, aes(ymin = calcium - 2 * sd,
+                                 ymax = calcium + 2 * sd,
+                                 fill = region),
+              alpha = 0.2) +
+  geom_line(data = modmat, aes(color = region)) +
+  geom_point(aes(color = region))
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualizando-las-predicciones-de-efectos-fijos-en-inla">
+<h3>Visualizando las predicciones de efectos fijos en INLA<a class="headerlink" href="#visualizando-las-predicciones-de-efectos-fijos-en-inla" title="Link to this heading">#</a></h3>
+<p>Ahora que hemos visto la teoría, veamos cómo visualizar las predicciones basadas únicamente en los efectos fijos (elevación y región) en tu modelo INLA:</p>
+<p><strong>1. Extraer predicciones de efectos fijos:</strong></p>
+<p>Como mencionaste anteriormente, utilizaste una etiqueta específica (por ejemplo, «prediccion_efectos_fijos») al definir la pila de predicción. Esto nos permite extraer fácilmente las predicciones relevantes del objeto del modelo.</p>
+<p>En INLA, el resumen del modelo (<code class="docutils literal notranslate"><span class="pre">summary</span></code>) contiene un marco de datos llamado <code class="docutils literal notranslate"><span class="pre">summary.fitted.values</span></code>. Este marco de datos almacena información sobre las predicciones, y podemos filtrarlo utilizando la etiqueta definida anteriormente.</p>
+<p><strong>2. Obtener media y desviación estándar:</strong></p>
+<p>Una vez filtradas las predicciones de efectos fijos, podemos calcular la media y la desviación estándar. Estas métricas resumen el impacto general de las covariables (elevación y región) en la variable respuesta, promediando la variación espacial.</p>
+<p><strong>3. Representación gráfica:</strong></p>
+<p>Finalmente, podemos representar gráficamente la media y la desviación estándar junto con los datos originales. Esto te permitirá:</p>
+<ul class="simple">
+<li><p>Visualizar cómo cambian los valores predichos en función de la elevación y la región.</p></li>
+<li><p>Comparar las predicciones de efectos fijos con los datos observados para evaluar la capacidad del modelo para capturar las tendencias generales.</p></li>
+</ul>
+<p><strong>4. El mapa genial:</strong></p>
+<p>¡Y ahora viene la parte emocionante: el mapa! Una vez que tengas las predicciones espaciales completas (que incluyen el efecto espacial), podrás visualizarlas en un mapa. Esto te permitirá ver la variación de la variable respuesta en todo el espacio de estudio, teniendo en cuenta tanto las covariables como la dependencia espacial.</p>
+<p><strong>Herramientas de visualización:</strong></p>
+<p>Existen varias herramientas de software y bibliotecas que puedes utilizar para crear mapas a partir de tus predicciones espaciales INLA. Algunos ejemplos populares incluyen:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ggplot2</span></code> (en R)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">folium</span></code> (en Python)</p></li>
+<li><p>ArcGIS Pro</p></li>
+<li><p>QGIS</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># again get the correct indices
+id_alleff &lt;- inla.stack.index(all_stack, "prd_alleff")$data
+
+# now add the model predictions
+newdat$pred &lt;- m_inla$summary.fitted.values[id_alleff, "mean"]
+newdat$sd &lt;- m_inla$summary.fitted.values[id_alleff, "sd"]
+# get lower and upper confidence interval
+newdat$lower_ci &lt;- with(newdat, pred - 2 * sd)
+newdat$upper_ci &lt;- with(newdat, pred + 2 * sd)
+
+# some data wraggling
+nn &lt;- pivot_longer(newdat, cols = c("pred", "lower_ci", "upper_ci"))
+
+ggplot(nn, aes(x=x, y=y, fill=value)) +
+  geom_raster() +
+  facet_wrap(~name) +
+  scale_fill_continuous(type = "viridis")
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ejemplo-con-inla">
+<h2>Ejemplo con INLA<a class="headerlink" href="#ejemplo-con-inla" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(sf)
+library(rnaturalearth)
+library(sf)
+library(terra)
+library(geodata)
+library(INLA)
+library(rasterVis)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los promedios anuales de los niveles de concentración de PM2.5 registrados en 1429 estaciones de monitoreo de la Agencia de Protección Ambiental de los Estados Unidos en 2022 se encuentran en el archivo PM25USA2022.csv, que se puede descargar desde este sitio web. Usamos la función <code class="docutils literal notranslate"><span class="pre">read.csv()</span></code> para leer los datos, que contienen los valores de longitud y latitud de las estaciones de monitoreo, y los valores registrados de PM2.5 en microgramos por metro cúbico. Luego, usamos la función <code class="docutils literal notranslate"><span class="pre">st_as_sf()</span></code> para transformar el data.frame obtenido en un objeto <code class="docutils literal notranslate"><span class="pre">sf</span></code> con CRS geográfico dado por el código EPSG 4326.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>
+f &lt;- file.path("https://www.paulamoraga.com/book-spatial/", "data/PM25USA2022.csv")
+d &lt;- read.csv(f)
+d &lt;- st_as_sf(d, coords = c("longitude", "latitude"))
+st_crs(d) &lt;- "EPSG:4326"
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, obtenemos el mapa de los EE. UU. con la función <code class="docutils literal notranslate"><span class="pre">ne_countries()</span></code> de <code class="docutils literal notranslate"><span class="pre">rnaturalearth</span></code>. Usamos <code class="docutils literal notranslate"><span class="pre">st_crop()</span></code> para eliminar Alaska y otras áreas que están fuera de la región comprendida por los valores de longitud (–130, 60) y los valores de latitud (18, 72).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>map &lt;- ne_countries(type = "countries",
+                    country = "United States of America",
+                    scale = "medium", returnclass = "sf")
+map &lt;- st_crop(map, xmin = -130, xmax = -60, ymin = 18, ymax = 72)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>d &lt;- st_filter(d, map)
+nrow(d)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(ggplot2)
+library(viridis)
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = value)) +
+  scale_color_viridis()
+</pre></div>
+</div>
+</div>
+</div>
+<p>Aquí, construimos una matriz <code class="docutils literal notranslate"><span class="pre">coop</span></code> con las ubicaciones donde se predecirán los niveles de contaminación del aire. Primero, creamos una cuadrícula ráster de 100 × 100 celdas que cubre el mapa usando la función <code class="docutils literal notranslate"><span class="pre">rast()</span></code> de <code class="docutils literal notranslate"><span class="pre">terra</span></code>. Luego, obtenemos las coordenadas de las celdas con la función <code class="docutils literal notranslate"><span class="pre">xyfromCell()</span></code> de <code class="docutils literal notranslate"><span class="pre">terra</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># raster grid covering map
+grid &lt;- terra::rast(map, nrows = 100, ncols = 100)
+# coordinates of all cells
+xy &lt;- terra::xyFromCell(grid, 1:ncell(grid))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, usamos la función <code class="docutils literal notranslate"><span class="pre">st_as_sf()</span></code> para crear un objeto <code class="docutils literal notranslate"><span class="pre">sf</span></code> con las coordenadas de las ubicaciones de predicción, especificando las coordenadas como un data frame, el nombre de las coordenadas y el CRS. Obtenemos los índices de las coordenadas de los puntos que están dentro del mapa con <code class="docutils literal notranslate"><span class="pre">st_intersects()</span></code> configurando <code class="docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">=</span> <span class="pre">FALSE</span></code>. Luego usaremos estos índices para identificar las ubicaciones de predicción. También obtenemos las coordenadas de los puntos que están dentro del mapa con <code class="docutils literal notranslate"><span class="pre">sf_filter()</span></code>. La Figura muestra las ubicaciones de predicción.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># transform points to a sf object
+dp &lt;- st_as_sf(as.data.frame(xy), coords = c("x", "y"),
+                 crs = st_crs(map))
+
+# indices points within the map
+indicespointswithin &lt;- which(st_intersects(dp, map,
+                                           sparse = FALSE))
+
+# points within the map
+dp &lt;- st_filter(dp, map)
+
+# plot
+ggplot() + geom_sf(data = map) +
+  geom_sf(data = dp)
+</pre></div>
+</div>
+</div>
+</div>
+<p>En nuestro modelo, utilizamos la temperatura promedio y la precipitación como covariables. Los valores mensuales de estas variables a nivel global pueden obtenerse con la función <code class="docutils literal notranslate"><span class="pre">worldclim_global()</span></code> de <code class="docutils literal notranslate"><span class="pre">geodata</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>covtemp &lt;- worldclim_global(var = "tavg", res = 10,
+                            path = tempdir())
+covprec &lt;- worldclim_global(var = "prec", res = 10,
+                            path = tempdir())
+</pre></div>
+</div>
+</div>
+</div>
+<p>Después de descargar los datos, calculamos los promedios mensuales y extraemos los valores en las ubicaciones de observación y predicción con la función <code class="docutils literal notranslate"><span class="pre">extract()</span></code> de <code class="docutils literal notranslate"><span class="pre">terra</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Extract at observed locations
+d$covtemp &lt;- extract(mean(covtemp), st_coordinates(d))[, 1]
+d$covprec &lt;- extract(mean(covprec), st_coordinates(d))[, 1]
+# Extract at prediction locations
+dp$covtemp &lt;- extract(mean(covtemp), st_coordinates(dp))[, 1]
+dp$covprec &lt;- extract(mean(covprec), st_coordinates(dp))[, 1]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library("patchwork")
+p1 &lt;- ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = covtemp)) +
+  scale_color_viridis()
+p2 &lt;- ggplot() + geom_sf(data = map) +
+  geom_sf(data = d, aes(col = covprec)) +
+  scale_color_viridis()
+p1/p2
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los datos con los que estamos trabajando tienen un CRS geográfico que referencia ubicaciones utilizando valores de longitud y latitud. Para trabajar con kilómetros en lugar de grados, usamos <code class="docutils literal notranslate"><span class="pre">st_transform()</span></code> para transformar el CRS de los objetos <code class="docutils literal notranslate"><span class="pre">sf</span></code> con los datos correspondientes a las ubicaciones observadas (d) y las ubicaciones de predicción (dp) de geográfico a un CRS proyectado. Específicamente, utilizamos la proyección de Mercator dada por el código EPSG 3857 y usamos kilómetros como unidades. Para ello, usamos la proyección dada por <code class="docutils literal notranslate"><span class="pre">st_crs(&quot;EPSG:3857&quot;)$proj4string</span></code>, reemplazando <code class="docutils literal notranslate"><span class="pre">+units=m</span></code> por <code class="docutils literal notranslate"><span class="pre">+units=km</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>st_crs("EPSG:3857")$proj4string
+projMercator&lt;-"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0
++x_0=0 +y_0=0 +k=1 +units=km +nadgrids=@null +wktext +no_defs"
+d &lt;- st_transform(d, crs = projMercator)
+dp &lt;- st_transform(dp, crs = projMercator)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Observed coordinates
+coo &lt;- st_coordinates(d)
+
+# Predicted coordinates
+coop &lt;- st_coordinates(dp)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora especificamos el modelo que utilizamos para predecir los valores de PM2.5 en ubicaciones no muestreadas. Suponemos que <span class="math notranslate nohighlight">\(Yᵢ\)</span>, los valores de PM2.5 medidos en las ubicaciones <span class="math notranslate nohighlight">\(i = 1, …, n\)</span>, pueden modelarse como</p>
+<p><span class="math notranslate nohighlight">\(Yᵢ ∼ N(μᵢ, σ²)\)</span>,</p>
+<p><span class="math notranslate nohighlight">\(μᵢ = β₀ + β₁ × tempᵢ + β₂ × precᵢ + S(x\)</span>ᵢ),</p>
+<p>donde <span class="math notranslate nohighlight">\(β₀\)</span> es la intersección, y <span class="math notranslate nohighlight">\(β₁\)</span> <span class="math notranslate nohighlight">\(β₂\)</span> son, respectivamente, los coeficientes de temperatura y precipitación. <span class="math notranslate nohighlight">\(S(⋅)\)</span> es un efecto aleatorio espacial que se modela como un proceso gaussiano de media cero con función de covarianza de Matérn.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>summary(dist(coo)) # summary of distances between locations
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para ajustar el modelo utilizando el enfoque SPDE, primero creamos una malla triangulada que cubre la región de estudio donde aproximamos el campo aleatorio gaussiano como un campo aleatorio de Markov gaussiano. INLA produce buenas aproximaciones utilizando una malla fina compuesta por triángulos muy pequeños y con una gran distancia de separación entre las ubicaciones y el borde de la malla para evitar efectos de borde que aumentan la varianza cerca del límite. En algunas aplicaciones, el uso de una malla tan fina podría ser computacionalmente intensivo, y normalmente trabajamos con mallas que aún producen buenas aproximaciones consistentes en una región interna con triángulos pequeños donde se necesita precisión, y una extensión externa con triángulos más grandes donde no se necesitan aproximaciones precisas.</p>
+<p>Aquí, creamos la malla con la función <code class="docutils literal notranslate"><span class="pre">inla.mesh.2d()</span></code> de R-INLA. Pasamos como argumentos <code class="docutils literal notranslate"><span class="pre">loc</span> <span class="pre">=</span> <span class="pre">coo</span></code> con las coordenadas de ubicación, y <code class="docutils literal notranslate"><span class="pre">max.edge</span> <span class="pre">=</span> <span class="pre">c(200,</span> <span class="pre">500)</span></code> con las longitudes máximas permitidas de los bordes de los triángulos en la región y la extensión para tener triángulos más pequeños dentro de la región que en la extensión. También especificamos <code class="docutils literal notranslate"><span class="pre">cutoff</span> <span class="pre">=</span> <span class="pre">1</span></code> con la distancia mínima permitida entre puntos para evitar la construcción de muchos triángulos pequeños en áreas donde las ubicaciones están cerca unas de otras (Figura 15.4). El número de vértices de la malla se puede obtener con <code class="docutils literal notranslate"><span class="pre">mesh$n</span></code>, y la malla se puede graficar de la siguiente manera.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>mesh &lt;- inla.mesh.2d(loc = coo, max.edge = c(200, 500),
+                     cutoff = 1)
+mesh$n
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plot(mesh)
+points(coo, col = "red")
+axis(1)
+axis(2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, usamos la función <code class="docutils literal notranslate"><span class="pre">inla.spde2.matern()</span></code> para construir el modelo SPDE. Esta función tiene parámetros <code class="docutils literal notranslate"><span class="pre">mesh</span></code> con la malla triangulada construida y <code class="docutils literal notranslate"><span class="pre">constr</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> para imponer una restricción de integración a cero. Además, establecemos el parámetro de suavidad <span class="math notranslate nohighlight">\(ν\)</span> igual a 1. En el caso espacial <span class="math notranslate nohighlight">\(d = 2\)</span> y <span class="math notranslate nohighlight">\(α = ν + d / 2 = 2\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spde &lt;- inla.spde2.matern(mesh = mesh, alpha = 2, constr = TRUE)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, creamos un conjunto de índices para el modelo SPDE usando la función <code class="docutils literal notranslate"><span class="pre">inla.spde.make.index()</span></code>, donde proporcionamos el nombre del efecto (<code class="docutils literal notranslate"><span class="pre">s</span></code>) y el número de vértices en el modelo SPDE (<code class="docutils literal notranslate"><span class="pre">spde$n.spde</span></code>). Esta función genera una lista con el vector <code class="docutils literal notranslate"><span class="pre">s</span></code> que va del 1 al <code class="docutils literal notranslate"><span class="pre">spde$n.spde</span></code>. Además, crea dos vectores, <code class="docutils literal notranslate"><span class="pre">s.group</span></code> y <code class="docutils literal notranslate"><span class="pre">s.repl</span></code>, que contienen todos los elementos establecidos en 1 y longitudes iguales al número de vértices de la malla.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>indexs &lt;- inla.spde.make.index("s", spde$n.spde)
+lengths(indexs)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Usamos la función <code class="docutils literal notranslate"><span class="pre">inla.spde.make.A()</span></code> de R-INLA, pasando la malla (<code class="docutils literal notranslate"><span class="pre">mesh</span></code>) y las coordenadas (<code class="docutils literal notranslate"><span class="pre">coo</span></code>) para construir fácilmente una matriz de proyección A que proyecta el campo aleatorio gaussiano espacialmente continuo desde las observaciones hasta los nodos de la malla.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>A &lt;- inla.spde.make.A(mesh = mesh, loc = coo)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Podemos ver que la matriz de proyección <span class="math notranslate nohighlight">\(A\)</span> tiene un número de filas igual al número de observaciones y un número de columnas igual al número de vértices de la malla. También observamos que los elementos de cada fila de <span class="math notranslate nohighlight">\(A\)</span> suman 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># dimension of the projection matrix
+dim(A)
+</pre></div>
+</div>
+</div>
+</div>
+<p>También creamos una matriz de proyección para las ubicaciones de predicción.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Ap &lt;- inla.spde.make.A(mesh = mesh, loc = coop)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora creamos un stack con los datos para estimación y predicción que organiza datos, efectos y matrices de proyección. Creamos stacks para estimación (<code class="docutils literal notranslate"><span class="pre">stk.e</span></code>) y predicción (<code class="docutils literal notranslate"><span class="pre">stk.p</span></code>) usando <code class="docutils literal notranslate"><span class="pre">tag</span></code> para identificar el tipo de datos, <code class="docutils literal notranslate"><span class="pre">data</span></code> con la lista de vectores de datos, <code class="docutils literal notranslate"><span class="pre">A</span></code> con las matrices de proyección, y <code class="docutils literal notranslate"><span class="pre">effects</span></code> con una lista de efectos fijos y aleatorios. Primero, creamos un stack llamado <code class="docutils literal notranslate"><span class="pre">stk.e</span></code> que contiene los datos para estimación, el cual está etiquetado con la cadena «est». En <code class="docutils literal notranslate"><span class="pre">data</span></code>, especificamos el vector de respuesta con los valores observados de PM2.5. La matriz de proyección se da en el argumento <code class="docutils literal notranslate"><span class="pre">A</span></code>, que es una lista donde el segundo elemento es la matriz de proyección para los efectos aleatorios (A) y el primer elemento se establece en 1 para indicar que los efectos fijos se mapean directamente uno a uno a la respuesta. Para definir los efectos, pasamos una lista que contiene los efectos fijos y aleatorios. Los efectos fijos son un <code class="docutils literal notranslate"><span class="pre">data.frame</span></code> que consta de una intersección (b0) y covariables de temperatura (covtemp) y precipitación (covprec). El efecto aleatorio está representado por el campo aleatorio gaussiano espacial <code class="docutils literal notranslate"><span class="pre">s</span></code> que contiene una lista con los índices del objeto SPDE (<code class="docutils literal notranslate"><span class="pre">indexs</span></code>). Además, construimos otro stack llamado <code class="docutils literal notranslate"><span class="pre">stk.p</span></code> para predicción, que está etiquetado con la etiqueta «pred». Los datos, la matriz de proyección y los efectos se especifican para las ubicaciones de predicción. El vector de respuesta en el argumento <code class="docutils literal notranslate"><span class="pre">data</span></code> de este stack se establece en una lista con <code class="docutils literal notranslate"><span class="pre">NA</span></code> porque estos son los valores que queremos predecir. Finalmente, combinamos <code class="docutils literal notranslate"><span class="pre">stk.e</span></code> y <code class="docutils literal notranslate"><span class="pre">stk.p</span></code> en un solo stack completo llamado <code class="docutils literal notranslate"><span class="pre">stk.full</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># stack for estimation stk.e
+stk.e &lt;- inla.stack(tag = "est",
+data = list(y = d$value), A = list(1, A),
+effects = list(data.frame(b0 = rep(1, nrow(A)),
+covtemp = d$covtemp, covprec = d$covprec),
+s = indexs))
+
+# stack for prediction stk.p
+stk.p &lt;- inla.stack(tag = "pred",
+data = list(y = NA), A = list(1, Ap),
+effects = list(data.frame(b0 = rep(1, nrow(Ap)),
+covtemp = dp$covtemp, covprec = dp$covprec),
+s = indexs))
+
+# stk.full has stk.e and stk.p
+stk.full &lt;- inla.stack(stk.e, stk.p)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, especificamos la fórmula incluyendo la variable de respuesta, el símbolo ~ y los efectos fijos y aleatorios. En la fórmula, eliminamos la intersección añadiendo 0 e incluimos la intersección como un término de covariable añadiendo <code class="docutils literal notranslate"><span class="pre">b0</span></code>. Este paso asegura que todos los términos de covariable se capturen adecuadamente dentro de la matriz de proyección.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>formula &lt;- y ~ 0 + b0 + covtemp + covprec + f(s, model = spde)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finalmente, llamamos a <code class="docutils literal notranslate"><span class="pre">inla()</span></code> especificando la fórmula, la familia, el stack con los datos y las opciones. Establecemos <code class="docutils literal notranslate"><span class="pre">control.predictor</span> <span class="pre">=</span> <span class="pre">list(compute</span> <span class="pre">=</span> <span class="pre">TRUE)</span></code> y <code class="docutils literal notranslate"><span class="pre">control.compute</span> <span class="pre">=</span> <span class="pre">list(return.marginals.predictor</span> <span class="pre">=</span> <span class="pre">TRUE)</span></code> para calcular y devolver las marginales para el predictor lineal.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>res &lt;- inla(formula, family = "gaussian",
+       data = inla.stack.data(stk.full),
+       control.predictor = list(compute = TRUE,
+                                A = inla.stack.A(stk.full)),
+       control.compute = list(return.marginals.predictor = TRUE))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>res$summary.fixed
+</pre></div>
+</div>
+</div>
+</div>
+<p>Observamos que el coeficiente de temperatura es <span class="math notranslate nohighlight">\(^β₁ = 0.239\)</span> con un intervalo creíble del 95% igual a (0.201, 0.28). El coeficiente de precipitación es <span class="math notranslate nohighlight">\(^β₂ = 0.003\)</span> con un intervalo creíble del 95% igual a (–0.003, 0.009). Así, la temperatura está significativamente asociada con PM2.5, mientras que la precipitación no es significativa.</p>
+<p>El objeto <code class="docutils literal notranslate"><span class="pre">res$summary.fitted.values</span></code> contiene la media posterior y los cuantiles de los valores ajustados. Podemos obtener los índices correspondientes a las ubicaciones de predicción utilizando la función <code class="docutils literal notranslate"><span class="pre">inla.stack.index()</span></code> pasando el stack completo y <code class="docutils literal notranslate"><span class="pre">tag</span> <span class="pre">=</span> <span class="pre">&quot;pred&quot;</span></code>. Luego, recuperamos la columna «mean» con la media posterior, y las columnas «0.025quant» y «0.975quant» con los límites inferior y superior de los intervalos creíbles del 95% que denotan la incertidumbre de las predicciones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>index &lt;- inla.stack.index(stack = stk.full, tag = "pred")$data
+pred_mean &lt;- res$summary.fitted.values[index, "mean"]
+pred_ll &lt;- res$summary.fitted.values[index, "0.025quant"]
+pred_ul &lt;- res$summary.fitted.values[index, "0.975quant"]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Asignamos los valores predichos a sus celdas correspondientes dentro del mapa que están en el objeto <code class="docutils literal notranslate"><span class="pre">grid</span></code> que contiene las ubicaciones de predicción.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid$mean &lt;- NA
+grid$ll &lt;- NA
+grid$ul &lt;- NA
+
+grid$mean[indicespointswithin] &lt;- pred_mean
+grid$ll[indicespointswithin] &lt;- pred_ll
+grid$ul[indicespointswithin] &lt;- pred_ul
+
+summary(grid) # negative values for the lower limit
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, graficamos la media posterior y los intervalos creíbles del 95% de los valores predichos de PM2.5 con la función <code class="docutils literal notranslate"><span class="pre">levelplot()</span></code> del paquete <code class="docutils literal notranslate"><span class="pre">rasterVis</span></code>. La Figura 15.5 muestra mapas con el patrón espacial de los niveles predichos de PM2.5 así como su incertidumbre asociada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>
+levelplot(grid, layout = c(1, 3),
+names.attr = c("Mean", "2.5 percentile", "97.5 percentile"))
+</pre></div>
+</div>
+</div>
+</div>
+<p>También podemos obtener probabilidades de que PM2.5 supere un umbral específico con la función <code class="docutils literal notranslate"><span class="pre">inla.pmarginal()</span></code>. Específicamente, calculamos las probabilidades de que los niveles de PM2.5 superen los 10 microgramos por metro cúbico. Es decir, P(PM2.5 &gt; 10) = 1 – P(PM2.5 ≤ 10).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>excprob &lt;- sapply(res$marginals.fitted.values[index],
+FUN = function(marg){1-inla.pmarginal(q = 10, marginal = marg)})
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, añadimos las probabilidades de excedencia como una capa en <code class="docutils literal notranslate"><span class="pre">grid</span></code>, y las graficamos con <code class="docutils literal notranslate"><span class="pre">levelplot()</span></code>. En <code class="docutils literal notranslate"><span class="pre">levelplot()</span></code>, establecemos <code class="docutils literal notranslate"><span class="pre">margin</span> <span class="pre">=</span> <span class="pre">FALSE</span></code> para ocultar los gráficos marginales de los resúmenes de columnas y filas del objeto raster. La Figura muestra las probabilidades de que los niveles de PM2.5 superen los 10 microgramos por metro cúbico. Observamos altas probabilidades en la costa oeste y en la parte sur del país.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid$excprob &lt;- NA
+grid$excprob[indicespointswithin] &lt;- excprob
+
+levelplot(grid$excprob, margin = FALSE)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="gp-exacto-vs-gp-por-malla-spde-cuando-usar-cada-uno">
+<h2>GP exacto vs. GP por malla (SPDE): ¿cuándo usar cada uno?<a class="headerlink" href="#gp-exacto-vs-gp-por-malla-spde-cuando-usar-cada-uno" title="Link to this heading">#</a></h2>
+<p>Habiendo recorrido dos ejemplos completos con INLA/SPDE, es útil cerrar comparando explícitamente esta ruta con la ruta «exacta» de <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p>GP exacto (<code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>)</p></th>
+<th class="head text-left"><p>GP por malla / SPDE (este notebook)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Representación de <span class="math notranslate nohighlight">\(\Sigma\)</span></strong></p></td>
+<td class="text-left"><p>Matriz de covarianza densa <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> (<span class="math notranslate nohighlight">\(n \times n\)</span>)</p></td>
+<td class="text-left"><p>Matriz de precisión dispersa <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> (sobre vértices de la malla)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Costo computacional</strong></p></td>
+<td class="text-left"><p><span class="math notranslate nohighlight">\(O(n^3)\)</span> tiempo, <span class="math notranslate nohighlight">\(O(n^2)\)</span> memoria</p></td>
+<td class="text-left"><p>Aproximadamente <span class="math notranslate nohighlight">\(O(n_{\text{malla}}^{3/2})\)</span> en 2D</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Escalabilidad</strong></p></td>
+<td class="text-left"><p>Cientos a pocos miles de puntos</p></td>
+<td class="text-left"><p>Decenas o cientos de miles de observaciones</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Naturaleza del resultado</strong></p></td>
+<td class="text-left"><p>Predicción exacta bajo el kernel elegido</p></td>
+<td class="text-left"><p>Aproximación por elementos finitos; su precisión depende de la resolución de la malla</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Motor de inferencia</strong></p></td>
+<td class="text-left"><p>Máxima verosimilitud / muestreo directo (NumPy, scikit-learn, GPy)</p></td>
+<td class="text-left"><p>Aproximación de Laplace anidada (INLA), mucho más rápida que MCMC</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Cuándo usarlo</strong></p></td>
+<td class="text-left"><p>Prototipado, pocos datos, se necesita control fino del kernel</p></td>
+<td class="text-left"><p>Datos geoespaciales reales, muchas observaciones, se necesitan covariables y predicción sobre un raster completo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>En la práctica, ambos enfoques modelan el <strong>mismo objeto estadístico</strong> —un campo Gaussiano con una función de covarianza tipo Matérn/RBF—, y con una malla suficientemente fina las predicciones de INLA/SPDE convergen a las del GP exacto (de la misma manera en que el Kriging exacto y el GP exacto convergen entre sí, como vimos en <em>Conexión entre Procesos Gaussianos y Kriging</em> en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>). La elección entre uno y otro es, ante todo, una decisión de <strong>escala computacional</strong>, no una decisión estadística distinta.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="15_GP.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Procesos Gaussianos con Python</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="17_LGCP.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">El Proceso de Cox Log-Gaussiano (LGCP)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#del-proceso-gaussiano-exacto-a-la-aproximacion-por-malla">Del Proceso Gaussiano exacto a la aproximación por malla</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#el-modelo-geoestadistico">El modelo geoestadístico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#efecto-espacial-en-inla-con-ecuaciones-diferenciales-parciales-estocasticas-edpe">Efecto espacial en INLA con ecuaciones diferenciales parciales estocásticas (EDPE)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#definiendo-priores-para-el-efecto-espacial-en-inla-alcance-y-variacion">Definiendo Priores para el Efecto Espacial en INLA: Alcance y Variación</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alcance-del-efecto-espacial-parametro">Alcance del Efecto Espacial (parámetro κ)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#variacion-del-efecto-espacial-parametro">Variación del Efecto Espacial (parámetro δ)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#la-clave-esta-en-la-proyeccion-de-los-efectos">La clave está en la proyección de los efectos</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prediccion-en-modelos-espaciales-inla">Predicción en Modelos Espaciales INLA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#puntos-clave-de-la-prediccion-en-inla">Puntos clave de la predicción en INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#obteniendo-predicciones-espaciales-con-covariables-en-inla">Obteniendo predicciones espaciales con covariables en INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejecutando-el-modelo-inla-para-prediccion-espacial">Ejecutando el modelo INLA para predicción espacial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#examinando-las-predicciones-del-modelo-inla">Examinando las predicciones del modelo INLA</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizando-las-predicciones-de-efectos-fijos-en-inla">Visualizando las predicciones de efectos fijos en INLA</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-con-inla">Ejemplo con INLA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gp-exacto-vs-gp-por-malla-spde-cuando-usar-cada-uno">GP exacto vs. GP por malla (SPDE): ¿cuándo usar cada uno?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

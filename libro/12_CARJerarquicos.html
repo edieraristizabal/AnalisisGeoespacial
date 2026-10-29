@@ -1,0 +1,1258 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Modelos con dependencia y heterogeneidad espacial &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '12_CARJerarquicos';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/12_CARJerarquicos.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Regresión Ponderada Geográficamente (GWR)" href="13_MGWR.html" />
+    <link rel="prev" title="Modelos de Regresión para Heterogeneidad Espacial" href="12_Jerarquicos.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F12_CARJerarquicos.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/12_CARJerarquicos.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Modelos con dependencia y heterogeneidad espacial</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-conceptual-dependencia-heterogeneidad-en-un-mismo-modelo">Marco conceptual: dependencia + heterogeneidad en un mismo modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dos-fuentes-de-variacion-espacial">Dos fuentes de variación espacial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#progresion-de-modelos-en-este-capitulo">Progresión de modelos en este capítulo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inla">INLA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-interna-de-los-modelos-inla-con-efectos-mixtos">Estructura interna de los modelos INLA con efectos mixtos</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m3-icar-intercepto-aleatorio-icar">Interpretación del modelo m3_icar (intercepto aleatorio + ICAR)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m4-bym-intercepto-aleatorio-bym">Interpretación del modelo m4_bym (intercepto aleatorio + BYM)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m5-ler-pendiente-aleatoria-por-cuenca-leroux">Interpretación del modelo m5_ler (pendiente aleatoria por cuenca + Leroux)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-con-pendientes-espaciales-variables-m6-y-m7">Modelos con pendientes espaciales variables (m6 y m7)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-complejo-intercepto-pendientes-aleatorias-efecto-car-m-complex">Modelo complejo: intercepto + pendientes aleatorias + efecto CAR (m_complex)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-sar-con-regimenes-espaciales-spatialreg">Modelos SAR con regímenes espaciales (<em>spatialreg</em>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-alternativo-heterogeneidad-como-regimenes-no-como-efectos-aleatorios">Enfoque alternativo: heterogeneidad como regímenes, no como efectos aleatorios</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave-entre-ambos-enfoques">Diferencias clave entre ambos enfoques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-sar-implementados-con-spatialreg">Modelos SAR implementados con <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-de-los-modelos-sar-con-regimenes-espaciales">Interpretación de los modelos SAR con regímenes espaciales</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lectura-del-summary-en-spatialreg">Lectura del <code class="docutils literal notranslate"><span class="pre">summary()</span></code> en <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-modelos-con-aic-pseudo-r2">Comparación de modelos con AIC / pseudo-R²</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-inla-car-o-spatialreg-sar">Síntesis: ¿INLA-CAR o spatialreg-SAR?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-interactivos">Recursos interactivos</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="modelos-con-dependencia-y-heterogeneidad-espacial">
+<h1>Modelos con dependencia y heterogeneidad espacial<a class="headerlink" href="#modelos-con-dependencia-y-heterogeneidad-espacial" title="Link to this heading">#</a></h1>
+<p>Una característica fundamental de los datos espaciales es la presencia simultánea de dependencia espacial y heterogeneidad espacial. La dependencia espacial se refiere al hecho de que las observaciones cercanas tienden a parecerse más entre sí que las distantes, debido a procesos subyacentes que operan en el espacio geográfico. Por su parte, la heterogeneidad espacial se manifiesta en diferencias sistemáticas entre regiones o ubicaciones, ya sea por condiciones ambientales, sociales o geológicas que varían en el territorio. Para abordar estas dos dimensiones, es necesario emplear modelos espaciales que puedan representarlas explícitamente en su estructura.</p>
+<p>Los modelos autoregresivos condicionales (CAR), implementados en la librería INLA, permiten incorporar simultáneamente estos dos aspectos en un marco bayesiano. La dependencia espacial se modela mediante una matriz de vecindad (por ejemplo, tipo Queen o Rook), y la heterogeneidad se introduce agregando un efecto aleatorio no estructurado (iid), como en el modelo BYM (Besag-York-Mollié). Por otro lado, en la familia de modelos simultáneos autoregresivos (SAR) —implementados en R mediante la librería spatialreg— la dependencia espacial puede incorporarse a través de la variable dependiente (modelo SARlag), de los errores (SARerror), o de las covariables (modelo SLX). En estos modelos, la heterogeneidad espacial se representa explícitamente mediante interacciones entre las covariables continuas y un factor espacial categórico, como subcuencas o regiones, permitiendo que los efectos de las variables explicativas cambien según la unidad espacial. Este tipo de interacción permite capturar variaciones estructurales (regímenes espaciales) sin necesidad de introducir efectos aleatorios, y es una forma eficaz de modelar heterogeneidad espacial en un contexto frecuentista.</p>
+<section id="marco-conceptual-dependencia-heterogeneidad-en-un-mismo-modelo">
+<h2>Marco conceptual: dependencia + heterogeneidad en un mismo modelo<a class="headerlink" href="#marco-conceptual-dependencia-heterogeneidad-en-un-mismo-modelo" title="Link to this heading">#</a></h2>
+<p>El capítulo anterior (11_CAR) introdujo cómo los modelos CAR capturan <strong>dependencia espacial</strong> mediante efectos aleatorios latentes (ICAR, BYM, Leroux). Este capítulo da un paso adelante: combinar esa dependencia espacial con <strong>heterogeneidad espacial</strong>, es decir, diferencias sistemáticas entre grupos o regiones que no se deben a la vecindad local sino a factores estructurales.</p>
+<section id="dos-fuentes-de-variacion-espacial">
+<h3>Dos fuentes de variación espacial<a class="headerlink" href="#dos-fuentes-de-variacion-espacial" title="Link to this heading">#</a></h3>
+<p>En nuestro caso de estudio (subcuencas de los Andes colombianos distribuidas en tres cuencas principales: Atrato, Cauca y Magdalena), podemos identificar dos niveles de variación:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Nivel</p></th>
+<th class="head text-left"><p>Tipo</p></th>
+<th class="head text-left"><p>Estructura</p></th>
+<th class="head text-left"><p>Modelo</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Entre subcuencas vecinas</strong></p></td>
+<td class="text-left"><p>Dependencia espacial local</p></td>
+<td class="text-left"><p>Autocorrelación por vecindad</p></td>
+<td class="text-left"><p>CAR (ICAR/BYM/Leroux)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Entre cuencas (Atrato, Cauca, Magdalena)</strong></p></td>
+<td class="text-left"><p>Heterogeneidad espacial</p></td>
+<td class="text-left"><p>Diferencias estructurales por región</p></td>
+<td class="text-left"><p>Efecto aleatorio i.i.d. por cuenca</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Un modelo que capture ambas fuentes tiene la estructura general:</p>
+<div class="math notranslate nohighlight">
+\[\log(\mu_i) = \mathbf{x}_i^T \boldsymbol{\beta} + u_{\text{cuenca}[i]} + \phi_i + \log(a_i)\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{x}_i^T \boldsymbol{\beta}\)</span>: efectos fijos de las covariables (precipitación, elevación, pendiente)</p></li>
+<li><p><span class="math notranslate nohighlight">\(u_{\text{cuenca}[i]} \sim \mathcal{N}(0, \sigma_u^2)\)</span>: intercepto aleatorio por cuenca (heterogeneidad entre Atrato, Cauca, Magdalena)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\phi_i\)</span>: efecto aleatorio espacial CAR (dependencia entre subcuencas vecinas)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\log(a_i)\)</span>: offset para modelar tasas en lugar de conteos</p></li>
+</ul>
+</section>
+<section id="progresion-de-modelos-en-este-capitulo">
+<h3>Progresión de modelos en este capítulo<a class="headerlink" href="#progresion-de-modelos-en-este-capitulo" title="Link to this heading">#</a></h3>
+<p>Se presentan los modelos en orden de complejidad creciente, todos implementados con INLA:</p>
+<ol class="arabic simple">
+<li><p><strong>m3_icar</strong>: Efectos fijos + intercepto aleatorio por cuenca (i.i.d.) + efecto espacial ICAR</p></li>
+<li><p><strong>m4_bym</strong>: Efectos fijos + intercepto aleatorio por cuenca (i.i.d.) + efecto espacial BYM (ICAR + i.i.d.)</p></li>
+<li><p><strong>m5_ler</strong>: Efectos fijos + pendiente aleatoria por cuenca + efecto espacial Leroux</p></li>
+<li><p><strong>m6_spatial_slope</strong>: Efectos fijos + intercepto aleatorio + efecto ICAR espacial + pendiente espacial ICAR</p></li>
+<li><p><strong>m7_basin_slope</strong>: Efectos fijos + intercepto aleatorio por cuenca + pendientes aleatorias por cuenca</p></li>
+</ol>
+<p>Finalmente, se presentan los modelos SAR con regímenes espaciales mediante <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>, que modelan la heterogeneidad como coeficientes variables por cuenca en lugar de efectos aleatorios.</p>
+</section>
+</section>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Combinar dependencia espacial (efectos CAR) y heterogeneidad espacial (efectos aleatorios por cuenca) en un único modelo bayesiano.</p></li>
+<li><p>Especificar interceptos y pendientes aleatorias simultáneamente con efectos ICAR/BYM/Leroux en INLA.</p></li>
+<li><p>Interpretar los efectos aleatorios por cuenca como medida de heterogeneidad regional.</p></li>
+<li><p>Modelar pendientes espacialmente variables (coeficientes que cambian en el espacio) con INLA.</p></li>
+<li><p>Contrastar el enfoque bayesiano jerárquico (INLA) con el frecuentista de regímenes espaciales (<code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>).</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">11_CAR</span></code> — modelos CAR con INLA; <code class="docutils literal notranslate"><span class="pre">12_Jerarquicos</span></code> — modelos multinivel; R con <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> e INLA.</p>
+</section>
+<section id="inla">
+<h2>INLA<a class="headerlink" href="#inla" title="Link to this heading">#</a></h2>
+<p>Tradicionalmente, los modelos jerárquicos bayesianos han sido una herramienta poderosa para abordar estas características. No obstante, su implementación mediante métodos de muestreo como Markov Chain Monte Carlo (MCMC) puede resultar computacionalmente costosa, especialmente en contextos con grandes volúmenes de datos o estructuras espaciales complejas.</p>
+<p>La librería INLA (Integrated Nested Laplace Approximation) para el lenguaje R se presenta como una alternativa eficiente y precisa para ajustar modelos bayesianos latentes gaussianos (LGMs). A través de aproximaciones deterministas, INLA permite estimar la distribución posterior de los parámetros sin recurrir a simulaciones estocásticas, lo que reduce drásticamente los tiempos de cómputo. INLA es especialmente útil para incorporar efectos espaciales estructurados, como los que se modelan mediante procesos autoregresivos condicionales (CAR), y también para representar campos espaciales continuos mediante el enfoque basado en ecuaciones diferenciales estocásticas (SPDE). Esta flexibilidad la convierte en una herramienta ideal para abordar tanto la dependencia espacial estructurada como la variabilidad no estructurada, facilitando la construcción de modelos robustos y adaptados a la complejidad geográfica de los fenómenos estudiados.</p>
+<p>A continuación se presentan modelos de regresión de Poisson utilizando la librería INLA, incorporando dos tipos de efectos aleatorios: un intercepto aleatorio para cuenca y un efecto espacial CAR para las subcuencas.</p>
+<section id="estructura-interna-de-los-modelos-inla-con-efectos-mixtos">
+<h3>Estructura interna de los modelos INLA con efectos mixtos<a class="headerlink" href="#estructura-interna-de-los-modelos-inla-con-efectos-mixtos" title="Link to this heading">#</a></h3>
+<p>La función <code class="docutils literal notranslate"><span class="pre">f()</span></code> en INLA es el mecanismo para especificar efectos aleatorios latentes. Su sintaxis general es:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">f</span><span class="p">(</span><span class="n">indice</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="n">covariable</span><span class="p">,]</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"tipo"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matriz_vecindad</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Los dos usos principales en este capítulo son:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Especificación</p></th>
+<th class="head text-left"><p>Código INLA</p></th>
+<th class="head text-left"><p>Significado</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Intercepto aleatorio por cuenca</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">&quot;iid&quot;)</span></code></p></td>
+<td class="text-left"><p>Cada cuenca tiene su propio nivel base de riesgo</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Pendiente aleatoria por cuenca para <code class="docutils literal notranslate"><span class="pre">x</span></code></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">x,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">&quot;iid&quot;)</span></code></p></td>
+<td class="text-left"><p>El efecto de <code class="docutils literal notranslate"><span class="pre">x</span></code> varía por cuenca</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Efecto espacial ICAR</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">&quot;besag&quot;,</span> <span class="pre">graph</span> <span class="pre">=</span> <span class="pre">aoi.mat)</span></code></p></td>
+<td class="text-left"><p>Suavizado espacial entre subcuencas vecinas</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Efecto espacial BYM</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">&quot;bym&quot;,</span> <span class="pre">graph</span> <span class="pre">=</span> <span class="pre">aoi.mat)</span></code></p></td>
+<td class="text-left"><p>ICAR + i.i.d. por subcuenca</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Efecto espacial Leroux</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">&quot;generic1&quot;,</span> <span class="pre">Cmatrix</span> <span class="pre">=</span> <span class="pre">Cmatrix)</span></code></p></td>
+<td class="text-left"><p>CAR propio con <span class="math notranslate nohighlight">\(\rho\)</span> estimado</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Nota sobre índices duplicados:</strong> INLA no permite usar el mismo índice dos veces en la misma fórmula. Por eso, en los modelos con intercepto aleatorio por cuenca (<code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">model=&quot;iid&quot;)</span></code>) <em>y</em> pendiente aleatoria por cuenca (<code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">x,</span> <span class="pre">model=&quot;iid&quot;)</span></code>), se debe crear un índice duplicado o usar índices distintos aunque refieran a la misma variable.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span><span class="w"> </span><span class="c1"># Simple features for spatial data</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span><span class="w"> </span><span class="c1"># Spatial dependence tools</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spatialreg</span><span class="p">)</span><span class="w"> </span><span class="c1"># Spatial regression models</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">sf</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">dplyr</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">spdep</span><span class="p">)</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">INLA</span><span class="p">)</span><span class="w"> </span>
+
+<span class="n">aoi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">st_read</span><span class="p">(</span><span class="s">"https://github.com/edieraristizabal/ModeloMultinivel/blob/main/DATA/df_catchments_spatial.gpkg"</span><span class="p">)</span>
+<span class="n">aoi</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">aoi</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate_at</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">'elev_mean'</span><span class="p">,</span><span class="s">'slope_mean'</span><span class="p">,</span><span class="s">'RainfallDaysmean'</span><span class="p">),</span><span class="w"> </span><span class="o">~</span><span class="p">(</span><span class="nf">scale</span><span class="p">(</span><span class="n">.</span><span class="p">)</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="n">as.vector</span><span class="p">))</span>
+<span class="n">aoi</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">aoi</span><span class="w"> </span><span class="o">%&gt;%</span><span class="w"> </span><span class="nf">mutate</span><span class="p">(</span><span class="n">cuenca_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">case_when</span><span class="p">(</span><span class="n">cuenca</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">'Atrato'</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">cuenca</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">'Cauca'</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">cuenca</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">'Magdalena'</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">3</span><span class="p">))</span>
+<span class="n">aoi_sp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as_Spatial</span><span class="p">(</span><span class="n">aoi</span><span class="p">)</span>
+
+<span class="c1">#Spatial matrix</span>
+<span class="n">W.nb</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">poly2nb</span><span class="p">(</span><span class="n">aoi</span><span class="p">)</span>
+<span class="n">W.mat</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nb2mat</span><span class="p">(</span><span class="n">W.nb</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="o">=</span><span class="s">"B"</span><span class="p">)</span>
+<span class="n">W.list</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nb2listw</span><span class="p">(</span><span class="n">W.nb</span><span class="p">,</span><span class="w"> </span><span class="n">style</span><span class="o">=</span><span class="s">"B"</span><span class="p">)</span>
+
+
+<span class="c1"># intercepto aleatorio + ICAR model</span>
+<span class="n">m3_icar</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">inla</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">                  </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"iid"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                  </span><span class="nf">f</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"besag"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.mat</span><span class="p">),</span>
+<span class="w">                  </span><span class="n">offset</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">                  </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span>
+<span class="w">                  </span><span class="n">control.compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">m3_icar</span><span class="p">)</span>
+<span class="n">m3_icar</span><span class="o">$</span><span class="n">summary.random</span><span class="o">$</span><span class="n">cuenca</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">ICAR</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">m3_icar</span><span class="o">$</span><span class="n">summary.fitted</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="s">"mean"</span><span class="p">]</span>
+<span class="n">res_pearson_m3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">aoi</span><span class="o">$</span><span class="n">lands_rec</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m3_icar</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">m3_icar</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">res_pearson_m3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pearson_m3</span>
+<span class="n">moran_m3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res_pearson_m3</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">alternative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"greater"</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="interpretacion-del-modelo-m3-icar-intercepto-aleatorio-icar">
+<h4>Interpretación del modelo m3_icar (intercepto aleatorio + ICAR)<a class="headerlink" href="#interpretacion-del-modelo-m3-icar-intercepto-aleatorio-icar" title="Link to this heading">#</a></h4>
+<p>El modelo <code class="docutils literal notranslate"><span class="pre">m3_icar</span></code> combina dos fuentes de variación espacial:</p>
+<p><strong>1. Efectos fijos (<code class="docutils literal notranslate"><span class="pre">summary(m3_icar)$fixed</span></code>)</strong></p>
+<p>Los coeficientes de <code class="docutils literal notranslate"><span class="pre">RainfallDaysmean</span></code>, <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code> y <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> representan el efecto <em>promedio</em> de cada variable sobre la tasa de deslizamientos, <strong>después de controlar</strong> tanto las diferencias entre cuencas como la autocorrelación espacial local. Al estar en escala log (modelo Poisson), se interpretan como: por cada unidad de aumento estandarizado en la variable <span class="math notranslate nohighlight">\(k\)</span>, la tasa esperada de deslizamientos se multiplica por <span class="math notranslate nohighlight">\(e^{\beta_k}\)</span>.</p>
+<p><strong>2. Efectos aleatorios de cuenca (<code class="docutils literal notranslate"><span class="pre">m3_icar$summary.random$cuenca</span></code>)</strong></p>
+<p>Este objeto devuelve una tabla con los interceptos estimados para cada una de las tres cuencas (Atrato=1, Cauca=2, Magdalena=3):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: intercepto aleatorio estimado <span class="math notranslate nohighlight">\(\hat{u}_{\text{cuenca}}\)</span> — positivo indica que la cuenca tiene una tasa más alta que el promedio global; negativo, más baja.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0.025quant</span></code>, <code class="docutils literal notranslate"><span class="pre">0.975quant</span></code>: intervalo de credibilidad del 95% del intercepto.</p></li>
+</ul>
+<p>Si los tres intervalos de credibilidad <strong>no se solapan</strong>, hay evidencia de heterogeneidad significativa entre cuencas. Si los intervalos se solapan fuertemente, la diferencia entre cuencas es pequeña y el intercepto aleatorio contribuye poco al ajuste.</p>
+<p><strong>3. Test de Moran sobre residuos (<code class="docutils literal notranslate"><span class="pre">moran_m3</span></code>)</strong></p>
+<p>Comparar con <code class="docutils literal notranslate"><span class="pre">moran_m1</span></code> (modelo base): si el p-valor de Moran pasa de significativo a no significativo, el efecto ICAR ha absorbido la dependencia espacial residual del modelo base.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># BYM model</span>
+<span class="n">m4_bym</span><span class="o">&lt;-</span><span class="nf">inla</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span>
+<span class="w">           </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"iid"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">           </span><span class="nf">f</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"bym"</span><span class="p">,</span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.mat</span><span class="p">),</span><span class="w"> </span>
+<span class="w">           </span><span class="n">offset</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">           </span><span class="n">control.compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="o">=</span><span class="bp">T</span><span class="p">),</span><span class="w"> </span>
+<span class="w">           </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">m4_bym</span><span class="p">)</span>
+<span class="n">m4_bym</span><span class="o">$</span><span class="n">summary.random</span><span class="o">$</span><span class="n">cuenca</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">BYM</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">m4_bym</span><span class="o">$</span><span class="n">summary.fitted</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="s">"mean"</span><span class="p">]</span>
+<span class="n">aoi_sp</span><span class="o">$</span><span class="n">BYM</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">m4_bym</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="p">[,</span><span class="w"> </span><span class="s">"mean"</span><span class="p">]</span>
+<span class="n">res_pearson_m4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">aoi</span><span class="o">$</span><span class="n">lands_rec</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m4_bym</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">m4_bym</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">res_pearson_m4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pearson_m4</span>
+<span class="n">moran_m4</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res_pearson_m4</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">alternative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"greater"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretacion-del-modelo-m4-bym-intercepto-aleatorio-bym">
+<h4>Interpretación del modelo m4_bym (intercepto aleatorio + BYM)<a class="headerlink" href="#interpretacion-del-modelo-m4-bym-intercepto-aleatorio-bym" title="Link to this heading">#</a></h4>
+<p>El modelo BYM añade sobre el ICAR un componente no estructurado a nivel de subcuenca (<code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model=&quot;bym&quot;)</span></code>), que puede capturar sobredispersión o variabilidad idiosincrásica que no sigue el patrón de vecindad.</p>
+<p><strong>¿BYM vs ICAR: cuándo aporta el BYM?</strong></p>
+<p>El BYM introduce dos hiperparámetros de precisión en lugar de uno:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Precision</span> <span class="pre">for</span> <span class="pre">ID</span> <span class="pre">(spatial)</span></code> → controla la varianza del componente ICAR</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Precision</span> <span class="pre">for</span> <span class="pre">ID</span> <span class="pre">(iid)</span></code> → controla la varianza del componente no estructurado</p></li>
+</ul>
+<p>Si la <strong>precisión del componente i.i.d.</strong> es muy alta (varianza cercana a cero), significa que el componente no estructurado es despreciable y el BYM colapsa al ICAR. En ese caso, el DIC/WAIC del BYM no debería ser sustancialmente mejor que el del ICAR.</p>
+<p>Si la <strong>precisión del componente ICAR</strong> es muy alta, significa que el suavizado espacial es débil y la variación es mayormente no estructurada. En ese caso, un modelo i.i.d. puro podría ser suficiente.</p>
+<p><strong>Lectura práctica del <code class="docutils literal notranslate"><span class="pre">summary(m4_bym)</span></code>:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Precision for ID (spatial): [valor]  → 1/σ²_espacial
+Precision for ID (iid):     [valor]  → 1/σ²_no_estructurado
+</pre></div>
+</div>
+<p>Comparar los inversos de estas precisiones (varianzas) da una idea de la proporción de la variabilidad espacial explicada por estructura vs. ruido.</p>
+<p><strong>Comparación DIC/WAIC entre modelos:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Modelo</p></th>
+<th class="head text-left"><p>DIC esperado</p></th>
+<th class="head text-left"><p>Interpretación</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>m1 (base, sin CAR)</p></td>
+<td class="text-left"><p>Mayor</p></td>
+<td class="text-left"><p>No captura dependencia espacial</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>m3_icar</p></td>
+<td class="text-left"><p>Menor que m1</p></td>
+<td class="text-left"><p>ICAR absorbe autocorrelación</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>m4_bym</p></td>
+<td class="text-left"><p>Similar o menor que m3</p></td>
+<td class="text-left"><p>BYM añade flexibilidad adicional</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>m5_ler</p></td>
+<td class="text-left"><p>Similar a m4</p></td>
+<td class="text-left"><p>Leroux estima <span class="math notranslate nohighlight">\(\rho\)</span>, potencialmente más parsimonioso</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1">#Leroux et al. model</span>
+<span class="n">m5_leroux</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Diagonal</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi.mat</span><span class="p">),</span><span class="w"> </span><span class="nf">apply</span><span class="p">(</span><span class="n">aoi.mat</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">))</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">aoi.mat</span>
+<span class="n">Cmatrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">Diagonal</span><span class="p">(</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="m">1</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w">  </span><span class="n">m5_leroux</span>
+<span class="nf">max</span><span class="p">(</span><span class="nf">eigen</span><span class="p">(</span><span class="n">Cmatrix</span><span class="p">)</span><span class="o">$</span><span class="n">values</span><span class="p">)</span><span class="w"> </span><span class="c1">#just to check =1</span>
+
+<span class="n">m5_ler</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">inla</span><span class="p">(</span><span class="n">formula</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">elev_mean</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"iid"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">                </span><span class="nf">f</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"generic1"</span><span class="p">,</span><span class="w"> </span><span class="n">Cmatrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Cmatrix</span><span class="p">),</span>
+<span class="w">                </span><span class="n">offset</span><span class="o">=</span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">as.data.frame</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">                </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span>
+<span class="w">                </span><span class="n">control.compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+
+<span class="nf">summary</span><span class="p">(</span><span class="n">m5_ler</span><span class="p">)</span>
+<span class="n">m5_ler</span><span class="o">$</span><span class="n">summary.random</span><span class="o">$</span><span class="n">cuenca</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">LEROUX</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">m5_ler</span><span class="o">$</span><span class="n">summary.fitted</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">),</span><span class="w"> </span><span class="s">"mean"</span><span class="p">]</span>
+<span class="n">res_pearson_m5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">aoi</span><span class="o">$</span><span class="n">lands_rec</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">m5_ler</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">m5_ler</span><span class="o">$</span><span class="n">summary.fitted.values</span><span class="o">$</span><span class="n">mean</span><span class="p">)</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">res_pearson_m5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">res_pearson_m5</span>
+<span class="n">moran_m5</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">moran.mc</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">res_pearson_m5</span><span class="p">,</span><span class="w"> </span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="n">nsim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">999</span><span class="p">,</span><span class="w"> </span><span class="n">alternative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"greater"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretacion-del-modelo-m5-ler-pendiente-aleatoria-por-cuenca-leroux">
+<h4>Interpretación del modelo m5_ler (pendiente aleatoria por cuenca + Leroux)<a class="headerlink" href="#interpretacion-del-modelo-m5-ler-pendiente-aleatoria-por-cuenca-leroux" title="Link to this heading">#</a></h4>
+<p>El modelo <code class="docutils literal notranslate"><span class="pre">m5_ler</span></code> introduce una variación importante respecto a los anteriores: en lugar de un <strong>intercepto</strong> aleatorio por cuenca, incluye una <strong>pendiente aleatoria</strong> para <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code> por cuenca:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">elev_mean</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"iid"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Esto significa que el efecto de la elevación media sobre la tasa de deslizamientos <strong>no es igual en las tres cuencas</strong> — puede ser positivo en una y negativo en otra, dependiendo de la geomorfología local.</p>
+<p><strong>Lectura de <code class="docutils literal notranslate"><span class="pre">m5_ler$summary.random$cuenca</span></code>:</strong></p>
+<p>Este objeto devuelve una tabla con tres filas (una por cuenca) y las siguientes columnas:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mean</span></code>: pendiente aleatoria estimada <span class="math notranslate nohighlight">\(\hat{\gamma}_{\text{cuenca}}\)</span> para <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code>. El efecto total de la elevación en la cuenca <span class="math notranslate nohighlight">\(k\)</span> es <span class="math notranslate nohighlight">\(\beta_{\text{elev}} + \hat{\gamma}_k\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sd</span></code>: incertidumbre de la estimación.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0.025quant</span></code>, <code class="docutils literal notranslate"><span class="pre">0.975quant</span></code>: intervalo de credibilidad del 95%.</p></li>
+</ul>
+<p><strong>Diferencia clave con el intercepto aleatorio:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Efecto aleatorio</p></th>
+<th class="head text-left"><p>Lo que varía por cuenca</p></th>
+<th class="head text-left"><p>Pregunta que responde</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p>Intercepto (<code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">model=&quot;iid&quot;)</span></code>)</p></td>
+<td class="text-left"><p>Nivel base de riesgo</p></td>
+<td class="text-left"><p>¿Hay cuencas sistemáticamente más peligrosas?</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Pendiente (<code class="docutils literal notranslate"><span class="pre">f(cuenca,</span> <span class="pre">elev_mean,</span> <span class="pre">model=&quot;iid&quot;)</span></code>)</p></td>
+<td class="text-left"><p>Respuesta a la elevación</p></td>
+<td class="text-left"><p>¿El efecto de la altitud es igual en todas las cuencas?</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Si los intervalos de credibilidad de las tres pendientes son disjuntos, hay evidencia de que el efecto de la elevación es genuinamente distinto entre cuencas — lo que sugiere que procesos geomorfológicos o climáticos locales modulan cómo la altitud se relaciona con la ocurrencia de deslizamientos.</p>
+</section>
+</section>
+<section id="modelos-con-pendientes-espaciales-variables-m6-y-m7">
+<h3>Modelos con pendientes espaciales variables (m6 y m7)<a class="headerlink" href="#modelos-con-pendientes-espaciales-variables-m6-y-m7" title="Link to this heading">#</a></h3>
+<p>Los modelos anteriores permitían que el <strong>intercepto</strong> (nivel base de riesgo) variara entre cuencas o entre subcuencas vecinas. Una extensión natural es permitir que también la <strong>pendiente</strong> de una covariable varíe espacialmente — es decir, que el efecto de la elevación o la pendiente no sea uniforme en el territorio, sino que cambie de forma continua a lo largo del espacio.</p>
+<p>En INLA, esto se implementa añadiendo un segundo campo latente que pondera la covariable:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">f</span><span class="p">(</span><span class="n">id_slope</span><span class="p">,</span><span class="w"> </span><span class="n">slope_mean</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"besag"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cl_graph</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Aquí <code class="docutils literal notranslate"><span class="pre">id_slope</span></code> es un índice de polígono (igual a <code class="docutils literal notranslate"><span class="pre">id</span></code>) y <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> es el modificador — el efecto latente <span class="math notranslate nohighlight">\(\gamma_i\)</span> multiplica el valor de <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> en cada subcuenca, generando un <strong>coeficiente espacialmente variable</strong> <span class="math notranslate nohighlight">\(\beta_{\text{slope}} + \gamma_i\)</span>.</p>
+<p><strong>Intuición geomorfológica:</strong> En terrenos de alta elevación y pendiente pronunciada (cordillera), la pendiente puede ser un predictor más fuerte de deslizamientos que en zonas de piedemonte. Permitir que <span class="math notranslate nohighlight">\(\gamma_i\)</span> varíe espacialmente captura esta heterogeneidad de manera continua y suavizada por la estructura de vecindad.</p>
+<p><strong>Diferencia entre m6 y m7:</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Modelo</p></th>
+<th class="head text-left"><p>Variación de pendiente</p></th>
+<th class="head text-left"><p>Escala</p></th>
+<th class="head text-left"><p>Tipo de efecto</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>m6</strong> (<code class="docutils literal notranslate"><span class="pre">id_slope</span> <span class="pre">~</span> <span class="pre">besag</span></code>)</p></td>
+<td class="text-left"><p>Continua, polígono a polígono</p></td>
+<td class="text-left"><p>Local (subcuenca)</p></td>
+<td class="text-left"><p>Espacialmente estructurado (CAR)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>m7</strong> (<code class="docutils literal notranslate"><span class="pre">cuenca</span> <span class="pre">~</span> <span class="pre">iid</span></code>)</p></td>
+<td class="text-left"><p>Discreta, por cuenca</p></td>
+<td class="text-left"><p>Regional (Atrato/Cauca/Magdalena)</p></td>
+<td class="text-left"><p>No estructurado (i.i.d.)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Para añadir coeficientes aleatorios espaciales (p.ej. para la pendiente) en un modelo CAR con INLA, lo más sencillo es definir un segundo campo latente que module justamente esa covariable. La idea es que en la fórmula se incluyan: (i) un campo latente para el intercepto espacial (como ya se hace con <code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model=&quot;besag&quot;,</span> <span class="pre">graph=graph)</span></code>), y (ii) un campo latente «pesado» por la covariable cuya pendiente se quiere aleatorizar (por ejemplo <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code>).</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Primero, crea dos índices idénticos (uno para intercepto y otro para pendiente)</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">id_int</span><span class="w">   </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">)</span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">id_slope</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">aoi</span><span class="o">$</span><span class="n">id_int</span>
+
+<span class="c1"># Ahora la fórmula:</span>
+<span class="n">m6_spatial_slope</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">inla</span><span class="p">(</span>
+<span class="w">  </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span>
+<span class="w">    </span><span class="m">1</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">elev_mean</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w">                  </span><span class="c1"># efecto fijo de la pendiente</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span><span class="w">      </span><span class="c1"># efecto aleatorio no espacial por cuenca</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">id_int</span><span class="p">,</span><span class="w">   </span><span class="n">model</span><span class="o">=</span><span class="s">"besag"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="o">=</span><span class="n">cl_graph</span><span class="p">)</span><span class="w">              </span><span class="c1"># intercepto espacial</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">id_slope</span><span class="p">,</span><span class="w"> </span><span class="n">slope_mean</span><span class="p">,</span><span class="w">      </span><span class="n">model</span><span class="o">=</span><span class="s">"besag"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="o">=</span><span class="n">cl_graph</span><span class="p">),</span><span class="w">  </span><span class="c1"># pendiente espacial</span>
+<span class="w">  </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span>
+<span class="w">  </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi</span><span class="p">,</span>
+<span class="w">  </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span>
+<span class="w">  </span><span class="n">control.compute</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Si el objetivo fuera que la pendiente de <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> variara entre cuencas (no dentro de ellas), basta con usar el índice <code class="docutils literal notranslate"><span class="pre">cuenca</span></code> en lugar de <code class="docutils literal notranslate"><span class="pre">id_slope</span></code>. Esto implica solo tres coeficientes de pendiente distintos (uno por cuenca), en contraste con el modelo m6 que estima un coeficiente por subcuenca. Esta es una versión más parsimoniosa, adecuada cuando se tienen pocas cuencas o cuando la heterogeneidad es principalmente regional y no local.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">m7_basin_slope</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">inla</span><span class="p">(</span>
+<span class="w">  </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span>
+<span class="w">    </span><span class="m">1</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">RainfallDaysmean</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span>
+<span class="w">    </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w">   </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w">                         </span><span class="c1"># intercepto por cuenca</span>
+<span class="w">    </span><span class="nf">f</span><span class="p">(</span><span class="n">cuenca</span><span class="p">,</span><span class="w"> </span><span class="n">slope_mean</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">),</span><span class="w">                </span><span class="c1"># pendiente aleatoria por cuenca</span>
+<span class="w">  </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span>
+<span class="w">  </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi</span><span class="p">,</span>
+<span class="w">  </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span>
+<span class="w">  </span><span class="n">control.compute</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="modelo-complejo-intercepto-pendientes-aleatorias-efecto-car-m-complex">
+<h3>Modelo complejo: intercepto + pendientes aleatorias + efecto CAR (m_complex)<a class="headerlink" href="#modelo-complejo-intercepto-pendientes-aleatorias-efecto-car-m-complex" title="Link to this heading">#</a></h3>
+<p>El modelo <code class="docutils literal notranslate"><span class="pre">m_complex</span></code> es la combinación más completa presentada en este capítulo. Incluye simultáneamente:</p>
+<ol class="arabic simple">
+<li><p><strong>Efectos fijos globales</strong> (<span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span>): pendientes medias de <code class="docutils literal notranslate"><span class="pre">RainfallDaysmean</span></code>, <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code> y <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code>.</p></li>
+<li><p><strong>Intercepto aleatorio por cuenca</strong> (<code class="docutils literal notranslate"><span class="pre">f(basin_id,</span> <span class="pre">model=&quot;iid&quot;)</span></code>): nivel base de riesgo distinto para cada cuenca.</p></li>
+<li><p><strong>Pendientes aleatorias por cuenca</strong> para cada covariable: el efecto de la precipitación, elevación y pendiente puede ser distinto en Atrato, Cauca y Magdalena.</p></li>
+<li><p><strong>Efecto espacial CAR a nivel de polígono</strong> (<code class="docutils literal notranslate"><span class="pre">f(id,</span> <span class="pre">model=&quot;besag&quot;,</span> <span class="pre">graph=cl_graph)</span></code>): suavizado espacial residual entre subcuencas vecinas, después de controlar todo lo anterior.</p></li>
+</ol>
+<p>La ecuación completa del predictor lineal es:</p>
+<div class="math notranslate nohighlight">
+\[\log(\mu_i) = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \beta_3 x_{3i} + u_{\text{c}[i]} + \gamma_{1,\text{c}[i]} x_{1i} + \gamma_{2,\text{c}[i]} x_{2i} + \gamma_{3,\text{c}[i]} x_{3i} + \phi_i + \log(a_i)\]</div>
+<p><strong>Cuándo usar este modelo:</strong></p>
+<ul class="simple">
+<li><p>Cuando se sospecha que tanto el nivel de riesgo como la sensibilidad a las covariables varía entre grandes unidades geográficas (cuencas).</p></li>
+<li><p>Cuando aun así persiste autocorrelación espacial entre subcuencas vecinas no explicada por las covariables ni por las diferencias de cuenca.</p></li>
+</ul>
+<p><strong>Advertencia de sobreajuste:</strong> Cada nuevo efecto aleatorio añade parámetros y puede dificultar la convergencia de INLA o producir estimaciones inestables. Si el DIC/WAIC no mejora sustancialmente con la versión compleja, preferir el modelo más parsimonioso (m3_icar o m4_bym). El principio de parsimonia es fundamental en el modelado bayesiano jerárquico.</p>
+<p>Para incluir a la vez intercepto aleatorio por cuenca, pendientes aleatorias por cuenca para cada covariable, y un efecto CAR espacial a nivel de ID (cada polígono), se puede usar una fórmula como la siguiente en R-INLA:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># índice numérico de cuenca (1,2,3)  </span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">basin_id</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.integer</span><span class="p">(</span><span class="n">aoi</span><span class="o">$</span><span class="n">cuenca</span><span class="p">)</span><span class="w">  </span>
+<span class="c1"># índice numérico de polígono (ID)  </span>
+<span class="n">aoi</span><span class="o">$</span><span class="n">id</span><span class="w">        </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="nf">nrow</span><span class="p">(</span><span class="n">aoi</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">m_complex</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">inla</span><span class="p">(</span>
+<span class="w">  </span><span class="n">lands_rec</span><span class="w"> </span><span class="o">~</span>
+<span class="w">    </span><span class="m">1</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="w">          </span><span class="c1"># efecto fijo</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">elev_mean</span><span class="w">                 </span><span class="c1"># efecto fijo</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w">                </span><span class="c1"># efecto fijo</span>
+
+<span class="w">    </span><span class="c1"># 1) Intercepto aleatorio por cuenca</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">basin_id</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1"># 2) Pendientes aleatorias por cuenca</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">basin_id</span><span class="p">,</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">basin_id</span><span class="p">,</span><span class="w"> </span><span class="n">elev_mean</span><span class="p">,</span><span class="w">        </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">basin_id</span><span class="p">,</span><span class="w"> </span><span class="n">slope_mean</span><span class="p">,</span><span class="w">       </span><span class="n">model</span><span class="o">=</span><span class="s">"iid"</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1"># 3) Efecto espacial CAR a nivel de polígono</span>
+<span class="w">    </span><span class="o">+</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">model</span><span class="o">=</span><span class="s">"besag"</span><span class="p">,</span><span class="w"> </span><span class="n">graph</span><span class="o">=</span><span class="n">cl_graph</span><span class="p">),</span>
+
+<span class="w">  </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi</span><span class="p">,</span>
+<span class="w">  </span><span class="n">family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"poisson"</span><span class="p">,</span>
+<span class="w">  </span><span class="n">offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="n">area</span><span class="p">),</span>
+<span class="w">  </span><span class="n">control.predictor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">compute</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">),</span>
+<span class="w">  </span><span class="n">control.compute</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">dic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">,</span><span class="w"> </span><span class="n">waic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="modelos-sar-con-regimenes-espaciales-spatialreg">
+<h2>Modelos SAR con regímenes espaciales (<em>spatialreg</em>)<a class="headerlink" href="#modelos-sar-con-regimenes-espaciales-spatialreg" title="Link to this heading">#</a></h2>
+<section id="enfoque-alternativo-heterogeneidad-como-regimenes-no-como-efectos-aleatorios">
+<h3>Enfoque alternativo: heterogeneidad como regímenes, no como efectos aleatorios<a class="headerlink" href="#enfoque-alternativo-heterogeneidad-como-regimenes-no-como-efectos-aleatorios" title="Link to this heading">#</a></h3>
+<p>Los modelos INLA presentados arriba tratan la heterogeneidad espacial (diferencias entre cuencas) como <strong>efectos aleatorios</strong> bajo un marco bayesiano: los interceptos o pendientes por cuenca se asumen provenientes de una distribución normal común. Este enfoque es parsimonioso y permite la <em>contracción</em> (<em>shrinkage</em>): cuencas con pocos datos «toman prestada» información de las demás.</p>
+<p>La alternativa frecuentista es modelar la heterogeneidad como <strong>regímenes espaciales</strong> (<em>spatial regimes</em>): se permiten coeficientes completamente distintos para cada grupo de unidades espaciales, sin ninguna restricción de distribución. En <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>, esto se hace interactuando las covariables con el factor de cuenca:</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">x1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x3</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>El <code class="docutils literal notranslate"><span class="pre">0</span></code> elimina el intercepto global y permite que cada cuenca tenga su propio intercepto implícito a través de la interacción.</p>
+</section>
+<section id="diferencias-clave-entre-ambos-enfoques">
+<h3>Diferencias clave entre ambos enfoques<a class="headerlink" href="#diferencias-clave-entre-ambos-enfoques" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Característica</p></th>
+<th class="head text-left"><p>Efectos aleatorios (INLA)</p></th>
+<th class="head text-left"><p>Regímenes espaciales (spatialreg)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Marco estadístico</strong></p></td>
+<td class="text-left"><p>Bayesiano</p></td>
+<td class="text-left"><p>Frecuentista</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Supuesto sobre cuencas</strong></p></td>
+<td class="text-left"><p>Distribución normal común</p></td>
+<td class="text-left"><p>Completamente libre (sin restricciones)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Contracción (<em>shrinkage</em>)</strong></p></td>
+<td class="text-left"><p>Sí — cuencas con pocos datos usan info de otras</p></td>
+<td class="text-left"><p>No — cada cuenca se estima independientemente</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Número de parámetros</strong></p></td>
+<td class="text-left"><p>Menor (más parsimonioso)</p></td>
+<td class="text-left"><p>Mayor (un coeficiente por cuenca por variable)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Dependencia espacial</strong></p></td>
+<td class="text-left"><p>CAR (ICAR, BYM, Leroux)</p></td>
+<td class="text-left"><p>SAR (lag, error, Mansky, SAC, SLX, SDM)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Interpretación</strong></p></td>
+<td class="text-left"><p>Distribución posterior de efectos</p></td>
+<td class="text-left"><p>Coeficientes puntuales por régimen</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="modelos-sar-implementados-con-spatialreg">
+<h3>Modelos SAR implementados con <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code><a class="headerlink" href="#modelos-sar-implementados-con-spatialreg" title="Link to this heading">#</a></h3>
+<p>A continuación se ajustan seis variantes de modelos SAR con regímenes por cuenca. Recordando las familias del capítulo 10:</p>
+<ul class="simple">
+<li><p><strong>SAR-Lag</strong> (<code class="docutils literal notranslate"><span class="pre">lagsarlm</span></code>): dependencia en <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> — el valor de una subcuenca depende del promedio de sus vecinas.</p></li>
+<li><p><strong>SEM</strong> (<code class="docutils literal notranslate"><span class="pre">errorsarlm</span></code>): dependencia en los errores — los residuos muestran autocorrelación espacial.</p></li>
+<li><p><strong>Mansky / SAC-mixed</strong> (<code class="docutils literal notranslate"><span class="pre">sacsarlm,</span> <span class="pre">type=&quot;sacmixed&quot;</span></code>): combina lag en <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y lag en las covariables.</p></li>
+<li><p><strong>SAC</strong> (<code class="docutils literal notranslate"><span class="pre">sacsarlm,</span> <span class="pre">type=&quot;sac&quot;</span></code>): dependencia simultánea en <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y en los errores.</p></li>
+<li><p><strong>SLX</strong> (<code class="docutils literal notranslate"><span class="pre">lmSLX</span></code>): lag solo en las covariables — el efecto de las vecinas actúa a través de <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p></li>
+<li><p><strong>SDM</strong> (<code class="docutils literal notranslate"><span class="pre">lagsarlm,</span> <span class="pre">type=&quot;mixed&quot;</span></code>): lag en <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y en las covariables (Spatial Durbin Model).</p></li>
+</ul>
+<p>A continuación se presenta un modelo SAR que está intentando explicar la variación en la variable dependiente transformada (y_transf) en función de la elevación media, la pendiente media y la precipitación media anual, permitiendo que la relación entre estas variables predictoras y la variable dependiente sea diferente para cada cuenca. Además, el componente SAR del modelo tiene en cuenta la autocorrelación espacial en la variable dependiente, lo que significa que el valor de y_transf en una ubicación está influenciado por los valores de y_transf en sus ubicaciones vecinas (definidas por aoi.listw). La ausencia de un intercepto implica que el modelo está restringido a pasar por el origen para cada cuenca en el espacio de las variables predictoras.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Regímenes - Modelo de Retardo Espacial (SAR) - cuenca</span>
+<span class="n">col.fit9</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit9</span><span class="p">,</span><span class="n">Nagelkerke</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+
+<span class="c1"># Regímenes - Modelo de Error Espacial (SEM) - cuenca</span>
+<span class="n">col.fit11</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">errorsarlm</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit11</span><span class="p">,</span><span class="n">Nagelkerke</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+
+<span class="c1"># Regímenes - Modelo Mansky (SARAR con restricciones) - cuenca</span>
+<span class="n">col.fit14</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sacsarlm</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="s">"sacmixed"</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit14</span><span class="p">,</span><span class="n">Nagelkerke</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+
+<span class="c1"># Regímenes - Modelo SAC (Simultaneous Autoregressive and Conditional Autoregressive) - cuenca</span>
+<span class="n">col.fit15</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sacsarlm</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="o">=</span><span class="s">"sac"</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit15</span><span class="p">)</span>
+
+<span class="c1"># Regímenes - Modelo SLX (Spatial Lag of X) - cuenca</span>
+<span class="n">col.fit17</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lmSLX</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit17</span><span class="p">,</span><span class="n">Nagelkerke</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+<span class="nf">AIC</span><span class="p">(</span><span class="n">col.fit17</span><span class="p">)</span>
+
+<span class="c1"># Regímenes - Modelo SDM (Spatial Durbin Model) - cuenca</span>
+<span class="n">col.fit19</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">lagsarlm</span><span class="p">(</span><span class="n">y_transf</span><span class="w"> </span><span class="o">~</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">elev_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">slope_mean</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RainfallDaysmean</span><span class="p">)</span><span class="o">:</span><span class="p">(</span><span class="n">cuenca</span><span class="p">),</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi2</span><span class="p">,</span><span class="n">listw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">aoi.listw</span><span class="p">,</span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"mixed"</span><span class="p">)</span>
+<span class="nf">summary</span><span class="p">(</span><span class="n">col.fit19</span><span class="p">,</span><span class="n">Nagelkerke</span><span class="o">=</span><span class="bp">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="interpretacion-de-los-modelos-sar-con-regimenes-espaciales">
+<h3>Interpretación de los modelos SAR con regímenes espaciales<a class="headerlink" href="#interpretacion-de-los-modelos-sar-con-regimenes-espaciales" title="Link to this heading">#</a></h3>
+<section id="lectura-del-summary-en-spatialreg">
+<h4>Lectura del <code class="docutils literal notranslate"><span class="pre">summary()</span></code> en <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code><a class="headerlink" href="#lectura-del-summary-en-spatialreg" title="Link to this heading">#</a></h4>
+<p>Cada modelo (<code class="docutils literal notranslate"><span class="pre">col.fit9</span></code>, <code class="docutils literal notranslate"><span class="pre">col.fit11</span></code>, <code class="docutils literal notranslate"><span class="pre">col.fit14</span></code>, etc.) produce un resumen que incluye:</p>
+<p><strong>Coeficientes por régimen:</strong> Con la especificación <code class="docutils literal notranslate"><span class="pre">~</span> <span class="pre">0</span> <span class="pre">+</span> <span class="pre">(x1</span> <span class="pre">+</span> <span class="pre">x2</span> <span class="pre">+</span> <span class="pre">x3):(cuenca)</span></code>, el output mostrará coeficientes separados para cada combinación cuenca × variable:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>elev_mean:cuencaAtrato     → efecto de la elevación en Atrato
+elev_mean:cuencaCauca      → efecto de la elevación en Cauca
+elev_mean:cuencaMagdalena  → efecto de la elevación en Magdalena
+</pre></div>
+</div>
+<p>Para evaluar si el efecto de una variable es significativamente distinto entre cuencas, comparar los intervalos de confianza (p-valores en la tabla <code class="docutils literal notranslate"><span class="pre">Coefficients</span></code>). Si los tres coeficientes de <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code> tienen el mismo signo y magnitud similar, la heterogeneidad para esa variable es pequeña.</p>
+<p><strong>Parámetro <span class="math notranslate nohighlight">\(\rho\)</span> (o <span class="math notranslate nohighlight">\(\lambda\)</span>) de dependencia espacial:</strong></p>
+<ul class="simple">
+<li><p>En <code class="docutils literal notranslate"><span class="pre">lagsarlm</span></code> (SAR-Lag): <code class="docutils literal notranslate"><span class="pre">Rho</span> <span class="pre">=</span> <span class="pre">[valor]</span></code> — si es cercano a 0, la dependencia en <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> es débil.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">errorsarlm</span></code> (SEM): <code class="docutils literal notranslate"><span class="pre">Lambda</span> <span class="pre">=</span> <span class="pre">[valor]</span></code> — si es cercano a 0, la autocorrelación en errores es débil.</p></li>
+<li><p>En <code class="docutils literal notranslate"><span class="pre">sacsarlm</span></code> (SAC): reporta tanto <code class="docutils literal notranslate"><span class="pre">Rho</span></code> como <code class="docutils literal notranslate"><span class="pre">Lambda</span></code>.</p></li>
+</ul>
+</section>
+<section id="comparacion-de-modelos-con-aic-pseudo-r2">
+<h4>Comparación de modelos con AIC / pseudo-R²<a class="headerlink" href="#comparacion-de-modelos-con-aic-pseudo-r2" title="Link to this heading">#</a></h4>
+<p><code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> reporta <code class="docutils literal notranslate"><span class="pre">AIC</span></code> y, con <code class="docutils literal notranslate"><span class="pre">summary(modelo,</span> <span class="pre">Nagelkerke=T)</span></code>, el <strong>pseudo-R² de Nagelkerke</strong> — una medida de ajuste global entre 0 y 1. Valores más altos son mejores.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p>Modelo</p></th>
+<th class="head text-left"><p>Dependencia capturada</p></th>
+<th class="head text-left"><p>Heterogeneidad</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit9</span></code> (SAR-Lag)</p></td>
+<td class="text-left"><p>En <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> (retardo)</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit11</span></code> (SEM)</p></td>
+<td class="text-left"><p>En errores</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit14</span></code> (Mansky)</p></td>
+<td class="text-left"><p>En <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y en <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>W</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit15</span></code> (SAC)</p></td>
+<td class="text-left"><p>En <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y en errores</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit17</span></code> (SLX)</p></td>
+<td class="text-left"><p>Solo en <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>W (lag de covariables)</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">col.fit19</span></code> (SDM)</p></td>
+<td class="text-left"><p>En <span class="math notranslate nohighlight">\(\mathbf{y}\)</span> y en <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>W</p></td>
+<td class="text-left"><p>Por cuenca (regímenes)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="sintesis-inla-car-o-spatialreg-sar">
+<h4>Síntesis: ¿INLA-CAR o spatialreg-SAR?<a class="headerlink" href="#sintesis-inla-car-o-spatialreg-sar" title="Link to this heading">#</a></h4>
+<p>Al finalizar este capítulo, es útil reflexionar sobre qué enfoque resulta más adecuado para el problema de los deslizamientos en cuencas andinas:</p>
+<ul class="simple">
+<li><p>Si la variable respuesta es un <strong>conteo</strong> (número de deslizamientos) o una <strong>tasa</strong> (deslizamientos/área), los modelos INLA-Poisson son más apropiados — <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> asume distribución gaussiana.</p></li>
+<li><p>Si hay claras diferencias estructurales entre cuencas y se quiere estimarlas sin restricciones distribucionales, los regímenes de <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> son más flexibles.</p></li>
+<li><p>Si el tamaño de muestra por cuenca es pequeño (pocas subcuencas en alguna cuenca), los efectos aleatorios bayesianos de INLA son más robustos (contracción hacia la media global).</p></li>
+<li><p>Los modelos INLA son más adecuados para <strong>predicción en nuevas ubicaciones</strong> (interpolación bayesiana), mientras que los modelos <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code> son preferibles para <strong>inferencia causal</strong> sobre los coeficientes individuales.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Comparación de modelos:</strong> Construye una tabla resumen comparando los modelos <code class="docutils literal notranslate"><span class="pre">m3_icar</span></code>, <code class="docutils literal notranslate"><span class="pre">m4_bym</span></code> y <code class="docutils literal notranslate"><span class="pre">m5_ler</span></code> usando DIC, WAIC y el Moran I de los residuos de Pearson. ¿Añadir el intercepto aleatorio por cuenca mejora sustancialmente el ajuste respecto al modelo sin heterogeneidad (capítulo 11)?</p></li>
+<li><p><strong>Efectos aleatorios por cuenca:</strong> Del modelo <code class="docutils literal notranslate"><span class="pre">m3_icar</span></code>, extrae <code class="docutils literal notranslate"><span class="pre">m3_icar$summary.random$cuenca</span></code>. Grafica los intervalos de credibilidad al 95% de los interceptos aleatorios para las tres cuencas. ¿Son estadísticamente distintos entre sí? ¿Cuál cuenca tiene el mayor riesgo base de deslizamientos después de controlar las covariables?</p></li>
+<li><p><strong>Pendientes variables vs. fijas:</strong> Compara el modelo <code class="docutils literal notranslate"><span class="pre">m3_icar</span></code> (intercepto aleatorio por cuenca) con el modelo <code class="docutils literal notranslate"><span class="pre">m5_ler</span></code> (pendiente aleatoria de <code class="docutils literal notranslate"><span class="pre">elev_mean</span></code> por cuenca). ¿Mejora el DIC? ¿Es el efecto de la elevación realmente distinto entre cuencas? Interpreta los coeficientes de pendiente específicos de cuenca.</p></li>
+<li><p><strong>Regímenes SAR vs. efectos aleatorios INLA:</strong> Para los modelos de <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code>, compara los coeficientes de <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code> para cada cuenca (del modelo SAR-Lag con regímenes) con las pendientes aleatorias estimadas por INLA (del modelo <code class="docutils literal notranslate"><span class="pre">m5_ler</span></code>). ¿Son similares las estimaciones? Discute las diferencias conceptuales y prácticas entre ambos enfoques.</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.r-inla.org/models/latent-models">R-INLA — Latent Models</a></p></li>
+<li><p><a class="reference external" href="https://cran.r-project.org/web/packages/spatialreg/">spatialreg (R)</a></p></li>
+<li><p><a class="reference external" href="https://www.r-inla.org/models/mix-models">INLA — Multiple Likelihoods</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Gómez-Rubio, V. (2020). <em>Bayesian Inference with INLA</em>. CRC Press.</p></li>
+<li><p>Moraga, P. (2019). <em>Geospatial Health Data: Modeling and Visualization with R-INLA and Shiny</em>. CRC Press.</p></li>
+<li><p>Rue, H., Martino, S., &amp; Chopin, N. (2009). Approximate Bayesian inference for latent Gaussian models by using integrated nested Laplace approximations. <em>JRSS-B</em>, 71(2), 319–392.</p></li>
+<li><p>Riebler, A. et al. (2016). An intuitive Bayesian spatial model for disease mapping that accounts for scaling. <em>Statistical Methods in Medical Research</em>, 25(4), 1145–1165. (Modelo BYM2)</p></li>
+</ul>
+</section>
+<section id="recursos-interactivos">
+<h3>Recursos interactivos<a class="headerlink" href="#recursos-interactivos" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.paulamoraga.com/book-geospatial/sec-arealdataINLA.html">Paula Moraga — Small Area Estimation with INLA</a></p></li>
+<li><p><a class="reference external" href="https://www.r-inla.org/examples-tutorials/spatial">INLA — Spatial Models Examples</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="12_Jerarquicos.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Modelos de Regresión para Heterogeneidad Espacial</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="13_MGWR.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Regresión Ponderada Geográficamente (GWR)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-conceptual-dependencia-heterogeneidad-en-un-mismo-modelo">Marco conceptual: dependencia + heterogeneidad en un mismo modelo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dos-fuentes-de-variacion-espacial">Dos fuentes de variación espacial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#progresion-de-modelos-en-este-capitulo">Progresión de modelos en este capítulo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inla">INLA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estructura-interna-de-los-modelos-inla-con-efectos-mixtos">Estructura interna de los modelos INLA con efectos mixtos</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m3-icar-intercepto-aleatorio-icar">Interpretación del modelo m3_icar (intercepto aleatorio + ICAR)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m4-bym-intercepto-aleatorio-bym">Interpretación del modelo m4_bym (intercepto aleatorio + BYM)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-del-modelo-m5-ler-pendiente-aleatoria-por-cuenca-leroux">Interpretación del modelo m5_ler (pendiente aleatoria por cuenca + Leroux)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-con-pendientes-espaciales-variables-m6-y-m7">Modelos con pendientes espaciales variables (m6 y m7)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-complejo-intercepto-pendientes-aleatorias-efecto-car-m-complex">Modelo complejo: intercepto + pendientes aleatorias + efecto CAR (m_complex)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-sar-con-regimenes-espaciales-spatialreg">Modelos SAR con regímenes espaciales (<em>spatialreg</em>)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enfoque-alternativo-heterogeneidad-como-regimenes-no-como-efectos-aleatorios">Enfoque alternativo: heterogeneidad como regímenes, no como efectos aleatorios</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#diferencias-clave-entre-ambos-enfoques">Diferencias clave entre ambos enfoques</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelos-sar-implementados-con-spatialreg">Modelos SAR implementados con <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#interpretacion-de-los-modelos-sar-con-regimenes-espaciales">Interpretación de los modelos SAR con regímenes espaciales</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#lectura-del-summary-en-spatialreg">Lectura del <code class="docutils literal notranslate"><span class="pre">summary()</span></code> en <code class="docutils literal notranslate"><span class="pre">spatialreg</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-modelos-con-aic-pseudo-r2">Comparación de modelos con AIC / pseudo-R²</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#sintesis-inla-car-o-spatialreg-sar">Síntesis: ¿INLA-CAR o spatialreg-SAR?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-interactivos">Recursos interactivos</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

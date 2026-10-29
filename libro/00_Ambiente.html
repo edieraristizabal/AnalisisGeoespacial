@@ -1,0 +1,1031 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Ambiente computacional &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '00_Ambiente';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/00_Ambiente.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Datos" href="00_Data.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F00_Ambiente.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/00_Ambiente.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Ambiente computacional</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-de-versiones-git-y-github">Control de Versiones: Git y GitHub</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git">Git</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inicializacion-del-proyecto">Inicialización del Proyecto</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#registro-de-cambios-commits">Registro de Cambios (Commits)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#navegacion-en-el-historial-log-y-checkout">Navegación en el Historial (Log y Checkout)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github">GitHub</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gestion-de-conflictos-y-sincronizacion">Gestión de Conflictos y Sincronización</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conda">Conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip">PIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-virtual-y-librerias">Ambiente virtual y librerias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-lab">Jupyter Lab</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adicionar-el-entorno-a-jupyter-lab">Adicionar el entorno a Jupyter Lab</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contenedor-docker">Contenedor Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-earth-engine-gee">Google Earth Engine (GEE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-editor-de-codigo">El Editor de Código</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-earth-engine-en-python">Google Earth Engine en Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fuentes-adicionales">Fuentes adicionales</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herramientas-complementarias">Herramientas complementarias</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="http://darribas.org/">Dani Arribas-Bel</a> - University of Liverpool y <a href="http://spatial.ucr.edu/peopleRey.html">Sergio Rey</a> - Center for Geospatial Sciences, University of California, Riverside. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="ambiente-computacional">
+<h1>Ambiente computacional<a class="headerlink" href="#ambiente-computacional" title="Link to this heading">#</a></h1>
+<p>El curso se basa principalmente en el lenguaje de programación <a class="reference external" href="https://www.python.org/">Python</a> y <a class="reference external" href="https://www.r-project.org/">R</a>. Python y R son lenguajes de programación <a class="reference external" href="https://es.wikipedia.org/wiki/Lenguaje_de_programaci%C3%B3n_de_alto_nivel">de alto nivel</a> ampliamente utilizados en la actualidad. Ser un lenguaje de alto nivel significa que el código puede ser «interpretado dinámicamente», lo que significa que se ejecuta sobre la marcha sin necesidad de compilarlo. Esto contrasta con los lenguajes de programación «de bajo nivel», que primero deben convertirse en código máquina (es decir, compilados) antes de que puedan ejecutarse. Con Python y R, no necesitas preocuparte por la compilación y puedes simplemente escribir código, evaluarlo, corregirlo, volver a evaluarlo, etc., en un ciclo rápido, lo que lo convierte en una herramienta muy productiva.</p>
+<p>Python es un lenguaje extremadamente útil para aprender en términos de SIG (Sistemas de Información Geográfica), ya que muchos (o la mayoría) de los diferentes paquetes de software SIG (como ArcGIS, QGIS, PostGIS, etc.) proporcionan una interfaz para hacer análisis usando scripts en Python. Durante este curso, nos centraremos principalmente en hacer análisis geoespaciales sin ningún software de terceros, como <a class="reference external" href="http://www.esri.com/software/arcgis">ArcGIS</a> y <a class="reference external" href="http://qgis.org">QGIS</a>.</p>
+<p>En el mundo geoespacial, Python también ha sido ampliamente adoptado, siendo el lenguaje seleccionado para scripting en ambos, <a class="reference external" href="http://www.esri.com/software/arcgis">ArcGIS</a> y <a class="reference external" href="http://qgis.org">QGIS</a>. Sin embargo desde el punto de vista netamente estadístico R tiene todavia ventajas. Existen librerías estadísticas mas sofisticadas en R que aun no han sido desarrolladas en Python.</p>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Configurar un entorno de trabajo reproducible para análisis geoespacial con Python y R.</p></li>
+<li><p>Comprender las diferencias entre gestores de paquetes (<code class="docutils literal notranslate"><span class="pre">conda</span></code>, <code class="docutils literal notranslate"><span class="pre">pip</span></code>) y cuándo usar cada uno.</p></li>
+<li><p>Crear y activar entornos virtuales con Conda para aislar dependencias de proyectos.</p></li>
+<li><p>Utilizar Jupyter Lab como entorno interactivo de desarrollo (concepto REPL, kernels, celdas).</p></li>
+<li><p>Inicializar un repositorio Git y gestionar el control de versiones de un proyecto geoespacial.</p></li>
+<li><p>Autenticarse y ejecutar scripts básicos en Google Earth Engine (GEE) desde Python.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> Ninguno — este es el primer capítulo del libro.</p>
+</section>
+<section id="control-de-versiones-git-y-github">
+<h2>Control de Versiones: Git y GitHub<a class="headerlink" href="#control-de-versiones-git-y-github" title="Link to this heading">#</a></h2>
+<p>En el marco de la investigación científica contemporánea, la gestión de scripts de análisis, modelos numéricos y flujos de trabajo geoespaciales exige un sistema que garantice la trazabilidad y reproducibilidad. El uso de sistemas de control de versiones (VCS) permite documentar la evolución de un proyecto, facilitando la auditoría de procesos y la colaboración multidisciplinar.</p>
+<ul class="simple">
+<li><p><strong>Git:</strong> Es un motor de control de versiones distribuido de código abierto <a class="reference external" href="https://git-scm.com/">Git</a>. Su función es realizar un seguimiento exhaustivo de las modificaciones en archivos de texto (como scripts de R, Python o archivos LaTeX), permitiendo revertir cambios, crear ramas de experimentación y gestionar el historial de una investigación.</p></li>
+<li><p><strong>GitHub:</strong> Es una plataforma <a class="reference external" href="https://github.com/">Github</a> de alojamiento basada en la nube que integra la funcionalidad de Git. Proporciona una interfaz para la gestión de proyectos, revisión de código y colaboración remota entre investigadores.</p></li>
+</ul>
+<hr class="docutils" />
+<section id="git">
+<h3>Git<a class="headerlink" href="#git" title="Link to this heading">#</a></h3>
+<p>En el flujo de trabajo de Git, el concepto de «carpeta» se gestiona mediante la inicialización de un repositorio. No se crean carpetas desde Git, sino que se transforman directorios existentes en unidades bajo seguimiento.</p>
+<section id="inicializacion-del-proyecto">
+<h4>Inicialización del Proyecto<a class="headerlink" href="#inicializacion-del-proyecto" title="Link to this heading">#</a></h4>
+<p>Para convertir un directorio de trabajo en un repositorio bajo control de versiones:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creación del directorio de trabajo en el sistema operativo</span>
+mkdir<span class="w"> </span>analisis_riesgo_geologico
+<span class="nb">cd</span><span class="w"> </span>analisis_riesgo_geologico
+
+<span class="c1"># Inicialización del repositorio Git</span>
+git<span class="w"> </span>init
+</pre></div>
+</div>
+</section>
+<section id="registro-de-cambios-commits">
+<h4>Registro de Cambios (Commits)<a class="headerlink" href="#registro-de-cambios-commits" title="Link to this heading">#</a></h4>
+<p>Un commit representa un estado inmutable en el historial del proyecto. Es fundamental que cada registro posea un mensaje atómico y descriptivo del cambio realizado para asegurar la trazabilidad.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Creación de un script de procesamiento espacial de ejemplo</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"import geopandas as gpd"</span><span class="w"> </span>&gt;<span class="w"> </span>procesamiento_hidrologico.py
+
+<span class="c1"># 1. Adición del archivo al área de preparación (Staging Area)</span>
+git<span class="w"> </span>add<span class="w"> </span>procesamiento_hidrologico.py
+
+<span class="c1"># 2. Consolidación del cambio en el historial local</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Implementación inicial de la carga de geometrías vectoriales"</span>
+</pre></div>
+</div>
+</section>
+<section id="navegacion-en-el-historial-log-y-checkout">
+<h4>Navegación en el Historial (Log y Checkout)<a class="headerlink" href="#navegacion-en-el-historial-log-y-checkout" title="Link to this heading">#</a></h4>
+<p>La auditoría de los cambios y la recuperación de versiones previas son pilares de la integridad científica.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualización del historial cronológico de cambios</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline
+
+<span class="c1"># Restauración del directorio a un estado anterior mediante su identificador único (Hash)</span>
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;hash_del_commit&gt;
+</pre></div>
+</div>
+<p>Nota: Para retornar a la línea principal de desarrollo tras una inspección, se utiliza el comando <em>git checkout main</em> (o master, según la configuración).</p>
+</section>
+</section>
+<section id="github">
+<h3>GitHub<a class="headerlink" href="#github" title="Link to this heading">#</a></h3>
+<p>Para trabajar con proyectos alojados en la nube, se utilizan mecanismos de descarga y vinculación remota.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clonación de un repositorio remoto existente a la máquina local</span>
+git<span class="w"> </span>clone<span class="w"> </span><span class="o">[</span>https://github.com/institucion/proyecto-landslides.git<span class="o">](</span>https://github.com/institucion/proyecto-landslides.git<span class="o">)</span>
+
+<span class="c1"># Envío de versiones locales al servidor remoto (Sincronización ascendente)</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+</pre></div>
+</div>
+<p>El comando <em>git pull</em> es una combinación de dos procesos: descargar los cambios del servidor (<em>fetch</em>) e integrarlos en el código local (<em>merge</em>).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Recuperación e integración de contribuciones externas</span>
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+</pre></div>
+</div>
+<section id="gestion-de-conflictos-y-sincronizacion">
+<h4>Gestión de Conflictos y Sincronización<a class="headerlink" href="#gestion-de-conflictos-y-sincronizacion" title="Link to this heading">#</a></h4>
+<p>La ejecución de un <em>git pull</em> es obligatoria en dos escenarios: (i) Al iniciar una jornada de trabajo, para asegurar que se opera sobre la versión más reciente del proyecto. (ii) Antes de realizar un <em>git push</em>, si el repositorio remoto contiene cambios que no existen en la base local.</p>
+<p>Un conflicto ocurre cuando el sistema detecta ediciones concurrentes e incompatibles en la misma sección de un archivo. Git detiene el proceso de integración para que el investigador determine la validez técnica de los cambios.</p>
+<ul class="simple">
+<li><p>Detección: Git notificará el conflicto en la terminal indicando los archivos afectados.</p></li>
+<li><p>Intervención: El usuario debe abrir el archivo y resolver la discrepancia manualmente entre los marcadores:</p></li>
+</ul>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span> <span class="n">HEAD</span>
+<span class="c1"># Algoritmo de interpolación Kriging optimizado</span>
+<span class="o">=======</span>
+<span class="c1"># Algoritmo de interpolación IDW para pruebas rápidas</span>
+<span class="o">&gt;&gt;&gt;&gt;&gt;&gt;&gt;</span> <span class="mi">1</span><span class="n">a2b3c4d</span><span class="o">...</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Consolidación: Una vez resuelta la ambigüedad, se debe marcar el archivo como solucionado y registrar el nuevo estado:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>procesamiento_hidrologico.py
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Resolución de conflicto: Integración de algoritmos de interpolación"</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="conda">
+<h2>Conda<a class="headerlink" href="#conda" title="Link to this heading">#</a></h2>
+<p>Las dos distribuciones más populares de Python son <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html#anaconda-or-miniconda"><strong>Anaconda</strong> y <strong>Miniconda</strong></a>, que son compatibles con R. <strong>Anaconda</strong> es una distribución de Python de código abierto diseñada específicamente para la ciencia de datos, el aprendizaje automático y el procesamiento de datos a gran escala. Incluye el lenguaje Python y R, más de 1,500 paquetes de ciencia de datos, un sistema de gestión de paquetes llamado conda, IPython (un intérprete interactivo de Python) y mucho más. Si bien es una distribución muy completa, también es bastante grande y, por lo tanto, puede tardar un tiempo en descargarse y consumir mucho espacio en disco. <strong>Miniconda</strong>, por otro lado, es una versión reducida de Anaconda e incluye todos los mismos componentes excepto los 1,500 paquetes de ciencia de datos pre-instalados. En su lugar, podemos simplemente instalar estos paquetes individualmente según sea necesario utilizando <strong>Conda</strong> (el gestor de paquetes de Anaconda/Miniconda). Tal vez la mayor diferencia es que Miniconda no tiene una interfaz de usuario como Anaconda, debe ser a través de la línea de comando.</p>
+<p>Elige <strong>Anaconda</strong> si:</p>
+<ul class="simple">
+<li><p>Eres nuevo en conda o Python.</p></li>
+<li><p>Te gusta la conveniencia de tener Python y más de 1,500 paquetes científicos instalados automáticamente de una vez.</p></li>
+<li><p>Tienes tiempo y espacio en disco.</p></li>
+<li><p>No deseas instalar individualmente cada uno de los paquetes que deseas usar.</p></li>
+</ul>
+<p>Elige <strong>Miniconda</strong> si:</p>
+<ul class="simple">
+<li><p>Tienes conocimientos en programación.</p></li>
+<li><p>No te importa instalar individualmente los paquetes que deseas usar.</p></li>
+<li><p>No tienes tiempo o espacio en disco para instalar más de 1,500 paquetes de una vez.</p></li>
+<li><p>Quieres un acceso rápido a Python y los comandos conda, y deseas resolver el resto de los programas más tarde.</p></li>
+</ul>
+<center><img src="https://www.alpha-quantum.com/blog/wp-content/uploads/2020/05/img_5ecd875868599.png" width="1000" class="center"></center>
+<center><img src="https://miro.medium.com/max/700/1*TaL5qaSnR2QOef69e49LPQ.png" width="1000"></center>
+<center><img src="https://katiekodes.com/images/screenshot-miniconda-02-execute.png" width="700"></center>
+<p>Ten en cuenta que el instalador te preguntará si deseas hacer dos cosas:</p>
+<ul class="simple">
+<li><p>Agregar «Anaconda» a la variable de entorno «PATH». Aunque en el texto del instalador dice que no lo hagas, te recomiendo que lo marques. Si no lo haces, cuando digites Python en la línea de comando, el sistema no reconocerá la orden ya que no encuentra la ruta de Python. Por lo tanto deberá manualmente incluir en las variables de entrono la ruta donde se encuentra Conda.</p></li>
+<li><p>Registrar «Anaconda» como mi «Python 3.7 predeterminado». Esto viene marcado por defecto y lo recomiendan.</p></li>
+</ul>
+<p>Si prefieres instalar Python sin Anaconda o Miniconda, ve a la página de <a class="reference external" href="https://www.python.org/downloads/">Python</a> y descarga el instalador ejecutable de la última versión estable. Una vez completada la descarga, ejecuta el instalador. En la primera página del instalador, asegúrate de seleccionar la opción “Agregar Python al PATH” y haz click en los pasos de instalación restantes dejando todas las opciones predeterminadas preseleccionadas.</p>
+<center><img src="https://docs.blender.org/manual/es/2.79/_images/about_contribute_install_windows_installer.png" width="1000"></center></section>
+<section id="pip">
+<h2>PIP<a class="headerlink" href="#pip" title="Link to this heading">#</a></h2>
+<p>Para trabajar con Python o R debes utilizar librerías. Las cuales ofrecen paquetes de funciones que procesan los datos o análisis que queremos ejecutar. Para instalar librerías se utiliza <strong>Conda</strong> o <strong>pip</strong>. <a class="reference external" href="https://pypi.org/project/pip/">Pip</a> es un gestor de librerías diseñado específicamente para instalar paquetes de Python exclusivamente. La diferencia con Conda, es que PIP es exclusivo para Python.</p>
+<p>Si trabaja en un ambiente Conda se recomienda utilizar dicho gestor de librerías, sin embargo existen librerías que no están disponibles en Conda, lo cual requiere que se instalen con PIP. El cambio de gestor de librerías puede generar en algunas ocasiones incompatibilidades entre las librerías.</p>
+<p>Es por esta razon que es común, tanto con Python como R, trabajar dentro de entornos o ambientes virtuales.</p>
+</section>
+<section id="ambiente-virtual-y-librerias">
+<h2>Ambiente virtual y librerias<a class="headerlink" href="#ambiente-virtual-y-librerias" title="Link to this heading">#</a></h2>
+<p>Se recomienda crear un entorno para el análisis espacial. Los entornos pueden considerarse repositorios en los que se instalan paquetes de Python para evitar conflictos entre paquetes y versiones. Por ejemplo, si tienes un código desarrollado utilizando la versión 1.18 de NumPy y este código no funciona con la versión actual que es 1.20, puedes (y deberías) crear entornos específicos para cada versión. Conda viene inicialmente con un entorno estándar llamado base (root). Se recomienda mantener este entorno sin modificar.</p>
+<p>En Anaconda se crea un entorno haciendo clic en la pestaña Entornos (Environments) a la izquierda y en el botón Crear (Create) debajo de la lista de entornos. A este nuevo entorno le podemos dar cualquier nombre, como «geoespacial», y seleccionar Python 3.x como el paquete principal.</p>
+<center><img src="https://miro.medium.com/max/700/1*EEcFGtMxuu42T42jgmvSzA.png" width="1000"></center>
+<p>Para instalar un nuevo paquete, es necesario buscar el nombre del paquete deseado usando la barra de búsqueda (no olvides seleccionar Todos (All) en el cuadro desplegable), seleccionar el paquete de la lista y hacer clic en Aplicar (Apply). Dado que los paquetes funcionan con dependencias, dependiendo del paquete a instalar, se instalarán todos los paquetes necesarios que aún no existan en el entorno actual.</p>
+<center><img src="https://miro.medium.com/max/700/1*2BZZhxcof1eu1INPMyny6w.png" width="1000"></center>
+<p>Si tiene instalado Miniconda (o tambien puede realizarse bajo el ambiente Anaconda) debe entonces dirigirse a la linea de comandos con la tecla Windows + R, o en start buscar por cmd. De click y se abrirá el command prompt. Utilice el siguiente comando para activar Conda.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Conda</span> <span class="n">activate</span>
+</pre></div>
+</div>
+<p>Este comando lo dirige al ambiente base. Para crear un ambiente llamado «geo» donde instalará sus paquetes utilice el siguiente comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">geo</span>
+</pre></div>
+</div>
+<p>En realidad puede darle el nombre al ambiente que prefiera. Para activar el ambiente creado utilice:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">geo</span>
+</pre></div>
+</div>
+<p>Ya le debe aparecer el command prompt pero en el ambiente geo. Para instalar las librerias que desee en este utilice el comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">pandas</span>
+</pre></div>
+</div>
+<p>o para utilizar el gestor PIP:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">conda</span>
+</pre></div>
+</div>
+</section>
+<section id="jupyter-lab">
+<h2>Jupyter Lab<a class="headerlink" href="#jupyter-lab" title="Link to this heading">#</a></h2>
+<p>La principal herramienta computacional que utilizarás durante este curso es <a class="reference external" href="http://jupyter.org/">Jupyter Lab</a>. Jupyter Lab es una interfaz web interactiva para el desarrollo de código, que sigue el concepto conocido como REPL (Read — Evaluate — Print — Loop), el cual es ampliamente utilizado por los científicos de datos. La gran ventaja de usar un entorno REPL es que podemos desarrollar nuestro código de manera gradual, ejecutando comando por comando y verificando sus resultados. Además, podemos mantener el texto explicativo junto con el código que vamos a desarrollar y también ver los resultados, todo en el mismo entorno sin necesidad de alternar entre la línea de comandos y otras aplicaciones, como un visor de imágenes u otros. Los notebooks son una forma conveniente de entrelazar texto, código y la salida que produce en un solo archivo que luego puedes compartir, editar y modificar. Puedes pensar en los notebooks como el documento Word de los Científicos de Datos.</p>
+<p>Un notebook comprende un solo archivo que almacena texto narrativo, código de computadora y la salida producida por dicho código. Almacenar tanto el trabajo narrativo como el computacional en un solo archivo significa que todo el flujo de trabajo puede ser registrado y documentado en el mismo lugar, sin tener que recurrir a dispositivos adicionales (como un cuaderno en papel). Una segunda característica de los notebooks es que permiten el trabajo interactivo. El trabajo computacional moderno se beneficia de la capacidad de probar, fallar, ajustar e iterar rápidamente hasta encontrar una solución funcional. Los notebooks encarnan esta cualidad y permiten al usuario trabajar de manera interactiva. Ya sea que el cálculo se realice en una laptop o en un centro de datos, los notebooks proporcionan la misma interfaz para la computación interactiva, reduciendo la carga cognitiva necesaria para escalar. En tercer lugar, los notebooks tienen interoperabilidad incorporada. El formato de notebook está diseñado para registrar y compartir el trabajo computacional, pero no necesariamente para otras etapas del ciclo de investigación. Para ampliar el rango de posibilidades y aplicaciones, los notebooks están diseñados para ser fácilmente convertibles a otros formatos. Por ejemplo, mientras que se requiere una aplicación específica para abrir y editar la mayoría de los formatos de archivos de notebook, no se necesita software adicional para convertirlos en archivos pdf que pueden ser leídos, impresos y anotados sin la necesidad de software técnico.</p>
+<p>Un notebook de Jupyter es un archivo de texto plano con la extensión <strong>.ipynb</strong>, lo que significa que es un archivo fácil de mover, sincronizar y rastrear con el tiempo. Internamente, está estructurado como un documento de texto plano que contiene JavaScript Object Notation, que registra el estado del notebook, por lo que también se integran bien con una gran cantidad de tecnologías web modernas. El elemento atómico que forma un notebook se llama celda. Las celdas son fragmentos consistentes de contenido que contienen texto o código. De hecho, un notebook se puede considerar como una colección ordenada de celdas. Las celdas pueden ser de dos tipos: texto y código.</p>
+<center><img src="https://miro.medium.com/max/700/1*5pGWfU63Hf_nW-NKQ5gTWw.png" width="800"></center>
+<p>Jupyter Lab es una evolución de Jupyter Notebook, con algunas funcionalidades adicionales. Para trabajar en Jupyter Lab desde Anaconda debemos seleccionar el entorno con el cual deseamos trabajar y volver a la pantalla principal (Home) y hacer clic en Instalar (Install), justo debajo del ícono de Jupyter Lab.</p>
+<p>Para trabajar desde Miniconda se debe instalar primero Jupyter Lab desde la linea de comando dentro del entorno deseado:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">jupyterlab</span>
+</pre></div>
+</div>
+<p>Una vez completada la instalación, podemos verificar que Jupyter Notebook se haya instalado correctamente ejecutando <code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">lab</span></code> desde la línea de comandos. Esto iniciará el servidor Jupyter Notebook, imprimirá información sobre el servidor en la consola y abrirá una nueva pestaña en el navegador en <a class="reference external" href="http://localhost:8888">http://localhost:8888</a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jupyter</span> <span class="n">lab</span>
+</pre></div>
+</div>
+<center><img src="https://miro.medium.com/max/2400/1*dAZ5etmJphQQCP-ys6Wd_Q.png" width="800"></center>
+<section id="adicionar-el-entorno-a-jupyter-lab">
+<h3>Adicionar el entorno a Jupyter Lab<a class="headerlink" href="#adicionar-el-entorno-a-jupyter-lab" title="Link to this heading">#</a></h3>
+<p>Para tener disponible los entornos dentro de Jupyter Lab es necesario realizar el siguiente procedimiento. Primero instalar «ipykernel»:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="n">ipykernel</span>
+</pre></div>
+</div>
+<p>Luego adicionar el entorno virtual a Jupyter de la siguiente manera, donde «myenv» corresponde al nombre del entorno o ambiente:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">ipykernel</span> <span class="n">install</span> <span class="o">--</span><span class="n">user</span> <span class="o">--</span><span class="n">name</span><span class="o">=</span><span class="n">myenv</span>
+</pre></div>
+</div>
+<p>Para obtener un listado de los entornos se puede utilizar la siguiente función:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jupyter</span> <span class="n">kernelspec</span> <span class="nb">list</span>
+</pre></div>
+</div>
+<p>Y para borrar un entorno de Jupyter se utiliza:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jupyter</span> <span class="n">kernelspec</span> <span class="n">uninstall</span> <span class="n">myenv</span>
+</pre></div>
+</div>
+<p>Otra forma de asegurarse que instalando librerías desde el Jupyter Notebook queden instaladas efectivamente en el ambiente o entorno de trabajo es:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!{sys.executable} -m pip install NombreLibreria
+</pre></div>
+</div>
+</section>
+</section>
+<section id="contenedor-docker">
+<h2>Contenedor Docker<a class="headerlink" href="#contenedor-docker" title="Link to this heading">#</a></h2>
+<p>Los contenedores son una versión ligera de una máquina virtual, que es un programa que permite ejecutar un sistema operativo completo compartimentado sobre otro sistema operativo. Los contenedores permiten encapsular un entorno completo (o plataforma) en un formato que es fácil de transferir y reproducir en una variedad de contextos computacionales. La tecnología más popular para contenedores hoy en día es Docker, y las oportunidades que proporciona para construir infraestructuras transparentes y transferibles para la ciencia de datos están comenzando a explorarse.</p>
+<p>Docker nos permite crear un «contenedor» que incluye todas las herramientas necesarias para acceder al contenido del libro de forma interactiva. Pero, ¿qué es exactamente un contenedor? Hay varias formas de describirlo, desde las más técnicas hasta las más intuitivas. En este contexto, nos centraremos en una comprensión general más que en los detalles técnicos detrás de su funcionamiento. Se puede pensar en un contenedor como una «caja» que incluye todo lo necesario para ejecutar un conjunto determinado de software. Esta caja se puede mover de una máquina a otra, y los cálculos que ejecuta seguirán siendo exactamente los mismos. De hecho, el contenido de la caja permanece exactamente igual, bit por bit. Cuando descargamos un contenedor en una computadora, ya sea una laptop o un centro de datos, no estamos instalando el software que contiene a través de los canales habituales para la plataforma en la que vamos a ejecutarlo. En su lugar, estamos descargando el software en la forma en que se instaló cuando el contenedor se construyó y empaquetó originalmente, y para el sistema operativo que también se empaquetó originalmente. Esta es la verdadera ventaja: construir una vez, ejecutar en cualquier lugar. Para los lectores con experiencia, esto podría sonar muy parecido a las máquinas virtuales. Aunque hay similitudes entre ambas tecnologías, los contenedores son más livianos y se pueden ejecutar mucho más rápido que las máquinas virtuales. Esta caja aislada interactúa con el resto de la computadora a través de varios enlaces que conectan ambos. En el caso de este libro, dado que JupyterLab es una aplicación cliente-servidor, el servidor se ejecuta dentro del contenedor y nos conectamos a él a través de dos «puertas» principales: una, a través del navegador, accederemos a la interfaz principal de Lab; y dos, «montaremos» una carpeta dentro del contenedor para poder usar el software del contenedor para editar archivos que están almacenados externamente en la máquina host.</p>
+<center><img src="https://www.saagie.com/wp-content/uploads/2019/07/2-1024x251.png" width="1000"></center>
+<p>Este es el enfoque recomendado si cumples con los siguientes requisitos:</p>
+<ul class="contains-task-list simple">
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Tienes derechos de administrador sobre tu máquina</p></li>
+<li class="task-list-item"><p><input class="task-list-item-checkbox" checked="checked" disabled="disabled" type="checkbox"> Estás ejecutando Windows 10 Pro, macOS o Linux</p></li>
+</ul>
+<p>En ese caso, Docker es la alternativa preferida. Proporciona una plataforma estable para ejecutar configuraciones de software complejas como la requerida en este contexto. Docker es una tecnología de contenedorización que permite ejecutar software preempaquetado (contenedorizado) en entornos controlados. Con <a class="reference external" href="https://github.com/darribas/gds_env">Docker</a>, el proyecto gds_env proporciona una plataforma contenedorizada para la Ciencia de Datos Geográficos.</p>
+<p>Los pasos para instalar esto (si cumples con los requisitos anteriores) incluyen:</p>
+<ul class="simple">
+<li><p>Obtener una copia de Docker e instalarla:</p>
+<ul>
+<li><p>Windows 10 Pro/Enterprise: Instalar Docker Desktop para Windows</p></li>
+<li><p>macOS: Empezar con Docker Desktop para Mac</p></li>
+</ul>
+</li>
+<li><p>Abrir una terminal o shell. Cómo hacerlo dependerá de tu sistema operativo:</p>
+<ul>
+<li><p>Windows: recomendamos PowerShell. Escribe «PowerShell» en el menú de inicio y, cuando aparezca, presiona enter. Esto abrirá una terminal para ti.</p></li>
+<li><p>macOS: usa Terminal.app. Puedes encontrarla en la carpeta Aplicaciones, dentro de la subcarpeta Utilidades.</p></li>
+<li><p>Linux: si estás usando Linux, probablemente ya tengas una aplicación de terminal de preferencia. Casi cualquier distribución de Linux viene con una terminal o shell integrada.</p></li>
+</ul>
+</li>
+</ul>
+<p>Descargar o «pull» nuestro <a class="reference external" href="https://hub.docker.com/r/darribas/gds/">contenedor</a>. Para esto, ejecuta en la terminal el siguiente comando:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">docker</span> <span class="n">pull</span> <span class="n">darribas</span><span class="o">/</span><span class="n">gds</span><span class="p">:</span><span class="mf">3.0</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Una vez que el comando anterior haya terminado de instalar tu stack GDS, ¡ya estás listo para comenzar! Para iniciar una sesión de Jupyter, sigue estos pasos:</p>
+<ul>
+<li><p>Ejecuta en la misma terminal el siguiente comando:</p></li>
+</ul>
+</li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">docker</span> <span class="n">run</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">ti</span> <span class="o">-</span><span class="n">p</span> <span class="mi">8888</span><span class="p">:</span><span class="mi">8888</span> <span class="o">-</span><span class="n">v</span> <span class="p">{</span><span class="n">PWD</span><span class="p">}:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">jovyan</span><span class="o">/</span><span class="n">work</span> <span class="n">darribas</span><span class="o">/</span><span class="n">gds</span><span class="p">:</span><span class="mf">3.0</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>docker run: Docker hace muchas cosas, para comunicar que queremos ejecutar un nuevo contenedor, necesitamos especificarlo.</p></li>
+<li><p>–rm: esta bandera asegura que el contenedor se elimine cuando lo cierres. Esto garantiza que cada vez que lo ejecutes nuevamente, comiences desde cero con la misma configuración exacta.</p></li>
+<li><p>ti: esta bandera asegura además que el contenedor no se ejecute en segundo plano, sino en un modo _i_nteractivo.</p></li>
+<li><p>p 8888:8888: con esto, nos aseguramos de redirigir el puerto desde el interior del contenedor hacia la máquina host (es decir, tu laptop). Este paso es crucial porque nos permite interactuar con el servidor y que Jupyter «envíe» JupyterLab para que podamos acceder a él en nuestro navegador web.</p></li>
+<li><p>v {PWD}:/home/jovyan/work: de manera similar, esta bandera «monta» la carpeta desde donde se está ejecutando el comando en la terminal ({PWD}) dentro del contenedor para que sea visible y editable desde dentro del contenedor. Esta carpeta estará disponible en la carpeta de trabajo del contenedor.</p></li>
+<li><p>gdsbook/stack: finalmente, también necesitamos especificar qué imagen queremos ejecutar. En este caso, ejecutamos la imagen creada para este libro.</p></li>
+<li><p>Esto iniciará una sesión de Python. <strong>No cierres la ventana hasta que hayas terminado de usar Python</strong>.</p></li>
+<li><p>Abre tu navegador favorito (preferiblemente Firefox o Chrome) y apunta a localhost:8888</p></li>
+<li><p>Se te pedirá una contraseña o un token. Para acceder al lab, copia el token desde la terminal, ingrésalo en el cuadro y haz clic en «Iniciar sesión».</p></li>
+</ul>
+</section>
+<section id="google-earth-engine-gee">
+<h2>Google Earth Engine (GEE)<a class="headerlink" href="#google-earth-engine-gee" title="Link to this heading">#</a></h2>
+<p>Google Earth Engine (GEE) es una plataforma basada en la nube que permite el análisis científico y la visualización a gran escala de conjuntos de datos geoespaciales. GEE fue lanzado en 2010 por Google como un sistema propietario. Actualmente, está disponible para los usuarios como un servicio gratuito para cargas de trabajo pequeñas y medianas, utilizando un modelo de negocio similar a otros servicios basados en la nube de la compañía.</p>
+<p>Esta plataforma está construida a partir de una colección de tecnologías disponibles en la infraestructura de Google, como el sistema de gestión de clústeres informáticos a gran escala (Borg), las bases de datos distribuidas (Bigtable y Spanner), el sistema de archivos distribuido (Colossus) y el marco de ejecución de canalizaciones paralelas FlumeJava.</p>
+<center><img src="https://images.squarespace-cdn.com/content/v1/5344b442e4b058c292aa490c/1586648476995-V9L18VS4UZTI6LIBMA31/ke17ZwdGBToddI8pDm48kGLSsGHlYP8a-s1Bq8jyLU17gQa3H78H3Y0txjaiv_0fDoOvxcdMmMKkDsyUqMSsMWxHk725yiiHCCLfrh8O1z4YTzHvnKhyp6Da-NYroOW3ZGjoBKy3azqku80C789l0kh8CFOf_fg_fcBdg5WGu2PEoOcXRJZ14gZ3GKz5pSWfiZfyUPE659Grxueqy-rvwg/image-asset.png?format=1000w" width="1000"></center>
+<p>Google Earth Engine permite a los usuarios ejecutar algoritmos en imágenes y vectores georreferenciados almacenados en la infraestructura de Google. La API de Google Earth Engine proporciona una biblioteca de funciones que se pueden aplicar a los datos para su visualización y análisis. El catálogo de datos públicos de Earth Engine contiene una gran cantidad de imágenes y conjuntos de datos vectoriales disponibles públicamente. También se pueden crear activos privados en las carpetas personales de los usuarios.</p>
+<p>GEE proporciona un catálogo de datos que almacena un gran repositorio de datos geoespaciales, que incluye imágenes ópticas de una variedad de satélites y sistemas aéreos, variables ambientales, pronósticos meteorológicos y climáticos, cobertura terrestre, y conjuntos de datos socioeconómicos y topográficos. Antes de estar disponibles, estos conjuntos de datos se preprocesan, lo que permite un acceso eficiente y elimina muchas barreras asociadas con la gestión de datos.</p>
+<p>GEE utiliza cuatro tipos de objetos para representar los datos que pueden ser manipulados por su API. El tipo Image representa datos ráster que pueden consistir en una o más bandas, que contienen un nombre, tipo de datos, escala y proyección. Un conjunto o una serie temporal de Imágenes está representado por el tipo ImageCollection. GEE representa los datos vectoriales a través del tipo Feature. Este tipo está representado por una geometría (punto, línea o polígono) y una lista de atributos. El tipo FeatureCollection representa grupos de Features relacionadas y proporciona funciones para manipular estos datos, como clasificación, filtrado y visualización. GEE solo ofrece interfaces de programación que admiten procesamiento basado en píxeles. El resultado de un procesamiento en GEE se puede visualizar en el IDE web o guardar en uno de tres servicios de la compañía: Drive, Cloud Storage o Assets. GEE utiliza un servidor de Tiles para hacer que los datos estén disponibles en la interfaz web de manera eficiente.</p>
+<p>GEE proporciona una API en JavaScript y una API en Python para la gestión y el análisis de datos. Para la versión en JavaScript, también se proporciona un Entorno de Desarrollo Integrado <a class="reference external" href="https://code.earthengine.google.com">(IDE)</a> basado en la web, donde el usuario tiene fácil acceso a los datos disponibles, aplicaciones y visualización en tiempo real de los resultados del procesamiento. La API de Python está disponible a través de un módulo y tiene una estructura similar a su versión en JavaScript.</p>
+<section id="el-editor-de-codigo">
+<h3>El Editor de Código<a class="headerlink" href="#el-editor-de-codigo" title="Link to this heading">#</a></h3>
+<p>El Editor de Código es un entorno interactivo para desarrollar aplicaciones en Earth Engine. El panel central proporciona un editor de código en JavaScript. Sobre el editor hay botones para guardar el script actual, ejecutarlo y limpiar el mapa. El botón Get Link genera una URL única para el script en la barra de direcciones. El mapa en el panel inferior contiene las capas añadidas por el script. En la parte superior hay un cuadro de búsqueda para conjuntos de datos y lugares. El panel izquierdo contiene ejemplos de código, tus scripts guardados, una referencia API con capacidad de búsqueda y un gestor de activos para datos privados. El panel derecho tiene un inspector para consultar el mapa, una consola de salida y un gestor para tareas de larga duración. El botón de ayuda en la parte superior derecha contiene enlaces a esta guía y otros recursos para obtener ayuda. Aprende más en la <a class="reference external" href="https://developers.google.com/earth-engine/guides/playground">guía del Editor de Código</a>.</p>
+<p>El Editor de Código de Earth Engine (EE) en <a class="reference external" href="https://code.earthengine.google.com/">code.earthengine.google.com</a> es un IDE basado en la web para la API de JavaScript de Earth Engine. Las características del Editor de Código están diseñadas para hacer que el desarrollo de flujos de trabajo geoespaciales complejos sea rápido y fácil. El Editor de Código tiene los siguientes elementos (ilustrados en la Figura 1):</p>
+<ul class="simple">
+<li><p>Editor de código en JavaScript</p></li>
+<li><p>Visualización de mapas para datasets geoespaciales</p></li>
+<li><p>Documentación de referencia API (pestaña Docs)</p></li>
+<li><p>Gestor de scripts basado en Git (pestaña Scripts)</p></li>
+<li><p>Consola de salida (pestaña Console)</p></li>
+<li><p>Gestor de tareas (pestaña Tasks) para manejar consultas de larga duración</p></li>
+<li><p>Consulta interactiva del mapa (pestaña Inspector)</p></li>
+<li><p>Búsqueda en el archivo de datos o scripts guardados</p></li>
+<li><p>Herramientas para dibujar geometrías</p></li>
+</ul>
+<p>Los pasos a continuación demuestran cómo abrir Earth Engine y ejecutar un script personalizado que muestra una imagen. Para obtener los mejores resultados, es posible que desees instalar la última versión de Chrome, el navegador web de Google, disponible aquí.</p>
+<ol class="arabic simple">
+<li><p>Abre el Editor de Código de Earth Engine aquí: <a class="reference external" href="https://code.earthengine.google.com/">code.earthengine.google.com</a>. Si aún no lo has hecho, necesitarás habilitar el acceso iniciando sesión con una cuenta de Google registrada.</p></li>
+<li><p>Navega a la pestaña Scripts ubicada en la parte izquierda del Editor de Código. Allí encontrarás una colección de scripts de ejemplo que acceden, muestran y analizan datos de Earth Engine.</p></li>
+<li><p>Bajo «Image Collection», selecciona el ejemplo «Filtered Composite». Verás que un script aparece en la consola central. Presiona el botón Run para ejecutar el script.</p></li>
+<li><p>El ejemplo Filtered Composite selecciona imágenes de Landsat 7 que intersectan o están dentro de los límites de Colorado y Utah. Luego muestra un compuesto en color verdadero de las imágenes seleccionadas. Los ejemplos te introducen a métodos comúnmente usados, como filter(), clip() y Map.addLayer().</p></li>
+</ol>
+<p>El Editor de Código tiene una variedad de características para ayudarte a aprovechar la API de Earth Engine. Visualiza scripts de ejemplo o guarda tus propios scripts en la pestaña Scripts. Consulta objetos colocados en el mapa con la pestaña Inspector. Muestra y grafica resultados numéricos utilizando la API de Google Visualization. Comparte una URL única de tu script con colaboradores y amigos usando el botón Get Link. Los scripts que desarrollas en el Editor de Código se envían a Google para su procesamiento, y las teselas del mapa generadas y/o los mensajes se envían de vuelta para mostrarse en la pestaña Map y/o Console. Todo lo que necesitas para ejecutar el Editor de Código es un navegador web (usa Google Chrome para obtener los mejores resultados) y una conexión a internet. Las siguientes secciones describen los elementos del Editor de Código de Earth Engine con más detalle.</p>
+<center><img src="https://developers.google.com/earth-engine/images/Code_editor_diagram.png"></center>
+</section>
+</section>
+<section id="google-earth-engine-en-python">
+<h2>Google Earth Engine en Python<a class="headerlink" href="#google-earth-engine-en-python" title="Link to this heading">#</a></h2>
+<p>La API de Python de Earth Engine se distribuye como un paquete de conda-forge en: <a class="reference external" href="https://anaconda.org/conda-forge/earthengine-api">https://anaconda.org/conda-forge/earthengine-api</a>. Se instala con el comando conda install. Sin embargo, antes de instalarla, crea un entorno conda específicamente para Earth Engine. Instalar la API de Earth Engine en su propio entorno asegura que ella y sus paquetes dependientes no causarán problemas de versiones con tu entorno base o cualquier otro entorno que hayas configurado previamente, y viceversa. Para más información sobre la gestión de entornos conda, por favor visita este <a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/concepts/environments.html">sitio</a>.</p>
+<p>Activa tu entorno base de conda, si no está ya activado. Se recomienda crear un entorno virtual conda para la API de Earth Engine.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">create</span> <span class="o">--</span><span class="n">name</span> <span class="n">ee</span>
+</pre></div>
+</div>
+<p>Activa el entorno conda ee.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">ee</span>
+</pre></div>
+</div>
+<p>Para instala la API en el entorno conda ee. Asegúrate de que (ee) aparezca al principio de la línea de comandos, lo que indica que estás trabajando desde el entorno ee.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">earthengine</span><span class="o">-</span><span class="n">api</span>
+</pre></div>
+</div>
+<p>Antes de usar la API de Earth Engine o la herramienta de línea de comandos earthengine, debes realizar una autenticación única que autorice el acceso a Earth Engine en nombre de tu cuenta de Google. Para autenticarte, utiliza el comando authenticate desde la herramienta de línea de comandos earthengine.</p>
+<p>Dentro de tu entorno conda ee, ejecuta el siguiente comando y sigue las instrucciones que aparecen en la pantalla. Se proporcionará una URL que genera un código de autorización tras aceptar los términos. Copia el código de autorización e introdúcelo como entrada en la línea de comandos.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">earthengine</span> <span class="n">authenticate</span>
+</pre></div>
+</div>
+<p>Al ingresar el código de autorización, se guarda un token de autorización en un archivo de credenciales que se puede encontrar a continuación. El uso posterior del comando ee.Initialize() de la API y la herramienta de línea de comandos earthengine buscarán este archivo para autenticar. Si deseas revocar la autorización, simplemente elimina el archivo de credenciales.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Cada vez que quieras usar ee:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ee</span>
+
+<span class="n">ee</span><span class="o">.</span><span class="n">Initialize</span><span class="p">()</span>
+</pre></div>
+</div>
+<section id="fuentes-adicionales">
+<h3>Fuentes adicionales<a class="headerlink" href="#fuentes-adicionales" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/index.html">Documentación oficial de NumPy</a></p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/gallery/index.html">Galería oficial de Matplotlib</a></p></li>
+<li><p><a class="reference external" href="https://matplotlib.org/tutorials/index.html">Tutoriales oficiales de Matplotlib</a></p></li>
+<li><p>Rougier, N.P., 2016. <a class="reference external" href="http://www.labri.fr/perso/nrougier/from-python-to-numpy/">From Python to NumPy</a>.</p></li>
+<li><p>Oliphant, T.E., 2015. <a class="reference external" href="https://www.amazon.com/Guide-NumPy-Travis-Oliphant-PhD/dp/151730007X">A Guide to NumPy: 2nd Edition</a>. USA: Travis Oliphant, publicación independiente.</p></li>
+<li><p>Varoquaux, G., Gouillart, E., Vahtras, O., Haenel, V., Rougier, N.P., Gommers, R., Pedregosa, F., Jędrzejewski-Szmek, Z., Virtanen, P., Combelles, C. and Pinte, D., 2015. <a class="reference external" href="http://www.scipy-lectures.org/intro/numpy/index.html">SciPy Lecture Notes</a>.</p></li>
+</ul>
+</section>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Entorno virtual:</strong> Crea un entorno conda llamado <code class="docutils literal notranslate"><span class="pre">geoespacial_test</span></code> con Python 3.10 e instala las librerías <code class="docutils literal notranslate"><span class="pre">geopandas</span></code>, <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> y <code class="docutils literal notranslate"><span class="pre">jupyterlab</span></code>. Verifica la instalación ejecutando <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">geopandas;</span> <span class="pre">print(geopandas.__version__)</span></code>.</p></li>
+<li><p><strong>Control de versiones:</strong> Inicializa un repositorio Git local en una carpeta de tu elección. Crea un archivo <code class="docutils literal notranslate"><span class="pre">README.md</span></code> con una descripción breve del proyecto, realiza un commit y verifica el historial con <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">log</span></code>.</p></li>
+<li><p><strong>Google Earth Engine:</strong> Autentícate en GEE usando la API de Python (<code class="docutils literal notranslate"><span class="pre">earthengine-api</span></code>). Ejecuta el fragmento de código de verificación de la documentación oficial para confirmar que tu entorno tiene acceso a la plataforma.</p></li>
+<li><p><strong>Reflexión:</strong> ¿Cuáles son las ventajas y desventajas de usar un entorno Docker (como <code class="docutils literal notranslate"><span class="pre">gds_env</span></code>) frente a un entorno conda local para un proyecto de análisis geoespacial? Argumenta tu respuesta considerando reproducibilidad, portabilidad y facilidad de uso.</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/">Conda — User guide</a></p></li>
+<li><p><a class="reference external" href="https://jupyterlab.readthedocs.io/">JupyterLab Documentation</a></p></li>
+<li><p><a class="reference external" href="https://developers.google.com/earth-engine/guides/python_install">Google Earth Engine Python API</a></p></li>
+<li><p><a class="reference external" href="https://git-scm.com/book/es/v2">Git — Pro Git Book (español)</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Anaconda Inc. (2023). <em>Getting started with conda</em>. Anaconda Documentation.</p></li>
+<li><p>Perkel, J. M. (2018). Why Jupyter is data scientists” computational notebook of choice. <em>Nature</em>, 563, 145–146.</p></li>
+<li><p>Gorelick, N. et al. (2017). Google Earth Engine: Planetary-scale geospatial analysis for everyone. <em>Remote Sensing of Environment</em>, 202, 18–27.</p></li>
+</ul>
+</section>
+<section id="herramientas-complementarias">
+<h3>Herramientas complementarias<a class="headerlink" href="#herramientas-complementarias" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://hub.docker.com/r/darribas/gds_env">Docker Hub — gds_env (Dani Arribas-Bel)</a></p></li>
+<li><p><a class="reference external" href="https://lab.github.com/">GitHub Learning Lab</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "carto"
+        },
+        kernelOptions: {
+            name: "carto",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'carto'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">&lt;no title&gt;</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="00_Data.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Datos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#control-de-versiones-git-y-github">Control de Versiones: Git y GitHub</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#git">Git</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#inicializacion-del-proyecto">Inicialización del Proyecto</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#registro-de-cambios-commits">Registro de Cambios (Commits)</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#navegacion-en-el-historial-log-y-checkout">Navegación en el Historial (Log y Checkout)</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#github">GitHub</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#gestion-de-conflictos-y-sincronizacion">Gestión de Conflictos y Sincronización</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conda">Conda</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pip">PIP</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ambiente-virtual-y-librerias">Ambiente virtual y librerias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jupyter-lab">Jupyter Lab</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adicionar-el-entorno-a-jupyter-lab">Adicionar el entorno a Jupyter Lab</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contenedor-docker">Contenedor Docker</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-earth-engine-gee">Google Earth Engine (GEE)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-editor-de-codigo">El Editor de Código</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#google-earth-engine-en-python">Google Earth Engine en Python</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fuentes-adicionales">Fuentes adicionales</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#herramientas-complementarias">Herramientas complementarias</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

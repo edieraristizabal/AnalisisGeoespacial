@@ -1,0 +1,1133 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>GPBoost: Boosting de Árboles + Procesos Gaussianos &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '18_GPBoost';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/18_GPBoost.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Bases de datos geoespaciales" href="18_DB.html" />
+    <link rel="prev" title="El Proceso de Cox Log-Gaussiano (LGCP)" href="17_LGCP.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F18_GPBoost.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/18_GPBoost.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>GPBoost: Boosting de Árboles + Procesos Gaussianos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema-de-partida-quien-modela-la-tendencia-y-quien-modela-la-autocorrelacion">1. El problema de partida: ¿quién modela la tendencia y quién modela la autocorrelación?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-las-opciones-1-y-2-no-son-ideales">2. Por qué las opciones 1 y 2 no son ideales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-modelo-de-gpboost">3. El modelo de GPBoost</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-estima-esto-conjuntamente-la-verosimilitud-marginal-y-la-aproximacion-de-laplace">4. ¿Cómo se estima esto conjuntamente? La verosimilitud marginal y la aproximación de Laplace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-algoritmo-lagaboost-gpboost-estimacion-conjunta-no-secuencial">5. El algoritmo LaGaBoost / GPBoost: estimación conjunta, no secuencial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipos-de-efectos-latentes-agrupados-espaciales-y-combinados">6. Tipos de efectos latentes: agrupados, espaciales, y combinados</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-comparativo">7. Resumen comparativo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-practico-comparando-las-tres-estrategias-con-datos-simulados">Ejemplo práctico: comparando las tres estrategias con datos simulados</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-a-proceso-gaussiano-con-media-lineal-kriging-universal">Modelo A: Proceso Gaussiano con media lineal (~ Kriging Universal)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-b-enfoque-secuencial-arboles-residuos-kriging">Modelo B: enfoque secuencial (árboles → residuos → kriging)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-c-gpboost-estimacion-conjunta">Modelo C: GPBoost (estimación conjunta)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-resultados">Comparación de resultados</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recupera-gpboost-la-forma-no-lineal-real-de-f-x">¿Recupera GPBoost la forma no lineal real de <span class="math notranslate nohighlight">\(F(X)\)</span>?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-agrupados-y-espaciales-combinados">Efectos agrupados y espaciales combinados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mas-alla-de-la-regresion-verosimilitudes-no-gaussianas-lagaboost">Más allá de la regresión: verosimilitudes no Gaussianas (LaGaBoost)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://github.com/fabsig/GPBoost">GPBoost (fabsig/GPBoost)</a>, <a href="https://htmlpreview.github.io/?https://github.com/fabsig/GPBoost/blob/master/examples/GPBoost_demo.html">GPBoost demo</a>, <a href="https://htmlpreview.github.io/?https://github.com/fabsig/GPBoost/blob/master/examples/European_GDP_spatial_grouped_data.html">European GDP spatial grouped data</a>, <a href="https://github.com/fabsig/GPBoost/blob/master/examples/python-guide/generalized_linear_Gaussian_process_mixed_effects_models.py">Python-guide de GPBoost</a>, <a href="https://arxiv.org/abs/2004.02653">Sigrist, F. (2022). Gaussian Process Boosting. <em>Journal of Machine Learning Research</em>, 23(232), 1-46</a>, y <a href="https://arxiv.org/abs/2105.08966">Sigrist, F. (2023). Latent Gaussian Model Boosting. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 45(2), 1894-1905</a>. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="gpboost-boosting-de-arboles-procesos-gaussianos">
+<h1>GPBoost: Boosting de Árboles + Procesos Gaussianos<a class="headerlink" href="#gpboost-boosting-de-arboles-procesos-gaussianos" title="Link to this heading">#</a></h1>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Entender por qué combinar <em>tree-boosting</em> (árboles de decisión potenciados) con un Proceso Gaussiano requiere una estrategia de estimación distinta a la de ajustar cada componente por separado.</p></li>
+<li><p>Explicar el modelo latente de GPBoost, <span class="math notranslate nohighlight">\(\mu = F(X) + Zb\)</span>, y el rol de cada término.</p></li>
+<li><p>Comprender la aproximación de Laplace y el algoritmo de estimación conjunta (LaGaBoost/GPBoost) que actualiza simultáneamente el ensamble de árboles <span class="math notranslate nohighlight">\(F(\cdot)\)</span> y los hiperparámetros de covarianza del proceso gaussiano.</p></li>
+<li><p>Diferenciar con claridad GPBoost de: (a) un Proceso Gaussiano con media <strong>lineal</strong> (equivalente al Kriging Universal / Kriging con deriva externa), y (b) un enfoque <strong>secuencial por fases</strong> (ajustar un modelo no paramétrico y luego krigear sus residuos por separado).</p></li>
+<li><p>Implementar en Python, con la librería <code class="docutils literal notranslate"><span class="pre">gpboost</span></code>, un modelo con efectos aleatorios espaciales (GP) y agrupados (categóricos de alta cardinalidad), y comparar su desempeño contra las alternativas anteriores.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> — Procesos Gaussianos, kernel, Cholesky, y en particular la sección <em>Nota sobre modelos híbridos</em> donde se plantea el problema que este capítulo resuelve; <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code> — Kriging Ordinario y Universal, variogramas.</p>
+</section>
+<section id="marco-teorico">
+<h2>Marco teórico<a class="headerlink" href="#marco-teorico" title="Link to this heading">#</a></h2>
+<section id="el-problema-de-partida-quien-modela-la-tendencia-y-quien-modela-la-autocorrelacion">
+<h3>1. El problema de partida: ¿quién modela la tendencia y quién modela la autocorrelación?<a class="headerlink" href="#el-problema-de-partida-quien-modela-la-tendencia-y-quien-modela-la-autocorrelacion" title="Link to this heading">#</a></h3>
+<p>En <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> (sección <em>Nota sobre modelos híbridos</em>) planteamos un problema muy concreto: cuando queremos predecir una variable espacial <span class="math notranslate nohighlight">\(y\)</span> a partir de covariables <span class="math notranslate nohighlight">\(X\)</span> (pendiente, geología, distancia a una vía, etc.) <strong>y</strong>, además, sabemos que hay una autocorrelación espacial residual que esas covariables no explican, tenemos que repartir el trabajo entre dos componentes:</p>
+<div class="math notranslate nohighlight">
+\[y(\mathbf{s}) = \underbrace{F(X)}_{\text{tendencia / efecto de las covariables}} + \underbrace{Z(\mathbf{s})}_{\text{autocorrelación espacial residual}} + \underbrace{\varepsilon}_{\text{ruido}}\]</div>
+<p>La pregunta de fondo es: <strong>¿qué tan flexible dejamos que sea <span class="math notranslate nohighlight">\(F(X)\)</span>?</strong> Y ahí aparecen tres estrategias, exactamente las que compara este capítulo:</p>
+<ol class="arabic simple">
+<li><p><strong><span class="math notranslate nohighlight">\(F(X)\)</span> lineal, ajustado junto con <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span></strong> — esto es el <strong>Kriging Universal</strong> (o Kriging con deriva externa) que ya vimos en <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code>, y su versión en el lenguaje de Procesos Gaussianos es un <strong>GP con media lineal</strong>. Es simple y estable, pero solo puede capturar relaciones <strong>lineales</strong> entre las covariables y la respuesta.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(F(X)\)</span> no paramétrico (árboles, Random Forest), ajustado <em>primero</em>, y luego <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span> ajustado <em>por separado</em> sobre los residuos</strong> — esto es el enfoque clásico de <strong>regresión-kriging en dos fases</strong> (y es la solución «secuencial» que ya mencionamos en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>). Es más flexible que la opción 1, pero, como veremos, tiene un problema de fondo: las dos fases no «se hablan» entre sí.</p></li>
+<li><p><strong><span class="math notranslate nohighlight">\(F(X)\)</span> no paramétrico, estimado <em>conjuntamente</em> con <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span> en el mismo proceso de optimización</strong> — esto es exactamente lo que hace <strong>GPBoost</strong>. Es la respuesta formal, con garantías estadísticas, al problema de «competencia de varianza» entre un modelo no lineal flexible y un GP que planteamos en el capítulo anterior.</p></li>
+</ol>
+</section>
+<section id="por-que-las-opciones-1-y-2-no-son-ideales">
+<h3>2. Por qué las opciones 1 y 2 no son ideales<a class="headerlink" href="#por-que-las-opciones-1-y-2-no-son-ideales" title="Link to this heading">#</a></h3>
+<p><strong>Opción 1 (GP con media lineal / Kriging Universal).</strong> El término <span class="math notranslate nohighlight">\(F(X) = X\beta\)</span> es una combinación lineal de las covariables. Si la relación real entre, por ejemplo, la pendiente del terreno y la susceptibilidad a un deslizamiento es fuertemente no lineal (un umbral, una curva en forma de S, una interacción entre dos variables), un modelo lineal simplemente <strong>no puede representarla</strong>, sin importar cuántos datos tengamos. El GP puede compensar parcialmente absorbiendo parte de ese patrón como si fuera «autocorrelación espacial» (si las covariables están correlacionadas con la posición), pero eso es un parche, no una solución: mezcla, en la parte <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span>, algo que en realidad es un efecto de las covariables mal modelado.</p>
+<p><strong>Opción 2 (secuencial: ajustar <span class="math notranslate nohighlight">\(F(X)\)</span> primero con árboles, luego krigear los residuos).</strong> Este enfoque —a veces llamado <em>regression-kriging</em> o, informalmente, «RF-Kriging»— sí permite que <span class="math notranslate nohighlight">\(F(X)\)</span> sea no lineal. Pero tiene tres problemas concretos:</p>
+<ul class="simple">
+<li><p><strong>Los residuos de la primera fase no son independientes.</strong> Todo algoritmo de <em>boosting</em> o Random Forest asume, implícita o explícitamente, que las observaciones son independientes entre sí dado <span class="math notranslate nohighlight">\(X\)</span>. Si hay autocorrelación espacial real en <span class="math notranslate nohighlight">\(y\)</span>, esa autocorrelación <em>sigue estando</em> en los residuos de la primera fase (por eso los vamos a krigear después). El árbol de la primera fase se entrenó ignorando esa dependencia, lo cual puede sesgar tanto la estructura del árbol como la estimación de su incertidumbre.</p></li>
+<li><p><strong>El árbol puede «robarse» señal espacial.</strong> Si alguna covariable de <span class="math notranslate nohighlight">\(X\)</span> está correlacionada con la ubicación (algo extremadamente común en datos geoespaciales: la elevación, la distancia a la costa, el tipo de suelo, todas varían suavemente en el espacio), un modelo de árboles suficientemente flexible puede terminar ajustando parte del patrón espacial <em>a través</em> de esas covariables, en lugar de dejárselo al GP. El resultado: los residuos que le pasamos al GP en la segunda fase tienen <strong>menos</strong> señal espacial de la que realmente existe, y el GP subestima la varianza espacial verdadera (<span class="math notranslate nohighlight">\(\sigma^2\)</span>) y sobreestima el nugget/ruido (<span class="math notranslate nohighlight">\(\sigma_n^2\)</span>). Verificaremos esto con números reales en el ejemplo de abajo.</p></li>
+<li><p><strong>No hay propagación de incertidumbre entre fases.</strong> El error estándar de las predicciones finales debería reflejar la incertidumbre tanto de <span class="math notranslate nohighlight">\(F(X)\)</span> como de <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span>, pero al estimarlos por separado, la incertidumbre de la primera fase generalmente no se combina correctamente con la de la segunda.</p></li>
+</ul>
+</section>
+<section id="el-modelo-de-gpboost">
+<h3>3. El modelo de GPBoost<a class="headerlink" href="#el-modelo-de-gpboost" title="Link to this heading">#</a></h3>
+<p>GPBoost resuelve el problema anterior proponiendo un <strong>modelo Gaussiano latente no paramétrico</strong> (Sigrist, 2022, 2023). El parámetro de interés <span class="math notranslate nohighlight">\(\mu\)</span> (para datos Gaussianos, directamente la media de <span class="math notranslate nohighlight">\(y\)</span>) se modela como:</p>
+<div class="math notranslate nohighlight">
+\[\mu = F(X) + Zb, \qquad b \sim \mathcal{N}(0, \Sigma)\]</div>
+<p>donde:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(F(\cdot)\)</span> es un <strong>ensamble de árboles de decisión</strong> (como en LightGBM/XGBoost) — no lineal, no paramétrico, capaz de capturar interacciones y umbrales sin que el usuario tenga que especificarlos.</p></li>
+<li><p><span class="math notranslate nohighlight">\(b\)</span> es un vector de <strong>efectos latentes Gaussianos</strong>: puede ser un Proceso Gaussiano espacial (como los de <code class="docutils literal notranslate"><span class="pre">15_GP</span></code> y <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code>), un efecto aleatorio agrupado (una categoría con muchos niveles, p. ej. «municipio» o «cuenca»), o una combinación de ambos.</p></li>
+<li><p><span class="math notranslate nohighlight">\(Z\)</span> es la matriz que conecta esos efectos latentes con las observaciones (para un GP espacial, <span class="math notranslate nohighlight">\(Z = I\)</span>; para un efecto agrupado, <span class="math notranslate nohighlight">\(Z\)</span> es una matriz de incidencia 0/1 que indica a qué grupo pertenece cada observación).</p></li>
+<li><p><span class="math notranslate nohighlight">\(\Sigma = \Sigma(\theta)\)</span> es la matriz de covarianza de <span class="math notranslate nohighlight">\(b\)</span>, parametrizada por hiperparámetros <span class="math notranslate nohighlight">\(\theta\)</span> — para un GP, esto es exactamente el kernel que vimos en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> (Matérn, RBF, etc.) con su rango y varianza.</p></li>
+</ul>
+<p>Para datos Gaussianos (regresión continua), el modelo completo se escribe de forma equivalente como:</p>
+<div class="math notranslate nohighlight">
+\[y = F(X) + Zb + \xi, \qquad \xi \sim \mathcal{N}(0, \sigma_n^2 I)\]</div>
+<p>que es, formalmente, <strong>el mismo modelo que un GP con media <span class="math notranslate nohighlight">\(F(X)\)</span></strong> — la única pero crucial diferencia es que <span class="math notranslate nohighlight">\(F(X)\)</span> ya no está restringido a ser lineal. Para verosimilitudes no Gaussianas (clasificación, conteos), GPBoost usa una función de enlace <span class="math notranslate nohighlight">\(G(\cdot)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[y \sim p(y \mid m), \qquad m = G\big(F(X) + Zb\big)\]</div>
+<p>generalizando así, en la misma familia, tanto los <strong>Modelos Lineales Mixtos Generalizados (GLMM)</strong> como los <strong>Procesos Gaussianos</strong> — sustituyendo únicamente la parte lineal <span class="math notranslate nohighlight">\(X\beta\)</span> de esos modelos clásicos por un ensamble de árboles <span class="math notranslate nohighlight">\(F(X)\)</span>.</p>
+</section>
+<section id="como-se-estima-esto-conjuntamente-la-verosimilitud-marginal-y-la-aproximacion-de-laplace">
+<h3>4. ¿Cómo se estima esto conjuntamente? La verosimilitud marginal y la aproximación de Laplace<a class="headerlink" href="#como-se-estima-esto-conjuntamente-la-verosimilitud-marginal-y-la-aproximacion-de-laplace" title="Link to this heading">#</a></h3>
+<p>La dificultad técnica de este modelo es que <span class="math notranslate nohighlight">\(b\)</span> es un vector latente (no observado) de posiblemente miles de dimensiones. Para entrenar el modelo necesitamos la <strong>verosimilitud marginal</strong>, que integra sobre todos los valores posibles de <span class="math notranslate nohighlight">\(b\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[p(y \mid F, \theta, \xi) = \int p(y \mid \mu, \xi)\, p(b \mid \theta)\, db, \qquad \mu = F(X) + Zb\]</div>
+<p>Si <span class="math notranslate nohighlight">\(y\)</span> es Gaussiano, esta integral tiene solución exacta (es la misma matemática de un GP estándar que vimos en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>: media y covarianza posteriores en forma cerrada). Si <span class="math notranslate nohighlight">\(y\)</span> seguisiera una distribución no Gaussiana (Bernoulli, Poisson), la integral no tiene solución analítica y se aproxima usando la <strong>aproximación de Laplace</strong>: se encuentra la moda <span class="math notranslate nohighlight">\(\tilde{b}\)</span> de <span class="math notranslate nohighlight">\(p(y \mid \mu, \xi)\, p(b \mid \theta)\)</span> mediante el método de Newton, y se aproxima la verosimilitud marginal con una Gaussiana centrada en esa moda:</p>
+<div class="math notranslate nohighlight">
+\[p(y \mid F, \theta, \xi) \approx p(y \mid \tilde{\mu}, \xi)\, p(\tilde{b} \mid \theta)\, \det\!\left(Z^T \tilde{W} Z + \Sigma^{-1}\right)^{-1/2} (2\pi)^{m/2}\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\tilde{W}\)</span> es una matriz diagonal con las segundas derivadas de la log-verosimilitud evaluadas en la moda. No es necesario memorizar esta fórmula: lo importante es que, a partir de ella, se puede calcular tanto el <strong>riesgo</strong> que queremos minimizar,</p>
+<div class="math notranslate nohighlight">
+\[R(F, \theta, \xi) = -\log p(y \mid F, \theta, \xi),\]</div>
+<p>como su <strong>gradiente respecto a <span class="math notranslate nohighlight">\(F\)</span></strong> y su <strong>gradiente respecto a <span class="math notranslate nohighlight">\(\theta\)</span></strong> — y esos dos gradientes son exactamente lo que el algoritmo de entrenamiento necesita.</p>
+</section>
+<section id="el-algoritmo-lagaboost-gpboost-estimacion-conjunta-no-secuencial">
+<h3>5. El algoritmo LaGaBoost / GPBoost: estimación conjunta, no secuencial<a class="headerlink" href="#el-algoritmo-lagaboost-gpboost-estimacion-conjunta-no-secuencial" title="Link to this heading">#</a></h3>
+<p>Aquí está el corazón conceptual del capítulo. En vez de (a) estimar <span class="math notranslate nohighlight">\(F(X)\)</span> hasta el final y luego (b) estimar <span class="math notranslate nohighlight">\(\theta\)</span> una sola vez con los residuos —como en el enfoque secuencial de la Opción 2—, GPBoost <strong>alterna</strong> ambos pasos dentro del mismo bucle de entrenamiento, ronda tras ronda de <em>boosting</em>:</p>
+<blockquote>
+<div><p><strong>Algoritmo (versión intuitiva).</strong> Se repite, para cada ronda <span class="math notranslate nohighlight">\(m = 1, \dots, M\)</span>:</p>
+<ol class="arabic simple">
+<li><p><strong>Paso GP:</strong> con el ensamble de árboles <span class="math notranslate nohighlight">\(F_{m-1}(\cdot)\)</span> que se tiene hasta el momento (fijo), se actualizan los hiperparámetros de covarianza <span class="math notranslate nohighlight">\(\theta\)</span> (p. ej. el rango y la varianza del kernel Matérn) resolviendo un problema de optimización convexa (equivalente a un paso de <em>Fisher scoring</em>).</p></li>
+<li><p><strong>Paso árbol:</strong> con esos hiperparámetros <span class="math notranslate nohighlight">\(\theta\)</span> ya actualizados (fijos), se calcula el <strong>gradiente funcional</strong> de la verosimilitud respecto a <span class="math notranslate nohighlight">\(F\)</span> —es decir, «¿en qué dirección debería moverse <span class="math notranslate nohighlight">\(F\)</span> para explicar mejor lo que el GP actual todavía no explica?»— y se ajusta un <strong>árbol pequeño</strong> <span class="math notranslate nohighlight">\(f_m(\cdot)\)</span> que aproxima ese gradiente (esto es exactamente lo que hace cualquier algoritmo de <em>gradient boosting</em>, como LightGBM).</p></li>
+<li><p><strong>Actualización:</strong> <span class="math notranslate nohighlight">\(F_m(\cdot) = F_{m-1}(\cdot) + \nu \, f_m(\cdot)\)</span>, con <span class="math notranslate nohighlight">\(\nu\)</span> una tasa de aprendizaje pequeña (igual que en cualquier boosting).</p></li>
+</ol>
+</div></blockquote>
+<p>La versión formal de este algoritmo (Sigrist, 2022, 2023) es:</p>
+<div class="math notranslate nohighlight">
+\[f_m(\cdot) = \operatorname*{argmin}_{f \in \mathcal{S}} \left\| -\frac{\partial L^{A}(y, F_{m-1}, \theta_m, \xi_m)}{\partial F} - f \right\|^2\]</div>
+<p>es decir, el árbol de la ronda <span class="math notranslate nohighlight">\(m\)</span> es el que mejor aproxima, en mínimos cuadrados, el <strong>negativo del gradiente funcional</strong> de la verosimilitud aproximada — igual que en <em>gradient boosting</em> clásico, solo que aquí el gradiente ya «sabe» acerca del efecto espacial <span class="math notranslate nohighlight">\(Zb\)</span> porque se calculó teniendo en cuenta <span class="math notranslate nohighlight">\(\theta_m\)</span>, recién actualizado en el paso 1.</p>
+<p><strong>Esta alternancia es la diferencia esencial frente al enfoque secuencial.</strong> En la Opción 2, el árbol nunca se entera de que existe un GP: se entrena una sola vez, de forma totalmente ciega a la estructura espacial, y el GP se ajusta después sobre lo que sobró. En GPBoost, cada árbol nuevo se ajusta <em>sabiendo</em> cuál es el estado actual del componente espacial, y cada actualización del GP se hace <em>sabiendo</em> cuál es el estado actual de los árboles. Ambas partes se corrigen mutuamente en cada ronda, hasta converger a un óptimo conjunto del riesgo <span class="math notranslate nohighlight">\(R(F, \theta, \xi)\)</span>.</p>
+</section>
+<section id="tipos-de-efectos-latentes-agrupados-espaciales-y-combinados">
+<h3>6. Tipos de efectos latentes: agrupados, espaciales, y combinados<a class="headerlink" href="#tipos-de-efectos-latentes-agrupados-espaciales-y-combinados" title="Link to this heading">#</a></h3>
+<p>El término <span class="math notranslate nohighlight">\(Zb\)</span> del modelo no está restringido a ser un único Proceso Gaussiano espacial. <code class="docutils literal notranslate"><span class="pre">gpboost</span></code> admite:</p>
+<ul class="simple">
+<li><p><strong>Efectos aleatorios agrupados</strong> (<code class="docutils literal notranslate"><span class="pre">group_data=</span></code>): para variables categóricas, incluyendo aquellas de <strong>alta cardinalidad</strong> (muchas categorías, p. ej. cientos de municipios) donde meterlas directamente como <em>dummies</em> en un árbol sería ineficiente y propenso a sobreajuste. En vez de eso, cada categoría recibe un efecto aleatorio <span class="math notranslate nohighlight">\(b_g \sim \mathcal{N}(0, \tau^2)\)</span> que se regulariza hacia cero (encogimiento, <em>shrinkage</em>), igual que en un modelo mixto clásico.</p></li>
+<li><p><strong>Procesos Gaussianos</strong> (<code class="docutils literal notranslate"><span class="pre">gp_coords=</span></code> + <code class="docutils literal notranslate"><span class="pre">cov_function=</span></code>): exactamente los kernels espaciales de <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> y <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code> (Matérn, exponencial, gaussiano/RBF).</p></li>
+<li><p><strong>Combinaciones de ambos</strong>: por ejemplo, un efecto aleatorio de país (agrupado) <em>más</em> un Proceso Gaussiano de coordenadas dentro de ese país, como en el ejemplo de PIB regional europeo de la librería GPBoost, donde el ingreso de una región depende tanto de efectos específicos de cada país (institucionales, monetarios) como de una autocorrelación espacial suave entre regiones vecinas, independientemente de las fronteras nacionales.</p></li>
+</ul>
+<p>Esta flexibilidad convierte a GPBoost en una herramienta natural para dos problemas típicos de la ciencia de datos geoespacial que, en los capítulos anteriores, tratamos por separado: la <strong>alta cardinalidad categórica</strong> (que vimos con modelos jerárquicos en <code class="docutils literal notranslate"><span class="pre">12_Jerarquicos</span></code>) y la <strong>autocorrelación espacial continua</strong> (Kriging, GP, LGCP).</p>
+</section>
+<section id="resumen-comparativo">
+<h3>7. Resumen comparativo<a class="headerlink" href="#resumen-comparativo" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-left"><p></p></th>
+<th class="head text-left"><p>GP con media lineal<br>(Kriging Universal / deriva externa)</p></th>
+<th class="head text-left"><p>Secuencial<br>(árboles → residuos → krigeados)</p></th>
+<th class="head text-left"><p><strong>GPBoost</strong><br>(estimación conjunta)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-left"><p><strong>Forma de <span class="math notranslate nohighlight">\(F(X)\)</span></strong></p></td>
+<td class="text-left"><p>Lineal (<span class="math notranslate nohighlight">\(X\beta\)</span>)</p></td>
+<td class="text-left"><p>No paramétrica (árboles/RF), fija tras la 1ª fase</p></td>
+<td class="text-left"><p>No paramétrica (árboles), actualizada cada ronda</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>¿Captura no linealidades e interacciones en <span class="math notranslate nohighlight">\(X\)</span>?</strong></p></td>
+<td class="text-left"><p>No</p></td>
+<td class="text-left"><p>Sí</p></td>
+<td class="text-left"><p>Sí</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>¿<span class="math notranslate nohighlight">\(F\)</span> y <span class="math notranslate nohighlight">\(\theta\)</span> «se hablan» durante el ajuste?</strong></p></td>
+<td class="text-left"><p>N/A (un solo paso conjunto, pero <span class="math notranslate nohighlight">\(F\)</span> es rígido)</p></td>
+<td class="text-left"><p>No — dos fases independientes</p></td>
+<td class="text-left"><p>Sí — se alternan en cada ronda de boosting</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Riesgo de sesgo en <span class="math notranslate nohighlight">\(\hat\theta\)</span> (rango, varianza espacial)</strong></p></td>
+<td class="text-left"><p>Bajo, pero <span class="math notranslate nohighlight">\(F\)</span> mal especificado sesga las predicciones</p></td>
+<td class="text-left"><p>Alto si <span class="math notranslate nohighlight">\(X\)</span> está correlacionada con la ubicación</p></td>
+<td class="text-left"><p>Bajo — el objetivo conjunto lo evita</p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p><strong>Propagación de incertidumbre</strong></p></td>
+<td class="text-left"><p>Correcta (un solo modelo)</p></td>
+<td class="text-left"><p>Aproximada (se pierde entre fases)</p></td>
+<td class="text-left"><p>Correcta (un solo objetivo conjunto)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p><strong>Equivalente clásico</strong></p></td>
+<td class="text-left"><p>Kriging Universal / KED</p></td>
+<td class="text-left"><p>Regression-kriging en 2 fases</p></td>
+<td class="text-left"><p>Sin equivalente clásico directo</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>En el ejemplo siguiente comprobamos, con datos simulados donde conocemos la verdad, cada una de estas afirmaciones con números reales.</p>
+</section>
+</section>
+<section id="ejemplo-practico-comparando-las-tres-estrategias-con-datos-simulados">
+<h2>Ejemplo práctico: comparando las tres estrategias con datos simulados<a class="headerlink" href="#ejemplo-practico-comparando-las-tres-estrategias-con-datos-simulados" title="Link to this heading">#</a></h2>
+<p>Usamos datos <strong>simulados</strong> a propósito: así conocemos la verdad (la función no lineal real, el rango y la varianza reales del proceso espacial) y podemos verificar, con números, cuál de las tres estrategias la recupera mejor. Simulamos:</p>
+<ul class="simple">
+<li><p>Una covariable <span class="math notranslate nohighlight">\(X = (X_1, X_2)\)</span> <strong>independiente de la ubicación</strong>, con un efecto <strong>claramente no lineal</strong> sobre <span class="math notranslate nohighlight">\(y\)</span>: <span class="math notranslate nohighlight">\(f(X_1, X_2) = 2\sin(1.3\,X_1) + 0.3\,X_2^2 - 1.5\)</span>.</p></li>
+<li><p>Un efecto espacial <span class="math notranslate nohighlight">\(Z(\mathbf{s})\)</span> generado con un Proceso Gaussiano de covarianza Matérn (<span class="math notranslate nohighlight">\(\nu=1.5\)</span>), varianza <span class="math notranslate nohighlight">\(\sigma^2=1.0\)</span> y rango <span class="math notranslate nohighlight">\(\rho=2.0\)</span> — exactamente como en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> y <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code>.</p></li>
+<li><p>Ruido de medición <span class="math notranslate nohighlight">\(\varepsilon \sim \mathcal{N}(0, 0.3^2)\)</span>.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[y = f(X_1, X_2) + Z(\mathbf{s}) + \varepsilon\]</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gpboost</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">cdist</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c1"># Covariable con efecto NO LINEAL, independiente de la ubicación</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">f_true</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mf">1.3</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.5</span>
+
+
+<span class="c1"># Coordenadas espaciales y efecto GP (kernel Matern, nu=1.5)</span>
+<span class="n">coords</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">matern_cov</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">rho</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">sigma2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">cdist</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">coords</span><span class="p">)</span>
+    <span class="n">Ds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">D</span> <span class="o">/</span> <span class="n">rho</span>
+    <span class="k">return</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">Ds</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">Ds</span><span class="p">)</span>
+
+
+<span class="n">K</span> <span class="o">=</span> <span class="n">matern_cov</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1e-6</span>
+<span class="n">L_chol</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">K</span><span class="p">)</span>  <span class="c1"># descomposicion de Cholesky, ver 15_GP.ipynb</span>
+<span class="n">b_spatial</span> <span class="o">=</span> <span class="n">L_chol</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+
+<span class="n">noise_sd</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="o">+</span> <span class="n">b_spatial</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">noise_sd</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Division train / test</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="mi">800</span>
+<span class="n">train_idx</span><span class="p">,</span> <span class="n">test_idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[:</span><span class="n">n_train</span><span class="p">],</span> <span class="n">idx</span><span class="p">[</span><span class="n">n_train</span><span class="p">:]</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+<span class="n">coords_train</span><span class="p">,</span> <span class="n">coords_test</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">coords</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+<span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">train_idx</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">test_idx</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Observaciones de entrenamiento: </span><span class="si">{</span><span class="n">n_train</span><span class="si">}</span><span class="s2">, de prueba: </span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">n_train</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\edier\AppData\Roaming\Python\Python314\site-packages\tqdm\auto.py:21: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Observaciones de entrenamiento: 800, de prueba: 200
+</pre></div>
+</div>
+</div>
+</div>
+<section id="modelo-a-proceso-gaussiano-con-media-lineal-kriging-universal">
+<h3>Modelo A: Proceso Gaussiano con media lineal (~ Kriging Universal)<a class="headerlink" href="#modelo-a-proceso-gaussiano-con-media-lineal-kriging-universal" title="Link to this heading">#</a></h3>
+<p>Ajustamos <span class="math notranslate nohighlight">\(\mu = X\beta + Zb\)</span> — el GP recibe la covariable únicamente a través de un término <strong>lineal</strong>. Este es el análogo directo, en el lenguaje de Procesos Gaussianos, del Kriging Universal / Kriging con deriva externa de <code class="docutils literal notranslate"><span class="pre">14_Kriging</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gp_model_a</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">GPModel</span><span class="p">(</span><span class="n">gp_coords</span><span class="o">=</span><span class="n">coords_train</span><span class="p">,</span> <span class="n">cov_function</span><span class="o">=</span><span class="s2">"matern"</span><span class="p">,</span>
+                          <span class="n">cov_fct_shape</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">likelihood</span><span class="o">=</span><span class="s2">"gaussian"</span><span class="p">)</span>
+
+<span class="n">X_train_design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)),</span> <span class="n">X_train</span><span class="p">])</span>  <span class="c1"># intercepto + X (lineal)</span>
+<span class="n">X_test_design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)),</span> <span class="n">X_test</span><span class="p">])</span>
+
+<span class="n">gp_model_a</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y_train</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="n">X_train_design</span><span class="p">)</span>
+<span class="n">pred_a</span> <span class="o">=</span> <span class="n">gp_model_a</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">gp_coords_pred</span><span class="o">=</span><span class="n">coords_test</span><span class="p">,</span> <span class="n">X_pred</span><span class="o">=</span><span class="n">X_test_design</span><span class="p">,</span>
+                             <span class="n">predict_var</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">predict_response</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">rmse_a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_a</span><span class="p">[</span><span class="s2">"mu"</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSE (GP con media lineal / Kriging Universal): </span><span class="si">{</span><span class="n">rmse_a</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE (GP con media lineal / Kriging Universal): 1.6101
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modelo-b-enfoque-secuencial-arboles-residuos-kriging">
+<h3>Modelo B: enfoque secuencial (árboles → residuos → kriging)<a class="headerlink" href="#modelo-b-enfoque-secuencial-arboles-residuos-kriging" title="Link to this heading">#</a></h3>
+<p>Primero ajustamos un modelo de <em>gradient boosting</em> estándar (LightGBM, <strong>sin ninguna información espacial</strong>) sobre <span class="math notranslate nohighlight">\(X\)</span>. Luego, calculamos los residuos de entrenamiento y ajustamos un GP <strong>separado</strong> sobre esos residuos — exactamente el flujo de trabajo de «regression-kriging» en dos fases.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fase 1: boosting puro sobre X (sin coordenadas)</span>
+<span class="n">train_set_b</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">params_b</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"objective"</span><span class="p">:</span> <span class="s2">"regression"</span><span class="p">,</span> <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s2">"max_depth"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"verbose"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+<span class="n">bst_b</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params_b</span><span class="p">,</span> <span class="n">train_set_b</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">resid_train_b</span> <span class="o">=</span> <span class="n">y_train</span> <span class="o">-</span> <span class="n">bst_b</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+
+<span class="c1"># Fase 2: kriging de los residuos (por separado, sin retroalimentacion a la fase 1)</span>
+<span class="n">gp_model_b</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">GPModel</span><span class="p">(</span><span class="n">gp_coords</span><span class="o">=</span><span class="n">coords_train</span><span class="p">,</span> <span class="n">cov_function</span><span class="o">=</span><span class="s2">"matern"</span><span class="p">,</span>
+                          <span class="n">cov_fct_shape</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">likelihood</span><span class="o">=</span><span class="s2">"gaussian"</span><span class="p">)</span>
+<span class="n">gp_model_b</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">resid_train_b</span><span class="p">)</span>
+<span class="n">pred_resid_b</span> <span class="o">=</span> <span class="n">gp_model_b</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">gp_coords_pred</span><span class="o">=</span><span class="n">coords_test</span><span class="p">,</span> <span class="n">predict_var</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">predict_response</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">pred_b</span> <span class="o">=</span> <span class="n">bst_b</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span> <span class="o">+</span> <span class="n">pred_resid_b</span><span class="p">[</span><span class="s2">"mu"</span><span class="p">]</span>
+<span class="n">rmse_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_b</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSE (secuencial: boosting + kriging de residuos): </span><span class="si">{</span><span class="n">rmse_b</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE (secuencial: boosting + kriging de residuos): 0.5262
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="modelo-c-gpboost-estimacion-conjunta">
+<h3>Modelo C: GPBoost (estimación conjunta)<a class="headerlink" href="#modelo-c-gpboost-estimacion-conjunta" title="Link to this heading">#</a></h3>
+<p>Un solo modelo: <code class="docutils literal notranslate"><span class="pre">gpb.train()</span></code> recibe tanto el <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> de covariables como el <code class="docutils literal notranslate"><span class="pre">GPModel</span></code> con las coordenadas, y entrena ambos <strong>juntos</strong>, alternando los dos pasos descritos en la sección teórica (actualizar <span class="math notranslate nohighlight">\(\theta\)</span>, luego ajustar un árbol al gradiente funcional).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gp_model_c</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">GPModel</span><span class="p">(</span><span class="n">gp_coords</span><span class="o">=</span><span class="n">coords_train</span><span class="p">,</span> <span class="n">cov_function</span><span class="o">=</span><span class="s2">"matern"</span><span class="p">,</span>
+                          <span class="n">cov_fct_shape</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">likelihood</span><span class="o">=</span><span class="s2">"gaussian"</span><span class="p">)</span>
+
+<span class="n">train_set_c</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">params_c</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"objective"</span><span class="p">:</span> <span class="s2">"regression_l2"</span><span class="p">,</span> <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s2">"max_depth"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"verbose"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}</span>
+
+<span class="n">bst_c</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">params_c</span><span class="p">,</span> <span class="n">train_set</span><span class="o">=</span><span class="n">train_set_c</span><span class="p">,</span>
+                   <span class="n">gp_model</span><span class="o">=</span><span class="n">gp_model_c</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">pred_c</span> <span class="o">=</span> <span class="n">bst_c</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">gp_coords_pred</span><span class="o">=</span><span class="n">coords_test</span><span class="p">,</span>
+                        <span class="n">predict_var</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pred_latent</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">rmse_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">pred_c</span><span class="p">[</span><span class="s2">"response_mean"</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RMSE (GPBoost, estimacion conjunta): </span><span class="si">{</span><span class="n">rmse_c</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RMSE (GPBoost, estimacion conjunta): 0.4071
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparacion-de-resultados">
+<h3>Comparación de resultados<a class="headerlink" href="#comparacion-de-resultados" title="Link to this heading">#</a></h3>
+<p>Con la misma simulación (recordemos: covariable con efecto claramente no lineal, GP espacial con <span class="math notranslate nohighlight">\(\sigma^2=1.0\)</span> y <span class="math notranslate nohighlight">\(\rho=2.0\)</span> verdaderos), los tres modelos obtienen:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">resultados</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"A: GP media lineal (Universal Kriging)"</span><span class="p">:</span> <span class="n">rmse_a</span><span class="p">,</span>
+    <span class="s2">"B: Boosting + kriging de residuos (secuencial)"</span><span class="p">:</span> <span class="n">rmse_b</span><span class="p">,</span>
+    <span class="s2">"C: GPBoost (estimacion conjunta)"</span><span class="p">:</span> <span class="n">rmse_c</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== RMSE en el conjunto de prueba ==="</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">nombre</span><span class="p">,</span> <span class="n">rmse</span> <span class="ow">in</span> <span class="n">resultados</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">nombre</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rmse</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== RMSE en el conjunto de prueba ===
+A: GP media lineal (Universal Kriging): 1.6101
+B: Boosting + kriging de residuos (secuencial): 0.5262
+C: GPBoost (estimacion conjunta): 0.4071
+</pre></div>
+</div>
+</div>
+</div>
+<p>Como se esperaba de la teoría: el <strong>modelo A</strong> (media lineal) tiene el peor desempeño, porque no puede representar la forma de <span class="math notranslate nohighlight">\(f(X_1, X_2)\)</span> —sin importar cuántos datos le demos, seguirá cometiendo el mismo error sistemático—. El <strong>modelo B</strong> (secuencial) mejora sustancialmente al dejar que los árboles capturen la no linealidad, pero <strong>el modelo C (GPBoost) sigue siendo mejor</strong>, porque la retroalimentación entre el árbol y el GP en cada ronda evita que ninguno de los dos componentes quede mal ajustado por el otro.</p>
+<p>¿Por qué exactamente es mejor el modelo C? Comparemos los <strong>hiperparámetros de covarianza estimados</strong> —el rango y la varianza espacial verdaderos son <span class="math notranslate nohighlight">\(\rho = 2.0\)</span> y <span class="math notranslate nohighlight">\(\sigma^2 = 1.0\)</span>— entre el modelo B (secuencial) y el modelo C (GPBoost):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"=== Modelo B (secuencial): hiperparametros del GP sobre los residuos ==="</span><span class="p">)</span>
+<span class="n">gp_model_b</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"=== Modelo C (GPBoost, conjunto): hiperparametros del GP ==="</span><span class="p">)</span>
+<span class="n">gp_model_c</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Modelo B (secuencial): hiperparametros del GP sobre los residuos ===
+=====================================================
+Model summary:
+Nb. observations: 800
+ Log-lik     AIC     BIC
+ -600.64 1207.29 1221.34
+-----------------------------------------------------
+Covariance parameters (random effects):
+           Param.  Std. err.
+Error_var  0.1891     0.0111
+GP_var     0.7248     0.2235
+GP_range   1.8259     0.2905
+=====================================================
+
+=== Modelo C (GPBoost, conjunto): hiperparametros del GP ===
+=====================================================
+Model summary:
+Nb. observations: 800
+Covariance parameters (random effects):
+           Param.  Std. err.
+Error_var  0.0281     0.0020
+GP_var     1.0066     0.3106
+GP_range   1.9817     0.2570
+=====================================================
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gpboost.basic.GPModel at 0x216c08c3a10&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>Fíjense en <code class="docutils literal notranslate"><span class="pre">GP_var</span></code> (la varianza espacial <span class="math notranslate nohighlight">\(\sigma^2\)</span>, verdadera = 1.0) y en <code class="docutils literal notranslate"><span class="pre">Error_var</span></code> (el nugget/ruido <span class="math notranslate nohighlight">\(\sigma_n^2\)</span>, verdadero = <span class="math notranslate nohighlight">\(0.3^2 = 0.09\)</span>). El modelo B, al haber ajustado los árboles <em>antes</em> y de forma ciega a la estructura espacial, típicamente <strong>subestima</strong> <code class="docutils literal notranslate"><span class="pre">GP_var</span></code> y <strong>sobreestima</strong> <code class="docutils literal notranslate"><span class="pre">Error_var</span></code>: parte de la señal espacial real quedó absorbida por los árboles de la primera fase (o simplemente diluida en un residuo que ya no es un GP «limpio»), y lo que le queda al GP de la segunda fase parece, incorrectamente, más ruidoso y menos espacialmente estructurado de lo que en verdad es. El modelo C, en cambio, recupera valores mucho más cercanos a los verdaderos <span class="math notranslate nohighlight">\(\rho=2.0\)</span> y <span class="math notranslate nohighlight">\(\sigma^2=1.0\)</span> — exactamente la ventaja que predice la teoría de la Sección 2: la estimación conjunta evita que el componente no paramétrico «se robe» señal espacial que le corresponde al GP.</p>
+</section>
+<section id="recupera-gpboost-la-forma-no-lineal-real-de-f-x">
+<h3>¿Recupera GPBoost la forma no lineal real de <span class="math notranslate nohighlight">\(F(X)\)</span>?<a class="headerlink" href="#recupera-gpboost-la-forma-no-lineal-real-de-f-x" title="Link to this heading">#</a></h3>
+<p>Podemos extraer, del modelo C, únicamente la parte de árboles <span class="math notranslate nohighlight">\(\hat{F}(X)\)</span> (sin el efecto espacial) usando <code class="docutils literal notranslate"><span class="pre">pred_latent=True</span></code>, y compararla contra la función verdadera <span class="math notranslate nohighlight">\(f(X_1, X_2=0)\)</span>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x1_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">X_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">x1_grid</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">100</span><span class="p">)])</span>  <span class="c1"># variamos X1, fijamos X2 = 0</span>
+<span class="n">coords_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">coords_train</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># ubicacion arbitraria (no afecta la parte fija)</span>
+
+<span class="n">pred_latent</span> <span class="o">=</span> <span class="n">bst_c</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">X_grid</span><span class="p">,</span> <span class="n">gp_coords_pred</span><span class="o">=</span><span class="n">coords_grid</span><span class="p">,</span> <span class="n">pred_latent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">F_hat</span> <span class="o">=</span> <span class="n">pred_latent</span><span class="p">[</span><span class="s2">"fixed_effect"</span><span class="p">]</span>
+<span class="n">f_verdadera</span> <span class="o">=</span> <span class="n">f_true</span><span class="p">(</span><span class="n">X_grid</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1_grid</span><span class="p">,</span> <span class="n">f_verdadera</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"$f(X_1, X_2=0)$ verdadera"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x1_grid</span><span class="p">,</span> <span class="n">F_hat</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\hat</span><span class="si">{F}</span><span class="s2">(X_1, X_2=0)$ estimada por GPBoost"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">"--"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"firebrick"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"$X_1$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"Efecto sobre $y$"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"GPBoost recupera la forma no lineal real de $F(X)$, sin haberla especificado"</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/210012c9367ff48e1f637cbb51625e9c9c670b222a4ba4ec6acd8ffea4d003a5.png" src="_images/210012c9367ff48e1f637cbb51625e9c9c670b222a4ba4ec6acd8ffea4d003a5.png" />
+</div>
+</div>
+<p>El ensamble de árboles recupera razonablemente bien la forma sinusoidal de la función real <strong>sin que nosotros le hayamos dicho su forma funcional</strong> —ni lineal, ni cuadrática, ni ninguna otra—, algo que un GP con media lineal (modelo A) jamás podría lograr.</p>
+</section>
+</section>
+<section id="efectos-agrupados-y-espaciales-combinados">
+<h2>Efectos agrupados y espaciales combinados<a class="headerlink" href="#efectos-agrupados-y-espaciales-combinados" title="Link to this heading">#</a></h2>
+<p>Muchos problemas geoespaciales tienen <strong>ambas</strong> fuentes de dependencia a la vez: una variable categórica de alta cardinalidad (país, municipio, cuenca) <em>y</em> una autocorrelación espacial continua dentro de —y a través de— esas categorías. El ejemplo de PIB regional europeo de la librería GPBoost combina exactamente esto: el ingreso de una región depende de efectos propios de cada país (institucionales, monetarios, fiscales) <em>más</em> de una autocorrelación espacial suave entre regiones geográficamente cercanas, que no respeta las fronteras administrativas.</p>
+<p>En <code class="docutils literal notranslate"><span class="pre">gpboost</span></code>, esto se especifica pasando <strong>ambos</strong> argumentos al mismo <code class="docutils literal notranslate"><span class="pre">GPModel</span></code>: <code class="docutils literal notranslate"><span class="pre">group_data=</span></code> para el efecto agrupado y <code class="docutils literal notranslate"><span class="pre">gp_coords=</span></code> para el efecto espacial. Lo ilustramos con un ejemplo sintético pequeño (15 grupos, con un efecto propio por grupo, más una covariable con efecto no lineal):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rng2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="mi">400</span>
+
+<span class="n">grupo</span> <span class="o">=</span> <span class="n">rng2</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>  <span class="c1"># p. ej., 15 "paises"</span>
+<span class="n">coords2</span> <span class="o">=</span> <span class="n">rng2</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">rng2</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">efecto_grupo</span> <span class="o">=</span> <span class="p">{</span><span class="n">g</span><span class="p">:</span> <span class="n">rng2</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">grupo</span><span class="p">)}</span>
+<span class="n">b_grupo</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">efecto_grupo</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">grupo</span><span class="p">])</span>
+
+<span class="n">y2</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">X2</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">b_grupo</span> <span class="o">+</span> <span class="n">rng2</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">n2</span><span class="p">)</span>
+
+<span class="n">gp_model_comb</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">GPModel</span><span class="p">(</span><span class="n">group_data</span><span class="o">=</span><span class="n">grupo</span><span class="p">,</span> <span class="n">gp_coords</span><span class="o">=</span><span class="n">coords2</span><span class="p">,</span>
+                             <span class="n">cov_function</span><span class="o">=</span><span class="s2">"matern"</span><span class="p">,</span> <span class="n">cov_fct_shape</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span>
+                             <span class="n">likelihood</span><span class="o">=</span><span class="s2">"gaussian"</span><span class="p">)</span>
+
+<span class="n">train_set_comb</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+<span class="n">bst_comb</span> <span class="o">=</span> <span class="n">gpb</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"objective"</span><span class="p">:</span> <span class="s2">"regression_l2"</span><span class="p">,</span> <span class="s2">"learning_rate"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                              <span class="s2">"max_depth"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"verbose"</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
+                      <span class="n">train_set</span><span class="o">=</span><span class="n">train_set_comb</span><span class="p">,</span> <span class="n">gp_model</span><span class="o">=</span><span class="n">gp_model_comb</span><span class="p">,</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">gp_model_comb</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=====================================================
+Model summary:
+Nb. observations: 400
+Nb. groups: 15 (Group_1)
+Covariance parameters (random effects):
+           Param.     Std. err.
+Error_var  0.0489  5.200000e-03
+Group_1    2.7715  1.012700e+00
+GP_var     0.0000  3.800000e-03
+GP_range   0.4958  2.921056e+06
+=====================================================
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;gpboost.basic.GPModel at 0x216c49a6a50&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<p>El resumen muestra un parámetro de varianza separado para el efecto de grupo (<code class="docutils literal notranslate"><span class="pre">Group_1</span></code>) y otro para el proceso espacial (<code class="docutils literal notranslate"><span class="pre">GP_var</span></code>, <code class="docutils literal notranslate"><span class="pre">GP_range</span></code>) — ambos estimados <strong>conjuntamente</strong> con el ensamble de árboles que captura el efecto no lineal de <span class="math notranslate nohighlight">\(X\)</span>.</p>
+</section>
+<section id="mas-alla-de-la-regresion-verosimilitudes-no-gaussianas-lagaboost">
+<h2>Más allá de la regresión: verosimilitudes no Gaussianas (LaGaBoost)<a class="headerlink" href="#mas-alla-de-la-regresion-verosimilitudes-no-gaussianas-lagaboost" title="Link to this heading">#</a></h2>
+<p>Todo lo anterior asumió una respuesta continua Gaussiana. El marco general de Sigrist (2023) —el algoritmo <strong>LaGaBoost</strong>, del cual GPBoost es el caso particular Gaussiano— permite exactamente la misma idea para <strong>cualquier</strong> distribución de la familia exponencial, usando la aproximación de Laplace de la Sección 4 del marco teórico:</p>
+<div class="math notranslate nohighlight">
+\[y \sim p(y \mid m), \qquad m = G\big(F(X) + Zb\big)\]</div>
+<p>Por ejemplo, <code class="docutils literal notranslate"><span class="pre">likelihood=&quot;bernoulli_probit&quot;</span></code> permite modelar una <strong>ocurrencia binaria</strong> (¿hubo o no un deslizamiento en esta ladera?) con un efecto espacial latente y un ensamble de árboles para las covariables geotécnicas — conceptualmente muy cercano al <strong>LGCP</strong> de <code class="docutils literal notranslate"><span class="pre">17_LGCP.Rmd</span></code>, pero para clasificación binaria en lugar de conteo de eventos puntuales, y con <span class="math notranslate nohighlight">\(F(X)\)</span> no paramétrico en lugar de un predictor lineal. Otras opciones incluyen <code class="docutils literal notranslate"><span class="pre">&quot;poisson&quot;</span></code> (conteos) y <code class="docutils literal notranslate"><span class="pre">&quot;gamma&quot;</span></code> (variables positivas asimétricas). La sintaxis es idéntica a la de los ejemplos anteriores; solo cambia el argumento <code class="docutils literal notranslate"><span class="pre">likelihood</span></code> del <code class="docutils literal notranslate"><span class="pre">GPModel</span></code>.</p>
+</section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Efecto del tamaño de muestra.</strong> Repite el experimento de la sección <em>Ejemplo práctico</em> con <span class="math notranslate nohighlight">\(n = 200\)</span> y con <span class="math notranslate nohighlight">\(n = 3000\)</span> observaciones. ¿La ventaja de GPBoost sobre el enfoque secuencial (modelo B) se hace más grande o más pequeña al aumentar los datos? Relaciona tu respuesta con la Sección 2 del marco teórico.</p></li>
+<li><p><strong>Covariables correlacionadas con la ubicación.</strong> Modifica la simulación para que <span class="math notranslate nohighlight">\(X_1\)</span> esté correlacionada con las coordenadas espaciales (por ejemplo, <code class="docutils literal notranslate"><span class="pre">X1</span> <span class="pre">=</span> <span class="pre">coords[:,0]/3</span> <span class="pre">+</span> <span class="pre">ruido</span></code>). Vuelve a comparar los tres modelos. ¿El desempeño del modelo B (secuencial) empeora respecto al caso donde <span class="math notranslate nohighlight">\(X\)</span> es independiente de la ubicación? ¿Por qué, según la Sección 2?</p></li>
+<li><p><strong>Kernels y tasa de aprendizaje.</strong> Cambia <code class="docutils literal notranslate"><span class="pre">cov_function</span></code> de <code class="docutils literal notranslate"><span class="pre">&quot;matern&quot;</span></code> a <code class="docutils literal notranslate"><span class="pre">&quot;exponential&quot;</span></code> y <code class="docutils literal notranslate"><span class="pre">&quot;gaussian&quot;</span></code> (recordando la Sección <em>Correspondencia entre kernels y modelos de variograma</em> de <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code>), y varía <code class="docutils literal notranslate"><span class="pre">learning_rate</span></code> en <code class="docutils literal notranslate"><span class="pre">params_c</span></code> entre 0.01, 0.1 y 0.3. Grafica el RMSE de GPBoost en función de estas combinaciones.</p></li>
+<li><p><strong>Efectos agrupados de alta cardinalidad.</strong> Aumenta el número de grupos del ejemplo combinado a 100. Compara el desempeño de incluir el grupo como <em>dummy variables</em> directamente en <span class="math notranslate nohighlight">\(X\)</span> (para que lo procesen los árboles) contra dejarlo como efecto aleatorio en <code class="docutils literal notranslate"><span class="pre">group_data=</span></code>. ¿Cuál escala mejor y por qué?</p></li>
+<li><p><strong>Verosimilitud no Gaussiana.</strong> Usando la función <code class="docutils literal notranslate"><span class="pre">simulate_response_variable()</span></code> del <a class="reference external" href="https://github.com/fabsig/GPBoost/blob/master/examples/python-guide/generalized_linear_Gaussian_process_mixed_effects_models.py">script de ejemplo de GPBoost</a>, simula datos binarios (<code class="docutils literal notranslate"><span class="pre">likelihood=&quot;bernoulli_probit&quot;</span></code>) con un efecto espacial, y ajusta un modelo GPBoost de clasificación. Compara sus predicciones de probabilidad con las de una regresión logística con covariables espaciales lineales.</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/fabsig/GPBoost">GPBoost (repositorio principal)</a></p></li>
+<li><p><a class="reference external" href="https://github.com/fabsig/GPBoost/tree/master/examples/python-guide">Ejemplos en Python</a></p></li>
+<li><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/fabsig/GPBoost/blob/master/examples/GPBoost_demo.html">Demo interactivo de GPBoost</a></p></li>
+<li><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/fabsig/GPBoost/blob/master/examples/European_GDP_spatial_grouped_data.html">Ejemplo de PIB regional europeo (efectos agrupados + GP espacial)</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Sigrist, F. (2022). <a class="reference external" href="https://arxiv.org/abs/2004.02653">Gaussian Process Boosting</a>. <em>Journal of Machine Learning Research</em>, 23(232), 1-46.</p></li>
+<li><p>Sigrist, F. (2023). <a class="reference external" href="https://ieeexplore.ieee.org/document/9759834">Latent Gaussian Model Boosting</a>. <em>IEEE Transactions on Pattern Analysis and Machine Intelligence</em>, 45(2), 1894-1905.</p></li>
+<li><p>Kündig, P. &amp; Sigrist, F. (2024). <a class="reference external" href="https://www.tandfonline.com/doi/full/10.1080/01621459.2024.2410004">Iterative Methods for Vecchia-Laplace Approximations for Latent Gaussian Process Models</a>. <em>Journal of the American Statistical Association</em>.</p></li>
+<li><p>Pinheiro, J. &amp; Bates, D. (2006). <em>Mixed-Effects Models in S and S-PLUS</em>. Springer.</p></li>
+<li><p>Ke, G. et al. (2017). <a class="reference external" href="https://papers.nips.cc/paper/6907-lightgbm-a-highly-efficient-gradient-boosting-decision-tree">LightGBM: A Highly Efficient Gradient Boosting Decision Tree</a>. <em>Advances in Neural Information Processing Systems</em>, 30.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "geospatial"
+        },
+        kernelOptions: {
+            name: "geospatial",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'geospatial'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="17_LGCP.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">El Proceso de Cox Log-Gaussiano (LGCP)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="18_DB.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Bases de datos geoespaciales</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marco-teorico">Marco teórico</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-problema-de-partida-quien-modela-la-tendencia-y-quien-modela-la-autocorrelacion">1. El problema de partida: ¿quién modela la tendencia y quién modela la autocorrelación?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#por-que-las-opciones-1-y-2-no-son-ideales">2. Por qué las opciones 1 y 2 no son ideales</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-modelo-de-gpboost">3. El modelo de GPBoost</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#como-se-estima-esto-conjuntamente-la-verosimilitud-marginal-y-la-aproximacion-de-laplace">4. ¿Cómo se estima esto conjuntamente? La verosimilitud marginal y la aproximación de Laplace</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-algoritmo-lagaboost-gpboost-estimacion-conjunta-no-secuencial">5. El algoritmo LaGaBoost / GPBoost: estimación conjunta, no secuencial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tipos-de-efectos-latentes-agrupados-espaciales-y-combinados">6. Tipos de efectos latentes: agrupados, espaciales, y combinados</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#resumen-comparativo">7. Resumen comparativo</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-practico-comparando-las-tres-estrategias-con-datos-simulados">Ejemplo práctico: comparando las tres estrategias con datos simulados</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-a-proceso-gaussiano-con-media-lineal-kriging-universal">Modelo A: Proceso Gaussiano con media lineal (~ Kriging Universal)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-b-enfoque-secuencial-arboles-residuos-kriging">Modelo B: enfoque secuencial (árboles → residuos → kriging)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-c-gpboost-estimacion-conjunta">Modelo C: GPBoost (estimación conjunta)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#comparacion-de-resultados">Comparación de resultados</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recupera-gpboost-la-forma-no-lineal-real-de-f-x">¿Recupera GPBoost la forma no lineal real de <span class="math notranslate nohighlight">\(F(X)\)</span>?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#efectos-agrupados-y-espaciales-combinados">Efectos agrupados y espaciales combinados</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mas-alla-de-la-regresion-verosimilitudes-no-gaussianas-lagaboost">Más allá de la regresión: verosimilitudes no Gaussianas (LaGaBoost)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1514 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>El Proceso de Cox Log-Gaussiano (LGCP) &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '17_LGCP';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/17_LGCP.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="GPBoost: Boosting de Árboles + Procesos Gaussianos" href="18_GPBoost.html" />
+    <link rel="prev" title="Procesos Gaussianos con INLA: el enfoque de malla (SPDE)" href="16_GP.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="09_SpatialRegression.html">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F17_LGCP.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/17_LGCP.Rmd" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.Rmd</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>El Proceso de Cox Log-Gaussiano (LGCP)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aclaracion-conceptual-la-doble-aleatoriedad-del-lgcp">Aclaración conceptual: la doble aleatoriedad del LGCP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#en-que-se-diferencia-un-lgcp-de-un-proceso-gaussiano-de-regresion">¿En qué se diferencia un LGCP de un Proceso Gaussiano de regresión?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-concepto-de-doble-aleatoriedad">El concepto de doble aleatoriedad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-no-homogeneo-vs-lgcp-cuando-hay-una-capa-de-azar-y-cuando-dos">Poisson no homogéneo vs. LGCP: ¿cuándo hay una capa de azar y cuándo dos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-1">Ejemplo 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-2">Ejemplo 2</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="https://www.paulamoraga.com/book-spatial/point-process-modeling.html">Spatial Statistics for Data Science: Theory and Practice with R</a>. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="el-proceso-de-cox-log-gaussiano-lgcp">
+<h1>El Proceso de Cox Log-Gaussiano (LGCP)<a class="headerlink" href="#el-proceso-de-cox-log-gaussiano-lgcp" title="Link to this heading">#</a></h1>
+<p>Un proceso de Poisson no homogéneo «clásico» (un GLM de Poisson) también permite que la intensidad <span class="math notranslate nohighlight">\(\lambda(s)\)</span> varíe en el espacio, pero en ese caso
+<span class="math notranslate nohighlight">\(\lambda(s)\)</span> está <strong>completamente determinada</strong> por variables predictoras conocidas (p. ej. un modelo lineal en covariables): dadas las variables, no
+queda ninguna incertidumbre adicional sobre la tasa de eventos. El <strong>Log-Gaussiano Cox (LGCP)</strong> es un modelo distinto, y no un simple sinónimo: aquí
+<span class="math notranslate nohighlight">\(\lambda(s)\)</span> no es una función determinística de covariables, sino que es en sí misma una variable aleatoria, generada por un Proceso Gaussiano
+latente. Por eso el LGCP se conoce como un proceso <strong>doblemente estocástico</strong> —hay azar en el conteo final de eventos (como en cualquier Poisson) y,
+además, hay azar en la propia intensidad esperada antes de observar el mundo—. Esta distinción se explica en detalle más abajo, en
+<em>Aclaración conceptual: la doble aleatoriedad del LGCP</em>.</p>
+<p>Dada un área <span class="math notranslate nohighlight">\(A\)</span>, la probabilidad de observar un cierto número de puntos en dicha área sigue una distribución de Poisson con intensidad (valor
+esperado):</p>
+<div class="math notranslate nohighlight">
+\[
+\lambda_A=\int{\lambda(s)ds}
+\]</div>
+<p>La parte gaussiana de LGCP viene de la modelación <span class="math notranslate nohighlight">\(log(\lambda(s))\)</span> como un Gaussiano latente (condicionado a un conjunto de parámetros),
+en un marco típico de GLM or GAM.</p>
+<p>El proceso de Cox log-Gaussiano (LGCP) es un modelo probabilístico de patrones de puntos que se observan típicamente en el espacio o el tiempo.
+Tiene dos componentes principales. Primero, un campo de <em>intensidad</em> subyacente <span class="math notranslate nohighlight">\(\lambda(s)\)</span> de valores reales positivos se modela sobre todo el
+dominio <span class="math notranslate nohighlight">\(X\)</span> utilizando un proceso Gaussiano transformado exponencialmente, lo que obliga a que <span class="math notranslate nohighlight">\(\lambda\)</span> sea positivo. Luego, este campo de intensidad
+se utiliza para parametrizar un proceso de puntos de Poisson, que representa un mecanismo estocástico para colocar puntos en el espacio.
+Algunos fenómenos que pueden representarse con este modelo incluyen la incidencia de casos de cáncer en un condado o las ubicaciones espaciotemporales
+de eventos delictivos en una ciudad. Tanto las dimensiones espaciales como temporales se pueden manejar de manera equivalente dentro de este marco,
+aunque este tutorial solo aborda datos en dos dimensiones espaciales.</p>
+<p>En términos más formales, si tenemos un espacio <span class="math notranslate nohighlight">\(X\)</span> y <span class="math notranslate nohighlight">\(A\subseteq X\)</span>, la distribución sobre el número de puntos <span class="math notranslate nohighlight">\(Y_A\)</span> que ocurren dentro del
+subconjunto <span class="math notranslate nohighlight">\(A\)</span> se define como:</p>
+<div class="math notranslate nohighlight">
+\[Y_A \sim Poisson\left(\int_A \lambda(s) ds\right)\]</div>
+<p>y el campo de intensidad se define como</p>
+<div class="math notranslate nohighlight">
+\[\log \lambda(s) \sim GP(\mu(s), K(s,s'))\]</div>
+<p>donde <span class="math notranslate nohighlight">\(GP(\mu(s), K(s,s'))\)</span> denota un proceso Gaussiano con función de media <span class="math notranslate nohighlight">\(\mu(s)\)</span> y núcleo de covarianza <span class="math notranslate nohighlight">\(K(s,s')\)</span> para una ubicación <span class="math notranslate nohighlight">\(s \in X\)</span>.</p>
+<p>Un LGCP es un proceso estocástico que tambien puede expresarce de la forma:</p>
+<p><span class="math notranslate nohighlight">\(\lambda_s = e^{Z(s)}\)</span>,</p>
+<p>donde Z = {Z(s) : s ∈ R²} es un proceso Gaussiano. Entonces, condicionado a <span class="math notranslate nohighlight">\(\lambda(s)\)</span>, el proceso de puntos es un proceso de Poisson no-homogéneo
+con intensidad <span class="math notranslate nohighlight">\(\lambda(s)\)</span>. Esto implica que el número de eventos en cualquier región A se distribuye según una Poisson con media <span class="math notranslate nohighlight">\(\int_A \lambda(s)\)</span>
+ds, y las ubicaciones de los eventos son una muestra aleatoria independiente de la distribución en A con una densidad de probabilidad proporcional
+a <span class="math notranslate nohighlight">\(\lambda(s)\)</span>. Un modelo LGCP también puede incluir variables explicativas espaciales, proporcionando un enfoque flexible para describir y
+predecir una amplia gama de fenómenos espaciales.</p>
+<section id="aclaracion-conceptual-la-doble-aleatoriedad-del-lgcp">
+<h2>Aclaración conceptual: la doble aleatoriedad del LGCP<a class="headerlink" href="#aclaracion-conceptual-la-doble-aleatoriedad-del-lgcp" title="Link to this heading">#</a></h2>
+<section id="en-que-se-diferencia-un-lgcp-de-un-proceso-gaussiano-de-regresion">
+<h3>¿En qué se diferencia un LGCP de un Proceso Gaussiano de regresión?<a class="headerlink" href="#en-que-se-diferencia-un-lgcp-de-un-proceso-gaussiano-de-regresion" title="Link to this heading">#</a></h3>
+<p>En <a class="reference internal" href="15_GP.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code></span></a> vimos el Proceso Gaussiano (GP) como una distribución de probabilidad sobre <em>funciones continuas</em>, útil para
+regresión de variables como temperatura o elevación. El <strong>Proceso de Cox Log-Gaussiano (LGCP)</strong> es distinto: es un <strong>proceso de puntos</strong>,
+diseñado para modelar la <em>ocurrencia</em> de eventos discretos en el espacio (ubicación de árboles, sismos, deslizamientos), no para predecir un
+valor continuo. El LGCP modela la <em>intensidad</em> —la tasa de ocurrencia de eventos— usando un GP transformado exponencialmente para garantizar
+que sea siempre positiva:</p>
+<div class="math notranslate nohighlight">
+\[\lambda(s) = \exp(Z(s))\]</div>
+<p>donde <span class="math notranslate nohighlight">\(Z(s)\)</span> es el GP latente. Esta transformación exponencial es la pieza que conecta ambos mundos: todo lo aprendido en <code class="docutils literal notranslate"><span class="pre">15_GP.ipynb</span></code> sobre
+kernels, Cholesky y covarianza aplica directamente a <span class="math notranslate nohighlight">\(Z(s)\)</span>; lo nuevo en el LGCP es el paso adicional de convertir esa intensidad continua en
+conteos discretos de eventos.</p>
+</section>
+<section id="el-concepto-de-doble-aleatoriedad">
+<h3>El concepto de doble aleatoriedad<a class="headerlink" href="#el-concepto-de-doble-aleatoriedad" title="Link to this heading">#</a></h3>
+<p>Un LGCP se conoce estadísticamente como un <strong>Proceso de Poisson doblemente estocástico</strong> o <strong>Proceso de Cox</strong>. Posee dos capas independientes
+de incertidumbre:</p>
+<p><strong>Capa 1 — el azar del entorno (el Proceso Gaussiano latente):</strong> antes de observar datos en el mundo real, factores ocultos e inmedibles del
+entorno cambian de forma continua. El GP modela esa variabilidad definiendo un <strong>mapa de intensidad o susceptibilidad aleatorio</strong>. Cada vez
+que simulamos el GP obtenemos un mapa de riesgo suave y continuo ligeramente distinto, debido únicamente a esta primera capa de azar.</p>
+<p><strong>Capa 2 — el azar del conteo (el Proceso de Poisson):</strong> incluso si «congelamos» la primera capa —es decir, ya sabemos con certeza que en una
+coordenada exacta el riesgo esperado es <span class="math notranslate nohighlight">\(\lambda = 3.5\)</span> eventos al año—, los eventos reales no ocurren con exactitud matemática. El paso de
+una tasa continua (<span class="math notranslate nohighlight">\(\lambda = 3.5\)</span>) a un número entero de eventos discretos (<span class="math notranslate nohighlight">\(0, 1, 2, 3, 4, 5, \ldots\)</span>) está gobernado por una
+<strong>distribución de Poisson</strong>, que introduce esta segunda capa de azar o ruido de conteo.</p>
+<blockquote>
+<div><p><strong>Nota:</strong> si conociéramos con certeza absoluta la función de intensidad <span class="math notranslate nohighlight">\(\lambda(s)\)</span> (es decir, si «congeláramos» por completo la
+aleatoriedad del GP), lo único que quedaría para simular los puntos finales sería un <strong>Proceso de Poisson no homogéneo estándar</strong> —sin la
+Capa 1.</p>
+</div></blockquote>
+<p>El siguiente ejemplo conceptual en 1D hace tangibles ambas capas antes de pasar a los ejemplos completos con INLA/SPDE.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set.seed(123)
+
+# Ubicaciones en 1D (ej. distancia en km a lo largo de una ladera)
+s &lt;- seq(0, 10, length.out = 60)
+
+# Kernel RBF -- la misma covarianza usada en 15_GP.ipynb -- para
+# construir la matriz de covarianza del GP latente Z(s)
+rbf_kernel &lt;- function(s1, s2, length_scale = 1.5, sigma2 = 1) {
+  sigma2 * exp(-outer(s1, s2, "-")^2 / (2 * length_scale^2))
+}
+
+K &lt;- rbf_kernel(s, s) + diag(1e-8, length(s)) # jitter para estabilidad numérica
+L &lt;- chol(K) # descomposición de Cholesky (ver 15_GP.ipynb)
+
+beta0 &lt;- 1.2 # log-intensidad media de fondo
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>Capa 1 — dos realizaciones distintas del GP latente producen dos mapas de riesgo distintos:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Z1 &lt;- as.vector(t(L) %*% rnorm(length(s)))
+Z2 &lt;- as.vector(t(L) %*% rnorm(length(s)))
+
+lambda1 &lt;- exp(beta0 + Z1)
+lambda2 &lt;- exp(beta0 + Z2)
+
+plot(s, lambda1,
+  type = "l", col = "steelblue", lwd = 2,
+  ylim = range(c(lambda1, lambda2)),
+  xlab = "Ubicación s", ylab = expression(lambda(s)),
+  main = "Capa 1: dos realizaciones del GP latente Z(s)"
+)
+lines(s, lambda2, col = "firebrick", lwd = 2)
+legend("topright",
+  legend = c("Realización 1 de Z(s)", "Realización 2 de Z(s)"),
+  col = c("steelblue", "firebrick"), lty = 1, lwd = 2, bty = "n"
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Cada curva es un mapa de intensidad completo y suave, distinto solo porque la Capa 1 (el GP) fue muestreada de nuevo.</p>
+<p><strong>Capa 2 — congelando la intensidad de la Capa 1, el conteo de eventos sigue siendo aleatorio:</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Congelamos lambda1 (ya no cambia) y simulamos el conteo Poisson
+# varias veces sobre la MISMA intensidad
+set.seed(1)
+conteos_repetidos &lt;- replicate(5, rpois(length(s), lambda = lambda1))
+colnames(conteos_repetidos) &lt;- paste0("simulacion_", 1:5)
+head(conteos_repetidos, 10)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>matplot(s, conteos_repetidos,
+  type = "s", lty = 1,
+  col = adjustcolor(1:5, alpha.f = 0.7),
+  xlab = "Ubicación s", ylab = "Número de eventos",
+  main = "Capa 2: 5 simulaciones de conteo con la MISMA intensidad"
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Con exactamente la misma intensidad <span class="math notranslate nohighlight">\(\lambda_1(s)\)</span>, cada simulación produce un número y una ubicación de eventos ligeramente distinta —ese es
+el ruido de conteo de la Capa 2. Si combinamos ambas capas (nueva <span class="math notranslate nohighlight">\(Z(s)\)</span> <strong>y</strong> nuevo sorteo de Poisson en cada simulación completa) obtenemos
+la variabilidad total de un LGCP.</p>
+</section>
+<section id="poisson-no-homogeneo-vs-lgcp-cuando-hay-una-capa-de-azar-y-cuando-dos">
+<h3>Poisson no homogéneo vs. LGCP: ¿cuándo hay una capa de azar y cuándo dos?<a class="headerlink" href="#poisson-no-homogeneo-vs-lgcp-cuando-hay-una-capa-de-azar-y-cuando-dos" title="Link to this heading">#</a></h3>
+<p>Un Proceso de Poisson no homogéneo tradicional también permite que <span class="math notranslate nohighlight">\(\lambda(s)\)</span> varíe en el espacio, usando variables predictoras conocidas
+(p. ej. pendiente o tipo de roca). Sin embargo, <strong>eso no lo convierte en un LGCP</strong>:</p>
+<ul class="simple">
+<li><p><strong>Poisson no homogéneo estándar:</strong> la intensidad está completamente determinada por las variables predictoras físicas:
+$<span class="math notranslate nohighlight">\(\lambda(s) = \exp(\beta_1 \cdot \text{Pendiente}(s) + \beta_2 \cdot \text{Geología}(s))\)</span><span class="math notranslate nohighlight">\(
+Dadas las variables, \)</span>\lambda(s)$ es una certeza absoluta (un número fijo); no hay incertidumbre residual en la tasa — solo existe la Capa 2
+(el conteo).</p></li>
+<li><p><strong>LGCP:</strong> asume que las variables físicas conocidas no pueden medirlo todo (microclimas, filtraciones locales, heterogeneidad no
+observada). Por eso añade un término de error con correlación espacial suave dictado por un GP (<span class="math notranslate nohighlight">\(Z(s)\)</span>):
+$<span class="math notranslate nohighlight">\(\lambda(s) = \exp(\beta_1 \cdot \text{Pendiente}(s) + \beta_2 \cdot \text{Geología}(s) + Z(s))\)</span><span class="math notranslate nohighlight">\(
+Incluso conociendo perfectamente las variables predictoras, la intensidad sigue siendo una variable aleatoria debido al componente latente
+\)</span>Z(s)$ — existen ambas capas.</p></li>
+</ul>
+<p>En los dos ejemplos con INLA/SPDE que siguen, el término <code class="docutils literal notranslate"><span class="pre">f(s,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">spde)</span></code> (o <code class="docutils literal notranslate"><span class="pre">f(i,</span> <span class="pre">model</span> <span class="pre">=</span> <span class="pre">spde)</span></code>) es precisamente quien estima el
+componente latente <span class="math notranslate nohighlight">\(Z(s)\)</span> —la Capa 1—, mientras que la verosimilitud <code class="docutils literal notranslate"><span class="pre">family</span> <span class="pre">=</span> <span class="pre">'poisson'</span></code> de INLA es quien maneja la Capa 2.</p>
+</section>
+<section id="ejemplo-1">
+<h3>Ejemplo 1<a class="headerlink" href="#ejemplo-1" title="Link to this heading">#</a></h3>
+<p>En este notebook, asumimos que hemos observado un patrón espacial de puntos de ubicaciones de eventos {x_i : i = 1, …, n} que ha sido generado como una realización de un LGCP, y mostramos cómo ajustar un modelo LGCP a los datos utilizando los enfoques INLA y SPDE. El Capítulo 15 introdujo el enfoque SPDE y describió su implementación en el contexto de la geoestadística basada en modelos utilizando un ejemplo de predicción de contaminación del aire. Aquí, describimos cómo usar SPDE para ajustar un modelo LGCP a un patrón de puntos de especies de plantas para estimar la intensidad del proceso.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library("sf")
+library("spocc")
+library("ggplot2")
+library(sf)
+library(terra)
+library(rnaturalearth)
+library(INLA)
+library(rgeos)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>devtools::install_github("cran/rgeos")
+</pre></div>
+</div>
+</div>
+</div>
+<p>En este ejemplo, estimamos la intensidad de las especies de plantas de Solanum en Bolivia desde enero de 2015 hasta diciembre de 2022, obtenidas de
+la base de datos Global Biodiversity Information Facility (GBIF) con el paquete <code class="docutils literal notranslate"><span class="pre">spocc</span></code>. Recuperamos los datos utilizando la función <code class="docutils literal notranslate"><span class="pre">occ()</span></code>,
+especificando el nombre científico de la especie de planta, la fuente de datos, las fechas y el código del país. También especificamos
+<code class="docutils literal notranslate"><span class="pre">has_coords</span> <span class="pre">=</span> <span class="pre">TRUE</span></code> para devolver solo las ocurrencias que tienen coordenadas, y <code class="docutils literal notranslate"><span class="pre">limit</span> <span class="pre">=</span> <span class="pre">1000</span></code> para establecer el límite en el número de registros.
+Aquí, mostramos cómo formular y ajustar un modelo LGCP para las especies de plantas de Solanum en Bolivia utilizando un campo aleatorio Gaussiano
+continuo con INLA y SPDE. El modelo nos permite estimar la intensidad del proceso que genera las ubicaciones.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>df &lt;- occ(
+  query = "solanum", from = "gbif",
+  date = c("2015-01-01", "2022-12-31"),
+  gbifopts = list(country = "BO"),
+  has_coords = TRUE, limit = 1000
+)
+d &lt;- occ2df(df)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Utilizamos la función <code class="docutils literal notranslate"><span class="pre">st_as_sf()</span></code> para crear un objeto <code class="docutils literal notranslate"><span class="pre">sf</span></code> llamado <code class="docutils literal notranslate"><span class="pre">d</span></code> que contiene las nrow(d) = 263 ubicaciones recuperadas. Establecemos el
+sistema de referencia de coordenadas (CRS) al código EPSG 4326 ya que las coordenadas de las ubicaciones están dadas por valores de longitud y
+latitud.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>d &lt;- st_as_sf(d[, 2:3], coords = c("longitude", "latitude"))
+st_crs(d) &lt;- "EPSG:4326"
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para trabajar con kilómetros en lugar de grados, proyectamos los datos a UTM 19S correspondiente al código EPSG 5356 con kilómetros como unidades.
+Para hacerlo, obtenemos <code class="docutils literal notranslate"><span class="pre">st_crs(&quot;EPSG:5356&quot;)$proj4string</span></code> y cambiamos <code class="docutils literal notranslate"><span class="pre">+units=m</span></code> por <code class="docutils literal notranslate"><span class="pre">+units=km</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>st_crs("EPSG:5356")$proj4string
+projUTM &lt;- "+proj=utm +zone=19 +south +ellps=GRS80
++towgs84=0,0,0,0,0,0,0 +units=km +no_defs"
+d &lt;- st_transform(d, crs = projUTM)
+</pre></div>
+</div>
+</div>
+</div>
+<p>También obtenemos el mapa de Bolivia con el paquete <code class="docutils literal notranslate"><span class="pre">rnaturalearth</span></code> y lo proyectamos a UTM 19S con kilómetros como unidades.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>map &lt;- ne_countries(
+  type = "countries", country = "Bolivia",
+  scale = "medium", returnclass = "sf"
+)
+map &lt;- st_transform(map, crs = projUTM)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ggplot() +
+  geom_sf(data = map) +
+  geom_sf(data = d) +
+  coord_sf(datum = projUTM)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finalmente, creamos un data frame llamado <code class="docutils literal notranslate"><span class="pre">coo</span></code> con las ubicaciones de los eventos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>coo &lt;- st_coordinates(d)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora, construimos una matriz con las ubicaciones <code class="docutils literal notranslate"><span class="pre">coop</span></code> donde queremos predecir la intensidad del proceso puntual. Para hacerlo, primero creamos un
+raster que cubra el mapa utilizando la función <code class="docutils literal notranslate"><span class="pre">rast()</span></code> del paquete <code class="docutils literal notranslate"><span class="pre">terra</span></code>. Luego, recuperamos las coordenadas de las celdas con la función
+<code class="docutils literal notranslate"><span class="pre">xyFromCell()</span></code> del paquete <code class="docutils literal notranslate"><span class="pre">terra</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># raster grid covering map
+grid &lt;- terra::rast(map, nrows = 100, ncols = 100)
+# coordinates of all cells
+xy &lt;- terra::xyFromCell(grid, 1:ncell(grid))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Creamos un objeto <code class="docutils literal notranslate"><span class="pre">sf</span></code> llamado <code class="docutils literal notranslate"><span class="pre">dp</span></code> con las ubicaciones de predicción utilizando <code class="docutils literal notranslate"><span class="pre">st_as_sf()</span></code>, y usamos <code class="docutils literal notranslate"><span class="pre">st_filter()</span></code> para conservar las
+ubicaciones de predicción que se encuentran dentro del mapa. También recuperamos los índices de los puntos dentro del mapa utilizando
+<code class="docutils literal notranslate"><span class="pre">st_intersects()</span></code>, configurando <code class="docutils literal notranslate"><span class="pre">sparse</span> <span class="pre">=</span> <span class="pre">FALSE</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># transform points to a sf object
+dp &lt;- st_as_sf(as.data.frame(xy),
+  coords = c("x", "y"),
+  crs = st_crs(map)
+)
+
+# indices points within the map
+indicespointswithin &lt;- which(st_intersects(dp, map,
+  sparse = FALSE
+))
+
+# points within the map
+dp &lt;- st_filter(dp, map)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ggplot() +
+  geom_sf(data = map) +
+  geom_sf(data = dp) +
+  coord_sf(datum = projUTM)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>coop &lt;- st_coordinates(dp)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Utilizamos un LGCP para modelar el patrón de puntos de las especies de plantas. Así, asumimos que el proceso que origina las ubicaciones de las
+especies de plantas es un proceso de Poisson con una intensidad variable expresada como:</p>
+<p><span class="math notranslate nohighlight">\(log(Λ(s)) = β₀ + Z(s),\)</span></p>
+<p>donde β₀ es el intercepto y Z(⋅) es un proceso espacial gaussiano de media cero con función de covarianza Matérn.</p>
+<p>Para ajustar el modelo utilizando INLA y SPDE, primero construimos una malla. En el análisis de patrones de puntos, generalmente no empleamos
+las ubicaciones como vértices de la malla. Construimos una malla que cubre la región de estudio utilizando la función <code class="docutils literal notranslate"><span class="pre">inla.mesh.2d()</span></code>,
+estableciendo <code class="docutils literal notranslate"><span class="pre">loc.domain</span></code> igual a una matriz con las ubicaciones de los puntos en el límite de la región. Los otros argumentos son los
+siguientes: <code class="docutils literal notranslate"><span class="pre">max.edge</span></code> denota las longitudes máximas permitidas de los bordes de los triángulos en la región interior y la extensión. <code class="docutils literal notranslate"><span class="pre">offset</span></code>
+especifica el tamaño de las extensiones interior y exterior alrededor de las ubicaciones de los datos. <code class="docutils literal notranslate"><span class="pre">cutoff</span></code> es la distancia mínima permitida
+entre puntos que utilizamos para evitar construir muchos triángulos pequeños alrededor de ubicaciones agrupadas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>summary(dist(coo)) # summary of distances between event locations
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>loc.d &lt;- cbind(st_coordinates(map)[, 1], st_coordinates(map)[, 2])
+
+mesh &lt;- inla.mesh.2d(loc.domain = loc.d, max.edge = c(50, 100), offset = c(50, 100), cutoff = 1)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plot(mesh)
+points(coo, col = "red")
+axis(1)
+axis(2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>También creamos las variables <code class="docutils literal notranslate"><span class="pre">nv</span></code> con el número de vértices de la malla y la variable <code class="docutils literal notranslate"><span class="pre">n</span></code> con el número de eventos del patrón de puntos.
+Más adelante, utilizaremos estas variables para construir las pilas de datos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(nv &lt;- mesh$n)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(n &lt;- nrow(coo))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spde &lt;- inla.spde2.matern(mesh = mesh, alpha = 2, constr = TRUE)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Utilizamos la función <code class="docutils literal notranslate"><span class="pre">inla.spde2.matern()</span></code> para construir el modelo SPDE en la malla.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>book.mesh.dual &lt;- function(mesh) {
+  if (mesh$manifold == "R2") {
+    ce &lt;- t(sapply(1:nrow(mesh$graph$tv), function(i) {
+      colMeans(mesh$loc[mesh$graph$tv[i, ], 1:2])
+    }))
+    library(parallel)
+    pls &lt;- mclapply(1:mesh$n, function(i) {
+      p &lt;- unique(Reduce("rbind", lapply(1:3, function(k) {
+        j &lt;- which(mesh$graph$tv[, k] == i)
+        if (length(j) &gt; 0) {
+          return(rbind(
+            ce[j, , drop = FALSE],
+            cbind(
+              mesh$loc[mesh$graph$tv[j, k], 1] +
+                mesh$loc[mesh$graph$tv[j, c(2:3, 1)[k]], 1],
+              mesh$loc[mesh$graph$tv[j, k], 2] +
+                mesh$loc[mesh$graph$tv[j, c(2:3, 1)[k]], 2]
+            ) / 2
+          ))
+        } else {
+          return(ce[j, , drop = FALSE])
+        }
+      })))
+      j1 &lt;- which(mesh$segm$bnd$idx[, 1] == i)
+      j2 &lt;- which(mesh$segm$bnd$idx[, 2] == i)
+      if ((length(j1) &gt; 0) | (length(j2) &gt; 0)) {
+        p &lt;- unique(rbind(
+          mesh$loc[i, 1:2], p,
+          mesh$loc[mesh$segm$bnd$idx[j1, 1], 1:2] / 2 +
+            mesh$loc[mesh$segm$bnd$idx[j1, 2], 1:2] / 2,
+          mesh$loc[mesh$segm$bnd$idx[j2, 1], 1:2] / 2 +
+            mesh$loc[mesh$segm$bnd$idx[j2, 2], 1:2] / 2
+        ))
+        yy &lt;- p[, 2] - mean(p[, 2]) / 2 - mesh$loc[i, 2] / 2
+        xx &lt;- p[, 1] - mean(p[, 1]) / 2 - mesh$loc[i, 1] / 2
+      } else {
+        yy &lt;- p[, 2] - mesh$loc[i, 2]
+        xx &lt;- p[, 1] - mesh$loc[i, 1]
+      }
+      Polygon(p[order(atan2(yy, xx)), ])
+    })
+    return(SpatialPolygons(lapply(1:mesh$n, function(i) {
+      Polygons(list(pls[[i]]), i)
+    })))
+  } else {
+    stop("It only works for R2!")
+  }
+}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Aquí, creamos los vectores con el número observado y esperado de eventos. Primero, creamos la malla dual que consiste en un conjunto de polígonos
+alrededor de cada vértice de la malla original. Podemos crear la malla dual utilizando la función <code class="docutils literal notranslate"><span class="pre">book.mesh.dual()</span></code> que se proporciona en
+Krainski et al. (2019).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dmesh &lt;- book.mesh.dual(mesh)
+plot(dmesh)
+axis(1)
+axis(2)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Para ajustar el LGCP, los vértices de la malla se consideran como puntos de integración. Los valores esperados correspondientes a los vértices de
+la malla son proporcionales a las áreas alrededor de los vértices de la malla, es decir, las áreas de los polígonos de la malla dual. Calculamos
+un vector de pesos llamado <code class="docutils literal notranslate"><span class="pre">w</span></code> con las áreas de la intersección entre cada polígono de la malla dual y la región de estudio utilizando el siguiente
+código.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Domain polygon is converted into a SpatialPolygons
+domain.polys &lt;- Polygons(list(Polygon(loc.d)), "0")
+domainSP &lt;- SpatialPolygons(list(domain.polys))
+
+# Because the mesh is larger than the study area, we need to
+# compute the intersection between each polygon
+# in the dual mesh and the study area
+
+w &lt;- sapply(1:length(dmesh), function(i) {
+  if (gIntersects(dmesh[i, ], domainSP)) {
+    return(gArea(gIntersection(dmesh[i, ], domainSP)))
+  } else {
+    return(0)
+  }
+})
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sum(w) # sum weights
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>st_area(map) # area of the study region
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>plot(mesh)
+points(mesh$loc[which(w &gt; 0), 1:2], col = "black", pch = 20)
+points(mesh$loc[which(w == 0), 1:2], col = "red", pch = 20)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, creamos vectores de los conjuntos de datos aumentados con los valores observados y esperados. Los valores observados se especificarán en la
+fórmula del modelo como respuesta. Los valores esperados se especificarán en la fórmula del modelo como el componente <code class="docutils literal notranslate"><span class="pre">E</span></code> de la media para la
+verosimilitud de Poisson definida como</p>
+<p><span class="math notranslate nohighlight">\(E_i = \exp(\eta_i)\)</span></p>
+<p>donde <span class="math notranslate nohighlight">\(\eta_i\)</span> es el predictor lineal.</p>
+<p>El vector <code class="docutils literal notranslate"><span class="pre">y.pp</span></code> contiene la variable de respuesta. Los primeros <code class="docutils literal notranslate"><span class="pre">nv</span></code> elementos son ceros correspondientes a los vértices de la malla. Los últimos <code class="docutils literal notranslate"><span class="pre">n</span></code>
+elementos son unos correspondientes a los eventos observados.</p>
+<p>El vector <code class="docutils literal notranslate"><span class="pre">e.pp</span></code> contiene los valores esperados. Los primeros <code class="docutils literal notranslate"><span class="pre">nv</span></code> elementos son los pesos <code class="docutils literal notranslate"><span class="pre">w</span></code> que representan la intersección entre las áreas
+alrededor de cada uno de los vértices de la malla y la región de estudio. Los siguientes <code class="docutils literal notranslate"><span class="pre">n</span></code> elementos son ceros correspondientes a los eventos
+puntuales.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>y.pp &lt;- rep(0:1, c(nv, n))
+e.pp &lt;- c(w, rep(0, n))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>head(cbind(y.pp, e.pp))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tail(cbind(y.pp, e.pp))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Construimos la matriz de proyección <code class="docutils literal notranslate"><span class="pre">A.pp</span></code> para proyectar el campo aleatorio Gaussiano desde las observaciones a los vértices de la triangulación.
+Esta matriz se construye utilizando la matriz de proyección para los vértices de la malla, que es una matriz diagonal (<code class="docutils literal notranslate"><span class="pre">A.int</span></code>), y la matriz de
+proyección para las ubicaciones de eventos (<code class="docutils literal notranslate"><span class="pre">A.y</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Projection matrix for the integration points (mesh vertices)
+A.int &lt;- Diagonal(nv, rep(1, nv))
+# Projection matrix for observed points (event locations)
+A.y &lt;- inla.spde.make.A(mesh = mesh, loc = coo)
+# Projection matrix for mesh vertices and event locations
+A.pp &lt;- rbind(A.int, A.y)
+</pre></div>
+</div>
+</div>
+</div>
+<p>También creamos la matriz de proyección <code class="docutils literal notranslate"><span class="pre">Ap.pp</span></code> para las ubicaciones de predicción.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Ap.pp &lt;- inla.spde.make.A(mesh = mesh, loc = coop)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ahora usamos la función <code class="docutils literal notranslate"><span class="pre">inla.stack()</span></code> para construir pilas para estimación y predicción que organizan los datos, efectos y matrices de proyección.
+En los argumentos de <code class="docutils literal notranslate"><span class="pre">inla.stack()</span></code>, <code class="docutils literal notranslate"><span class="pre">data</span></code> es una lista con los valores observados (<code class="docutils literal notranslate"><span class="pre">y</span></code>) y esperados (<code class="docutils literal notranslate"><span class="pre">e</span></code>). El argumento <code class="docutils literal notranslate"><span class="pre">A</span></code> contiene las matrices
+de proyección, y el argumento <code class="docutils literal notranslate"><span class="pre">effects</span></code> es una lista con los efectos fijos y aleatorios. Luego, las pilas de estimación y predicción se combinan en
+una pila completa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># stack for estimation
+stk.e.pp &lt;- inla.stack(
+  tag = "est.pp",
+  data = list(y = y.pp, e = e.pp),
+  A = list(1, A.pp),
+  effects = list(list(b0 = rep(1, nv + n)), list(s = 1:nv))
+)
+
+# stack for prediction stk.p
+stk.p.pp &lt;- inla.stack(
+  tag = "pred.pp",
+  data = list(y = rep(NA, nrow(coop)), e = rep(0, nrow(coop))),
+  A = list(1, Ap.pp),
+  effects = list(
+    data.frame(b0 = rep(1, nrow(coop))),
+    list(s = 1:nv)
+  )
+)
+
+# stk.full has stk.e and stk.p
+stk.full.pp &lt;- inla.stack(stk.e.pp, stk.p.pp)
+</pre></div>
+</div>
+</div>
+</div>
+<p>La fórmula se especifica incluyendo la variable de respuesta en el lado izquierdo y los efectos aleatorios en el lado derecho.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>formula &lt;- y ~ 0 + b0 + f(s, model = spde)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Ajustamos el modelo llamando a <code class="docutils literal notranslate"><span class="pre">inla()</span></code>. En la función, especificamos <code class="docutils literal notranslate"><span class="pre">link</span> <span class="pre">=</span> <span class="pre">1</span></code> para calcular los valores ajustados que se encuentran en
+<code class="docutils literal notranslate"><span class="pre">res$summary.fitted.values</span></code> y <code class="docutils literal notranslate"><span class="pre">res$marginals.fitted.values</span></code> con la misma función de enlace que la familia especificada en el modelo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>res &lt;- inla(formula,
+  family = "poisson",
+  data = inla.stack.data(stk.full.pp),
+  control.predictor = list(
+    compute = TRUE, link = 1,
+    A = inla.stack.A(stk.full.pp)
+  ),
+  E = inla.stack.data(stk.full.pp)$e
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Un resumen de los resultados se puede inspeccionar escribiendo <code class="docutils literal notranslate"><span class="pre">summary(res)</span></code>. El marco de datos <code class="docutils literal notranslate"><span class="pre">res$summary.fitted.values</span></code> contiene los valores
+ajustados. Los índices de las filas correspondientes a las predicciones se pueden obtener con <code class="docutils literal notranslate"><span class="pre">inla.stack.index()</span></code> especificando la etiqueta «pred.pp»
+del stack de predicción.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>index &lt;- inla.stack.index(stk.full.pp, tag = "pred.pp")$data
+pred_mean &lt;- res$summary.fitted.values[index, "mean"]
+pred_ll &lt;- res$summary.fitted.values[index, "0.025quant"]
+pred_ul &lt;- res$summary.fitted.values[index, "0.975quant"]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Luego, añadimos capas a la cuadrícula raster con la media posterior y los percentiles 2.5 y 97.5 en las celdas que están dentro del mapa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>grid$mean &lt;- NA
+grid$ll &lt;- NA
+grid$ul &lt;- NA
+
+grid$mean[indicespointswithin] &lt;- pred_mean
+grid$ll[indicespointswithin] &lt;- pred_ll
+grid$ul[indicespointswithin] &lt;- pred_ul
+</pre></div>
+</div>
+</div>
+</div>
+<p>Finalmente, creamos mapas de la media posterior y los límites inferior y superior de los intervalos creíbles del 95% de la intensidad del proceso
+puntual de especies en Bolivia (Figura 23.4). Para ello, utilizamos la función <code class="docutils literal notranslate"><span class="pre">levelplot()</span></code> del paquete <code class="docutils literal notranslate"><span class="pre">rasterVis</span></code>, especificando <code class="docutils literal notranslate"><span class="pre">names.attr</span></code>
+con el nombre de cada panel y <code class="docutils literal notranslate"><span class="pre">layout</span></code> con el número de columnas y filas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(rasterVis)
+levelplot(raster::brick(grid),
+  layout = c(3, 1),
+  names.attr = c("Mean", "2.5 percentile", "97.5 percentile")
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>En general, observamos una baja intensidad de especies, con mayor intensidad en la parte centro-occidental de Bolivia. Cabe destacar que hemos
+modelado los datos de ocurrencia de especies recuperados de GBIF asumiendo que el patrón puntual espacial observado es una realización del proceso
+subyacente que genera las ubicaciones de las especies. En aplicaciones reales, es importante entender cómo se recolectaron los datos y evaluar
+posibles sesgos en los datos, como la sobrerepresentación de ciertas áreas, que pueden invalidar los resultados. Además, es importante incorporar
+el conocimiento de expertos para crear modelos que incluyan covariables relevantes y efectos aleatorios para tener en cuenta diversos tipos de
+variabilidad, lo que permite una comprensión más completa de la variable en investigación.</p>
+</section>
+<section id="ejemplo-2">
+<h3>Ejemplo 2<a class="headerlink" href="#ejemplo-2" title="Link to this heading">#</a></h3>
+<p>Un patrón de puntos registra la ocurrencia de eventos en una región de estudio. Ejemplos típicos incluyen la ubicación de árboles en un bosque o
+las coordenadas GPS de casos de enfermedades en una región. Las ubicaciones de los eventos observados dependen de un proceso espacial subyacente,
+que a menudo se modela utilizando una función de intensidad <span class="math notranslate nohighlight">\(\lambda(s)\)</span>. La función de intensidad mide el número promedio de eventos por unidad de
+espacio, y puede ser modelada para depender de covariables y otros efectos.</p>
+<p>Bajo el supuesto del modelo de proceso de puntos log-Cox, modelamos la log-intensidad del proceso de Cox con un predictor lineal Gaussiano. En este
+caso, el proceso log-Cox se conoce como un proceso Cox log-Gaussiano (LGCP, Møller, Syversveen y Waagepetersen 1998), y la inferencia se puede
+realizar utilizando INLA. Un proceso de Cox es un proceso de Poisson cuya intensidad es, a su vez, un proceso estocástico —no un valor fijo ni una
+función determinística de covariables—, lo que lo distingue de un Poisson no homogéneo GLM ordinario (recordemos la Capa 1 y la Capa 2 descritas al
+inicio del capítulo). En términos de ajuste, esto se traduce en utilizar la verosimilitud de Poisson igual que en un GLM, pero incorporando en el
+predictor lineal un efecto espacial Gaussiano latente además de —o en lugar de— covariables conocidas. El enfoque original utilizado para ajustar
+estos modelos en INLA (y en otro software) divide la región de estudio en celdas, que forman una cuadrícula, y cuenta el número de puntos en cada
+una (Møller y Waagepetersen 2003). Estos conteos pueden modelarse utilizando una verosimilitud de Poisson condicionada a un predictor lineal
+Gaussiano, y se puede usar INLA para ajustar el modelo (Illian, Sørbye y Rue 2012).</p>
+<p>En este capítulo nos enfocamos en un nuevo enfoque que considera modelos Stochastic Partial Differential Equation (SPDE) directamente, desarrollado
+en Simpson et al. (2016). Este enfoque tiene una buena justificación teórica y considera una aproximación directa de la verosimilitud del modelo de
+proceso de puntos log-Cox. Las observaciones se modelan considerando su ubicación exacta en lugar de agruparlas en celdas. Junto con la flexibilidad
+para definir una malla, este enfoque puede manejar áreas no rectangulares sin desperdiciar esfuerzo computacional en un área rectangular grande.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(spatstat)
+library(RandomFields)
+library(rgeos)
+</pre></div>
+</div>
+</div>
+</div>
+<p>La función <code class="docutils literal notranslate"><span class="pre">rLGCP</span></code> utiliza la función <code class="docutils literal notranslate"><span class="pre">GaussRF()</span></code> del paquete <strong>RandomFields</strong> (Schlather et al. 2015) para simular desde el campo espacial sobre una cuadrícula. Hay un parámetro interno para controlar la resolución de la cuadrícula, que especificamos para dar 300 píxeles en cada dirección:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>win &lt;- owin(c(0, 3), c(0, 3))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Modelamos la intensidad como</p>
+<div class="math notranslate nohighlight">
+\[
+\log(\lambda(s)) = \beta_0 + S(s),
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(\beta_0\)</span> es un valor fijo y <span class="math notranslate nohighlight">\(S(s)\)</span> es un proceso espacial Gaussiano con covarianza de Matérn y media cero. El parámetro <span class="math notranslate nohighlight">\(\beta_0\)</span> puede
+considerarse como un nivel medio global para la log-intensidad; es decir, la log-intensidad fluctúa alrededor de este valor según el proceso
+espacial <span class="math notranslate nohighlight">\(S(s)\)</span>.</p>
+<p>Si no hay campo espacial, el número esperado de puntos es <span class="math notranslate nohighlight">\(e^{\beta_0}\)</span> multiplicado por el área de la ventana. Esto significa que el número
+esperado de puntos es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>beta0 &lt;- 3
+exp(beta0) * diff(range(win$x)) * diff(range(win$y))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Por lo tanto, este valor de <span class="math notranslate nohighlight">\(\beta_0\)</span> producirá un número razonable de puntos en las siguientes simulaciones. Si establecemos <span class="math notranslate nohighlight">\(\beta_0\)</span> demasiado bajo,
+obtendremos casi ningún punto, y no seremos capaces de producir resultados razonables. También es posible utilizar una función en varias covariables,
+por ejemplo, un GLM.</p>
+<p>En este taller, utilizamos una función de covarianza de Matérn con <span class="math notranslate nohighlight">\(\nu = 1\)</span>. Los otros parámetros son la varianza y la escala. Los siguientes valores
+para estos parámetros producirán una intensidad suave del proceso puntual:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sigma2x &lt;- 0.2
+range &lt;- 1.2
+nu &lt;- 1
+</pre></div>
+</div>
+</div>
+</div>
+<p>El valor de <span class="math notranslate nohighlight">\(\sigma^2_x\)</span> se establece para hacer que la log-intensidad varíe un poco alrededor de la media, pero siempre dentro de un rango razonable
+de valores. Además, con estos parámetros <span class="math notranslate nohighlight">\(\nu = 1\)</span> y el rango del proceso espacial <span class="math notranslate nohighlight">\(S(s)\)</span> es (aproximadamente) 2, lo que produce cambios suaves en la
+ventana de estudio actual. Valores más pequeños del rango práctico producirán un proceso espacial <span class="math notranslate nohighlight">\(S(s)\)</span> (y, a su vez, la intensidad del proceso
+espacial) que cambia rápidamente en la ventana de estudio. De manera similar, valores muy grandes del rango práctico producirán un proceso espacial
+casi constante <span class="math notranslate nohighlight">\(S(s)\)</span>, de modo que la log-intensidad estará muy cerca de <span class="math notranslate nohighlight">\(\beta_0\)</span> en todos los puntos de la ventana de estudio.</p>
+<p>Los puntos del proceso puntual se simulan de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>set.seed(1)
+lg.s &lt;- rLGCP("matern", beta0, var = sigma2x, scale = range / sqrt(8), nu = nu, win = win)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Tanto el campo espacial como el patrón de puntos son devueltos. Las coordenadas de los eventos observados del patrón de puntos se pueden obtener
+de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>xy &lt;- cbind(lg.s$x, lg.s$y)[, 2:1]
+</pre></div>
+</div>
+</div>
+</div>
+<p>El numero de puntos simulados es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>(n &lt;- nrow(xy))
+</pre></div>
+</div>
+</div>
+</div>
+<p>La exponencial de los valores simulados del campo espacial se devuelve como el atributo Lambda del objeto. A continuación, extraemos los valores
+de λ(s) y resumimos el log(λ(s)).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Lam &lt;- attr(lg.s, "Lambda")
+rf.s &lt;- log(Lam$v)
+summary(as.vector(rf.s))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Siguiendo a Simpson et al. (2016), los parámetros del modelo de proceso puntual de Cox log-Gaussiano pueden estimarse con INLA.</p>
+<p>INLA es un paquete que permite ajustar una amplia gama de modelos. Utiliza la aproximación de Laplace para ajustar modelos bayesianos de manera mucho
+más rápida que algoritmos como MCMC (Cadena de Markov Monte Carlo). INLA permite ajustar modelos geoestadísticos a través de ecuaciones diferenciales parciales estocásticas (EDPE). Puedes encontrar más información sobre esto en estos dos Gitbooks:</p>
+<ul class="simple">
+<li><p>spde-gitbook [<a class="reference external" href="https://becarioprecario.bitbucket.io/spde-gitbook">https://becarioprecario.bitbucket.io/spde-gitbook</a>]</p></li>
+<li><p>inla-gitbook [<a class="reference external" href="https://becarioprecario.bitbucket.io/inla-gitbook">https://becarioprecario.bitbucket.io/inla-gitbook</a>]</p></li>
+</ul>
+<p>Ajustar un modelo espacial en INLA requiere un conjunto específico de pasos:</p>
+<ol class="arabic simple">
+<li><p><strong>Crear una malla:</strong> Se crea una malla para aproximar el efecto espacial. Esta malla discretiza el espacio de estudio en pequeñas unidades
+(píxeles o celdas) que permiten modelar la variación espacial continua.</p></li>
+<li><p><strong>Crear una matriz de proyección:</strong> Esta matriz vincula las observaciones puntuales a la malla creada. Básicamente, indica a qué celda de
+la malla pertenece cada observación.</p></li>
+<li><p><strong>Definir la ecuación diferencial parcial estocástica (EDPE):</strong> La EDPE describe la relación espacial entre las variables del modelo.
+Diferentes tipos de EDPE capturan diferentes patrones de dependencia espacial.</p></li>
+<li><p><strong>Especificar opcionalmente un conjunto de datos para predicciones:</strong> Si deseas realizar predicciones en ubicaciones no observadas, puedes
+especificar un conjunto de datos adicional que contenga las coordenadas de los puntos de predicción.</p></li>
+<li><p><strong>Apilar los objetos en un objeto stack:</strong> INLA trabaja con un objeto especial llamado «stack» que combina la información de la malla, la
+matriz de proyección, la EDPE y cualquier otro dato relevante para el modelo.</p></li>
+<li><p><strong>Ajustar el modelo:</strong> Una vez creado el objeto stack, se utiliza la función <code class="docutils literal notranslate"><span class="pre">inla()</span></code> del paquete INLA para ajustar el modelo y obtener los
+resultados de la inferencia bayesiana.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library("devtools")
+devtools::install_github(repo = "https://github.com/hrue/r-inla", ref = "stable", subdir = "rinla", build = FALSE)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>inla.upgrade() # for the stable version
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>library(INLA)
+</pre></div>
+</div>
+</div>
+</div>
+<p>En términos simplificados, construiremos un conjunto de datos ampliado y ejecutaremos una regresión de Poisson con INLA. El conjunto de datos ampliado
+se compone de una respuesta binaria, con 1 para los puntos observados y 0 para algunas observaciones ficticias. Tanto las observaciones reales como
+las ficticias tendrán valores «esperados» o pesos asociados que se incluirán en la regresión de Poisson. Esto se explicará paso a paso en las
+siguientes secciones.</p>
+<p>Para una inferencia adecuada con el LGCP, debemos tener cuidado al construir la malla. En el caso particular del análisis de patrones de puntos,
+generalmente no usamos los puntos de ubicación como nodos de la malla. Necesitamos una malla que cubra la región de estudio; para esto utilizamos
+<code class="docutils literal notranslate"><span class="pre">loc.domain</span></code> para construir la malla. Además, solo usamos una pequeña primera extensión exterior, pero no una segunda extensión exterior.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>loc.d &lt;- 3 * cbind(c(0, 1, 1, 0, 0), c(0, 0, 1, 1, 0))
+mesh &lt;- inla.mesh.2d(
+  loc.domain = loc.d, offset = c(0.3, 1),
+  max.edge = c(0.3, 0.7), cutoff = 0.05
+)
+nv &lt;- mesh$n
+</pre></div>
+</div>
+</div>
+</div>
+<p>El modelo SPDE se definirá considerando los PC-priors derivados en Fuglstad et al. (2018) para los parámetros del modelo: rango y desviación estándar
+marginal. Estos se definen de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>spde &lt;- inla.spde2.pcmatern(
+  mesh = mesh,
+  # PC-prior on range: P(practic.range &lt; 0.05) = 0.01
+  prior.range = c(0.05, 0.01),
+  # PC-prior on sigma: P(sigma &gt; 1) = 0.01
+  prior.sigma = c(1, 0.01)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>El enfoque SPDE para el análisis de patrones puntuales define el modelo en los nodos de la malla. Para ajustar el modelo de proceso puntual de
+log-Cox, estos puntos se consideran como puntos de integración. El método en Simpson et al. (2016) define que el número esperado de eventos es
+proporcional al área alrededor del nodo (las áreas de los polígonos en la malla dual). Esto significa que en los nodos de la malla con triángulos
+más grandes, también hay valores esperados más grandes. El comando <code class="docutils literal notranslate"><span class="pre">inla.mesh.fem(mesh)$va</span></code> proporciona este valor para cada nodo de la malla.
+Estos valores para los nodos en el dominio interno se pueden usar para calcular la intersección entre los polígonos de la malla dual y el polígono
+del dominio de estudio. Para ello, utilizamos la función <code class="docutils literal notranslate"><span class="pre">book.mesh.dual()</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dmesh &lt;- book.mesh.dual(mesh)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esta función está disponible en el archivo <code class="docutils literal notranslate"><span class="pre">spde-book-functions.R</span></code> y devuelve la malla dual en un objeto de la clase <code class="docutils literal notranslate"><span class="pre">SpatialPolygons</span></code>. El polígono
+del dominio se puede convertir en una clase <code class="docutils literal notranslate"><span class="pre">SpatialPolygons</span></code> de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>domain.polys &lt;- Polygons(list(Polygon(loc.d)), "0")
+domainSP &lt;- SpatialPolygons(list(domain.polys))
+</pre></div>
+</div>
+</div>
+</div>
+<p>El vector de pesos que hemos calculado es exactamente lo que necesitamos usar como exposición (E) en la verosimilitud de Poisson en INLA (con la
+pequeña modificación de que log(E) se define como cero si E=0. Aumentamos el vector de unos para las observaciones (que representan los puntos)
+con una secuencia de ceros (que representan los nodos de la malla):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>w &lt;- sapply(1:length(dmesh), function(i) {
+  if (gIntersects(dmesh[i, ], domainSP)) {
+    return(gArea(gIntersection(dmesh[i, ], domainSP)))
+  } else {
+    return(0)
+  }
+})
+</pre></div>
+</div>
+</div>
+</div>
+<p>El vector de exposición y la matriz de proyección se definen. Para los puntos de integración, esta es simplemente una matriz diagonal porque
+estos lugares son solo los vértices de la malla. La matriz de proyección completa es:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>y.pp &lt;- rep(0:1, c(nv, n))
+e.pp &lt;- c(w, rep(0, n))
+imat &lt;- Diagonal(nv, rep(1, nv))
+lmat &lt;- inla.spde.make.A(mesh, xy)
+A.pp &lt;- rbind(imat, lmat)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Configuramos el conjunto de datos de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>stk.pp &lt;- inla.stack(
+  data = list(y = y.pp, e = e.pp),
+  A = list(1, A.pp),
+  effects = list(list(b0 = rep(1, nv + n)), list(i = 1:nv)),
+  tag = "pp"
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Las marginales posteriores para todos los parámetros del modelo se obtienen ajustando el modelo con INLA:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>pp.res &lt;- inla(y ~ 0 + b0 + f(i, model = spde),
+  family = "poisson", data = inla.stack.data(stk.pp),
+  control.predictor = list(A = inla.stack.A(stk.pp)),
+  E = inla.stack.data(stk.pp)$e
+)
+
+pp.res$summary.hyperpar
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="16_GP.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="18_GPBoost.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">GPBoost: Boosting de Árboles + Procesos Gaussianos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aclaracion-conceptual-la-doble-aleatoriedad-del-lgcp">Aclaración conceptual: la doble aleatoriedad del LGCP</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#en-que-se-diferencia-un-lgcp-de-un-proceso-gaussiano-de-regresion">¿En qué se diferencia un LGCP de un Proceso Gaussiano de regresión?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#el-concepto-de-doble-aleatoriedad">El concepto de doble aleatoriedad</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#poisson-no-homogeneo-vs-lgcp-cuando-hay-una-capa-de-azar-y-cuando-dos">Poisson no homogéneo vs. LGCP: ¿cuándo hay una capa de azar y cuándo dos?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-1">Ejemplo 1</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ejemplo-2">Ejemplo 2</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

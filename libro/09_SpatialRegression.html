@@ -1,0 +1,1317 @@
+
+<!DOCTYPE html>
+
+
+<html lang="es" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Regresión Espacial &#8212; Análisis Geoespacial</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=55c26ed414f5f8a31ebb" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=55c26ed414f5f8a31ebb"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb" />
+
+    <script src="_static/documentation_options.js?v=78d55cf8"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>let toggleHintShow = 'Haz clic para mostrar';</script>
+    <script>let toggleHintHide = 'Haz clic para ocultar';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script src="_static/translations.js?v=d190bf04"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '09_SpatialRegression';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="canonical" href="https://edieraristizabal.github.io/AnalisisGeoespacial/libro/09_SpatialRegression.html" />
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Modelos de regresión para dependencia espacial tipo SAR" href="10_SAR.html" />
+    <link rel="prev" title="Cluster espacial" href="08_ClusterEspacial.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="es"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Saltar al contenido principal</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Volver arriba</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Advertencia de versión"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Navegación del sitio">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="En esta página">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Análisis Geoespacial - Home"/>
+    <img src="_static/logo.png" class="logo__image only-dark pst-js-only" alt="Análisis Geoespacial - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Búsqueda</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte I: Intro</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="00_Ambiente.html">Ambiente computacional</a></li>
+<li class="toctree-l1"><a class="reference internal" href="00_Data.html">Datos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="01_DatosEspaciales.html">Análisis Geoespacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_Mapping.html">El arte de hacer mapas</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte II: Puntos</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="03_PointPattern.html">Patrón de puntos</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte III: Áreas</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="04_GLMPhyton.html">Modelos Lineales Generalizados (GML)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_Coropleta.html">Visualización de datos discretos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_MatrizCorrelacion.html">Matriz espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_ClusterEspacial.html">Cluster espacial</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Regresión Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="10_SAR.html">Modelos de regresión para dependencia espacial tipo SAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11_CAR.html">Modelos de regresión para dependencia espacial tipo CAR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_Jerarquicos.html">Modelos de Regresión para Heterogeneidad Espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="12_CARJerarquicos.html">Modelos con dependencia y heterogeneidad espacial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="13_MGWR.html">Regresión Ponderada Geográficamente (GWR)</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Parte IV: Superficies</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="14_Kriging.html">Kriging con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="15_GP.html">Procesos Gaussianos con Python</a></li>
+<li class="toctree-l1"><a class="reference internal" href="16_GP.html">Procesos Gaussianos con INLA: el enfoque de malla (SPDE)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="17_LGCP.html">El Proceso de Cox Log-Gaussiano (LGCP)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_GPBoost.html">GPBoost: Boosting de Árboles + Procesos Gaussianos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="18_DB.html">Bases de datos geoespaciales</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Repositorio de origen"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/edieraristizabal/AnalisisGeoespacial/issues/new?title=Issue%20on%20page%20%2F09_SpatialRegression.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Abrir un problema"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Descarga esta pagina">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/09_SpatialRegression.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Descargar archivo fuente"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Imprimir en PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Modo de pantalla completa"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Tema" data-bs-title="Tema"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Claro"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Oscuro"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="Sistema"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Búsqueda" aria-label="Búsqueda" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regresión Espacial</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contenido </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#los-datos-airbnb-en-san-diego">Los Datos: AirBnB en San Diego</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-no-espacial">Regresión no espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#incorporar-variables-espaciales">Incorporar variables espaciales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencia-y-heterogeneidad-espacial">Dependencia y Heterogeneidad espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-y-tutoriales">Software y tutoriales</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <p style="font-size:11px;"><em><strong>Créditos</strong>: El contenido de este cuaderno ha sido tomado de varias fuentes, pero especialmente de <a href="http://darribas.org/">Dani Arribas-Bel</a> - University of Liverpool y <a href="http://spatial.ucr.edu/peopleRey.html">Sergio Rey</a> - Center for Geospatial Sciences, University of California, Riverside. El compilador se disculpa por cualquier omisión involuntaria y estaría encantado de agregar un reconocimiento.</em></p><section class="tex2jax_ignore mathjax_ignore" id="regresion-espacial">
+<h1>Regresión Espacial<a class="headerlink" href="#regresion-espacial" title="Link to this heading">#</a></h1>
+<section id="objetivos-de-aprendizaje">
+<h2>Objetivos de aprendizaje<a class="headerlink" href="#objetivos-de-aprendizaje" title="Link to this heading">#</a></h2>
+<p>Al finalizar este notebook, el estudiante será capaz de:</p>
+<ul class="simple">
+<li><p>Diagnosticar la presencia de autocorrelación espacial en residuos de un modelo OLS.</p></li>
+<li><p>Comprender las consecuencias estadísticas de ignorar la dependencia espacial en la regresión.</p></li>
+<li><p>Ajustar modelos de regresión con dependencia en la variable dependiente (SAR-Lag) y en los errores (SEM).</p></li>
+<li><p>Incorporar rezagos espaciales de covariables (SLX) para capturar efectos de spillover.</p></li>
+<li><p>Modelar la heterogeneidad espacial mediante regímenes espaciales.</p></li>
+</ul>
+<p><strong>Requisitos previos:</strong> <code class="docutils literal notranslate"><span class="pre">07_MatrizCorrelacion</span></code> — Índice de Moran; <code class="docutils literal notranslate"><span class="pre">04_GLMPhyton</span></code> — regresión lineal con <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>.</p>
+<p>La regresión nos proporciona un caso perfecto para examinar cómo la estructura espacial puede ayudarnos a comprender y analizar nuestros datos. Por lo general, la estructura espacial ayuda a los modelos de dos maneras. La primera (y más clara) manera en que el espacio puede tener un impacto en nuestros datos es cuando el proceso que genera los datos es explícitamente espacial. Por ejemplo el caso del precio de las viviendas. A menudo sucede que las personas pagan un precio alto por su casa para vivir en un mejor distrito escolar para la misma calidad de casa. Alternativamente, las casas más cercanas a contaminantes acústicos o químicos como plantas de tratamiento de aguas residuales, instalaciones de reciclaje o carreteras anchas, pueden ser más baratas. La segunda manera en que la estructura espacial puede ayudarnos a entender nuestros datos es el ejemplo de la incidencia de asma. Los lugares a los que las personas tienden a viajar a lo largo del día, como sus lugares de trabajo o recreación, pueden tener más impacto en su salud que los sitios de sus viviendas. En este caso, puede ser necesario utilizar datos de <em>otros sitios</em> para predecir la incidencia de asma en un sitio dado. Independientemente del caso específico en juego, aquí, <strong>la geografía es una característica</strong>: nos ayuda directamente a hacer predicciones sobre resultados <em>porque esos resultados provienen de procesos geográficos</em>.</p>
+<p>A menudo, en el análisis de métodos predictivos y clasificadores, estamos interesados en analizar lo que fallamos. Esto es común en econometría; un analista puede estar preocupado de que el modelo <em>sistemáticamente</em> predice mal algunos tipos de observaciones. Si sabemos que nuestro modelo rutinariamente se desempeña mal en un conjunto conocido de observaciones o tipo de entrada, podríamos hacer un mejor modelo si podemos tener en cuenta esto. Entre otros tipos de diagnósticos de errores, la geografía nos proporciona un incrustación excepcionalmente útil para evaluar la estructura en nuestros errores. Mapear el error de clasificación/predicción puede ayudar a mostrar si hay <em>grupos de errores</em> en nuestros datos. Si <em>sabemos</em> que los errores tienden a ser mayores en algunas áreas que en otras áreas (o si el error es «contagioso» entre observaciones), entonces podríamos aprovechar esta estructura para hacer mejores predicciones.</p>
+<p>La estructura espacial en nuestros errores puede surgir de cuando la geografía <em>debería ser</em> de alguna manera un atributo, pero no estamos seguros exactamente de cómo incluirla en nuestro modelo. También pueden surgir porque hay alguna otra característica cuya omisión causa los patrones espaciales en el error que vemos; si esta característica adicional se incluyera, la estructura desaparecería. O podría surgir de las complejas interacciones e interdependencias entre las características que hemos elegido usar como predictores, lo que resulta en una estructura intrínseca en la mala predicción. La mayoría de los predictores que usamos en modelos de procesos sociales contienen información espacial <em>incorporada</em>: patrones intrínsecos a la característica que obtenemos de forma gratuita en el modelo. Si lo pretendemos o no, usar un predictor con patrón espacial en un modelo puede resultar en errores con patrón espacial; usar más de uno puede amplificar este efecto. Por lo tanto, <em>independientemente de si el verdadero proceso es explícitamente geográfico</em>, información adicional sobre las relaciones espaciales entre nuestras observaciones o más información sobre sitios cercanos puede hacer que nuestras predicciones sean mejores.</p>
+<section id="los-datos-airbnb-en-san-diego">
+<h3>Los Datos: AirBnB en San Diego<a class="headerlink" href="#los-datos-airbnb-en-san-diego" title="Link to this heading">#</a></h3>
+<p>Para aprender un poco más sobre cómo funciona la regresión, examinaremos información sobre AirBnB en San Diego, CA. Este conjunto de datos contiene características intrínsecas de la casa, tanto continuas (número de camas como en <code class="docutils literal notranslate"><span class="pre">beds</span></code>) como categóricas (tipo de alquiler o, en el argot de AirBnb, grupo de propiedades como en las series de variables binarias de <code class="docutils literal notranslate"><span class="pre">pg_X</span></code>), pero también variables que se refieren explícitamente a la ubicación y configuración espacial del conjunto de datos (por ejemplo, distancia al Parque Balboa, <code class="docutils literal notranslate"><span class="pre">d2balboa</span></code> o identificación de vecindario, <code class="docutils literal notranslate"><span class="pre">neighbourhood_cleansed</span></code>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">'ignore'</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">spreg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">libpysal</span><span class="w"> </span><span class="kn">import</span> <span class="n">weights</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">esda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statsmodels.formula.api</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sbn</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="s1">'https://raw.githubusercontent.com/gdsbook/book/main/data/airbnb/regression_db.geojson'</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class 'geopandas.geodataframe.GeoDataFrame'&gt;
+RangeIndex: 6110 entries, 0 to 6109
+Data columns (total 20 columns):
+ #   Column              Non-Null Count  Dtype   
+---  ------              --------------  -----   
+ 0   accommodates        6110 non-null   int64   
+ 1   bathrooms           6110 non-null   float64 
+ 2   bedrooms            6110 non-null   float64 
+ 3   beds                6110 non-null   float64 
+ 4   neighborhood        6110 non-null   object  
+ 5   pool                6110 non-null   int64   
+ 6   d2balboa            6110 non-null   float64 
+ 7   coastal             6110 non-null   int64   
+ 8   price               6110 non-null   float64 
+ 9   log_price           6110 non-null   float64 
+ 10  id                  6110 non-null   int64   
+ 11  pg_Apartment        6110 non-null   int64   
+ 12  pg_Condominium      6110 non-null   int64   
+ 13  pg_House            6110 non-null   int64   
+ 14  pg_Other            6110 non-null   int64   
+ 15  pg_Townhouse        6110 non-null   int64   
+ 16  rt_Entire_home/apt  6110 non-null   int64   
+ 17  rt_Private_room     6110 non-null   int64   
+ 18  rt_Shared_room      6110 non-null   int64   
+ 19  geometry            6110 non-null   geometry
+dtypes: float64(6), geometry(1), int64(12), object(1)
+memory usage: 954.8+ KB
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" src="_images/4b1dce0d20495e3f57d4f0909e3ec99690baa4ee675f447b99f02f41307aff03.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accommodates</th>
+      <th>bathrooms</th>
+      <th>bedrooms</th>
+      <th>beds</th>
+      <th>neighborhood</th>
+      <th>pool</th>
+      <th>d2balboa</th>
+      <th>coastal</th>
+      <th>price</th>
+      <th>log_price</th>
+      <th>id</th>
+      <th>pg_Apartment</th>
+      <th>pg_Condominium</th>
+      <th>pg_House</th>
+      <th>pg_Other</th>
+      <th>pg_Townhouse</th>
+      <th>rt_Entire_home/apt</th>
+      <th>rt_Private_room</th>
+      <th>rt_Shared_room</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>North Hills</td>
+      <td>0</td>
+      <td>2.972077</td>
+      <td>0</td>
+      <td>425.0</td>
+      <td>6.052089</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.12971 32.75399)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>Mission Bay</td>
+      <td>0</td>
+      <td>11.501385</td>
+      <td>1</td>
+      <td>205.0</td>
+      <td>5.323010</td>
+      <td>5570</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.25253 32.78421)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>Estas son las variables explicativas que utilizaremos a lo largo de este ejemplo.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">variable_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'accommodates'</span><span class="p">,</span> <span class="s1">'bathrooms'</span><span class="p">,</span> <span class="s1">'bedrooms'</span><span class="p">,</span> <span class="s1">'beds'</span><span class="p">,</span> <span class="s1">'rt_Private_room'</span><span class="p">,</span> <span class="s1">'rt_Shared_room'</span><span class="p">,</span> <span class="s1">'pg_Condominium'</span><span class="p">,</span> <span class="s1">'pg_House'</span><span class="p">,</span> <span class="s1">'pg_Other'</span><span class="p">,</span> <span class="s1">'pg_Townhouse'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="regresion-no-espacial">
+<h2>Regresión no espacial<a class="headerlink" href="#regresion-no-espacial" title="Link to this heading">#</a></h2>
+<p>Antes de discutir cómo incluir explícitamente el espacio en el marco de regresión lineal, veamos cómo se puede llevar a cabo la regresión estandar (Gaussiana) en Python y cómo se pueden comenzar a interpretar los resultados. La idea principal de la regresión lineal es explicar la variación en una variable (<em>dependiente</em>) dada como una función lineal de una colección de otras variables (<em>explicativas</em>). Por ejemplo, en nuestro caso, podemos querer expresar/explicar el precio de una casa como una función de si es nueva y el grado de privacidad del área donde se encuentra. A nivel individual, podemos expresar esto como:</p>
+<div class="math notranslate nohighlight">
+\[
+P_i = \alpha + \sum_k \mathbf{X}_{ik}\beta_k  + \epsilon_i
+\]</div>
+<p>donde <span class="math notranslate nohighlight">\(P_i\)</span> es el precio de AirBnb de la casa <span class="math notranslate nohighlight">\(i\)</span>, y <span class="math notranslate nohighlight">\(X\)</span> es un conjunto de covariables que usamos para explicar tal precio. <span class="math notranslate nohighlight">\(\beta\)</span> es un vector de parámetros que nos dan información sobre de qué manera y en qué medida cada variable está relacionada con el precio, y <span class="math notranslate nohighlight">\(\alpha\)</span>, el término constante o también conocido como intercepto, es el precio promedio de la casa cuando todas las otras variables son cero. El término <span class="math notranslate nohighlight">\(\epsilon_i\)</span> se refiere comúnmente como «error» y captura elementos que influyen en el precio de una casa pero que no están incluidos en <span class="math notranslate nohighlight">\(X\)</span>. También podemos expresar esta relación en forma de matriz, excluyendo subíndices para <span class="math notranslate nohighlight">\(i\)</span>, lo que produce:</p>
+<div class="math notranslate nohighlight">
+\[
+P = \alpha + \mathbf{X}\beta + \epsilon
+\]</div>
+<p>La regresión se puede pensar que es una extensión multivariada de las correlaciones bivariadas. Esto significa que, en lugar de mirar la relación entre dos variables (como en una correlación bivariada), la regresión permite ver cómo una variable depende de varias variables explicativas al mismo tiempo. De hecho, una forma de interpretar los coeficientes <span class="math notranslate nohighlight">\(\beta_k\)</span> en la ecuación anterior es como el grado de correlación entre la variable explicativa <span class="math notranslate nohighlight">\(k\)</span> y la variable dependiente, <em>manteniendo constantes todas las demás variables explicativas</em>. Cuando se calculan correlaciones solamente bivariadas, el coeficiente de una variable está captando la correlación entre las variables, pero también está asumiendo en ella la variación asociada con otras variables correlacionadas, también llamadas <em>factores de confusión</em>. La regresión nos permite aislar el efecto distinto que tiene una sola variable sobre la dependiente, una vez que controlamos por esas otras variables. Cuando hablamos de análisis bivariados, nos referimos a probabilidades marginales, es decir, cómo una variable se relaciona con la otra sin tener en cuenta el efecto de otras variables. En cambio, los modelos multivariados, como la regresión, nos dan probabilidades condicionales, es decir, cómo cambia una variable dependiente cuando controlamos por el efecto de otras variables.</p>
+<p>En términos prácticos, las regresiones lineales en Python son bastante sencillas y fáciles de trabajar. También hay varios paquetes que las ejecutarán (por ejemplo, <code class="docutils literal notranslate"><span class="pre">statsmodels</span></code>, <code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>, <code class="docutils literal notranslate"><span class="pre">PySAL</span></code>). En el contexto de este libro, tiene sentido comenzar con <code class="docutils literal notranslate"><span class="pre">PySAL</span></code>, ya que es la única biblioteca que nos permitirá pasar a modelos econométricos explícitamente espaciales. Para ajustar el modelo especificado en la ecuación anterior con <span class="math notranslate nohighlight">\(X\)</span> como la lista definida, solo necesitamos la siguiente línea de código:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m1</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'log_price'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">db</span><span class="p">[</span><span class="n">variable_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">name_y</span><span class="o">=</span><span class="s1">'log_price'</span><span class="p">,</span> <span class="n">name_x</span><span class="o">=</span><span class="n">variable_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Utilizamos el comando <code class="docutils literal notranslate"><span class="pre">OLS</span></code>, parte del subpaquete <code class="docutils literal notranslate"><span class="pre">spreg</span></code>, y especificamos la variable dependiente (el logaritmo del precio, para poder interpretar los resultados en términos de cambio porcentual) y las variables explicativas. Ten en cuenta que ambos objetos deben ser matrices, por lo que los extraemos del objeto <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> usando <code class="docutils literal notranslate"><span class="pre">.values</span></code>.</p>
+<p>Para inspeccionar los resultados del modelo, podemos llamar a <code class="docutils literal notranslate"><span class="pre">summary</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REGRESSION RESULTS
+------------------
+
+SUMMARY OF OUTPUT: ORDINARY LEAST SQUARES
+-----------------------------------------
+Data set            :     unknown
+Weights matrix      :        None
+Dependent Variable  :   log_price                Number of Observations:        6110
+Mean dependent var  :      4.9958                Number of Variables   :          11
+S.D. dependent var  :      0.8072                Degrees of Freedom    :        6099
+R-squared           :      0.6683
+Adjusted R-squared  :      0.6678
+Sum squared residual:     1320.15                F-statistic           :   1229.0564
+Sigma-square        :       0.216                Prob(F-statistic)     :           0
+S.E. of regression  :       0.465                Log likelihood        :   -3988.895
+Sigma-square ML     :       0.216                Akaike info criterion :    7999.790
+S.E of regression ML:      0.4648                Schwarz criterion     :    8073.685
+
+------------------------------------------------------------------------------------
+            Variable     Coefficient       Std.Error     t-Statistic     Probability
+------------------------------------------------------------------------------------
+            CONSTANT         4.38838         0.01611       272.32178         0.00000
+        accommodates         0.08345         0.00508        16.43363         0.00000
+           bathrooms         0.19238         0.01097        17.54198         0.00000
+            bedrooms         0.15252         0.01113        13.70092         0.00000
+                beds        -0.04172         0.00694        -6.01344         0.00000
+     rt_Private_room        -0.55069         0.01590       -34.62448         0.00000
+      rt_Shared_room        -1.23831         0.03843       -32.21990         0.00000
+      pg_Condominium         0.14363         0.02215         6.48465         0.00000
+            pg_House        -0.01049         0.01453        -0.72184         0.47042
+            pg_Other         0.14115         0.02280         6.19056         0.00000
+        pg_Townhouse        -0.04167         0.03428        -1.21573         0.22413
+------------------------------------------------------------------------------------
+
+REGRESSION DIAGNOSTICS
+MULTICOLLINEARITY CONDITION NUMBER           11.964
+
+TEST ON NORMALITY OF ERRORS
+TEST                             DF        VALUE           PROB
+Jarque-Bera                       2        2671.611           0.0000
+
+DIAGNOSTICS FOR HETEROSKEDASTICITY
+RANDOM COEFFICIENTS
+TEST                             DF        VALUE           PROB
+Breusch-Pagan test               10         322.532           0.0000
+Koenker-Bassett test             10         135.581           0.0000
+================================ END OF REPORT =====================================
+</pre></div>
+</div>
+</div>
+</div>
+<p>Este mismo modelo se puede correr utilizando la función <em>ols</em> de <em>statsmodels</em> de la siguiente manera:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m0</span><span class="o">=</span><span class="n">sm</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="s2">"log_price ~ accommodates + bathrooms + bedrooms + beds + rt_Private_room + rt_Shared_room + pg_Condominium + pg_House + pg_Other + pg_Townhouse"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">db</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">m0</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              log_price   R-squared:                       0.668
+Model:                            OLS   Adj. R-squared:                  0.668
+Method:                 Least Squares   F-statistic:                     1229.
+Date:                Fri, 11 Oct 2024   Prob (F-statistic):               0.00
+Time:                        17:43:14   Log-Likelihood:                -3988.9
+No. Observations:                6110   AIC:                             8000.
+Df Residuals:                    6099   BIC:                             8074.
+Df Model:                          10                                         
+Covariance Type:            nonrobust                                         
+===================================================================================
+                      coef    std err          t      P&gt;|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------
+Intercept           4.3884      0.016    272.322      0.000       4.357       4.420
+accommodates        0.0835      0.005     16.434      0.000       0.073       0.093
+bathrooms           0.1924      0.011     17.542      0.000       0.171       0.214
+bedrooms            0.1525      0.011     13.701      0.000       0.131       0.174
+beds               -0.0417      0.007     -6.013      0.000      -0.055      -0.028
+rt_Private_room    -0.5507      0.016    -34.624      0.000      -0.582      -0.520
+rt_Shared_room     -1.2383      0.038    -32.220      0.000      -1.314      -1.163
+pg_Condominium      0.1436      0.022      6.485      0.000       0.100       0.187
+pg_House           -0.0105      0.015     -0.722      0.470      -0.039       0.018
+pg_Other            0.1412      0.023      6.191      0.000       0.096       0.186
+pg_Townhouse       -0.0417      0.034     -1.216      0.224      -0.109       0.026
+==============================================================================
+Omnibus:                      964.842   Durbin-Watson:                   1.836
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):             2671.611
+Skew:                           0.850   Prob(JB):                         0.00
+Kurtosis:                       5.758   Cond. No.                         41.5
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+</pre></div>
+</div>
+</div>
+</div>
+<p>Los <code class="docutils literal notranslate"><span class="pre">Coeficientes</span></code> nos dan las estimaciones para <span class="math notranslate nohighlight">\(\beta_k\)</span> en nuestro modelo. En otras palabras, estos números expresan la relación entre cada variable explicativa y la variable dependiente, una vez que se ha tenido en cuenta el efecto de los factores de confusión. Sin embargo, ten en cuenta que la regresión no es magia; solo estamos descontando el efecto de los factores de confusión que incluimos en el modelo, no de <em>todos</em> los factores potencialmente confusos.</p>
+<p>Los resultados son en su mayoría como se esperaba: las casas tienden a ser significativamente más caras si acomodan a más personas (<code class="docutils literal notranslate"><span class="pre">accommodates</span></code>), si tienen más baños y dormitorios y si son un condominio o parte de la categoría «otro» tipo de vivienda. Por otro lado, dada una cantidad de habitaciones, las casas con más camas (es decir, listados más «abarrotados») tienden a ser más baratas, como es el caso de las propiedades donde no se alquila toda la casa sino solo una habitación (<code class="docutils literal notranslate"><span class="pre">rt_Private_room</span></code>) o incluso se comparte (<code class="docutils literal notranslate"><span class="pre">rt_Shared_room</span></code>). Por supuesto, podrías dudar conceptualmente de la suposición de que es posible <em>cambiar arbitrariamente</em> el número de camas dentro de un Airbnb sin eventualmente cambiar el número de personas que acomoda, pero los métodos para abordar estas preocupaciones usando <em>efectos de interacción</em> no se discutirán aquí.</p>
+<p>En general, nuestro modelo se desempeña bien, siendo capaz de predecir ligeramente más del 66% (<span class="math notranslate nohighlight">\(R^2=0.66\)</span>) de la variación en el precio medio por noche usando las covariables que hemos discutido anteriormente. Pero, nuestro modelo podría mostrar cierto agrupamiento en los errores. Para investigar esto, podemos hacer algunas cosas. Un concepto simple podría ser observar la correlación entre el error en la predicción de un airbnb y el error en la predicción de su vecino más cercano. Para examinar esto, primero podríamos querer dividir nuestros datos por regiones y ver si tenemos alguna estructura espacial en nuestros residuos. Una teoría razonable podría ser que nuestro modelo no incluye ninguna información sobre <em>playas</em>, un aspecto crítico de por qué las personas viven y vacacionan en San Diego. Por lo tanto, podríamos querer ver si nuestros errores son mayores o menores dependiendo de si un airbnb está en un vecindario «de playa», un vecindario cerca del océano:</p>
+<p>A continuación se obtienen los residuos para el modelo cuando la variable <em>is_coastal</em> es igual a <em>True</em>, lo cual significa que la casa está localizada sobre la costa.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">is_coastal</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">coastal</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+<span class="n">coastal</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">is_coastal</span><span class="p">]</span>
+<span class="n">not_coastal</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="o">~</span><span class="n">is_coastal</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">coastal</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Coastal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">not_coastal</span><span class="p">,</span> <span class="n">histtype</span><span class="o">=</span><span class="s1">'step'</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'Not Coastal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/76c092528fdd9aef2ea5687887e6f8495d2420820dd352776781aa30ff2d6520.png" src="_images/76c092528fdd9aef2ea5687887e6f8495d2420820dd352776781aa30ff2d6520.png" />
+</div>
+</div>
+<p>Aunque parece que los vecindarios en la costa tienen errores promedio solo ligeramente más altos (y tienen menor varianza en sus errores de predicción), las dos distribuciones son significativamente distintas entre sí cuando se comparan usando una prueba <span class="math notranslate nohighlight">\(t\)</span> clásica:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">coastal</span><span class="p">,</span> <span class="n">not_coastal</span><span class="p">)</span>
+<span class="c1"># permutations=9999 not yet available in scipy</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>TtestResult(statistic=array([13.98193858]), pvalue=array([9.442438e-44]), df=array([6108.]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>Sin embargo, existen pruebas más sofisticadas (y más difíciles de engañar) que pueden ser aplicables para estos datos, como el Índice de Moran y el Multiplicador de Lagrange. Además, podría ser el caso de que algunos vecindarios sean más deseables que otros debido a preferencias latentes o estrategias de marketing no modeladas. Por ejemplo, a pesar de su ubicación cerca del mar, vivir cerca de Camp Pendleton, una base de Marines en el norte de la ciudad, podría incurrir en algunas penalizaciones significativas en la deseabilidad del área debido al ruido y la contaminación. Para determinar si este es el caso, podríamos estar interesados en la distribución completa de los residuos del modelo dentro de cada vecindario.</p>
+<p>Para hacer esto más claro, primero ordenaremos los datos por la mediana residual en ese vecindario, y luego haremos un diagrama de caja, que muestra la distribución de los residuos en cada vecindario:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>accommodates</th>
+      <th>bathrooms</th>
+      <th>bedrooms</th>
+      <th>beds</th>
+      <th>neighborhood</th>
+      <th>pool</th>
+      <th>d2balboa</th>
+      <th>coastal</th>
+      <th>price</th>
+      <th>log_price</th>
+      <th>id</th>
+      <th>pg_Apartment</th>
+      <th>pg_Condominium</th>
+      <th>pg_House</th>
+      <th>pg_Other</th>
+      <th>pg_Townhouse</th>
+      <th>rt_Entire_home/apt</th>
+      <th>rt_Private_room</th>
+      <th>rt_Shared_room</th>
+      <th>geometry</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>5</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>2.0</td>
+      <td>North Hills</td>
+      <td>0</td>
+      <td>2.972077</td>
+      <td>0</td>
+      <td>425.0</td>
+      <td>6.052089</td>
+      <td>6</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.12971 32.75399)</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>6</td>
+      <td>1.0</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>Mission Bay</td>
+      <td>0</td>
+      <td>11.501385</td>
+      <td>1</td>
+      <td>205.0</td>
+      <td>5.323010</td>
+      <td>5570</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POINT (-117.25253 32.78421)</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="p">[</span><span class="s1">'residual'</span><span class="p">]</span> <span class="o">=</span> <span class="n">m1</span><span class="o">.</span><span class="n">u</span>
+<span class="n">medians</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"neighborhood"</span><span class="p">)</span><span class="o">.</span><span class="n">residual</span><span class="o">.</span><span class="n">median</span><span class="p">()</span><span class="o">.</span><span class="n">to_frame</span><span class="p">(</span><span class="s1">'hood_residual'</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+<span class="n">sbn</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">'neighborhood'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">'residual'</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">db</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">medians</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">,</span><span class="n">left_on</span><span class="o">=</span><span class="s1">'neighborhood'</span><span class="p">,</span><span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'hood_residual'</span><span class="p">),</span> <span class="n">palette</span><span class="o">=</span><span class="s1">'bwr'</span><span class="p">,</span>  <span class="n">dodge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">autofmt_xdate</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\edier\AppData\Local\Temp\ipykernel_13996\1987411078.py:6: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sbn.boxplot(x='neighborhood', y='residual', ax = ax,
+</pre></div>
+</div>
+<img alt="_images/e30fa6d923e8c319ea32cbabb82471e33c770ebb7e0c5701f5b0a4eac0121752.png" src="_images/e30fa6d923e8c319ea32cbabb82471e33c770ebb7e0c5701f5b0a4eac0121752.png" />
+</div>
+</div>
+<p>Ningún vecindario está completamente aislado de los demás, pero algunos parecen ser más destacados que otros, como las conocidas áreas turísticas del centro de la ciudad, como Gaslamp Quarter, Little Italy o The Core. Por lo tanto, puede haber un efecto distintivo de la moda del vecindario que importa en este modelo.</p>
+<p>Observando que muchos de los vecindarios más sobre y subestimados están cerca unos de otros en la ciudad, también puede ser el caso de que haya algún tipo de <em>contagio</em> o derrame espacial en el precio del alquiler nocturno. Esto a menudo es evidente cuando las personas buscan fijar el precio de sus listados de Airbnb para competir con listados similares cercanos. Dado que nuestro modelo no es consciente de este comportamiento, es posible que sus errores tiendan a agruparse. Una forma excepcionalmente simple de investigar esta estructura es examinando la relación entre los residuos de una observación y los residuos circundantes.</p>
+<p>Para hacer esto, utilizaremos <em>pesos espaciales</em> para representar las relaciones geográficas entre las observaciones. Para este ejemplo, comenzaremos con una matriz <span class="math notranslate nohighlight">\(KNN\)</span> donde <span class="math notranslate nohighlight">\(k=5\)</span>, lo que significa que nos enfocaremos solo en los enlaces de cada Airbnb con sus otros 5 vecinos más cercanos.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">KNN</span><span class="o">.</span><span class="n">from_dataframe</span><span class="p">(</span><span class="n">db</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\edier\miniconda3\Lib\site-packages\libpysal\weights\weights.py:224: UserWarning: The weights matrix is not fully connected: 
+ There are 11 disconnected components.
+  warnings.warn(message)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Esto significa que, cuando calculamos el <em>lag espacial</em> de ese peso knn y el residuo, obtenemos el residuo del listado de Airbnb más cercano a cada observación.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lag_residual</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">spatial_lag</span><span class="o">.</span><span class="n">lag_spatial</span><span class="p">(</span><span class="n">knn</span><span class="p">,</span> <span class="n">m1</span><span class="o">.</span><span class="n">u</span><span class="p">)</span> <span class="c1"># se obtiene la columna spatial_lag de la matris denominada Weights y se le calcula el espacial lag con la matriz de KNN</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sbn</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">m1</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">lag_residual</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">line_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'orangered'</span><span class="p">),</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Model Residuals - $u$'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Spatial Lag of Model Residuals - $W u$'</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/b106607b6664f71d07fe6cf9a8678f7a333f64b036ea93ed5f7bfa17d217f6b9.png" src="_images/b106607b6664f71d07fe6cf9a8678f7a333f64b036ea93ed5f7bfa17d217f6b9.png" />
+</div>
+</div>
+<p>En este gráfico, vemos que nuestros errores de predicción tienden a agruparse. Arriba, mostramos la relación entre nuestro error de predicción en cada sitio y el error de predicción en el sitio más cercano a él. Aquí, estamos utilizando este sitio más cercano para representar el <em>entorno</em> de ese Airbnb. Esto significa que, cuando el modelo tiende a sobreestimar el precio logarítmico nocturno de un determinado Airbnb, es más probable que los sitios alrededor de ese Airbnb también sean <em>sobreestimados</em>.</p>
+<p>Una propiedad interesante de esta relación es que tiende a estabilizarse a medida que aumenta el número de vecinos más cercanos utilizados para construir el entorno de cada Airbnb.</p>
+<p>Dado este comportamiento, veamos el número estable de vecinos <span class="math notranslate nohighlight">\(k=20\)</span>.
+Examinando la relación entre este promedio estable del <em>entorno</em> y el Airbnb focal, incluso podemos encontrar clusters en el error de nuestro modelo.
+Recordando las estadísticas de <em>Índice de Moran local</em>, podemos identificar ciertas áreas donde nuestras predicciones del precio nocturno (logarítmico) de Airbnb tienden a ser significativamente incorrectas:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span><span class="o">.</span><span class="n">reweight</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">outliers</span> <span class="o">=</span> <span class="n">esda</span><span class="o">.</span><span class="n">moran</span><span class="o">.</span><span class="n">Moran_Local</span><span class="p">(</span><span class="n">m1</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">knn</span><span class="p">,</span> <span class="n">permutations</span><span class="o">=</span><span class="mi">9999</span><span class="p">)</span>
+<span class="n">error_clusters</span> <span class="o">=</span> <span class="p">(</span><span class="n">outliers</span><span class="o">.</span><span class="n">q</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># solo los núcleos de los clústeres</span>
+<span class="n">error_clusters</span> <span class="o">&amp;=</span> <span class="p">(</span><span class="n">outliers</span><span class="o">.</span><span class="n">p_sim</span> <span class="o">&lt;=</span> <span class="mf">.001</span><span class="p">)</span> <span class="c1"># filtering out non-significant clusters</span>
+<span class="n">db</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">error_clusters</span> <span class="o">=</span> <span class="n">error_clusters</span><span class="p">,</span> <span class="n">local_I</span> <span class="o">=</span> <span class="n">outliers</span><span class="o">.</span><span class="n">Is</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"error_clusters"</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'local_I'</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'local_I'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'bwr'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\edier\miniconda3\Lib\site-packages\libpysal\weights\weights.py:224: UserWarning: The weights matrix is not fully connected: 
+ There are 3 disconnected components.
+  warnings.warn(message)
+</pre></div>
+</div>
+<img alt="_images/6524ac5c66324c856989fbff4462ff870f7859194f4b91d85c0a9371705fedf5.png" src="_images/6524ac5c66324c856989fbff4462ff870f7859194f4b91d85c0a9371705fedf5.png" />
+</div>
+</div>
+<p>Por lo tanto, estas áreas tienden a ser lugares donde nuestro modelo subestima significativamente el precio nocturno de Airbnb tanto para esa observación específica como para las observaciones en sus alrededores inmediatos.
+Esto es crítico porque, si podemos identificar cómo están estructuradas estas áreas y tienen una <em>geografía consistente</em> que podemos modelar, entonces podríamos mejorar nuestras predicciones, o al menos no predecir sistemáticamente mal los precios en algunas áreas mientras que predecimos correctamente los precios en otras áreas.</p>
+<p>Dado que las subestimaciones y sobreestimaciones significativas parecen agruparse de manera altamente estructurada, podríamos usar un modelo mejor para corregir la geografía de los errores de nuestro modelo.</p>
+</section>
+<section id="incorporar-variables-espaciales">
+<h2>Incorporar variables espaciales<a class="headerlink" href="#incorporar-variables-espaciales" title="Link to this heading">#</a></h2>
+<p>Utilizar información geográfica para «construir» nuevos datos es un enfoque común para incorporar información espacial en el análisis geográfico. A menudo, esto refleja el hecho de que los procesos no son iguales en todas partes en el mapa de análisis, o que la información geográfica puede ser útil para predecir nuestro resultado de interés. En esta sección, presentaremos brevemente cómo usar <em>características espaciales</em>, o variables <span class="math notranslate nohighlight">\(X\)</span> que se construyen a partir de relaciones geográficas, en un modelo lineal estándar.</p>
+<p>Para empezar, una variable relevante impulsada por la proximidad que podría influir en nuestro modelo se basa en la proximidad de las listas al Parque Balboa. Un destino turístico común, el Parque Balboa es un centro recreativo central para la ciudad de San Diego, que contiene muchos museos y el zoológico de San Diego. Por lo tanto, podría ser el caso de que las personas que buscan Airbnbs en San Diego estén dispuestas a pagar más para vivir más cerca del parque. Si esto fuera cierto <em>y</em> lo omitiéramos de nuestro modelo, de hecho podríamos ver un patrón espacial significativo causado por este efecto de decaimiento de la distancia.</p>
+<p>Por lo tanto, a esto a veces se le llama una <em>covariable omitida con patrón espacial</em>: información geográfica que nuestro modelo necesita para hacer buenas predicciones y que hemos dejado fuera de nuestro modelo. Por lo tanto, construyamos un nuevo modelo que contenga esta covariable de distancia al Parque Balboa. Sin embargo, primero es útil visualizar la estructura de esta covariable de distancia en sí misma:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">'d2balboa'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: &gt;
+</pre></div>
+</div>
+<img alt="_images/a106d3306ef703abed467babcb86a473590a51fe89ec09cbd793fe4e00729f81.png" src="_images/a106d3306ef703abed467babcb86a473590a51fe89ec09cbd793fe4e00729f81.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">base_names</span> <span class="o">=</span> <span class="n">variable_names</span>
+<span class="n">balboa_names</span> <span class="o">=</span> <span class="n">variable_names</span> <span class="o">+</span> <span class="p">[</span><span class="s1">'d2balboa'</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m2</span> <span class="o">=</span> <span class="n">spreg</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">db</span><span class="p">[[</span><span class="s1">'log_price'</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">db</span><span class="p">[</span><span class="n">balboa_names</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span><span class="n">name_y</span> <span class="o">=</span> <span class="s1">'log_price'</span><span class="p">,</span> <span class="n">name_x</span> <span class="o">=</span> <span class="n">balboa_names</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Desafortunadamente, al inspeccionar los diagnósticos de regresión y la salida, se observa que esta covariable no es tan útil como podríamos anticipar. No es estadísticamente significativa a niveles de significancia convencionales, y el ajuste del modelo no cambia sustancialmente.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">m2</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>REGRESSION RESULTS
+------------------
+
+SUMMARY OF OUTPUT: ORDINARY LEAST SQUARES
+-----------------------------------------
+Data set            :     unknown
+Weights matrix      :        None
+Dependent Variable  :   log_price                Number of Observations:        6110
+Mean dependent var  :      4.9958                Number of Variables   :          12
+S.D. dependent var  :      0.8072                Degrees of Freedom    :        6098
+R-squared           :      0.6685
+Adjusted R-squared  :      0.6679
+Sum squared residual:     1319.52                F-statistic           :   1117.9338
+Sigma-square        :       0.216                Prob(F-statistic)     :           0
+S.E. of regression  :       0.465                Log likelihood        :   -3987.446
+Sigma-square ML     :       0.216                Akaike info criterion :    7998.892
+S.E of regression ML:      0.4647                Schwarz criterion     :    8079.504
+
+------------------------------------------------------------------------------------
+            Variable     Coefficient       Std.Error     t-Statistic     Probability
+------------------------------------------------------------------------------------
+            CONSTANT         4.37962         0.01692       258.91622         0.00000
+        accommodates         0.08364         0.00508        16.46982         0.00000
+           bathrooms         0.19079         0.01100        17.33717         0.00000
+            bedrooms         0.15075         0.01118        13.48429         0.00000
+                beds        -0.04148         0.00694        -5.97748         0.00000
+     rt_Private_room        -0.55300         0.01596       -34.64902         0.00000
+      rt_Shared_room        -1.23552         0.03846       -32.12328         0.00000
+      pg_Condominium         0.14046         0.02223         6.31983         0.00000
+            pg_House        -0.01330         0.01462        -0.90966         0.36304
+            pg_Other         0.14118         0.02280         6.19244         0.00000
+        pg_Townhouse        -0.04578         0.03436        -1.33264         0.18270
+            d2balboa         0.00165         0.00097         1.70086         0.08902
+------------------------------------------------------------------------------------
+
+REGRESSION DIAGNOSTICS
+MULTICOLLINEARITY CONDITION NUMBER           12.745
+
+TEST ON NORMALITY OF ERRORS
+TEST                             DF        VALUE           PROB
+Jarque-Bera                       2        2710.322           0.0000
+
+DIAGNOSTICS FOR HETEROSKEDASTICITY
+RANDOM COEFFICIENTS
+TEST                             DF        VALUE           PROB
+Breusch-Pagan test               11         317.519           0.0000
+Koenker-Bassett test             11         132.860           0.0000
+================================ END OF REPORT =====================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lag_residual</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">spatial_lag</span><span class="o">.</span><span class="n">lag_spatial</span><span class="p">(</span><span class="n">knn</span><span class="p">,</span> <span class="n">m2</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+<span class="n">sbn</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">m2</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">lag_residual</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="n">line_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">'orangered'</span><span class="p">),</span><span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/930a513f2272108ac09a67449b68ac1da53f283d12f08fb0339139672749d95b.png" src="_images/930a513f2272108ac09a67449b68ac1da53f283d12f08fb0339139672749d95b.png" />
+</div>
+</div>
+<p>Finalmente, la variable de distancia al Parque Balboa no se ajusta a nuestra teoría sobre cómo debería afectar el precio de un Airbnb la distancia a un lugar de interés; el estimado del coeficiente es <em>positivo</em>, lo que significa que las personas están pagando más para estar <em>más alejadas</em> del parque.</p>
+</section>
+<section id="dependencia-y-heterogeneidad-espacial">
+<h2>Dependencia y Heterogeneidad espacial<a class="headerlink" href="#dependencia-y-heterogeneidad-espacial" title="Link to this heading">#</a></h2>
+<p>La regresión espacial se trata de introducir explícitamente el espacio o el contexto geográfico en el marco estadístico
+de una regresión. Conceptualmente, queremos introducir el espacio en nuestro modelo siempre que pensemos que juega un
+papel importante en el proceso en el que estamos interesados, o cuando el espacio puede actuar como un proxy razonable
+para otros factores que no podemos pero deberíamos incluir en nuestro modelo. Como ejemplo de lo primero, podemos imaginar cómo las casas en el corredor del mar probablemente sean más caras que las de la segunda fila, dadas sus mejores vistas.</p>
+<p>Para ilustrar lo último, podemos pensar en cómo el carácter de un vecindario es importante para determinar el precio de una casa; sin embargo, es muy difícil identificar y cuantificar el “carácter” en sí mismo, aunque podría ser más fácil abordar su variación espacial, de ahí un caso de espacio como proxy.</p>
+<p>La regresión espacial es un gran campo de desarrollo en las literaturas de econometría y estadística. En esta breve introducción, consideraremos dos procesos relacionados pero muy diferentes que dan lugar a efectos espaciales: <strong>Heterogeneidad Espacial (SH)</strong> y <strong>Dependencia Espacial (SD)</strong>.</p>
+<p>Para atender esta problemática es necesario inicialmente comprender la estructura espacial de los datos. La estructura espacial se puede descomponer en dos componentes principales: la heterogeneidad espacial y la dependencia espacial (Anselin 1996, Rey et al. 2023). La heterogeneidad espacial se refiere a la variación en las propiedades de los datos en diferentes áreas del espacio, lo que implica que las relaciones entre las variables no necesariamente sean homogéneas en toda la región de estudio (Rey et al. 2023). La dependencia espacial, por otro lado, se refiere a la tendencia de valores similares a agruparse espacialmente (Anselin 1988). Esto implica que el valor de una variable en un punto del espacio está correlacionado con los valores de la misma variable en puntos cercanos, un fenómeno también conocido como autocorrelación. Esta dependencia puede originarse debido a procesos naturales que presentan continuidad espacial, como la geología y la topografía, o debido a factores ambientales como la vegetación y el clima (Lombardo et al. 2020), que tienden a presentar patrones espaciales similares en áreas cercanas.</p>
+<p>Cuando la heterogeneidad y la dependencia espacial no se incorporan adecuadamente en los modelos, la estructura espacial queda remanente en los residuales, lo cual se traduce en una falta de ajuste adecuada del modelo (Anselin 2022, Cressie 2015). Este remanente espacial en los residuos es una violación de las suposiciones de independencia que subyacen a los modelos clásicos, ya que los modelos clásicos suelen asumir que las observaciones son independientes entre sí (sin dependencia espacial) y que la relación entre las variables es constante en toda la región de estudio (sin heterogeneidad espacial) (Lesage 2011, Banerjee 2008). Esto afecta la validez de las inferencias estadísticas y resulta en modelos con predicciones sesgadas.</p>
+<center><img src="https://i.pinimg.com/736x/98/02/df/9802dfd0598410856170596185902f99.jpg" width="800"></center></section>
+<section id="actividades">
+<h2>Actividades<a class="headerlink" href="#actividades" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Diagnóstico espacial de OLS:</strong> Ajusta un modelo OLS para explicar <code class="docutils literal notranslate"><span class="pre">lands_rec</span></code> (transformada con log(x+1)) en función de las tres covariables estandarizadas del dataset de cuencas. Calcula el Moran I de los residuos usando una matriz Queen. ¿Los residuos muestran autocorrelación espacial significativa? ¿Qué implicaciones tiene esto sobre los supuestos del OLS?</p></li>
+<li><p><strong>Selección de modelo espacial:</strong> Usando los tests de multiplicadores de Lagrange (LM-lag y LM-error) disponibles en <code class="docutils literal notranslate"><span class="pre">pysal</span></code>, determina si el problema de los residuos en el ejercicio 1 se corrige mejor con un modelo SAR-Lag o un modelo SEM. Justifica tu elección.</p></li>
+<li><p><strong>Regresión con rezagos espaciales de X:</strong> Ajusta un modelo SLX (Spatially Lagged X) añadiendo el rezago espacial de cada covariable como variable adicional. Compara el R² ajustado y el AIC con el OLS del ejercicio 1. ¿Aportan los efectos de spillover información adicional?</p></li>
+<li><p><strong>Regímenes espaciales:</strong> Divide el dataset de cuencas en dos regímenes: subcuencas de la Cordillera Occidental (cuenca Atrato) y subcuencas de las Cordilleras Central y Oriental (cuencas Cauca y Magdalena). Ajusta un OLS con régimen espacial (coeficientes distintos por régimen). ¿Son estadísticamente distintos los coeficientes entre regímenes para la variable <code class="docutils literal notranslate"><span class="pre">slope_mean</span></code>?</p></li>
+</ol>
+</section>
+<section id="recursos-adicionales">
+<h2>Recursos adicionales<a class="headerlink" href="#recursos-adicionales" title="Link to this heading">#</a></h2>
+<section id="documentacion-oficial">
+<h3>Documentación oficial<a class="headerlink" href="#documentacion-oficial" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pysal.org/spreg/">PySAL spreg — Spatial Regression</a></p></li>
+<li><p><a class="reference external" href="https://www.statsmodels.org/stable/regression.html">statsmodels — OLS</a></p></li>
+<li><p><a class="reference external" href="https://pysal.org/libpysal/">libpysal — Weights</a></p></li>
+</ul>
+</section>
+<section id="lecturas-recomendadas">
+<h3>Lecturas recomendadas<a class="headerlink" href="#lecturas-recomendadas" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Anselin, L. (1988). <em>Spatial Econometrics: Methods and Models</em>. Kluwer Academic Publishers.</p></li>
+<li><p>LeSage, J. &amp; Pace, R. K. (2009). <em>Introduction to Spatial Econometrics</em>. CRC Press.</p></li>
+<li><p>Bivand, R. S., Pebesma, E., &amp; Gómez-Rubio, V. (2013). <em>Applied Spatial Data Analysis with R</em> (2nd ed.). Springer.</p></li>
+<li><p>Elhorst, J. P. (2014). <em>Spatial Econometrics: From Cross-Sectional Data to Spatial Panels</em>. Springer.</p></li>
+</ul>
+</section>
+<section id="software-y-tutoriales">
+<h3>Software y tutoriales<a class="headerlink" href="#software-y-tutoriales" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://geodacenter.github.io/workbook/5a_global_auto/lab5a.html">GeoDa — Spatial Regression</a></p></li>
+<li><p><a class="reference external" href="https://pysal.org/notebooks/model/spreg/">PySAL Notebooks — Spatial Regression</a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "carto"
+        },
+        kernelOptions: {
+            name: "carto",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'carto'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="08_ClusterEspacial.html"
+       title="página anterior">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">anterior</p>
+        <p class="prev-next-title">Cluster espacial</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="10_SAR.html"
+       title="siguiente página">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">siguiente</p>
+        <p class="prev-next-title">Modelos de regresión para dependencia espacial tipo SAR</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contenido
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#objetivos-de-aprendizaje">Objetivos de aprendizaje</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#los-datos-airbnb-en-san-diego">Los Datos: AirBnB en San Diego</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-no-espacial">Regresión no espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#incorporar-variables-espaciales">Incorporar variables espaciales</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dependencia-y-heterogeneidad-espacial">Dependencia y Heterogeneidad espacial</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#actividades">Actividades</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recursos-adicionales">Recursos adicionales</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentacion-oficial">Documentación oficial</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lecturas-recomendadas">Lecturas recomendadas</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#software-y-tutoriales">Software y tutoriales</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+Por Edier V. Aristizábal G.
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=55c26ed414f5f8a31ebb"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=55c26ed414f5f8a31ebb"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
